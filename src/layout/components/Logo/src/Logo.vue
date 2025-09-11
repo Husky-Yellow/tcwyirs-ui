@@ -73,7 +73,7 @@ watch(
       <div
         v-if="show"
         :class="[
-          'ml-10px text-16px font-700',
+          'ml-10px text-16px font-700 text-black',
           {
             'text-[var(--logo-title-text-color)]': layout === 'classic',
             'text-[var(--top-header-text-color)]':

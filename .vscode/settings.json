@@ -4,6 +4,9 @@
   "editor.tabSize": 2,
   "prettier.printWidth": 100, // 超过最大值换行
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontFamily": "'JetBrains Mono', Consolas, 'Courier New', monospace",
+  "editor.minimap.enabled": true,
+  "editor.fontSize": 12,
   "files.eol": "\n",
   "search.exclude": {
     "**/node_modules": true,
