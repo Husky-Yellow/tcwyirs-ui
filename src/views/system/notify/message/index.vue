@@ -134,7 +134,7 @@
             link
             type="primary"
             @click="openDetail(scope.row)"
-            v-hasPermi="['system:notify-message:query']"
+            v-hasPermi="['mq:notify-message:query']"
           >
             详情
           </el-button>

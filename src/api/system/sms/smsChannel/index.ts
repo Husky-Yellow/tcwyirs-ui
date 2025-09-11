@@ -14,30 +14,30 @@ export interface SmsChannelVO {
 
 // 查询短信渠道列表
 export const getSmsChannelPage = (params: PageParam) => {
-  return request.get({ url: '/system/sms-channel/page', params })
+  return request.get({ url: '/mq/sms-channel/page', params })
 }
 
 // 获得短信渠道精简列表
 export function getSimpleSmsChannelList() {
-  return request.get({ url: '/system/sms-channel/simple-list' })
+  return request.get({ url: '/mq/sms-channel/simple-list' })
 }
 
 // 查询短信渠道详情
 export const getSmsChannel = (id: number) => {
-  return request.get({ url: '/system/sms-channel/get?id=' + id })
+  return request.get({ url: '/mq/sms-channel/get?id=' + id })
 }
 
 // 新增短信渠道
 export const createSmsChannel = (data: SmsChannelVO) => {
-  return request.post({ url: '/system/sms-channel/create', data })
+  return request.post({ url: '/mq/sms-channel/create', data })
 }
 
 // 修改短信渠道
 export const updateSmsChannel = (data: SmsChannelVO) => {
-  return request.put({ url: '/system/sms-channel/update', data })
+  return request.put({ url: '/mq/sms-channel/update', data })
 }
 
 // 删除短信渠道
 export const deleteSmsChannel = (id: number) => {
-  return request.delete({ url: '/system/sms-channel/delete?id=' + id })
+  return request.delete({ url: '/mq/sms-channel/delete?id=' + id })
 }

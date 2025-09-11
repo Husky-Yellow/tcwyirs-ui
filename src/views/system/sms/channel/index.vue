@@ -51,7 +51,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:sms-channel:create']"
+          v-hasPermi="['mq:sms-channel:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增</el-button
         >
@@ -109,7 +109,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:sms-channel:update']"
+            v-hasPermi="['mq:sms-channel:update']"
           >
             编辑
           </el-button>
@@ -117,7 +117,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['system:sms-channel:delete']"
+            v-hasPermi="['mq:sms-channel:delete']"
           >
             删除
           </el-button>

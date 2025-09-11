@@ -104,7 +104,7 @@
           plain
           @click="handleExport"
           :loading="exportLoading"
-          v-hasPermi="['system:sms-log:export']"
+          v-hasPermi="['mq:sms-log:export']"
         >
           <Icon icon="ep:download" class="mr-5px" /> 导出
         </el-button>
@@ -165,7 +165,7 @@
             link
             type="primary"
             @click="openDetail(scope.row)"
-            v-hasPermi="['system:sms-log:query']"
+            v-hasPermi="['mq:sms-log:query']"
           >
             详情
           </el-button>

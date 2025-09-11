@@ -61,7 +61,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:notify-template:create']"
+          v-hasPermi="['mq:notify-template:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" />新增
         </el-button>
@@ -118,7 +118,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:notify-template:update']"
+            v-hasPermi="['mq:notify-template:update']"
           >
             修改
           </el-button>
@@ -126,7 +126,7 @@
             link
             type="primary"
             @click="openSendForm(scope.row)"
-            v-hasPermi="['system:notify-template:send-notify']"
+            v-hasPermi="['mq:notify-template:send-notify']"
           >
             测试
           </el-button>
@@ -134,7 +134,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['system:notify-template:delete']"
+            v-hasPermi="['mq:notify-template:delete']"
           >
             删除
           </el-button>

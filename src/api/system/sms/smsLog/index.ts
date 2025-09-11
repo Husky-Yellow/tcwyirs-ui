@@ -28,10 +28,10 @@ export interface SmsLogVO {
 
 // 查询短信日志列表
 export const getSmsLogPage = (params: PageParam) => {
-  return request.get({ url: '/system/sms-log/page', params })
+  return request.get({ url: '/mq/sms-log/page', params })
 }
 
 // 导出短信日志
 export const exportSmsLog = (params) => {
-  return request.download({ url: '/system/sms-log/export-excel', params })
+  return request.download({ url: '/mq/sms-log/export-excel', params })
 }

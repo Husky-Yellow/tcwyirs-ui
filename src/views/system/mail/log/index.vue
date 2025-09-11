@@ -23,7 +23,7 @@
           link
           type="primary"
           @click="openDetail(row.id)"
-          v-hasPermi="['system:mail-log:query']"
+          v-hasPermi="['mq:mail-log:query']"
         >
           详情
         </el-button>

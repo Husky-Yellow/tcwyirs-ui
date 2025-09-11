@@ -94,7 +94,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:sms-template:create']"
+          v-hasPermi="['mq:sms-template:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" />新增
         </el-button>
@@ -103,7 +103,7 @@
           plain
           @click="handleExport"
           :loading="exportLoading"
-          v-hasPermi="['system:sms-template:export']"
+          v-hasPermi="['mq:sms-template:export']"
         >
           <Icon icon="ep:download" class="mr-5px" /> 导出
         </el-button>
@@ -174,7 +174,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:sms-template:update']"
+            v-hasPermi="['mq:sms-template:update']"
           >
             修改
           </el-button>
@@ -182,7 +182,7 @@
             link
             type="primary"
             @click="openSendForm(scope.row.id)"
-            v-hasPermi="['system:sms-template:send-sms']"
+            v-hasPermi="['mq:sms-template:send-sms']"
           >
             测试
           </el-button>
@@ -190,7 +190,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['system:sms-template:delete']"
+            v-hasPermi="['mq:sms-template:delete']"
           >
             删除
           </el-button>

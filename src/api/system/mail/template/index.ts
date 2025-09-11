@@ -21,30 +21,30 @@ export interface MailSendReqVO {
 
 // 查询邮件模版列表
 export const getMailTemplatePage = async (params: PageParam) => {
-  return await request.get({ url: '/system/mail-template/page', params })
+  return await request.get({ url: '/mq/mail-template/page', params })
 }
 
 // 查询邮件模版详情
 export const getMailTemplate = async (id: number) => {
-  return await request.get({ url: '/system/mail-template/get?id=' + id })
+  return await request.get({ url: '/mq/mail-template/get?id=' + id })
 }
 
 // 新增邮件模版
 export const createMailTemplate = async (data: MailTemplateVO) => {
-  return await request.post({ url: '/system/mail-template/create', data })
+  return await request.post({ url: '/mq/mail-template/create', data })
 }
 
 // 修改邮件模版
 export const updateMailTemplate = async (data: MailTemplateVO) => {
-  return await request.put({ url: '/system/mail-template/update', data })
+  return await request.put({ url: '/mq/mail-template/update', data })
 }
 
 // 删除邮件模版
 export const deleteMailTemplate = async (id: number) => {
-  return await request.delete({ url: '/system/mail-template/delete?id=' + id })
+  return await request.delete({ url: '/mq/mail-template/delete?id=' + id })
 }
 
 // 发送邮件
 export const sendMail = (data: MailSendReqVO) => {
-  return request.post({ url: '/system/mail-template/send-mail', data })
+  return request.post({ url: '/mq/mail-template/send-mail', data })
 }

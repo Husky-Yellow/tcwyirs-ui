@@ -10,7 +10,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:mail-template:create']"
+          v-hasPermi="['mq:mail-template:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -35,7 +35,7 @@
           link
           type="primary"
           @click="openSendForm(row.id)"
-          v-hasPermi="['system:mail-template:send-mail']"
+          v-hasPermi="['mq:mail-template:send-mail']"
         >
           测试
         </el-button>
@@ -43,14 +43,14 @@
           link
           type="primary"
           @click="openForm('update', row.id)"
-          v-hasPermi="['system:mail-template:update']"
+          v-hasPermi="['mq:mail-template:update']"
         >
           编辑
         </el-button>
         <el-button
           link
           type="danger"
-          v-hasPermi="['system:mail-template:delete']"
+          v-hasPermi="['mq:mail-template:delete']"
           @click="handleDelete(row.id)"
         >
           删除

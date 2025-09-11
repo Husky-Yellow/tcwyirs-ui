@@ -39,7 +39,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:notice:create']"
+          v-hasPermi="['mq:notice:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -75,7 +75,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:notice:update']"
+            v-hasPermi="['mq:notice:update']"
           >
             编辑
           </el-button>
@@ -83,11 +83,11 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['system:notice:delete']"
+            v-hasPermi="['mq:notice:delete']"
           >
             删除
           </el-button>
-          <el-button link @click="handlePush(scope.row.id)" v-hasPermi="['system:notice:update']">
+          <el-button link @click="handlePush(scope.row.id)" v-hasPermi="['mq:notice:update']">
             推送
           </el-button>
         </template>
