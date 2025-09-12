@@ -82,7 +82,7 @@ export const useRenderLayout = () => {
             {
               'w-[calc(100%-var(--left-menu-min-width))] left-[var(--left-menu-min-width)]':
                 collapse.value && !mobile.value && !mobile.value,
-              'w-[calc(100%-var(--left-menu-max-width))] left-[var(--left-menu-max-width)]':
+              'w-[calc(100%-var(--custom-left-menu-max-width))] left-[var(--custom-left-menu-max-width)]':
                 !collapse.value && !mobile.value && !mobile.value,
               'fixed !w-full !left-0': mobile.value
             }
@@ -94,14 +94,14 @@ export const useRenderLayout = () => {
             class={[
               `${prefixCls}-content-scrollbar`,
               {
-                '!h-[calc(100%-var(--top-tool-height))] mt-[calc(var(--top-tool-height))]':
+                '!h-[calc(100%-var(--tags-view-height))] mt-[calc(var(--tags-view-height))]':
                   fixedHeader.value
               }
             ]}
           >
             <div
               class={[
-                'h-[var(--top-tool-height)] flex items-center px-4',
+                'h-[var(--tags-view-height)] flex items-center px-4',
                 {
                   'fixed top-[var(--top-tool-height)] z-10': fixedHeader.value,
                   'w-[calc(100%-var(--left-menu-min-width))] left-[var(--left-menu-min-width)]':

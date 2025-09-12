@@ -2,6 +2,7 @@
   --login-bg-color: #293146;
 
   --left-menu-max-width: 200px;
+  --custom-left-menu-max-width: 208px;
 
   --left-menu-min-width: 64px;
 
@@ -47,6 +48,7 @@
   /* tab menu end */
 
   --app-content-padding: 20px;
+  --app-custom-content-padding: 20px;
 
   --app-content-bg-color: #f5f7f9;
 

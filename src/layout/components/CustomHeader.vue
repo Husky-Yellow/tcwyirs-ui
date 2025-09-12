@@ -53,7 +53,7 @@ export default defineComponent({
         class={[
           prefixCls,
           'h-[var(--top-tool-height)] relative px-[var(--top-tool-p-x)] flex items-center justify-between',
-          'dark:bg-[var(--el-bg-color)] opacity-60 bg-white'
+          'dark:bg-[var(--el-bg-color)] bg-white/60'
         ]}
       >
         <div class="h-full flex items-center">
