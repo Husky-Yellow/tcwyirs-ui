@@ -203,16 +203,16 @@ const queryFormRef = ref() // 搜索的表单
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
-  channelId: null,
-  templateId: null,
+  channelId: undefined,
+  templateId: undefined,
   mobile: '',
-  sendStatus: null,
-  receiveStatus: null,
+  sendStatus: undefined,
+  receiveStatus: undefined,
   sendTime: [],
   receiveTime: []
 })
 const exportLoading = ref(false) // 导出的加载中
-const channelList = ref([]) // 短信渠道列表
+const channelList = ref<any[]>([]) // 短信渠道列表
 
 /** 查询列表 */
 const getList = async () => {

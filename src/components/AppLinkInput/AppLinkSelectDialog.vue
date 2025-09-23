@@ -42,10 +42,10 @@
         </div>
       </el-scrollbar>
     </div>
-    <!-- 底部对话框操作按钮 -->
+    <!-- 底部对话框操作按�?-->
     <template #footer>
-      <el-button type="primary" @click="handleSubmit">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="handleSubmit">�?�?/el-button>
+      <el-button @click="dialogVisible = false">�?�?/el-button>
     </template>
   </Dialog>
   <Dialog v-model="detailSelectDialog.visible" title="" width="50%">
@@ -72,9 +72,9 @@ import { getUrlNumberValue } from '@/utils'
 
 // APP 链接选择弹框
 defineOptions({ name: 'AppLinkSelectDialog' })
-// 选中的分组，默认选中第一个
+// 选中的分组，默认选中第一�?
 const activeGroup = ref(APP_LINK_GROUP_LIST[0].name)
-// 选中的 APP 链接
+// 选中�?APP 链接
 const activeAppLink = ref({} as AppLink)
 
 /** 打开弹窗 */
@@ -94,7 +94,7 @@ const open = (link: string) => {
     })
   )
   if (group) {
-    // 使用 nextTick 的原因：可能 Dom 还没生成，导致滚动失败
+    // 使用 nextTick 的原因：可能 Dom 还没生成，导致滚动失�?
     nextTick(() => handleGroupSelected(group.name))
   }
 }
@@ -118,7 +118,7 @@ const handleAppLinkSelected = (appLink: AppLink) => {
   }
 }
 
-// 处理绑定值更新
+// 处理绑定值更�?
 const emit = defineEmits<{
   change: [link: string]
   appLinkChange: [appLink: AppLink]
@@ -130,19 +130,19 @@ const handleSubmit = () => {
 }
 
 // 分组标题引用列表
-const groupTitleRefs = ref<HTMLInputElement[]>([])
+const groupTitleRefs = ref<HTMLDivElement[]>([])
 /**
  * 处理右侧链接列表滚动
  * @param scrollTop 滚动条的位置
  */
 const handleScroll = ({ scrollTop }: { scrollTop: number }) => {
   const titleEl = groupTitleRefs.value.find((titleEl: HTMLInputElement) => {
-    // 获取标题的位置信息
+    // 获取标题的位置信�?
     const { offsetHeight, offsetTop } = titleEl
     // 判断标题是否在可视范围内
     return scrollTop >= offsetTop && scrollTop < offsetTop + offsetHeight
   })
-  // 只需处理一次
+  // 只需处理一�?
   if (titleEl && activeGroup.value !== titleEl.textContent) {
     activeGroup.value = titleEl.textContent || ''
     // 同步左侧的滚动条位置
@@ -150,7 +150,7 @@ const handleScroll = ({ scrollTop }: { scrollTop: number }) => {
   }
 }
 
-// 右侧滚动条
+// 右侧滚动�?
 const linkScrollbar = ref<ScrollbarInstance>()
 // 处理分组选中
 const handleGroupSelected = (group: string) => {
@@ -162,26 +162,26 @@ const handleGroupSelected = (group: string) => {
   }
 }
 
-// 分组滚动条
+// 分组滚动�?
 const groupScrollbar = ref<ScrollbarInstance>()
 // 分组引用列表
 const groupBtnRefs = ref<ButtonInstance[]>([])
-// 自动滚动分组按钮，确保分组按钮保持在可视区域内
+// 自动滚动分组按钮，确保分组按钮保持在可视区域�?
 const scrollToGroupBtn = (group: string) => {
   const groupBtn = groupBtnRefs.value
     .map((btn: ButtonInstance) => btn['ref'])
-    .find((ref: Node) => ref.textContent === group)
+    .find((ref: HTMLButtonElement | undefined) => ref?.textContent === group)
   if (groupBtn) {
     groupScrollbar.value?.setScrollTop(groupBtn.offsetTop)
   }
 }
 
-// 是否为相同的链接（不比较参数，只比较链接）
+// 是否为相同的链接（不比较参数，只比较链接�?
 const isSameLink = (link1: string, link2: string) => {
   return split(link1, '?', 1)[0] === split(link2, '?', 1)[0]
 }
 
-// 详情选择对话框
+// 详情选择对话�?
 const detailSelectDialog = ref<{
   visible: boolean
   id?: number
@@ -198,10 +198,11 @@ const handleProductCategorySelected = (id: number) => {
   url.searchParams.set('id', `${id}`)
   // 排除域名
   activeAppLink.value.path = `${url.pathname}${url.search}`
-  // 关闭对话框
+  // 关闭对话�?
   detailSelectDialog.value.visible = false
   // 重置 id
   detailSelectDialog.value.id = undefined
 }
 </script>
 <style lang="scss" scoped></style>
+

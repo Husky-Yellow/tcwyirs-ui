@@ -231,7 +231,7 @@ const rejectHandlerTypeEl = ref()
 const rejectHandlerType = ref()
 const returnNodeIdEl = ref()
 const returnNodeId = ref()
-const returnTaskList = ref([])
+const returnTaskList = ref<any[]>([])
 
 // 审批人为空时
 const assignEmptyHandlerTypeEl = ref()
@@ -244,7 +244,7 @@ const buttonsSettingEl = ref()
 const { btnDisplayNameEdit, changeBtnDisplayName, btnDisplayNameBlurEvent } = useButtonsSetting()
 
 // 字段权限
-const fieldsPermissionEl = ref([])
+const fieldsPermissionEl = ref<any[]>([])
 const { formType, fieldsPermissionConfig, getNodeConfigFormFields } = useFormFieldsPermission(
   FieldPermissionType.READ
 )

@@ -79,7 +79,7 @@
             v-model="resetPasswordData.password"
             :placeholder="t('login.passwordPlaceholder')"
             style="width: 100%"
-            strength="true"
+            :strength="true"
           />
         </el-form-item>
       </el-col>
@@ -89,7 +89,7 @@
             v-model="resetPasswordData.check_password"
             :placeholder="t('login.checkPassword')"
             style="width: 100%"
-            strength="true"
+            :strength="true"
           />
         </el-form-item>
       </el-col>

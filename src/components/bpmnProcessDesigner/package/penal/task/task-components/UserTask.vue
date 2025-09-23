@@ -228,7 +228,11 @@ const props = defineProps({
   type: String
 })
 const prefix = inject('prefix')
-const userTaskForm = ref({
+const userTaskForm = ref<{
+  candidateStrategy: any
+  candidateParam: any
+  skipExpression: string
+}>({
   candidateStrategy: undefined, // 分配规则
   candidateParam: [], // 分配选项
   skipExpression: '' // 跳过表达式
@@ -265,7 +269,7 @@ const deptLevelLabel = computed(() => {
   return label
 })
 
-const otherExtensions = ref()
+const otherExtensions = ref<any[]>([])
 
 const resetTaskForm = () => {
   const businessObject = bpmnElement.value.businessObject

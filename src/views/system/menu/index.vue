@@ -94,7 +94,7 @@ import { MenuVO } from '@/api/system/menu'
 import MenuForm from './MenuForm.vue'
 import DictTag from '@/components/DictTag/src/DictTag.vue'
 import { Icon } from '@/components/Icon'
-import { ElButton, TableV2FixedDir } from 'element-plus'
+import { ElButton, ElSwitch, TableV2FixedDir } from 'element-plus'
 import { checkPermi } from '@/utils/permission'
 import { CommonStatusEnum } from '@/utils/constants'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
@@ -175,7 +175,7 @@ const columns = [
     fixed: TableV2FixedDir.RIGHT,
     cellRenderer: ({ rowData }) => {
       // 定义按钮列表
-      const buttons = []
+      const buttons: any[] = []
 
       // 检查权限并添加按钮
       if (checkPermi(['system:menu:update'])) {
@@ -226,7 +226,7 @@ const queryParams = reactive({
 })
 const queryFormRef = ref() // 搜索的表单
 const isExpandAll = ref(false) // 是否展开，默认全部折叠
-const refreshTable = ref(true) // 重新渲染表格状态
+// const refreshTable = ref(true) // 重新渲染表格状态
 
 // 添加展开行控制
 const expandedRowKeys = ref<number[]>([])

@@ -18,7 +18,7 @@ const props = defineProps({
   }
 })
 
-const bpmnInstances = () => (window as any)?.bpmnInstances
+// const bpmnInstances = () => (window as any)?.bpmnInstances
 const customConfigComponent = ref<any>(null)
 
 watch(

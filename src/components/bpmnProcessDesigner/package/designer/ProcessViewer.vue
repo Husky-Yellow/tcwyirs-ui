@@ -173,7 +173,8 @@ const selectTasks = ref<any[]>([]) // 选中的任务数组
 /** Zoom：恢复 */
 const processReZoom = () => {
   defaultZoom.value = 1
-  bpmnViewer.value?.get('canvas').zoom('fit-viewport', 'auto')
+  const canvas = bpmnViewer.value?.get('canvas') as any
+  canvas?.zoom('fit-viewport', 'auto')
 }
 
 /** Zoom：放大 */
@@ -183,7 +184,8 @@ const processZoomIn = (zoomStep = 0.1) => {
     throw new Error('[Process Designer Warn ]: The zoom ratio cannot be greater than 4')
   }
   defaultZoom.value = newZoom
-  bpmnViewer.value?.get('canvas').zoom(defaultZoom.value)
+  const canvas = bpmnViewer.value?.get('canvas') as any
+  canvas?.zoom(defaultZoom.value)
 }
 
 /** Zoom：缩小 */
@@ -193,7 +195,8 @@ const processZoomOut = (zoomStep = 0.1) => {
     throw new Error('[Process Designer Warn ]: The zoom ratio cannot be less than 0.2')
   }
   defaultZoom.value = newZoom
-  bpmnViewer.value?.get('canvas').zoom(defaultZoom.value)
+  const canvas = bpmnViewer.value?.get('canvas') as any
+  canvas?.zoom(defaultZoom.value)
 }
 
 /** 流程图预览清空 */
@@ -213,9 +216,9 @@ const addCustomDefs = () => {
   if (!bpmnViewer.value) {
     return
   }
-  const canvas = bpmnViewer.value?.get('canvas')
+  const canvas = bpmnViewer.value?.get('canvas') as any
   const svg = canvas?._svg
-  svg.appendChild(customDefs.value)
+  svg?.appendChild(customDefs.value)
 }
 
 /** 节点选中 */
@@ -298,8 +301,8 @@ const setProcessStatus = (view: any) => {
     finishedSequenceFlowActivityIds,
     rejectedTaskActivityIds
   } = view
-  const canvas = bpmnViewer.value.get('canvas')
-  const elementRegistry = bpmnViewer.value.get('elementRegistry')
+  const canvas = bpmnViewer.value.get('canvas') as any
+  const elementRegistry = bpmnViewer.value.get('elementRegistry') as any
 
   // 已完成节点
   if (Array.isArray(finishedSequenceFlowActivityIds)) {
@@ -307,7 +310,7 @@ const setProcessStatus = (view: any) => {
       if (item != null) {
         canvas.addMarker(item, 'success')
         const element = elementRegistry.get(item)
-        const conditionExpression = element.businessObject.conditionExpression
+        const conditionExpression = element?.businessObject?.conditionExpression
         if (conditionExpression) {
           canvas.addMarker(item, 'condition-expression')
         }

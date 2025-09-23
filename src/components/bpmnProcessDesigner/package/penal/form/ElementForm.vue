@@ -235,7 +235,7 @@ const props = defineProps({
   type: String
 })
 const prefix = inject('prefix')
-const width = inject('width')
+// const width = inject('width')
 
 const formKey = ref(undefined)
 const businessKey = ref('')
@@ -299,6 +299,7 @@ const updateElementFormKey = () => {
     formKey: formKey.value
   })
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const updateElementBusinessKey = () => {
   bpmnInstances().modeling.updateModdleProperties(toRaw(bpmnELement.value), formData.value, {
     businessKey: businessKey.value
@@ -459,10 +460,12 @@ const updateElementExtensions = () => {
   })
 }
 
-const formList = ref([]) // 流程表单的下拉框的数据
+const formList = ref<any[]>([]) // 流程表单的下拉框的数据
 onMounted(async () => {
   formList.value = await FormApi.getFormSimpleList()
-  formKey.value = parseInt(formKey.value)
+  if (formKey.value) {
+    formKey.value = parseInt(formKey.value as string)
+  }
 })
 
 watch(

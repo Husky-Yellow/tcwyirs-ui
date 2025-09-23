@@ -308,7 +308,7 @@ const approveMethod = ref()
 const approveRatio = ref(100)
 const otherExtensions = ref()
 const getElementLoopNew = () => {
-  if (props.type === 'UserTask') {
+  if (props.type === 'UserTask' && bpmnElement.value) {
     const extensionElements =
       bpmnElement.value.businessObject?.extensionElements ??
       bpmnInstances().moddle.create('bpmn:ExtensionElements', { values: [] })
@@ -344,42 +344,50 @@ const updateLoopCharacteristics = () => {
         'bpmn:MultiInstanceLoopCharacteristics',
         { isSequential: false, collection: '${coll_userList}' }
       )
-      multiLoopInstance.value.completionCondition = bpmnInstances().moddle.create(
-        'bpmn:FormalExpression',
-        {
-          body: '${ nrOfCompletedInstances/nrOfInstances >= ' + approveRatio.value / 100 + '}'
-        }
-      )
+      if (multiLoopInstance.value) {
+        multiLoopInstance.value.completionCondition = bpmnInstances().moddle.create(
+          'bpmn:FormalExpression',
+          {
+            body: '${ nrOfCompletedInstances/nrOfInstances >= ' + approveRatio.value / 100 + '}'
+          }
+        )
+      }
     }
     if (approveMethod.value === ApproveMethodType.ANY_APPROVE) {
       multiLoopInstance.value = bpmnInstances().moddle.create(
         'bpmn:MultiInstanceLoopCharacteristics',
         { isSequential: false, collection: '${coll_userList}' }
       )
-      multiLoopInstance.value.completionCondition = bpmnInstances().moddle.create(
-        'bpmn:FormalExpression',
-        {
-          body: '${ nrOfCompletedInstances > 0 }'
-        }
-      )
+      if (multiLoopInstance.value) {
+        multiLoopInstance.value.completionCondition = bpmnInstances().moddle.create(
+          'bpmn:FormalExpression',
+          {
+            body: '${ nrOfCompletedInstances > 0 }'
+          }
+        )
+      }
     }
     if (approveMethod.value === ApproveMethodType.SEQUENTIAL_APPROVE) {
       multiLoopInstance.value = bpmnInstances().moddle.create(
         'bpmn:MultiInstanceLoopCharacteristics',
         { isSequential: true, collection: '${coll_userList}' }
       )
-      multiLoopInstance.value.loopCardinality = bpmnInstances().moddle.create(
-        'bpmn:FormalExpression',
-        {
-          body: '1'
-        }
-      )
-      multiLoopInstance.value.completionCondition = bpmnInstances().moddle.create(
-        'bpmn:FormalExpression',
-        {
-          body: '${ nrOfCompletedInstances >= nrOfInstances }'
-        }
-      )
+      if (multiLoopInstance.value) {
+        multiLoopInstance.value.loopCardinality = bpmnInstances().moddle.create(
+          'bpmn:FormalExpression',
+          {
+            body: '1'
+          }
+        )
+      }
+      if (multiLoopInstance.value) {
+        multiLoopInstance.value.completionCondition = bpmnInstances().moddle.create(
+          'bpmn:FormalExpression',
+          {
+            body: '${ nrOfCompletedInstances >= nrOfInstances }'
+          }
+        )
+      }
     }
     bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
       loopCharacteristics: toRaw(multiLoopInstance.value)

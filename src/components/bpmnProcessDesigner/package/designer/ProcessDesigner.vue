@@ -412,6 +412,8 @@ const initBpmnModeler = () => {
   console.log(additionalModules, 'additionalModules()')
   console.log(moddleExtensions, 'moddleExtensions()')
 
+  if (!data) return
+
   bpmnModeler = new BpmnModeler({
     // container: this.$refs['bpmn-canvas'],
     // container: getCurrentInstance(),
@@ -425,7 +427,7 @@ const initBpmnModeler = () => {
     // },
     keyboard: props.keyboard ? { bindTo: document } : null,
     // additionalModules: additionalModules.value,
-    additionalModules: additionalModules.value,
+    additionalModules: Array.isArray(additionalModules.value) ? additionalModules.value : [],
     moddleExtensions: moddleExtensions.value
 
     // additionalModules: [
