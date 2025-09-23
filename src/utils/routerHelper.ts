@@ -1,7 +1,7 @@
 import type { RouteLocationNormalized, Router, RouteRecordNormalized } from 'vue-router'
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { isUrl } from '@/utils/is'
-import { cloneDeep, omit } from 'lodash-es'
+import { cloneDeep, omit } from 'es-toolkit'
 import qs from 'qs'
 
 const modules = import.meta.glob('../views/**/*.{vue,tsx}')

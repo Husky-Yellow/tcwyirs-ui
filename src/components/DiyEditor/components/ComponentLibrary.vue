@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 import { componentConfigs } from '../components/mobile/index'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 import { DiyComponent, DiyComponentLibrary } from '@/components/DiyEditor/util'
 
 /** 组件库：目前左侧的【基础组件】、【图文组件】部分 */

@@ -57,7 +57,7 @@ import VueDraggable from 'vuedraggable'
 import { useVModel } from '@vueuse/core'
 import { any, array } from 'vue-types'
 import { propTypes } from '@/utils/propTypes'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 
 // 拖拽组件封装
 defineOptions({ name: 'Draggable' })

@@ -47,7 +47,7 @@ import { SimpleFlowNode, ConditionType } from '../consts'
 import { getDefaultConditionNodeName } from '../utils'
 import { useFormFieldsAndStartUser, getConditionShowText } from '../node'
 import Condition from './components/Condition.vue'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 
 defineOptions({
   name: 'ConditionNodeConfig'

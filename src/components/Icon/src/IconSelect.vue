@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 import { IconJson } from '@/components/Icon/src/data'
 
 defineOptions({ name: 'IconSelect' })

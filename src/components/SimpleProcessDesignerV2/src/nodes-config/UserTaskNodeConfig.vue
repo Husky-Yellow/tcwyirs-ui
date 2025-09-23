@@ -555,7 +555,7 @@ import {
   useDrawer
 } from '../node'
 import { defaultProps } from '@/utils/tree'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 import { convertTimeUnit, getApproveTypeText } from '../utils'
 import UserTaskListener from './components/UserTaskListener.vue'
 defineOptions({

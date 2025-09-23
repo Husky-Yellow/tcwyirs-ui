@@ -14,7 +14,7 @@ const include = [
   'vue-i18n',
   'crypto-js',
   'cropperjs',
-  'lodash-es',
+  'es-toolkit',
   'nprogress',
   'web-storage-cache',
   '@iconify/iconify',

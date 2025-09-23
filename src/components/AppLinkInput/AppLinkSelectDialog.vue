@@ -66,7 +66,7 @@
 <script lang="ts" setup>
 import { APP_LINK_GROUP_LIST, APP_LINK_TYPE_ENUM, AppLink } from './data'
 import { ButtonInstance, ScrollbarInstance } from 'element-plus'
-import { split } from 'lodash-es'
+import { split } from 'es-toolkit/compat'
 import ProductCategorySelect from '@/views/mall/product/category/components/ProductCategorySelect.vue'
 import { getUrlNumberValue } from '@/utils'
 

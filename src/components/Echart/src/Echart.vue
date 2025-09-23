@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { EChartsOption } from 'echarts'
 import echarts from '@/plugins/echarts'
-import { debounce } from 'lodash-es'
+import { debounce } from 'es-toolkit'
 import 'echarts-wordcloud'
 import { propTypes } from '@/utils/propTypes'
 import { PropType } from 'vue'

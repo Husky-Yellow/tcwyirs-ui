@@ -91,7 +91,7 @@ import {
   DEFAULT_CONDITION_GROUP_VALUE
 } from './consts'
 import { generateUUID } from '@/utils'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 
 defineOptions({
   name: 'NodeHandler'

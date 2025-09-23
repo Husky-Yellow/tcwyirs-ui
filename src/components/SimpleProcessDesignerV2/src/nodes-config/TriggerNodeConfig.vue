@@ -254,7 +254,7 @@ import {
 import { useWatchNode, useDrawer, useNodeName, useFormFields, getConditionShowText } from '../node'
 import HttpRequestSetting from './components/HttpRequestSetting.vue'
 import ConditionDialog from './components/ConditionDialog.vue'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 const { proxy } = getCurrentInstance() as any
 
 defineOptions({

@@ -181,7 +181,7 @@
   </el-row>
 </template>
 <script lang="ts" setup>
-import { set } from 'lodash-es'
+import { set } from 'es-toolkit/compat'
 import { EChartsOption } from 'echarts'
 import { formatTime } from '@/utils'
 

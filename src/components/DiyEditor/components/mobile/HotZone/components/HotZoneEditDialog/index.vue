@@ -55,7 +55,7 @@ import {
   zoomOut
 } from './controller'
 import { AppLink } from '@/components/AppLinkInput/data'
-import { remove } from 'lodash-es'
+import { remove } from 'es-toolkit'
 
 /** 热区编辑对话框 */
 defineOptions({ name: 'HotZoneEditDialog' })

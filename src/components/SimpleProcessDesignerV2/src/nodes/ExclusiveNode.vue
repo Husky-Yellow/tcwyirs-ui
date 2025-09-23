@@ -119,7 +119,7 @@ import { getDefaultConditionNodeName } from '../utils'
 import { useTaskStatusClass } from '../node'
 import { generateUUID } from '@/utils'
 import ConditionNodeConfig from '../nodes-config/ConditionNodeConfig.vue'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 const { proxy } = getCurrentInstance() as any
 defineOptions({
   name: 'ExclusiveNode'

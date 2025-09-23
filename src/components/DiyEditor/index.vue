@@ -187,7 +187,8 @@ export default {
 <script lang="ts" setup>
 import draggable from 'vuedraggable'
 import ComponentLibrary from './components/ComponentLibrary.vue'
-import { cloneDeep, includes } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
+import { includes } from 'es-toolkit/compat'
 import { component as PAGE_CONFIG_COMPONENT } from '@/components/DiyEditor/components/mobile/PageConfig/config'
 import { component as NAVIGATION_BAR_COMPONENT } from './components/mobile/NavigationBar/config'
 import { component as TAB_BAR_COMPONENT } from './components/mobile/TabBar/config'

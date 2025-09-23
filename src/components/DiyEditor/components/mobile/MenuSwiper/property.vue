@@ -63,7 +63,7 @@ import {
   EMPTY_MENU_SWIPER_ITEM_PROPERTY,
   MenuSwiperProperty
 } from '@/components/DiyEditor/components/mobile/MenuSwiper/config'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 
 /** 菜单导航属性面板 */
 defineOptions({ name: 'MenuSwiperProperty' })

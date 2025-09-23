@@ -33,7 +33,7 @@
 </template>
 <script lang="ts" setup>
 import { propTypes } from '@/utils/propTypes'
-import { toNumber } from 'lodash-es'
+import { toNumber } from 'es-toolkit/compat'
 
 /** 统计卡片 */
 defineOptions({ name: 'SummaryCard' })

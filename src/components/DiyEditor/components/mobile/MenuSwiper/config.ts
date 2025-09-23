@@ -1,5 +1,5 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 
 /** 菜单导航属性 */
 export interface MenuSwiperProperty {

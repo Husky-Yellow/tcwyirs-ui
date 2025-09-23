@@ -96,7 +96,7 @@ import * as DefinitionApi from '@/api/bpm/definition'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'
 import { CategoryApi, CategoryVO } from '@/api/bpm/category'
 import ProcessDefinitionDetail from './ProcessDefinitionDetail.vue'
-import { groupBy } from 'lodash-es'
+import { groupBy } from 'es-toolkit'
 import { subString } from '@/utils/index'
 
 defineOptions({ name: 'BpmProcessInstanceCreate' })

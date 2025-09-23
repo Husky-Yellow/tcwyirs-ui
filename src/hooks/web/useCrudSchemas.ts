@@ -9,7 +9,7 @@ import { TableColumn } from '@/types/table'
 import { DescriptionsSchema } from '@/types/descriptions'
 import { ComponentOptions, ComponentProps } from '@/types/components'
 import { DictTag } from '@/components/DictTag'
-import { cloneDeep, merge } from 'lodash-es'
+import { cloneDeep, merge } from 'es-toolkit'
 
 export type CrudSchema = Omit<TableColumn, 'children'> & {
   isSearch?: boolean // 是否在查询显示

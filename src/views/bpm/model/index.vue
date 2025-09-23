@@ -98,7 +98,7 @@ import draggable from 'vuedraggable'
 import { CategoryApi } from '@/api/bpm/category'
 import * as ModelApi from '@/api/bpm/model'
 import CategoryForm from '../category/CategoryForm.vue'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 import CategoryDraggableModel from './CategoryDraggableModel.vue'
 
 defineOptions({ name: 'BpmModel' })

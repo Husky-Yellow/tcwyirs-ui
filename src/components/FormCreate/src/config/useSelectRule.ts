@@ -2,7 +2,7 @@ import { generateUUID } from '@/utils'
 import { localeProps, makeRequiredRule } from '@/components/FormCreate/src/utils'
 import { selectRule } from '@/components/FormCreate/src/config/selectRule'
 import { SelectRuleOption } from '@/components/FormCreate/src/type'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 
 /**
  * 通用选择器规则 hook
