@@ -1,6 +1,5 @@
 // @ts-check
-const { defineConfig } = require('eslint-define-config')
-module.exports = defineConfig({
+module.exports = {
   root: true,
   env: {
     browser: true,
@@ -72,4 +71,4 @@ module.exports = defineConfig({
     '@unocss/order': 'off', // 芋艿：禁用 unocss 【css】顺序的提示，因为暂时不需要这么严格，警告也有点繁琐
     '@unocss/order-attributify': 'off' // 芋艿：禁用 unocss 【属性】顺序的提示，因为暂时不需要这么严格，警告也有点繁琐
   }
-})
+}

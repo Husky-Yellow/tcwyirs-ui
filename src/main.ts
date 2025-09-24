@@ -42,8 +42,8 @@ import Logger from '@/utils/Logger'
 
 import VueDOMPurifyHTML from 'vue-dompurify-html' // 解决v-html 的安全隐患
 
-// import { mockXHR } from './mock'
-// mockXHR()
+import { mockXHR } from './mock'
+mockXHR()
 // 创建实例
 const setupAll = async () => {
   const app = createApp(App)
