@@ -1,162 +1,86 @@
 <template>
   <el-form
-    v-show="getShow"
+    v-show="isVisible"
     ref="formLogin"
-    :model="loginData.loginForm"
+    :model="form"
     :rules="LoginRules"
-    class="login-form"
-    label-position="top"
-    label-width="120px"
+    class="space-y-4 w-full"
     size="large"
   >
-    <el-row style="margin-right: -10px; margin-left: -10px">
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item>
-          <LoginFormTitle style="width: 100%" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item v-if="loginData.tenantEnable === 'true'" prop="tenantName">
-          <el-input
-            v-model="loginData.loginForm.tenantName"
-            :placeholder="t('login.tenantNamePlaceholder')"
-            :prefix-icon="iconHouse"
-            link
-            type="primary"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item prop="username">
-          <el-input
-            v-model="loginData.loginForm.username"
-            :placeholder="t('login.usernamePlaceholder')"
-            :prefix-icon="iconAvatar"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item prop="password">
-          <el-input
-            v-model="loginData.loginForm.password"
-            :placeholder="t('login.passwordPlaceholder')"
-            :prefix-icon="iconLock"
-            show-password
-            type="password"
-            @keyup.enter="getCode()"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="24"
-        style="padding-right: 10px; padding-left: 10px; margin-top: -20px; margin-bottom: -20px"
-      >
-        <el-form-item>
-          <el-row justify="space-between" style="width: 100%">
-            <el-col :span="6">
-              <el-checkbox v-model="loginData.loginForm.rememberMe">
-                {{ t('login.remember') }}
-              </el-checkbox>
-            </el-col>
-            <el-col :offset="6" :span="12">
-              <el-link
-                style="float: right"
-                type="primary"
-                @click="setLoginState(LoginStateEnum.RESET_PASSWORD)"
-              >
-                {{ t('login.forgetPassword') }}
-              </el-link>
-            </el-col>
-          </el-row>
-        </el-form-item>
-      </el-col>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item>
-          <XButton
-            :loading="loginLoading"
-            :title="t('login.login')"
-            class="w-[100%]"
-            type="primary"
-            @click="getCode()"
-          />
-        </el-form-item>
-      </el-col>
-      <Verify
-        v-if="loginData.captchaEnable === 'true'"
-        ref="verify"
-        :captchaType="captchaType"
-        :imgSize="{ width: '400px', height: '200px' }"
-        mode="pop"
-        @success="handleLogin"
+    <LoginFormTitle />
+
+    <el-form-item v-if="isTenantEnabled" prop="tenantName">
+      <el-input
+        v-model="form.tenantName"
+        placeholder="请输入租户名称"
+        :prefix-icon="icons.house"
       />
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item>
-          <el-row :gutter="5" justify="space-between" style="width: 100%">
-            <el-col :span="8">
-              <XButton
-                :title="t('login.btnMobile')"
-                class="w-[100%]"
-                @click="setLoginState(LoginStateEnum.MOBILE)"
-              />
-            </el-col>
-            <el-col :span="8">
-              <XButton
-                :title="t('login.btnQRCode')"
-                class="w-[100%]"
-                @click="setLoginState(LoginStateEnum.QR_CODE)"
-              />
-            </el-col>
-            <el-col :span="8">
-              <XButton
-                :title="t('login.btnRegister')"
-                class="w-[100%]"
-                @click="setLoginState(LoginStateEnum.REGISTER)"
-              />
-            </el-col>
-          </el-row>
-        </el-form-item>
-      </el-col>
-      <el-divider content-position="center">{{ t('login.otherLogin') }}</el-divider>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item>
-          <div class="w-[100%] flex justify-between">
-            <Icon
-              v-for="(item, key) in socialList"
-              :key="key"
-              :icon="item.icon"
-              :size="30"
-              class="anticon cursor-pointer"
-              color="#999"
-              @click="doSocialLogin(item.type)"
-            />
-          </div>
-        </el-form-item>
-      </el-col>
-      <el-divider content-position="center">萌新必读</el-divider>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item>
-          <div class="w-[100%] flex justify-between">
-            <el-link href="https://doc.iocoder.cn/" target="_blank">📚开发指南</el-link>
-            <el-link href="https://doc.iocoder.cn/video/" target="_blank">🔥视频教程</el-link>
-            <el-link href="https://www.iocoder.cn/Interview/good-collection/" target="_blank">
-              ⚡面试手册
-            </el-link>
-            <el-link href="http://static.yudao.iocoder.cn/mp/Aix9975.jpeg" target="_blank">
-              🤝外包咨询
-            </el-link>
-          </div>
-        </el-form-item>
-      </el-col>
-    </el-row>
+    </el-form-item>
+
+    <el-form-item prop="username">
+      <el-input
+        v-model="form.username"
+        placeholder="请输入用户名"
+        :prefix-icon="icons.avatar"
+      />
+    </el-form-item>
+
+    <el-form-item prop="password">
+      <el-input
+        v-model="form.password"
+        placeholder="请输入密码"
+        :prefix-icon="icons.lock"
+        type="password"
+        show-password
+        @keyup.enter="handleSubmit"
+      />
+    </el-form-item>
+
+    <div class="flex justify-between items-center">
+      <el-checkbox v-model="form.rememberMe">
+        记住我
+      </el-checkbox>
+      <el-link type="primary" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
+        忘记密码
+      </el-link>
+    </div>
+
+    <el-button
+      :loading="loginLoading"
+      type="primary"
+      size="large"
+      class="w-full"
+      @click="handleSubmit"
+    >
+      登录
+    </el-button>
+
+    <Verify
+      v-if="isCaptchaEnabled"
+      ref="verify"
+      captchaType="blockPuzzle"
+      :imgSize="{ width: '400px', height: '200px' }"
+      mode="pop"
+      @success="login"
+    />
   </el-form>
 </template>
+
 <script lang="ts" setup>
-import { ElLoading } from 'element-plus'
+import { ref, reactive, computed, unref } from 'vue'
+import { useRouter } from 'vue-router'
+import {
+  useToggle,
+  useLocalStorage,
+  watchDebounced,
+  useUrlSearchParams,
+  tryOnMounted,
+  useEventListener
+} from '@vueuse/core'
+import { ElLoading, ElMessage, type FormInstance } from 'element-plus'
+import { Verify } from '@/components/Verifition'
 import LoginFormTitle from './LoginFormTitle.vue'
-import type { RouteLocationNormalizedLoaded } from 'vue-router'
-
 import { useIcon } from '@/hooks/web/useIcon'
-
 import * as authUtil from '@/utils/auth'
 import { usePermissionStore } from '@/store/modules/permission'
 import * as LoginApi from '@/api/login'
@@ -164,198 +88,139 @@ import { LoginStateEnum, useFormValid, useLoginState } from './useLogin'
 
 defineOptions({ name: 'LoginForm' })
 
-const { t } = useI18n()
-const message = useMessage()
-const iconHouse = useIcon({ icon: 'ep:house' })
-const iconAvatar = useIcon({ icon: 'ep:avatar' })
-const iconLock = useIcon({ icon: 'ep:lock' })
-const formLogin = ref()
-const { validForm } = useFormValid(formLogin)
-const { setLoginState, getLoginState } = useLoginState()
-const { currentRoute, push } = useRouter()
+const router = useRouter()
 const permissionStore = usePermissionStore()
-const redirect = ref<string>('')
-const loginLoading = ref(false)
-const verify = ref()
-const captchaType = ref('blockPuzzle') // blockPuzzle 滑块 clickWord 点击文字
+const { validForm } = useFormValid(ref<FormInstance>())
+const { setLoginState, getLoginState } = useLoginState()
 
-const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
+const formLogin = ref<FormInstance>()
+const verify = ref<InstanceType<typeof Verify>>()
+const [loginLoading, toggleLoginLoading] = useToggle(false)
+const rememberMe = useLocalStorage('tcwyirs-remember-me', false)
+const redirect = computed(() => (useUrlSearchParams('history').redirect as string) || '/')
+
+const icons = {
+  house: useIcon({ icon: 'ep:house' }),
+  avatar: useIcon({ icon: 'ep:avatar' }),
+  lock: useIcon({ icon: 'ep:lock' })
+}
+
+const isVisible = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
+const isCaptchaEnabled = computed(() => import.meta.env.VITE_APP_CAPTCHA_ENABLE !== 'false')
+const isTenantEnabled = computed(() => import.meta.env.VITE_APP_TENANT_ENABLE !== 'false')
 
 const LoginRules = {
-  tenantName: [required],
-  username: [required],
-  password: [required]
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 }
-const loginData = reactive({
-  isShowPassword: false,
-  captchaEnable: import.meta.env.VITE_APP_CAPTCHA_ENABLE,
-  tenantEnable: import.meta.env.VITE_APP_TENANT_ENABLE,
-  loginForm: {
-    tenantName: import.meta.env.VITE_APP_DEFAULT_LOGIN_TENANT || '',
-    username: import.meta.env.VITE_APP_DEFAULT_LOGIN_USERNAME || '',
-    password: import.meta.env.VITE_APP_DEFAULT_LOGIN_PASSWORD || '',
-    captchaVerification: '',
-    rememberMe: true // 默认记录我。如果不需要，可手动修改
-  }
+
+const form = reactive({
+  tenantName: import.meta.env.VITE_APP_DEFAULT_LOGIN_TENANT || '',
+  username: import.meta.env.VITE_APP_DEFAULT_LOGIN_USERNAME || '',
+  password: import.meta.env.VITE_APP_DEFAULT_LOGIN_PASSWORD || '',
+  captchaVerification: '',
+  rememberMe: rememberMe.value
 })
 
-const socialList = [
-  { icon: 'ant-design:wechat-filled', type: 30 },
-  { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
-  { icon: 'ant-design:github-filled', type: 0 },
-  { icon: 'ant-design:alipay-circle-filled', type: 0 }
-]
-
-// 获取验证码
-const getCode = async () => {
-  // 情况一，未开启：则直接登录
-  if (loginData.captchaEnable === 'false') {
-    await handleLogin({})
+const handleSubmit = async () => {
+  if (!isCaptchaEnabled.value) {
+    await login({})
   } else {
-    // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行登录
-    // 弹出验证码
-    verify.value.show()
+    verify.value?.show()
   }
 }
-// 获取租户 ID
-const getTenantId = async () => {
-  if (loginData.tenantEnable === 'true') {
-    const res = await LoginApi.getTenantIdByName(loginData.loginForm.tenantName)
-    authUtil.setTenantId(res)
+
+let timeoutId: number | null = null
+const startLoginTimeout = () => {
+  timeoutId = window.setTimeout(() => {
+    toggleLoginLoading(false)
+    ElMessage.error('登录超时，请重试')
+  }, 30000)
+}
+const stopLoginTimeout = () => {
+  if (timeoutId) {
+    clearTimeout(timeoutId)
+    timeoutId = null
   }
 }
-// 记住我
-const getLoginFormCache = () => {
-  const loginForm = authUtil.getLoginForm()
-  if (loginForm) {
-    loginData.loginForm = {
-      ...loginData.loginForm,
-      username: loginForm.username ? loginForm.username : loginData.loginForm.username,
-      password: loginForm.password ? loginForm.password : loginData.loginForm.password,
-      rememberMe: loginForm.rememberMe,
-      tenantName: loginForm.tenantName ? loginForm.tenantName : loginData.loginForm.tenantName
+
+const setTenantId = async () => {
+  if (isTenantEnabled.value && form.tenantName) {
+    try {
+      const res = await LoginApi.getTenantIdByName(form.tenantName)
+      authUtil.setTenantId(res)
+    } catch (error) {
+      console.error('获取租户ID失败:', error)
     }
   }
 }
-// 根据域名，获得租户信息
-const getTenantByWebsite = async () => {
-  const website = location.host
-  const res = await LoginApi.getTenantByWebsite(website)
-  if (res) {
-    loginData.loginForm.tenantName = res.name
-    authUtil.setTenantId(res.id)
-  }
+
+const loadCache = async () => {
+  const cached = authUtil.getLoginForm()
+  if (cached) Object.assign(form, cached)
 }
-const loading = ref() // ElLoading.service 返回的实例
-// 登录
-const handleLogin = async (params: any) => {
-  loginLoading.value = true
+
+const loadTenantByWebsite = async () => {
   try {
-    await getTenantId()
-    const data = await validForm()
-    if (!data) {
-      return
+    const res = await LoginApi.getTenantByWebsite(location.host)
+    if (res?.name && res?.id) {
+      form.tenantName = res.name
+      authUtil.setTenantId(res.id)
     }
-    const loginDataLoginForm = { ...loginData.loginForm }
-    loginDataLoginForm.captchaVerification = params.captchaVerification
-    const res = await LoginApi.login(loginDataLoginForm)
-    if (!res) {
-      return
-    }
-    loading.value = ElLoading.service({
-      lock: true,
-      text: '正在加载系统中...',
-      background: 'rgba(0, 0, 0, 0.7)'
-    })
-    if (loginDataLoginForm.rememberMe) {
-      authUtil.setLoginForm(loginDataLoginForm)
-    } else {
-      authUtil.removeLoginForm()
-    }
-    authUtil.setToken(res)
-    if (!redirect.value) {
-      redirect.value = '/'
-    }
-    // 判断是否为SSO登录
-    if (redirect.value.indexOf('sso') !== -1) {
-      window.location.href = window.location.href.replace('/login?redirect=', '')
-    } else {
-      await push({ path: redirect.value || permissionStore.addRouters[0].path })
-    }
+  } catch (error) {
+    console.error('根据域名获取租户信息失败:', error)
+  }
+}
+
+const login = async (params: { captchaVerification?: string } = {}) => {
+  toggleLoginLoading(true)
+  startLoginTimeout()
+  const loadingInstance = ElLoading.service({ lock: true, text: '正在加载系统中...' })
+
+  try {
+    await setTenantId()
+    if (!(await validForm())) return
+
+    const loginData = { ...form, captchaVerification: params.captchaVerification || '' }
+    const token = await LoginApi.login(loginData)
+    if (!token) return
+
+    loginData.rememberMe ? authUtil.setLoginForm(loginData) : authUtil.removeLoginForm()
+    authUtil.setToken(token)
+
+    const path = redirect.value.includes('sso')
+      ? window.location.href.replace('/login?redirect=', '')
+      : redirect.value || permissionStore.addRouters[0]?.path || '/'
+
+    redirect.value.includes('sso')
+      ? (window.location.href = path)
+      : await router.push({ path })
+
   } finally {
-    loginLoading.value = false
-    loading.value.close()
+    toggleLoginLoading(false)
+    stopLoginTimeout()
+    loadingInstance.close()
   }
 }
 
-// 社交登录
-const doSocialLogin = async (type: number) => {
-  if (type === 0) {
-    message.error('此方式未配置')
-  } else {
-    loginLoading.value = true
-    if (loginData.tenantEnable === 'true') {
-      // 尝试先通过 tenantName 获取租户
-      await getTenantId()
-      // 如果获取不到，则需要弹出提示，进行处理
-      if (!authUtil.getTenantId()) {
-        try {
-          const data = await message.prompt('请输入租户名称', t('common.reminder'))
-          if (data?.action !== 'confirm') throw 'cancel'
-          const res = await LoginApi.getTenantIdByName(data.value)
-          authUtil.setTenantId(res)
-        } catch (error) {
-          if (error === 'cancel') return
-        } finally {
-          loginLoading.value = false
-        }
-      }
-    }
-    // 计算 redirectUri
-    // 注意: type、redirect 需要先 encode 一次，否则钉钉回调会丢失。
-    // 配合 social-login.vue#getUrlValue() 使用
-    const redirectUri =
-      location.origin +
-      '/social-login?' +
-      encodeURIComponent(`type=${type}&redirect=${redirect.value || '/'}`)
+watchDebounced(() => form.rememberMe, (value) => {
+  rememberMe.value = value
+}, { debounce: 300 })
 
-    // 进行跳转
-    window.location.href = await LoginApi.socialAuthRedirect(type, encodeURIComponent(redirectUri))
+useEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Enter' && isVisible.value) {
+    e.preventDefault()
+    handleSubmit()
   }
-}
-watch(
-  () => currentRoute.value,
-  (route: RouteLocationNormalizedLoaded) => {
-    redirect.value = route?.query?.redirect as string
-  },
-  {
-    immediate: true
-  }
-)
-onMounted(() => {
-  getLoginFormCache()
-  getTenantByWebsite()
 })
+
+tryOnMounted(() => Promise.all([loadCache(), loadTenantByWebsite()]))
 </script>
 
 <style lang="scss" scoped>
 :deep(.anticon) {
   &:hover {
     color: var(--el-color-primary) !important;
-  }
-}
-
-.login-code {
-  float: right;
-  width: 100%;
-  height: 38px;
-
-  img {
-    width: 100%;
-    height: auto;
-    max-width: 100px;
-    vertical-align: middle;
-    cursor: pointer;
   }
 }
 </style>

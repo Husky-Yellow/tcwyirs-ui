@@ -36,11 +36,11 @@ const remainingRouter: AppRouteRecordRaw[] = [
   {
     path: '/redirect',
     component: Layout,
-    name: 'Redirect',
+    name: 'RedirectLayout',
     children: [
       {
         path: '/redirect/:path(.*)',
-        name: 'Redirect',
+        name: 'RedirectRoute',
         component: () => import('@/views/Redirect/Redirect.vue'),
         meta: {}
       }
@@ -193,16 +193,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
     meta: {
       hidden: true,
       title: t('router.login'),
-      noTagsView: true
-    }
-  },
-  {
-    path: '/social-login',
-    component: () => import('@/views/Login/SocialLogin.vue'),
-    name: 'SocialLogin',
-    meta: {
-      hidden: true,
-      title: t('router.socialLogin'),
       noTagsView: true
     }
   },

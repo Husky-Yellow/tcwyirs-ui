@@ -41,12 +41,11 @@
 
 # Uncomment the block below and adjust paths if you want a ready-to-run setup.
 #
-# projectDir = "C:\\Users\\admin\\Company\\code\\tcwyirs-ui"
-# port = 3480
-# autoStartDashboard = false
-# dashboardOnly = false
-# lang = "zh-CN"
+projectDir = "./"  # 指向项目根目录
+port = 3456
+autoStartDashboard = true
+lang = "zh"
 
 
 
-#
+
