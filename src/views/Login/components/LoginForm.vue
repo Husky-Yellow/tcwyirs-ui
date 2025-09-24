@@ -90,10 +90,11 @@ defineOptions({ name: 'LoginForm' })
 
 const router = useRouter()
 const permissionStore = usePermissionStore()
-const { validForm } = useFormValid(ref<FormInstance>())
+
 const { setLoginState, getLoginState } = useLoginState()
 
 const formLogin = ref<FormInstance>()
+const { validForm } = useFormValid(formLogin)
 const verify = ref<InstanceType<typeof Verify>>()
 const [loginLoading, toggleLoginLoading] = useToggle(false)
 const rememberMe = useLocalStorage('tcwyirs-remember-me', false)

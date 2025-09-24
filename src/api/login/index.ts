@@ -68,7 +68,9 @@ export const socialAuthRedirect = (type: number, redirectUri: string) => {
   return request.get({
     url: '/system/auth/social-auth-redirect?type=' + type + '&redirectUri=' + redirectUri
   })
-export const getCode = () => Promise.reject(new Error('oldApi 已废弃，不可用'));
+}
+
+export const getCode = (data: any) => {
   return request.postOriginal({ url: 'system/captcha/get', data })
 }
 
