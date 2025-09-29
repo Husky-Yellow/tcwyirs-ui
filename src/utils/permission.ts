@@ -1,8 +1,5 @@
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
-import {hasPermission} from "@/directives/permission/hasPermi";
-
-
-const { t } = useI18n() // 国际化
+import { hasPermission } from '@/directives/permission/hasPermi'
 
 /**
  * 字符权限校验
@@ -30,7 +27,7 @@ export function checkRole(value: string[]) {
     })
     return !!hasRole
   } else {
-    console.error(t('permission.hasRole'))
+    console.error('请设置角色权限标签值')
     return false
   }
 }

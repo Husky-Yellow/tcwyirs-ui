@@ -102,7 +102,7 @@
       </div>
       <div v-if="modelData.startUserType === 2" class="mt-2 flex flex-wrap gap-2">
         <div
-          v-for="dept in selectedStartDepts" 
+          v-for="dept in selectedStartDepts"
           :key="dept.id"
           class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
         >

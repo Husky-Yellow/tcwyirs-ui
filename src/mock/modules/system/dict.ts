@@ -95,31 +95,25 @@ const mockConfigs: MockConfig[] = [
     url: '/admin-api/system/dict-data/page',
     type: 'get',
     response: ({ query }): ApiResponse<PageResponse<DictData>> => {
-      const {
-        pageNo = 1,
-        pageSize = 10,
-        dictType,
-        label,
-        status
-      } = query
+      const { pageNo = 1, pageSize = 10, dictType, label, status } = query
 
       let filteredData = mockDictData
 
       // 按字典类型过滤
       if (dictType) {
-        filteredData = filteredData.filter(item => item.dictType === dictType)
+        filteredData = filteredData.filter((item) => item.dictType === dictType)
       }
 
       // 按标签过滤
       if (label) {
-        filteredData = filteredData.filter(item =>
+        filteredData = filteredData.filter((item) =>
           item.label.toLowerCase().includes(label.toLowerCase())
         )
       }
 
       // 按状态过滤
       if (status !== undefined && status !== '') {
-        filteredData = filteredData.filter(item => item.status === Number(status))
+        filteredData = filteredData.filter((item) => item.status === Number(status))
       }
 
       const start = (Number(pageNo) - 1) * Number(pageSize)
@@ -146,7 +140,7 @@ const mockConfigs: MockConfig[] = [
       if (dictType) {
         return {
           code: 0,
-          data: mockDictData.filter(item => item.dictType === dictType),
+          data: mockDictData.filter((item) => item.dictType === dictType),
           msg: ''
         }
       }

@@ -9,11 +9,12 @@ import type { MockConfig, MockRequestOptions, MockRequest } from './types'
 function param2Obj(url: string): Record<string, string> {
   const search = decodeURIComponent(url.split('?')[1] || '').replace(/\+/g, ' ')
   if (!search) return {}
-  
+
   return Object.fromEntries(
-    search.split('&')
-      .filter(item => item.includes('='))
-      .map(item => {
+    search
+      .split('&')
+      .filter((item) => item.includes('='))
+      .map((item) => {
         const [key, value = ''] = item.split('=')
         return [key, value]
       })
@@ -32,9 +33,9 @@ export const mocks = Object.values(modules).flatMap((mod: any) => mod.default ||
 export function mockXHR(): void {
   // 保存原始的 send 方法
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send
-  
+
   // 重写 send 方法
-  Mock.XHR.prototype.send = function(...args: any[]) {
+  Mock.XHR.prototype.send = function (...args: any[]) {
     if (this.custom?.xhr) {
       this.custom.xhr.withCredentials = this.withCredentials || false
       if (this.responseType) {
@@ -50,9 +51,9 @@ export function mockXHR(): void {
    * @returns 包装后的响应函数
    */
   function XHR2ExpressReqWrap(respond: any) {
-    return function(options: MockRequestOptions) {
+    return function (options: MockRequestOptions) {
       let result = null
-      
+
       if (typeof respond === 'function') {
         const { body, type, url } = options
         const mockRequest: MockRequest = {
@@ -64,7 +65,7 @@ export function mockXHR(): void {
       } else {
         result = respond
       }
-      
+
       return Mock.mock(result)
     }
   }
@@ -75,10 +76,10 @@ export function mockXHR(): void {
       console.warn('Mock config missing url:', mock)
       return
     }
-    
+
     Mock.mock(
-      new RegExp(mock.url.replace(/\//g, '\\/')), 
-      mock.type || 'get', 
+      new RegExp(mock.url.replace(/\//g, '\\/')),
+      mock.type || 'get',
       XHR2ExpressReqWrap(mock.response)
     )
   })

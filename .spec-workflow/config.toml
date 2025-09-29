@@ -1,4 +1,4 @@
-# Spec Workflow MCP Server Configuration File
+﻿# Spec Workflow MCP Server Configuration File
 # ============================================
 #
 # Copy this file to `config.toml` in the same directory to customize the Spec Workflow server.
@@ -39,13 +39,9 @@
 # Recommended baseline for the tcwyirs-ui repository
 # =====================================================================
 
-# Uncomment the block below and adjust paths if you want a ready-to-run setup.
-#
-projectDir = "./"  # 指向项目根目录
+# Ready-to-run defaults for local development. Adjust values as needed.
+projectDir = "./"
 port = 3456
 autoStartDashboard = true
-lang = "zh"
-
-
-
-
+dashboardOnly = false
+lang = "zh-CN"

@@ -101,7 +101,7 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
     if (!route.children && route.parentId == 0 && route.component) {
       data.component = Layout
       data.meta = {
-        hidden: meta.hidden,
+        hidden: meta.hidden
       }
       data.name = toCamelCase(route.path, true) + 'Parent'
       data.redirect = ''

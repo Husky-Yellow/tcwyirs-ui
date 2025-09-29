@@ -101,7 +101,6 @@ service.interceptors.response.use(
       // 返回“[HTTP]请求没有返回值”;
       throw new Error()
     }
-    const { t } = useI18n()
     // 未设置状态码则默认成功状态
     // 二进制数据则直接返回，例如说 Excel 导出
     if (
@@ -161,16 +160,14 @@ service.interceptors.response.use(
         })
       }
     } else if (code === 500) {
-      ElMessage.error(t('sys.api.errMsg500'))
+      ElMessage.error('系统异常，请联系管理员')
       return Promise.reject(new Error(msg))
     } else if (code === 901) {
       ElMessage.error({
         offset: 300,
         dangerouslyUseHTMLString: true,
         message:
-          '<div>' +
-          t('sys.api.errMsg901') +
-          '</div>' +
+          '<div>演示环境，未连接真实后端数据库，无法展示完整功能！</div>' +
           '<div> &nbsp; </div>' +
           '<div>参考 https://doc.iocoder.cn/ 教程</div>' +
           '<div> &nbsp; </div>' +
@@ -193,13 +190,12 @@ service.interceptors.response.use(
   (error: AxiosError) => {
     console.log('err' + error) // for debug
     let { message } = error
-    const { t } = useI18n()
     if (message === 'Network Error') {
-      message = t('sys.api.errorMessage')
+      message = '网络连接异常,请稍后再试!'
     } else if (message.includes('timeout')) {
-      message = t('sys.api.apiTimeoutMessage')
+      message = '系统接口请求超时'
     } else if (message.includes('Request failed with status code')) {
-      message = t('sys.api.apiRequestFailed') + message.substr(message.length - 3)
+      message = '系统接口' + message.substr(message.length - 3) + '异常'
     }
     ElMessage.error(message)
     return Promise.reject(error)
@@ -211,19 +207,18 @@ const refreshToken = async () => {
   return await axios.post(base_url + '/system/auth/refresh-token?refreshToken=' + getRefreshToken())
 }
 const handleAuthorized = () => {
-  const { t } = useI18n()
   if (!isRelogin.show) {
     // 如果已经到登录页面则不进行弹窗提示
     if (window.location.href.includes('login')) {
       return
     }
     isRelogin.show = true
-    ElMessageBox.confirm(t('sys.api.timeoutMessage'), t('common.confirmTitle'), {
+    ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
       showCancelButton: false,
       closeOnClickModal: false,
       showClose: false,
       closeOnPressEscape: false,
-      confirmButtonText: t('login.relogin'),
+      confirmButtonText: '重新登录',
       type: 'warning'
     }).then(() => {
       resetRouter() // 重置静态路由表
@@ -234,6 +229,6 @@ const handleAuthorized = () => {
       window.location.href = window.location.href
     })
   }
-  return Promise.reject(t('sys.api.timeoutMessage'))
+  return Promise.reject('登录状态已过期，您可以继续留在该页面，或者重新登录')
 }
 export { service }

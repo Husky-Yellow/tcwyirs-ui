@@ -66,13 +66,13 @@ const mockConfigs: MockConfig[] = [
       const { pageNo = 1, pageSize = 10, showCloseFlag } = query
       const start = (Number(pageNo) - 1) * Number(pageSize)
       const end = start + Number(pageSize)
-      
+
       // 根据showCloseFlag过滤数据
       let filteredUsers = mockUsers
       if (!showCloseFlag || showCloseFlag === 'false') {
-        filteredUsers = mockUsers.filter(user => user.status === 0)
+        filteredUsers = mockUsers.filter((user) => user.status === 0)
       }
-      
+
       return {
         code: 0,
         data: {
@@ -90,7 +90,7 @@ const mockConfigs: MockConfig[] = [
     type: 'get',
     response: (): ApiResponse<Partial<UserResp>[]> => ({
       code: 0,
-      data: mockUsers.map(user => ({
+      data: mockUsers.map((user) => ({
         id: user.id,
         nickname: user.nickname,
         deptId: user.deptId,
@@ -117,8 +117,8 @@ const mockConfigs: MockConfig[] = [
     type: 'get',
     response: ({ query }): ApiResponse<UserResp | null> => {
       const { id } = query
-      const user = mockUsers.find(u => u.id === Number(id))
-      
+      const user = mockUsers.find((u) => u.id === Number(id))
+
       if (user) {
         return {
           code: 0,
@@ -126,7 +126,7 @@ const mockConfigs: MockConfig[] = [
           msg: ''
         }
       }
-      
+
       return {
         code: 404,
         data: null,
@@ -140,14 +140,14 @@ const mockConfigs: MockConfig[] = [
     url: '/admin-api/system/user/create',
     type: 'post',
     response: ({ body }: { body: UserResp }): ApiResponse<number> => {
-      const newId = Math.max(...mockUsers.map(u => u.id || 0)) + 1
+      const newId = Math.max(...mockUsers.map((u) => u.id || 0)) + 1
       const newUser: UserResp = {
         ...body,
         id: newId,
         createTime: new Date().toISOString()
       }
       mockUsers.push(newUser)
-      
+
       return {
         code: 0,
         data: newId,
@@ -162,8 +162,8 @@ const mockConfigs: MockConfig[] = [
     type: 'put',
     response: ({ body }: { body: UserResp }): ApiResponse<boolean> => {
       const { id } = body
-      const index = mockUsers.findIndex(u => u.id === id)
-      
+      const index = mockUsers.findIndex((u) => u.id === id)
+
       if (index !== -1) {
         mockUsers[index] = { ...mockUsers[index], ...body }
         return {
@@ -172,7 +172,7 @@ const mockConfigs: MockConfig[] = [
           msg: '更新成功'
         }
       }
-      
+
       return {
         code: 404,
         data: false,
@@ -187,8 +187,8 @@ const mockConfigs: MockConfig[] = [
     type: 'delete',
     response: ({ query }): ApiResponse<boolean> => {
       const { id } = query
-      const index = mockUsers.findIndex(u => u.id === Number(id))
-      
+      const index = mockUsers.findIndex((u) => u.id === Number(id))
+
       if (index !== -1) {
         mockUsers.splice(index, 1)
         return {
@@ -197,7 +197,7 @@ const mockConfigs: MockConfig[] = [
           msg: '删除成功'
         }
       }
-      
+
       return {
         code: 404,
         data: false,
@@ -212,8 +212,8 @@ const mockConfigs: MockConfig[] = [
     type: 'put',
     response: ({ body }: { body: { id: number; status: number } }): ApiResponse<boolean> => {
       const { id, status } = body
-      const user = mockUsers.find(u => u.id === id)
-      
+      const user = mockUsers.find((u) => u.id === id)
+
       if (user) {
         user.status = status
         return {
@@ -222,7 +222,7 @@ const mockConfigs: MockConfig[] = [
           msg: '状态更新成功'
         }
       }
-      
+
       return {
         code: 404,
         data: false,
@@ -237,8 +237,8 @@ const mockConfigs: MockConfig[] = [
     type: 'put',
     response: ({ body }: { body: { id: number; password: string } }): ApiResponse<boolean> => {
       const { id } = body
-      const user = mockUsers.find(u => u.id === id)
-      
+      const user = mockUsers.find((u) => u.id === id)
+
       if (user) {
         return {
           code: 0,
@@ -246,7 +246,7 @@ const mockConfigs: MockConfig[] = [
           msg: '密码重置成功'
         }
       }
-      
+
       return {
         code: 404,
         data: false,

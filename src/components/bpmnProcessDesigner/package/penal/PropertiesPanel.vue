@@ -141,7 +141,7 @@ const initBpmnInstances = () => {
     }
 
     // 检查所有实例是否都存在
-    const allInstancesExist = Object.values(instances).every(instance => instance)
+    const allInstancesExist = Object.values(instances).every((instance) => instance)
     if (allInstancesExist) {
       const w = window as any
       w.bpmnInstances = instances

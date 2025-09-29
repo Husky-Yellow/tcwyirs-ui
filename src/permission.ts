@@ -48,12 +48,16 @@ const parseURL = (
 
 // 路由不重定向白名单
 const whiteList = [
+  '/',
   '/login',
   '/social-login',
   '/auth-redirect',
   '/bind',
   '/register',
-  '/oauthLogin/gitee'
+  '/oauthLogin/gitee',
+  '/public/homepage',
+  '/marketplace',
+  '/marketplace/detail'
 ]
 
 // 路由加载前
@@ -62,7 +66,9 @@ router.beforeEach(async (to, from, next) => {
   loadStart()
   if (getAccessToken()) {
     if (to.path === '/login') {
-      next({ path: '/' })
+      next({ path: '/dashboard' })
+    } else if (to.path === '/') {
+      next({ path: '/dashboard' })
     } else {
       // 获取所有字典
       const dictStore = useDictStoreWithOut()
@@ -91,7 +97,14 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    if (whiteList.indexOf(to.path) !== -1) {
+    // 检查是否在白名单中，包括动态路由
+    const isInWhiteList = whiteList.some((path) => {
+      if (path === to.path) return true
+      if (path === '/marketplace/detail' && to.path.startsWith('/marketplace/detail/')) return true
+      return false
+    })
+
+    if (isInWhiteList) {
       next()
     } else {
       next(`/login?redirect=${to.fullPath}`) // 否则全部重定向到登录页

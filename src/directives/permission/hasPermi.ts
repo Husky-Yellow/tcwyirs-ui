@@ -1,8 +1,6 @@
 import type { App } from 'vue'
 import { useUserStore } from '@/store/modules/user'
 
-const { t } = useI18n() // 国际化
-
 /** 判断权限的指令 directive */
 export function hasPermi(app: App<Element>) {
   app.directive('hasPermi', (el, binding) => {
@@ -15,7 +13,7 @@ export function hasPermi(app: App<Element>) {
         el.parentNode && el.parentNode.removeChild(el)
       }
     } else {
-      throw new Error(t('permission.hasPermission'))
+      throw new Error('请设置操作权限标签值')
     }
   })
 }

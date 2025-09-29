@@ -91,40 +91,40 @@ const mockBusinessData: BusinessDataItem[] = [
 // Mock 查询配置
 const mockQueryConfigs: QueryConfig[] = [
   {
-      "id": "1950464185697132546",
-      "manageId": "1947864796501671937",
-      "fieldIds": "1947941875060662273",
-      "fieldCodes": "name",
-      "fieldNames": "姓名",
-      "hint": "111111",
-      "queryType": 0,
-      "defaultValue": "",
-      "sort": 0,
-      "createTime": 1753861874000
+    id: '1950464185697132546',
+    manageId: '1947864796501671937',
+    fieldIds: '1947941875060662273',
+    fieldCodes: 'name',
+    fieldNames: '姓名',
+    hint: '111111',
+    queryType: 0,
+    defaultValue: '',
+    sort: 0,
+    createTime: 1753861874000
   },
   {
-      "id": "1950464185810378753",
-      "manageId": "1947864796501671937",
-      "fieldIds": "1947941875064856578",
-      "fieldCodes": "systems",
-      "fieldNames": "区域",
-      "hint": "",
-      "queryType": 2,
-      "defaultValue": "",
-      "sort": 1,
-      "createTime": 1753861874000
+    id: '1950464185810378753',
+    manageId: '1947864796501671937',
+    fieldIds: '1947941875064856578',
+    fieldCodes: 'systems',
+    fieldNames: '区域',
+    hint: '',
+    queryType: 2,
+    defaultValue: '',
+    sort: 1,
+    createTime: 1753861874000
   },
   {
-      "id": "1952923438194188290",
-      "manageId": "1947864796501671937",
-      "fieldIds": "1947941875056467969,1947941875060662273",
-      "fieldCodes": "card_num,name",
-      "fieldNames": "证件号码,姓名",
-      "hint": "432423",
-      "queryType": 0,
-      "defaultValue": "",
-      "sort": 2,
-      "createTime": 1754448206000
+    id: '1952923438194188290',
+    manageId: '1947864796501671937',
+    fieldIds: '1947941875056467969,1947941875060662273',
+    fieldCodes: 'card_num,name',
+    fieldNames: '证件号码,姓名',
+    hint: '432423',
+    queryType: 0,
+    defaultValue: '',
+    sort: 2,
+    createTime: 1754448206000
   }
 ]
 
@@ -229,7 +229,7 @@ const mockConfigs: MockConfig[] = [
       if (manageId) {
         return {
           code: 0,
-          data: mockQueryConfigs.filter(item => item.manageId === manageId),
+          data: mockQueryConfigs.filter((item) => item.manageId === manageId),
           msg: ''
         }
       }
@@ -250,7 +250,7 @@ const mockConfigs: MockConfig[] = [
       if (manageId) {
         return {
           code: 0,
-          data: mockOperateConfigs.filter(item => item.manageId === manageId),
+          data: mockOperateConfigs.filter((item) => item.manageId === manageId),
           msg: ''
         }
       }

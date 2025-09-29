@@ -65,7 +65,7 @@
 import {
   TimeUnitType,
   TIME_UNIT_TYPES,
-  TIMEOUT_HANDLER_TYPES,
+  TIMEOUT_HANDLER_TYPES
 } from '@/components/SimpleProcessDesignerV2/src/consts'
 import { convertTimeUnit } from '@/components/SimpleProcessDesignerV2/src/utils'
 

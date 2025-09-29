@@ -10,19 +10,11 @@
     <LoginFormTitle />
 
     <el-form-item v-if="isTenantEnabled" prop="tenantName">
-      <el-input
-        v-model="form.tenantName"
-        placeholder="请输入租户名称"
-        :prefix-icon="icons.house"
-      />
+      <el-input v-model="form.tenantName" placeholder="请输入租户名称" :prefix-icon="icons.house" />
     </el-form-item>
 
     <el-form-item prop="username">
-      <el-input
-        v-model="form.username"
-        placeholder="请输入用户名"
-        :prefix-icon="icons.avatar"
-      />
+      <el-input v-model="form.username" placeholder="请输入用户名" :prefix-icon="icons.avatar" />
     </el-form-item>
 
     <el-form-item prop="password">
@@ -37,9 +29,7 @@
     </el-form-item>
 
     <div class="flex justify-between items-center">
-      <el-checkbox v-model="form.rememberMe">
-        记住我
-      </el-checkbox>
+      <el-checkbox v-model="form.rememberMe"> 记住我 </el-checkbox>
       <el-link type="primary" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
         忘记密码
       </el-link>
@@ -193,10 +183,7 @@ const login = async (params: { captchaVerification?: string } = {}) => {
       ? window.location.href.replace('/login?redirect=', '')
       : redirect.value || permissionStore.addRouters[0]?.path || '/'
 
-    redirect.value.includes('sso')
-      ? (window.location.href = path)
-      : await router.push({ path })
-
+    redirect.value.includes('sso') ? (window.location.href = path) : await router.push({ path })
   } finally {
     toggleLoginLoading(false)
     stopLoginTimeout()
@@ -204,9 +191,13 @@ const login = async (params: { captchaVerification?: string } = {}) => {
   }
 }
 
-watchDebounced(() => form.rememberMe, (value) => {
-  rememberMe.value = value
-}, { debounce: 300 })
+watchDebounced(
+  () => form.rememberMe,
+  (value) => {
+    rememberMe.value = value
+  },
+  { debounce: 300 }
+)
 
 useEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === 'Enter' && isVisible.value) {

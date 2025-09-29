@@ -12,7 +12,7 @@ export interface ApiResponse<T = any> {
 }
 
 /**
- * 分页响应结构  
+ * 分页响应结构
  */
 export interface PageResponse<T> {
   list: T[]

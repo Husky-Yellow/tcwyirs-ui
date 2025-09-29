@@ -52,9 +52,19 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/',
+    component: () => import('@/views/Public/Homepage.vue'),
+    name: 'RootHomepage',
+    meta: {
+      hidden: true,
+      title: '首页',
+      noTagsView: true
+    }
+  },
+  {
+    path: '/dashboard',
     component: Layout,
-    redirect: '/index',
-    name: 'Home',
+    redirect: '/dashboard/index',
+    name: 'Dashboard',
     meta: {
       hidden: true
     },
@@ -62,9 +72,9 @@ const remainingRouter: AppRouteRecordRaw[] = [
       {
         path: 'index',
         component: () => import('@/views/Home/Index.vue'),
-        name: 'Index',
+        name: 'DashboardIndex',
         meta: {
-          title: '首页',
+          title: '工作台',
           icon: 'ep:home-filled',
           noCache: false,
           affix: true
@@ -175,6 +185,36 @@ const remainingRouter: AppRouteRecordRaw[] = [
         }
       }
     ]
+  },
+  {
+    path: '/public/homepage',
+    component: () => import('@/views/Public/Homepage.vue'),
+    name: 'PublicHomepage',
+    meta: {
+      hidden: true,
+      title: '首页',
+      noTagsView: true
+    }
+  },
+  {
+    path: '/marketplace',
+    component: () => import('@/views/Public/Marketplace.vue'),
+    name: 'Marketplace',
+    meta: {
+      hidden: true,
+      title: '智能要素超市',
+      noTagsView: true
+    }
+  },
+  {
+    path: '/marketplace/detail/:id',
+    component: () => import('@/views/Public/MarketplaceDetail.vue'),
+    name: 'MarketplaceDetail',
+    meta: {
+      hidden: true,
+      title: '产品详情',
+      noTagsView: true
+    }
   },
   {
     path: '/login',
