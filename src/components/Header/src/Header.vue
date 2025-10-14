@@ -69,18 +69,19 @@
             </el-input>
 
             <!-- 通知图标 -->
-            <el-badge :value="0" hidden :max="99" class="cursor-pointer">
-              <el-icon :size="20" class="text-#666 hover:text-#409eff transition-colors">
-                <Bell />
-              </el-icon>
-            </el-badge>
+            <Message class="custom-hover" color="var(--top-header-text-color)"/>
 
             <!-- 用户头像 -->
             <div
               class="flex items-center gap-8px cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap"
             >
-              <el-avatar :size="32" src="@/assets/imgs/logo.png" />
-              <span class="text-14px text-#333">点击登陆</span>
+              <el-avatar
+                :size="32"
+                :src="userAvatar"
+              />
+              <span class="text-14px text-#333">
+                {{ userName }}
+              </span>
             </div>
           </div>
         </div>
@@ -90,9 +91,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Bell, Search } from '@element-plus/icons-vue'
-
+import { ref, computed } from 'vue'
+import { Search } from '@element-plus/icons-vue'
+import { Message } from '@/components/Message'
 defineOptions({ name: 'Header' })
 
 // Props
@@ -100,12 +101,18 @@ interface Props {
   isScrolled?: boolean
   backgroundColor?: string
   activeNavItem?: string
+  userInfo?: {
+    avatar?: string
+    nickname?: string
+    username?: string
+  }
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isScrolled: false,
   backgroundColor: '',
-  activeNavItem: ''
+  activeNavItem: '',
+  userInfo: () => ({})
 })
 
 // Emits
@@ -117,6 +124,10 @@ const emit = defineEmits<Emits>()
 
 // Local state
 const searchText = ref('')
+
+// Computed properties for user info
+const userAvatar = computed(() => props.userInfo?.avatar || '@/assets/imgs/logo.png')
+const userName = computed(() => props.userInfo?.nickname || props.userInfo?.username || '点击登陆')
 
 // Methods
 const handleNavigation = (path: string) => {

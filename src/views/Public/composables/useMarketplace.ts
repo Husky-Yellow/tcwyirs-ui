@@ -1,20 +1,38 @@
-import { ref, computed } from 'vue'
+import { shallowReactive, ref, computed, onMounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
-import type { MarketplaceProduct } from './useMarketplaceData'
+import type { MarketplaceProduct, CategoryItem } from '@/api/marketplace'
+import { getMarketplaceProducts, getMarketplaceCategories } from '@/api/marketplace'
 
 /**
- * Marketplace 搜索和过滤 Composable
- * 使用 useDebounceFn 优化搜索性能
+ * Marketplace 组合 Hook：数据获取 + 搜索过滤
  */
-export const useMarketplaceSearch = (products: MarketplaceProduct[]) => {
+export const useMarketplace = () => {
+  // 数据
+  const categories = shallowReactive<CategoryItem[]>([])
+  const products = shallowReactive<MarketplaceProduct[]>([])
+
+  // 搜索与筛选
   const searchKeyword = ref('')
   const searchType = ref<'all' | 'title' | 'description'>('all')
   const selectedCategory = ref('all')
 
-  // 搜索匹配函数
+  // 加载列表数据
+  const load = async () => {
+    try {
+      const [cats, prods] = await Promise.all([
+        getMarketplaceCategories(),
+        getMarketplaceProducts()
+      ])
+      categories.splice(0, categories.length, ...cats)
+      products.splice(0, products.length, ...prods)
+    } catch (e) {
+      console.warn('[useMarketplace] 加载 mock 数据失败:', e)
+    }
+  }
+
+  // 匹配函数
   const matchesSearch = (product: MarketplaceProduct, keyword: string) => {
     const lowerKeyword = keyword.toLowerCase()
-
     switch (searchType.value) {
       case 'title':
         return product.title.toLowerCase().includes(lowerKeyword)
@@ -29,34 +47,33 @@ export const useMarketplaceSearch = (products: MarketplaceProduct[]) => {
     }
   }
 
-  // 分类匹配函数
   const matchesCategory = (product: MarketplaceProduct, categoryValue: string) => {
     return categoryValue === 'all' || product.category === categoryValue
   }
 
-  // 过滤产品（使用 computed 自动缓存）
   const filteredProducts = computed(() => {
-    let result = products
-
-    // 分类过滤
+    let result = products as MarketplaceProduct[]
     if (selectedCategory.value !== 'all') {
-      result = result.filter(p => matchesCategory(p, selectedCategory.value))
+      result = result.filter((p) => matchesCategory(p, selectedCategory.value))
     }
-
-    // 关键词搜索
     if (searchKeyword.value) {
-      result = result.filter(p => matchesSearch(p, searchKeyword.value))
+      result = result.filter((p) => matchesSearch(p, searchKeyword.value))
     }
-
     return result
   })
 
-  // 防抖搜索（减少输入时的计算）
   const debouncedSearch = useDebounceFn(() => {
-    // 搜索逻辑已在 computed 中处理
+    // 过滤逻辑在 computed 中，防抖触发即可
   }, 300)
 
+  onMounted(load)
+
   return {
+    // 数据
+    categories,
+    products,
+    reload: load,
+    // 搜索
     searchKeyword,
     searchType,
     selectedCategory,
@@ -64,3 +81,4 @@ export const useMarketplaceSearch = (products: MarketplaceProduct[]) => {
     debouncedSearch
   }
 }
+

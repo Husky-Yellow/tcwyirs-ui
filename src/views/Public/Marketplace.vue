@@ -67,7 +67,7 @@ import { Search } from '@element-plus/icons-vue'
 import PublicComponents from './components/PublicComponents.vue'
 import { usePublic } from './composables/usePublic'
 import { useMarketplaceData } from './composables/useMarketplaceData'
-import { useMarketplaceSearch } from './composables/useMarketplaceSearch'
+import { useMarketplace } from './composables/useMarketplace'
 
 defineOptions({ name: 'Marketplace' })
 
@@ -78,7 +78,7 @@ const { isScrolled, navigateTo, navigateToDetail } = usePublic()
 const { products } = useMarketplaceData()
 
 // 搜索和过滤
-const { searchKeyword, searchType, filteredProducts, debouncedSearch } = useMarketplaceSearch(products)
+const { searchKeyword, searchType, filteredProducts, debouncedSearch } = useMarketplace()
 
 // 可重用组件引用
 const publicComponentsRef = ref<InstanceType<typeof PublicComponents>>()

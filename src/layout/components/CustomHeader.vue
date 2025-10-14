@@ -1,6 +1,6 @@
 <script lang="tsx">
 import { defineComponent, computed } from 'vue'
-import { Message } from '@/layout/components//Message'
+import { Message } from '@/components/Message'
 import { UserInfo } from '@/layout/components/UserInfo'
 import { Screenfull } from '@/layout/components/Screenfull'
 import { SizeDropdown } from '@/layout/components/SizeDropdown'
