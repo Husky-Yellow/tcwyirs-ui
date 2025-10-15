@@ -1,24 +1,31 @@
 <template>
-  <h2 class="enter-x mb-3 text-center text-2xl font-bold xl:text-center xl:text-3xl">
-    {{ getFormTitle }}
-  </h2>
+  <div class="mb-8">
+    <h2 v-if="!isRegister" class="text-2xl font-bold text-gray-800 xl:text-3xl">
+      登陆/注册
+    </h2>
+    <div v-else class="flex items-center gap-3">
+      <button @click="handleBack" class="text-blue-500 hover:text-blue-600">
+        <Icon icon="ep:arrow-left" class="text-20px" />
+      </button>
+      <h2 class="text-2xl font-bold text-gray-800 xl:text-3xl">
+        注册
+      </h2>
+    </div>
+  </div>
 </template>
+
 <script lang="ts" setup>
+import { computed } from 'vue'
+import { Icon } from '@iconify/vue'
 import { LoginStateEnum, useLoginState } from './useLogin'
 
 defineOptions({ name: 'LoginFormTitle' })
 
-const { getLoginState } = useLoginState()
+const { getLoginState, setLoginState } = useLoginState()
 
-const getFormTitle = computed(() => {
-  const titleObj = {
-    [LoginStateEnum.RESET_PASSWORD]: '重置密码',
-    [LoginStateEnum.LOGIN]: '登录',
-    [LoginStateEnum.REGISTER]: '注册',
-    [LoginStateEnum.MOBILE]: '手机登录',
-    [LoginStateEnum.QR_CODE]: '二维码登录',
-    [LoginStateEnum.SSO]: 'SSO登录'
-  }
-  return titleObj[unref(getLoginState)]
-})
+const isRegister = computed(() => getLoginState.value === LoginStateEnum.REGISTER)
+
+const handleBack = () => {
+  setLoginState(LoginStateEnum.LOGIN)
+}
 </script>
