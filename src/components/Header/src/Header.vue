@@ -62,6 +62,7 @@
               size="default"
               class="!w-260px"
               clearable
+              @keyup.enter="handleSearch"
             >
               <template #prefix>
                 <el-icon class="el-input__icon"><search /></el-icon>
@@ -72,17 +73,34 @@
             <Message class="custom-hover" color="var(--top-header-text-color)"/>
 
             <!-- 用户头像 -->
-            <div
-              class="flex items-center gap-8px cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap"
+            <el-tooltip
+              :content="isUserLoggedIn ? '点击进入个人中心' : '点击登录'"
+              placement="bottom"
             >
-              <el-avatar
-                :size="32"
-                :src="userAvatar"
-              />
-              <span class="text-14px text-#333">
-                {{ userName }}
-              </span>
-            </div>
+              <div
+                class="flex items-center gap-8px cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap"
+                @click="handleUserClick"
+              >
+                <el-avatar
+                  :size="32"
+                  :src="userAvatar"
+                  class="transition-transform duration-200 hover:scale-105"
+                />
+                <span
+                  class="text-14px transition-colors duration-200"
+                  :class="isUserLoggedIn ? 'text-#333' : 'text-[#1677FF] hover:text-[#409EFF]'"
+                >
+                  {{ userName }}
+                </span>
+                <!-- 未登录状态下的登录图标 -->
+                <el-icon
+                  v-if="!isUserLoggedIn"
+                  class="text-12px text-[#1677FF] ml-4px"
+                >
+                  <ArrowRight />
+                </el-icon>
+              </div>
+            </el-tooltip>
           </div>
         </div>
       </div>
@@ -92,11 +110,16 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import { useUserStoreWithOut } from '@/store/modules/user'
+import { Search, ArrowRight } from '@element-plus/icons-vue'
 import { Message } from '@/components/Message'
+
 defineOptions({ name: 'Header' })
 
-// Props
+// ================== 状态管理 ==================
+const userStore = useUserStoreWithOut()
+
+// ================== Props ==================
 interface Props {
   isScrolled?: boolean
   backgroundColor?: string
@@ -115,22 +138,55 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: () => ({})
 })
 
-// Emits
+// ================== Emits ==================
 interface Emits {
   (e: 'navigation', path: string): void
 }
 
 const emit = defineEmits<Emits>()
 
-// Local state
+// ================== 响应式数据 ==================
 const searchText = ref('')
 
-// Computed properties for user info
-const userAvatar = computed(() => props.userInfo?.avatar || '@/assets/imgs/logo.png')
-const userName = computed(() => props.userInfo?.nickname || props.userInfo?.username || '点击登陆')
+// ================== 计算属性 ==================
+const isUserLoggedIn = computed(() => userStore.getIsSetUser)
 
-// Methods
+const userAvatar = computed(() => {
+  if (isUserLoggedIn.value && props.userInfo?.avatar) {
+    return props.userInfo.avatar
+  }
+  return '@/assets/imgs/logo.png'
+})
+
+const userName = computed(() => {
+  if (isUserLoggedIn.value) {
+    return props.userInfo?.nickname || props.userInfo?.username || '用户'
+  }
+  return '点击登录'
+})
+
+// ================== 方法 ==================
 const handleNavigation = (path: string) => {
   emit('navigation', path)
+}
+
+const handleUserClick = () => {
+  if (isUserLoggedIn.value) {
+    // 已登录，可以跳转到用户中心或个人设置
+    handleNavigation('/profile')
+  } else {
+    // 未登录，跳转到登录页面
+    handleNavigation('/login')
+  }
+}
+
+// 搜索功能
+const handleSearch = () => {
+  if (searchText.value.trim()) {
+    // 可以在这里实现搜索逻辑
+    console.log('搜索:', searchText.value)
+    // 可以跳转到搜索结果页面
+    // handleNavigation(`/search?q=${encodeURIComponent(searchText.value)}`)
+  }
 }
 </script>

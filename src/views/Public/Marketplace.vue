@@ -43,7 +43,7 @@
             <span>资源展示</span>
             <span>我的收藏</span>
           </div>
-          <div class="grid gap-16px" style="grid-template-columns: repeat(auto-fill, minmax(274px, 1fr));">
+          <div class="grid gap-16px" :style="{ gridTemplateColumns: gridColumns }">
             <component
               :is="ReuseQualityResourceCard"
               v-for="product in filteredProducts"
@@ -62,14 +62,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import { Search } from '@element-plus/icons-vue'
+import { useBreakpoints, breakpointsTailwind, useDebounceFn, useScroll } from '@vueuse/core'
 import PublicComponents from './components/PublicComponents.vue'
 import { usePublic } from './composables/usePublic'
 import { useMarketplaceData } from './composables/useMarketplaceData'
 import { useMarketplace } from './composables/useMarketplace'
 
 defineOptions({ name: 'Marketplace' })
+
+// 响应式断点检测
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('sm')
+const isTablet = breakpoints.between('sm', 'lg')
+const isDesktop = breakpoints.greater('lg')
 
 // 滚动和导航
 const { isScrolled, navigateTo, navigateToDetail } = usePublic()
@@ -83,4 +90,20 @@ const { searchKeyword, searchType, filteredProducts, debouncedSearch } = useMark
 // 可重用组件引用
 const publicComponentsRef = ref<InstanceType<typeof PublicComponents>>()
 const ReuseQualityResourceCard = computed(() => publicComponentsRef.value?.QualityResourceCard)
+
+// 响应式网格布局
+const gridColumns = computed(() => {
+  if (isMobile.value) return 'repeat(auto-fill, minmax(250px, 1fr))'
+  if (isTablet.value) return 'repeat(auto-fill, minmax(300px, 1fr))'
+  return 'repeat(auto-fill, minmax(274px, 1fr))'
+})
+
+// 监听断点变化
+watchEffect(() => {
+  console.log('Current breakpoint:', {
+    isMobile: isMobile.value,
+    isTablet: isTablet.value,
+    isDesktop: isDesktop.value
+  })
+})
 </script>
