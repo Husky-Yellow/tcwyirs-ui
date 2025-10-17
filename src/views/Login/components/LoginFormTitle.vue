@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { Icon } from '@iconify/vue'
+import { Icon } from '@/components/Icon'
 import { LoginStateEnum, useLoginState } from './useLogin'
 
 defineOptions({ name: 'LoginFormTitle' })

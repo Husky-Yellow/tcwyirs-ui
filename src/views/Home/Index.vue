@@ -1,5 +1,6 @@
 <template>
   <div>
+    <IndexBanner />
     <el-card shadow="never">
       <el-skeleton :loading="loading" animated>
         <el-row :gutter="16" justify="space-between">
@@ -57,7 +58,7 @@
   </div>
 
   <el-row class="mt-8px" :gutter="8" justify="space-between">
-    <el-col :xl="16" :lg="16" :md="24" :sm="24" :xs="24" class="mb-8px">
+    <el-col :xl="18" :lg="18" :md="24" :sm="24" :xs="24" class="mb-8px">
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
@@ -129,7 +130,7 @@
         </el-skeleton>
       </el-card>
     </el-col>
-    <el-col :xl="8" :lg="8" :md="24" :sm="24" :xs="24" class="mb-8px">
+    <el-col :xl="6" :lg="6" :md="24" :sm="24" :xs="24" class="mb-8px">
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
@@ -188,6 +189,7 @@ import { formatTime } from '@/utils'
 import { useUserStore } from '@/store/modules/user'
 // import { useWatermark } from '@/hooks/web/useWatermark'
 import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
+import IndexBanner from './components/banner.vue'
 import { pieOptions, barOptions } from './echarts-data'
 import { useRouter } from 'vue-router'
 

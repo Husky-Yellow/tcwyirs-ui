@@ -25,25 +25,8 @@ const handleClickOutside = () => {
 }
 
 const renderLayout = () => {
-  console.log(unref(layout))
   const { renderCustom } = useRenderLayout()
   return renderCustom()
-  // switch (unref(layout)) {
-  //   case 'classic':
-  //     const { renderClassic } = useRenderLayout()
-  //     return renderClassic()
-  //   case 'topLeft':
-  //     const { renderTopLeft } = useRenderLayout()
-  //     return renderTopLeft()
-  //   case 'top':
-  //     const { renderTop } = useRenderLayout()
-  //     return renderTop()
-  //   case 'cutMenu':
-  //     const { renderCutMenu } = useRenderLayout()
-  //     return renderCutMenu()
-  //   default:
-  //     break
-  // }
 }
 
 export default defineComponent({

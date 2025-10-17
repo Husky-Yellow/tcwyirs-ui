@@ -44,7 +44,7 @@
             <span
               class="text-14px cursor-pointer transition-all duration-300"
               :class="
-                props.activeNavItem === 'marketplace'
+                props.activeNavItem !== 'workspace'
                   ? 'text-[#1677FF]'
                   : 'text-#666 hover:text-[#1677FF]'
               "
