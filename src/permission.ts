@@ -57,7 +57,8 @@ const whiteList = [
   '/oauthLogin/gitee',
   '/public/homepage',
   '/marketplace',
-  '/marketplace/detail'
+  '/marketplace/detail',
+  '/demo'
 ]
 
 // 路由加载前

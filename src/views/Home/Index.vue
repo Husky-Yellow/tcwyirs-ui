@@ -15,6 +15,14 @@
                 <div class="mt-10px text-14px text-gray-500">
                   {{ t('workplace.toady') }}，20℃ - 32℃！
                 </div>
+                <div class="mt-10px">
+                  <el-button type="primary" size="small" @click="showReviewModal = true">
+                    打开评分弹窗
+                  </el-button>
+                  <el-button type="success" size="small" class="ml-8px" @click="showDrawer = true">
+                    打开抽屉
+                  </el-button>
+                </div>
               </div>
             </div>
           </el-col>
@@ -179,6 +187,48 @@
       </el-card>
     </el-col>
   </el-row>
+
+  <!-- 评分弹窗组件 -->
+  <RatingReviewModal
+    v-model="showReviewModal"
+    @submit="handleReviewSubmit"
+    @cancel="handleReviewCancel"
+  />
+
+  <!-- 抽屉组件 -->
+  <Drawer v-model="showDrawer" title="用户信息编辑" size="500px" @close="handleDrawerClose">
+    <el-form :model="drawerFormData" label-width="80px" label-position="top">
+      <el-form-item label="用户名">
+        <el-input v-model="drawerFormData.username" placeholder="请输入用户名" />
+      </el-form-item>
+
+      <el-form-item label="邮箱">
+        <el-input v-model="drawerFormData.email" placeholder="请输入邮箱" />
+      </el-form-item>
+
+      <el-form-item label="角色">
+        <el-select v-model="drawerFormData.role" placeholder="请选择角色" class="w-full">
+          <el-option label="管理员" value="admin" />
+          <el-option label="普通用户" value="user" />
+          <el-option label="访客" value="guest" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="个人简介">
+        <el-input
+          v-model="drawerFormData.bio"
+          type="textarea"
+          :rows="4"
+          placeholder="请输入个人简介"
+        />
+      </el-form-item>
+    </el-form>
+
+    <template #footer>
+      <el-button @click="showDrawer = false">取消</el-button>
+      <el-button type="primary" @click="handleDrawerSubmit">保存</el-button>
+    </template>
+  </Drawer>
 </template>
 <script lang="ts" setup>
 import { set } from 'es-toolkit/compat'
@@ -190,6 +240,9 @@ import { useUserStore } from '@/store/modules/user'
 import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
 import { pieOptions, barOptions } from './echarts-data'
 import { useRouter } from 'vue-router'
+import { RatingReviewModal } from '@/components/RatingReviewModal'
+import type { RatingReviewResult } from '@/components/RatingReviewModal'
+import { Drawer } from '@/components/Drawer'
 
 defineOptions({ name: 'Index' })
 
@@ -201,6 +254,43 @@ const loading = ref(true)
 const avatar = userStore.getUser.avatar
 const username = userStore.getUser.nickname
 const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
+
+// 评分弹窗状态
+const showReviewModal = ref(false)
+
+// 处理评分提交
+const handleReviewSubmit = (data: RatingReviewResult) => {
+  console.log('评分提交:', data)
+  ElMessage.success(`提交成功! 选择了 ${data.tags.length} 个标签，评论: ${data.review || '无'}`)
+}
+
+// 处理评分取消
+const handleReviewCancel = () => {
+  console.log('用户取消了评分')
+  ElMessage.info('已取消评分')
+}
+
+// 抽屉状态
+const showDrawer = ref(false)
+const drawerFormData = ref({
+  username: 'zhangsan',
+  email: 'zhangsan@example.com',
+  role: 'admin',
+  bio: '这是一个测试用户的个人简介'
+})
+
+// 处理抽屉提交
+const handleDrawerSubmit = () => {
+  console.log('抽屉表单提交:', drawerFormData.value)
+  ElMessage.success('保存成功!')
+  showDrawer.value = false
+}
+
+// 处理抽屉关闭
+const handleDrawerClose = () => {
+  console.log('抽屉关闭')
+}
+
 // 获取统计数
 let totalSate = reactive<WorkplaceTotal>({
   project: 0,
