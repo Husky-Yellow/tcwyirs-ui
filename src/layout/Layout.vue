@@ -1,10 +1,12 @@
 <script lang="tsx">
-import { computed, defineComponent, unref } from 'vue'
+import { computed, defineComponent, unref, watch } from 'vue'
 import { useAppStore } from '@/store/modules/app'
 import { Backtop } from '@/components/Backtop'
 import { Setting } from '@/layout/components/Setting'
 import { useRenderLayout } from './components/useRenderLayout'
 import { useDesign } from '@/hooks/web/useDesign'
+import { useNetwork } from '@/hooks/web/useNetwork'
+import { ElNotification } from 'element-plus'
 
 const { getPrefixCls } = useDesign()
 
@@ -32,6 +34,28 @@ const renderLayout = () => {
 export default defineComponent({
   name: 'Layout',
   setup() {
+    // 网络状态监听
+    const { online } = useNetwork()
+
+    // 监听网络状态变化
+    watch(online, (isOnline) => {
+      if (isOnline) {
+        ElNotification({
+          title: '网络已连接',
+          message: '您的网络连接已恢复',
+          type: 'success',
+          duration: 3000
+        })
+      } else {
+        ElNotification({
+          title: '网络已断开',
+          message: '请检查您的网络连接',
+          type: 'warning',
+          duration: 0
+        })
+      }
+    })
+
     return () => (
       <section class={[prefixCls, `${prefixCls}__${layout.value}`, 'w-[100%] h-[100%] relative']}>
         {mobile.value && !collapse.value ? (
