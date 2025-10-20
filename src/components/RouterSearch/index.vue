@@ -17,6 +17,27 @@
       />
     </el-select>
   </ElDialog>
+  <el-select
+    v-else-if="isInput"
+    filterable
+    :reserve-keyword="false"
+    remote
+    placeholder="搜索"
+    :remote-method="remoteMethod"
+    class="!w-260px"
+    clearable
+    @change="handleChange"
+  >
+    <template #prefix>
+      <el-icon class="el-input__icon"><Search /></el-icon>
+    </template>
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value"
+    />
+  </el-select>
   <div v-else class="custom-hover" @click.stop="showTopSearch = !showTopSearch">
     <Icon icon="ep:search" />
     <el-select
@@ -41,10 +62,16 @@
 </template>
 
 <script lang="ts" setup>
+import { Search } from '@element-plus/icons-vue'
+
 defineProps({
   isModal: {
     type: Boolean,
     default: true
+  },
+  isInput: {
+    type: Boolean,
+    default: false
   }
 })
 

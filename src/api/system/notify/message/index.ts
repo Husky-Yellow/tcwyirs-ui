@@ -44,6 +44,6 @@ export const getUnreadNotifyMessageList = async () => {
 }
 
 // 获得当前用户的未读站内信数量
-export const getUnreadNotifyMessageCount = async () => {
+export const getUnreadNotifyMessageCount = async (): Promise<number> => {
   return await request.get({ url: '/mq/notify-message/get-unread-count' })
 }

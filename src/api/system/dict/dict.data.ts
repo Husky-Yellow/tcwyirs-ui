@@ -13,9 +13,18 @@ export type DictDataVO = {
   createTime: Date
 }
 
+// 字典数据精简版类型 - 用于 simple-list 接口
+export type SimpleDictDataVO = {
+  dictType: string
+  value: string
+  label: string
+  colorType: string
+  cssClass: string
+}
+
 // 查询字典数据（精简)列表
 export const getSimpleDictDataList = () => {
-  return request.get({ url: '/system/dict-data/simple-list' })
+  return request.get<SimpleDictDataVO[]>({ url: '/system/dict-data/simple-list' })
 }
 
 // 查询字典数据列表

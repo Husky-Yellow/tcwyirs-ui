@@ -25,7 +25,6 @@
           </div>
           <span class="text-16px font-600 text-#333"> 吴兴区万物智联运营门户 </span>
         </div>
-
         <!-- 右侧：导航菜单 + 搜索框 + 通知 + 用户 -->
         <div class="flex items-center gap-40px">
           <!-- 导航菜单 -->
@@ -33,7 +32,7 @@
             <span
               class="text-14px cursor-pointer transition-all duration-300"
               :class="
-                props.activeNavItem !== 'workspace' && props.activeNavItem !== ''
+                activeNavItem !== 'marketplace' && activeNavItem !== ''
                   ? 'text-[#1677FF]'
                   : 'text-#666 hover:text-[#1677FF]'
               "
@@ -44,7 +43,7 @@
             <span
               class="text-14px cursor-pointer transition-all duration-300"
               :class="
-                props.activeNavItem === 'marketplace'
+                activeNavItem === 'marketplace'
                   ? 'text-[#1677FF]'
                   : 'text-#666 hover:text-[#1677FF]'
               "
@@ -56,18 +55,7 @@
 
           <div class="flex items-center gap-25px">
             <!-- 搜索框 -->
-            <el-input
-              v-model="searchText"
-              placeholder="搜索"
-              size="default"
-              class="!w-260px"
-              clearable
-              @keyup.enter="handleSearch"
-            >
-              <template #prefix>
-                <el-icon class="el-input__icon"><search /></el-icon>
-              </template>
-            </el-input>
+            <RouterSearch :is-modal="false" :is-input="true" />
 
             <!-- 通知图标 -->
             <Message class="custom-hover" color="var(--top-header-text-color)"/>
@@ -110,12 +98,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUserStoreWithOut } from '@/store/modules/user'
-import { Search, ArrowRight } from '@element-plus/icons-vue'
+import { ArrowRight } from '@element-plus/icons-vue'
 import { Message } from '@/components/Message'
+import RouterSearch from '@/components/RouterSearch/index.vue'
 
 defineOptions({ name: 'Header' })
+
+// ================== 路由 ==================
+const router = useRouter()
 
 // ================== 状态管理 ==================
 const userStore = useUserStoreWithOut()
@@ -124,19 +117,11 @@ const userStore = useUserStoreWithOut()
 interface Props {
   isScrolled?: boolean
   backgroundColor?: string
-  activeNavItem?: string
-  userInfo?: {
-    avatar?: string
-    nickname?: string
-    username?: string
-  }
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isScrolled: false,
-  backgroundColor: '',
-  activeNavItem: '',
-  userInfo: () => ({})
+  backgroundColor: ''
 })
 
 // ================== Emits ==================
@@ -146,22 +131,31 @@ interface Emits {
 
 const emit = defineEmits<Emits>()
 
-// ================== 响应式数据 ==================
-const searchText = ref('')
-
 // ================== 计算属性 ==================
+// 根据当前路由计算 activeNavItem
+const activeNavItem = computed(() => {
+  const currentPath = router.currentRoute.value.path
+  if (currentPath.includes('/marketplace')) {
+    return 'marketplace'
+  }
+  if (currentPath.includes('/workspace') || currentPath === '/') {
+    return 'workspace'
+  }
+  return ''
+})
+
 const isUserLoggedIn = computed(() => userStore.getIsSetUser)
 
 const userAvatar = computed(() => {
-  if (isUserLoggedIn.value && props.userInfo?.avatar) {
-    return props.userInfo.avatar
+  if (isUserLoggedIn.value && userStore.user?.avatar) {
+    return userStore.user.avatar
   }
   return '@/assets/imgs/logo.png'
 })
 
 const userName = computed(() => {
   if (isUserLoggedIn.value) {
-    return props.userInfo?.nickname || props.userInfo?.username || '用户'
+    return userStore.user?.nickname || '用户'
   }
   return '点击登录'
 })
@@ -180,14 +174,6 @@ const handleUserClick = () => {
     handleNavigation('/login')
   }
 }
-
-// 搜索功能
-const handleSearch = () => {
-  if (searchText.value.trim()) {
-    // 可以在这里实现搜索逻辑
-    console.log('搜索:', searchText.value)
-    // 可以跳转到搜索结果页面
-    // handleNavigation(`/search?q=${encodeURIComponent(searchText.value)}`)
-  }
-}
+// todo @zhaokun 这里还需要展示角色，点击角色触发下拉
+// todo 头像默认头像
 </script>

@@ -1,6 +1,6 @@
 <template>
   <ContentWrap shadow="always">
-      <el-table v-loading="loading" :data="tableData" border>
+      <el-table v-loading="loading" :data="tableData">
         <el-table-column align="center" label="资源名称" prop="name" show-overflow-tooltip />
         <el-table-column align="center" label="资源标签" prop="address" show-overflow-tooltip>
           <template #default="{ row }">

@@ -1,4 +1,4 @@
-import { unref, type ComputedRef, type Ref } from 'vue'
+import { unref, type ComputedRef, type Ref, type VNode } from 'vue'
 import { isUrl } from '@/utils/is'
 import { pathResolve } from '@/utils/routerHelper'
 import { hasOneShowingChild } from '../helper'
@@ -18,7 +18,7 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
   const { routers, activeMenu, expandedMenus, collapse, handleMenuClick, toggleExpand } = options
 
   const renderCollapsedMenu = () => {
-    const allSecondLevelItems: JSX.Element[] = []
+    const allSecondLevelItems: VNode[] = []
 
     unref(routers).forEach((firstLevel) => {
       if (firstLevel.children && !firstLevel.meta?.hidden) {
@@ -54,7 +54,7 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
                 key={finalPath}
                 path={finalPath}
                 title={title as string}
-                icon={icon}
+                icon={(icon as string) || ''}
                 isActive={isActive}
                 hasChildren={hasChildren}
                 onClick={hasChildren ? undefined : handleMenuClick}
@@ -67,7 +67,7 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
     return allSecondLevelItems
   }
 
-  const renderMenuItems = (routes: AppRouteRecordRaw[], level = 1, parentPath = '/'): JSX.Element[] => {
+  const renderMenuItems = (routes: AppRouteRecordRaw[], level = 1, parentPath = '/'): VNode[] => {
     const isCollapsed = unref(collapse)
 
     // 折叠状态下使用专门的渲染函数
@@ -100,7 +100,7 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
               key={childPath}
               path={childPath}
               title={itemTitle}
-              icon={itemIcon}
+              icon={itemIcon || ''}
               level={level}
               isActive={isActive}
               hasChildren={false}
@@ -119,7 +119,7 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
             key={fullPath}
             path={fullPath}
             title={title as string}
-            icon={icon}
+            icon={(icon as string) || ''}
             level={level}
             isActive={isActive}
             hasChildren={hasChildren}
@@ -131,7 +131,7 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
           </MenuItemRecursive>
         )
       })
-      .filter(Boolean) as JSX.Element[]
+      .filter(Boolean) as VNode[]
   }
 
   return {

@@ -36,3 +36,33 @@ export type RegisterVO = {
   password: string
   captchaVerification: string
 }
+
+// 菜单信息
+export type MenuVO = {
+  id: number
+  parentId: number
+  name: string
+  path: string
+  component: string
+  componentName: string
+  icon: string
+  visible: boolean
+  keepAlive: boolean
+  alwaysShow: boolean
+  children: MenuVO[] | null
+}
+
+// 权限信息
+export type PermissionInfoVO = {
+  user: {
+    id: number
+    nickname: string
+    avatar: string
+    deptId: number
+    username: string
+    email: string
+  }
+  roles: string[]
+  permissions: string[]
+  menus: MenuVO[]
+}

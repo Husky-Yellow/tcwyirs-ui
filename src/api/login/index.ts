@@ -1,5 +1,5 @@
 import request from '@/config/axios'
-import type { RegisterVO, UserLoginVO } from './types'
+import type { RegisterVO, UserLoginVO, PermissionInfoVO } from './types'
 
 export interface SmsCodeVO {
   mobile: string
@@ -37,7 +37,7 @@ export const loginOut = () => {
 }
 
 // 获取用户权限信息
-export const getInfo = () => {
+export const getInfo = (): Promise<PermissionInfoVO> => {
   return request.get({ url: '/system/auth/get-permission-info' })
 }
 

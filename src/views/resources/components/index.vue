@@ -24,7 +24,7 @@ import { ref, computed, onMounted } from 'vue'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Search } from '@/components/Search'
 import type { FormSchema } from '@/types/form'
-import ResourceTable from '../components/ResourceTable.vue'
+import ResourceTable from '../component/ResourceTable.vue'
 import { useResourcePage } from '../composables/useResourcePage'
 import type { TableDataItem, TableAction } from '../types'
 
