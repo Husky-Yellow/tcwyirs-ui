@@ -1,9 +1,9 @@
 <template>
   <div ref="scrollContainerRef" class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth">
     <PublicComponents ref="publicComponentsRef" />
-    <Header :is-scrolled="isScrolled" @navigation="navigateTo" />
+    <Header :is-scrolled="isScrolled" />
     <main class="pt-56px">
-      <component :is="ReuseBanner" :on-navigate="() => navigateTo('/workspace')" />
+      <component :is="ReuseBanner" :on-navigate="() => navigateTo('/dashboard/index')" />
       <component :is="ReuseDataStatistics" :statistics="dataStatistics" />
       <component
         :is="ReuseQualityResourcesSection"

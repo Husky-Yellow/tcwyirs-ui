@@ -84,10 +84,17 @@ export const useUserStore = defineStore('admin-user', {
       wsCache.set(CACHE_KEY.USER, userInfo)
     },
     async loginOut() {
-      await loginOut()
-      removeToken()
-      deleteUserCache() // 删除用户缓存
-      this.resetState()
+      try {
+        await loginOut()
+      } catch (error) {
+        // 即使后端登出失败，也要清理本地状态
+        console.error('后端登出失败:', error)
+      } finally {
+        // 无论API调用成功与否，都清理本地状态
+        removeToken()
+        deleteUserCache() // 删除用户缓存
+        this.resetState()
+      }
     },
     resetState() {
       this.permissions = new Set<string>()
