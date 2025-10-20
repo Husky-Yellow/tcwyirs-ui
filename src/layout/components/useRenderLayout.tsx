@@ -1,7 +1,6 @@
 import { computed } from 'vue'
 import { useAppStore } from '@/store/modules/app'
 import { CustomMenu } from '@/layout/components/CustomMenu'
-import { Collapse } from '@/layout/components/Collapse'
 import { Breadcrumb } from '@/layout/components/Breadcrumb'
 import Headers from '@/components/Header/src/Header.vue'
 import AppView from './AppView.vue'
@@ -28,14 +27,8 @@ const fixedHeader = computed(() => appStore.getFixedHeader)
 // 是否是移动端
 const mobile = computed(() => appStore.getMobile)
 
-// 折叠图标
-const hamburger = computed(() => appStore.getHamburger)
-
 // 面包屑
 const breadcrumb = computed(() => appStore.getBreadcrumb)
-
-// 布局
-const layout = computed(() => appStore.getLayout)
 
 export const useRenderLayout = () => {
   const renderCustom = () => {
@@ -44,7 +37,6 @@ export const useRenderLayout = () => {
         class="h-full w-full bg-cover bg-center bg-no-repeat"
         style="background-image: url('/src/assets/imgs/project_bg.png')"
       >
-        {/* ToolHeader 占满屏幕宽度 */}
         <div
           class={[
             'fixed top-0 left-0 w-full z-20',

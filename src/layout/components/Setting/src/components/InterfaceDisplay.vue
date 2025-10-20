@@ -36,13 +36,6 @@ const hamburgerChange = (show: boolean) => {
   appStore.setHamburger(show)
 }
 
-// 全屏图标
-const screenfull = ref(appStore.getScreenfull)
-
-const screenfullChange = (show: boolean) => {
-  appStore.setScreenfull(show)
-}
-
 // 尺寸图标
 const size = ref(appStore.getSize)
 
@@ -161,11 +154,6 @@ watch(
     <div class="flex items-center justify-between">
       <span class="text-14px">{{ '折叠图标' }}</span>
       <ElSwitch v-model="hamburger" @change="hamburgerChange" />
-    </div>
-
-    <div class="flex items-center justify-between">
-      <span class="text-14px">{{ '全屏图标' }}</span>
-      <ElSwitch v-model="screenfull" @change="screenfullChange" />
     </div>
 
     <div class="flex items-center justify-between">

@@ -8,7 +8,6 @@ import { useDesign } from '@/hooks/web/useDesign'
 import { setCssVar, trim } from '@/utils'
 import { colorIsDark, hexToRGB, lighten } from '@/utils/color'
 import { useAppStore } from '@/store/modules/app'
-import { ThemeSwitch } from '@/layout/components/ThemeSwitch'
 import ColorRadioPicker from './components/ColorRadioPicker.vue'
 import InterfaceDisplay from './components/InterfaceDisplay.vue'
 import LayoutRadioPicker from './components/LayoutRadioPicker.vue'
@@ -116,8 +115,6 @@ const copyConfig = async () => {
       breadcrumbIcon: ${appStore.getBreadcrumbIcon},
       // 折叠图标
       hamburger: ${appStore.getHamburger},
-      // 全屏图标
-      screenfull: ${appStore.getScreenfull},
       // 尺寸图标
       size: ${appStore.getSize},
       // 多语言图标
@@ -216,7 +213,6 @@ const clear = () => {
     <div class="text-center">
       <!-- 主题 -->
       <ElDivider>{{ '主题' }}</ElDivider>
-      <ThemeSwitch />
 
       <!-- 布局 -->
       <ElDivider>{{ '布局' }}</ElDivider>

@@ -33,7 +33,7 @@
             <span
               class="text-14px cursor-pointer transition-all duration-300"
               :class="
-                props.activeNavItem === 'workspace'
+                props.activeNavItem !== 'workspace' && props.activeNavItem !== ''
                   ? 'text-[#1677FF]'
                   : 'text-#666 hover:text-[#1677FF]'
               "
@@ -44,7 +44,7 @@
             <span
               class="text-14px cursor-pointer transition-all duration-300"
               :class="
-                props.activeNavItem !== 'workspace'
+                props.activeNavItem === 'marketplace'
                   ? 'text-[#1677FF]'
                   : 'text-#666 hover:text-[#1677FF]'
               "
@@ -74,7 +74,8 @@
 
             <!-- 用户头像 -->
             <el-tooltip
-              :content="isUserLoggedIn ? '点击进入个人中心' : '点击登录'"
+              :visible="!isUserLoggedIn"
+              content="点击登录"
               placement="bottom"
             >
               <div

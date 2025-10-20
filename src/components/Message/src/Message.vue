@@ -136,7 +136,7 @@ onUnmounted(() => {
       :disabled="!isUserLoggedIn"
     >
       <template #reference>
-        <ElBadge :is-dot="hasUnreadMessages" :value="unreadCount > 99 ? '99+' : unreadCount">
+        <ElBadge :is-dot="hasUnreadMessages">
           <Icon
             :size="18"
             class="cursor-pointer transition-colors hover:text-blue-500"

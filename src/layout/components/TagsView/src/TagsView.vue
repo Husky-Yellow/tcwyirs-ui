@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, unref, watch } from 'vue'
+import { computed, nextTick, ref, unref, watch } from 'vue'
 import type { RouteLocationNormalizedLoaded, RouterLinkProps } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { usePermissionStore } from '@/store/modules/permission'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useAppStore } from '@/store/modules/app'
-import { useI18n } from '@/hooks/web/useI18n'
 import { filterAffixTags } from './helper'
 import { ContextMenu, ContextMenuExpose } from '@/layout/components/ContextMenu'
 import { useDesign } from '@/hooks/web/useDesign'
