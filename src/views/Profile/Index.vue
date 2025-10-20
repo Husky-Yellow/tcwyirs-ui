@@ -29,7 +29,6 @@
 <script lang="ts" setup>
 import { BasicInfo, ProfileUser, ResetPwd, UserSocial } from './components'
 
-const { t } = useI18n()
 defineOptions({ name: 'Profile' })
 const activeName = ref('basicInfo')
 const profileUserRef = ref()

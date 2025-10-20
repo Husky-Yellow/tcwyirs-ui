@@ -3,7 +3,7 @@
     <el-avatar v-if="sourceValue" :src="sourceValue" alt="avatar" class="img-circle img-lg" />
     <el-avatar v-if="!sourceValue" :src="avatar" alt="avatar" class="img-circle img-lg" />
     <el-button v-if="showBtn" :class="`${prefixCls}-upload-btn`" @click="open()">
-      {{ btnText ? btnText : t('cropper.selectImage') }}
+      {{ btnText ? btnText : '选择图片' }}
     </el-button>
     <CopperModal
       ref="cropperModelRef"
@@ -16,7 +16,6 @@
 import { useDesign } from '@/hooks/web/useDesign'
 
 import { propTypes } from '@/utils/propTypes'
-import { useI18n } from 'vue-i18n'
 import CopperModal from './CopperModal.vue'
 import avatar from '@/assets/imgs/avatar.gif'
 
@@ -34,7 +33,7 @@ const sourceValue = ref(props.value)
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('cropper-avatar')
 const message = useMessage()
-const { t } = useI18n()
+
 
 const cropperModelRef = ref()
 
@@ -52,7 +51,7 @@ watch(
 function handleUploadSuccess({ source, data, filename }) {
   sourceValue.value = source
   emit('change', { source, data, filename })
-  message.success(t('cropper.uploadSuccess'))
+  message.success('上传成功')
 }
 
 function open() {

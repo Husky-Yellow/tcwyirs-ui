@@ -1,6 +1,5 @@
 import { Layout } from '@/utils/routerHelper'
 
-const { t } = useI18n()
 /**
  * redirect: noredirect        当设置 noredirect 的时候该路由在面包屑导航中不可被点击
  * name:'router-name'          设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
@@ -99,7 +98,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           noTagsView: false,
           icon: 'ep:user',
-          title: t('common.profile')
+          title: '个人中心'
         }
       },
       {
@@ -222,20 +221,20 @@ const remainingRouter: AppRouteRecordRaw[] = [
     name: 'Login',
     meta: {
       hidden: true,
-      title: t('router.login'),
+      title: '登录',
       noTagsView: true
     }
   },
-  {
-    path: '/sso',
-    component: () => import('@/views/Login/Login.vue'),
-    name: 'SSOLogin',
-    meta: {
-      hidden: true,
-      title: t('router.login'),
-      noTagsView: true
-    }
-  },
+  // {
+  //   path: '/sso',
+  //   component: () => import('@/views/Login/Login.vue'),
+  //   name: 'SSOLogin',
+  //   meta: {
+  //     hidden: true,
+  //     title: '登录',
+  //     noTagsView: true
+  //   }
+  // },
   {
     path: '/403',
     component: () => import('@/views/Error/403.vue'),

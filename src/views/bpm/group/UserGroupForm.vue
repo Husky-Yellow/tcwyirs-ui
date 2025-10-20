@@ -49,7 +49,7 @@ import * as UserApi from '@/api/system/user'
 
 defineOptions({ name: 'UserGroupForm' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -105,10 +105,10 @@ const submitForm = async () => {
     const data = formData.value as unknown as UserGroupApi.UserGroupVO
     if (formType.value === 'create') {
       await UserGroupApi.createUserGroup(data)
-      message.success(t('common.createSuccess'))
+      message.success('新增成功')
     } else {
       await UserGroupApi.updateUserGroup(data)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
     }
     dialogVisible.value = false
     // 发送操作成功的事件

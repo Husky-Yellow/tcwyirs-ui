@@ -11,8 +11,6 @@ import { useLockStore } from '@/store/modules/lock'
 
 defineOptions({ name: 'UserInfo' })
 
-const { t } = useI18n()
-
 const { push, replace } = useRouter()
 
 const userStore = useUserStore()
@@ -36,9 +34,9 @@ const lockScreen = () => {
 
 const loginOut = async () => {
   try {
-    await ElMessageBox.confirm(t('common.loginOutMessage'), t('common.reminder'), {
-      confirmButtonText: t('common.ok'),
-      cancelButtonText: t('common.cancel'),
+    await ElMessageBox.confirm('是否退出本系统？', '温馨提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
       type: 'warning'
     })
     await userStore.loginOut()
@@ -66,19 +64,19 @@ const toDocument = () => {
       <ElDropdownMenu>
         <ElDropdownItem>
           <Icon icon="ep:tools" />
-          <div @click="toProfile">{{ t('common.profile') }}</div>
+          <div @click="toProfile">个人中心</div>
         </ElDropdownItem>
         <ElDropdownItem>
           <Icon icon="ep:menu" />
-          <div @click="toDocument">{{ t('common.document') }}</div>
+          <div @click="toDocument">项目文档</div>
         </ElDropdownItem>
         <ElDropdownItem divided>
           <Icon icon="ep:lock" />
-          <div @click="lockScreen">{{ t('lock.lockScreen') }}</div>
+          <div @click="lockScreen">锁定屏幕</div>
         </ElDropdownItem>
         <ElDropdownItem divided @click="loginOut">
           <Icon icon="ep:switch-button" />
-          <div>{{ t('common.loginOut') }}</div>
+          <div>退出系统</div>
         </ElDropdownItem>
       </ElDropdownMenu>
     </template>

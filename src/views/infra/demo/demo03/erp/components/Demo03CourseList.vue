@@ -59,7 +59,7 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/erp'
 import Demo03CourseForm from './Demo03CourseForm.vue'
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const props = defineProps<{
@@ -122,7 +122,7 @@ const handleDelete = async (id: number) => {
     await message.delConfirm()
     // 发起删除
     await Demo03StudentApi.deleteDemo03Course(id)
-    message.success(t('common.delSuccess'))
+    message.success('删除成功')
     // 刷新列表
     await getList()
   } catch {}

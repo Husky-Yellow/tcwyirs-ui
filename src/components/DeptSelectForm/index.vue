@@ -41,7 +41,7 @@ const emit = defineEmits<{
   confirm: [deptList: any[]]
 }>()
 
-const { t } = useI18n() // 国际化
+ // 国际化
 const message = useMessage() // 消息弹窗
 
 const props = defineProps({
@@ -102,7 +102,7 @@ const submitForm = async () => {
   try {
     // 获取选中的完整部门数据
     const checkedNodes = treeRef.value.getCheckedNodes()
-    message.success(t('common.updateSuccess'))
+    message.success('修改成功')
     dialogVisible.value = false
     emit('confirm', checkedNodes)
   } finally {

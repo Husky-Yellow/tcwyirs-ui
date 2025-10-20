@@ -1,7 +1,7 @@
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { useI18n } from './useI18n'
 export const useMessage = () => {
-  const { t } = useI18n()
+  
   return {
     // 消息提示
     info(content: string) {
@@ -21,19 +21,19 @@ export const useMessage = () => {
     },
     // 弹出提示
     alert(content: string) {
-      ElMessageBox.alert(content, t('common.confirmTitle'))
+      ElMessageBox.alert(content, '系统提示')
     },
     // 错误提示
     alertError(content: string) {
-      ElMessageBox.alert(content, t('common.confirmTitle'), { type: 'error' })
+      ElMessageBox.alert(content, '系统提示', { type: 'error' })
     },
     // 成功提示
     alertSuccess(content: string) {
-      ElMessageBox.alert(content, t('common.confirmTitle'), { type: 'success' })
+      ElMessageBox.alert(content, '系统提示', { type: 'success' })
     },
     // 警告提示
     alertWarning(content: string) {
-      ElMessageBox.alert(content, t('common.confirmTitle'), { type: 'warning' })
+      ElMessageBox.alert(content, '系统提示', { type: 'warning' })
     },
     // 通知提示
     notify(content: string) {
@@ -53,20 +53,20 @@ export const useMessage = () => {
     },
     // 确认窗体
     confirm(content: string, tip?: string) {
-      return ElMessageBox.confirm(content, tip ? tip : t('common.confirmTitle'), {
-        confirmButtonText: t('common.ok'),
-        cancelButtonText: t('common.cancel'),
+      return ElMessageBox.confirm(content, tip ? tip : '系统提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning'
       })
     },
     // 删除窗体
     delConfirm(content?: string, tip?: string) {
       return ElMessageBox.confirm(
-        content ? content : t('common.delMessage'),
-        tip ? tip : t('common.confirmTitle'),
+        content ? content : '是否删除所选中数据？',
+        tip ? tip : '系统提示',
         {
-          confirmButtonText: t('common.ok'),
-          cancelButtonText: t('common.cancel'),
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
           type: 'warning'
         }
       )
@@ -74,11 +74,11 @@ export const useMessage = () => {
     // 导出窗体
     exportConfirm(content?: string, tip?: string) {
       return ElMessageBox.confirm(
-        content ? content : t('common.exportMessage'),
-        tip ? tip : t('common.confirmTitle'),
+        content ? content : '是否确认导出数据项？',
+        tip ? tip : '系统提示',
         {
-          confirmButtonText: t('common.ok'),
-          cancelButtonText: t('common.cancel'),
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
           type: 'warning'
         }
       )
@@ -86,8 +86,8 @@ export const useMessage = () => {
     // 提交内容
     prompt(content: string, tip: string) {
       return ElMessageBox.prompt(content, tip, {
-        confirmButtonText: t('common.ok'),
-        cancelButtonText: t('common.cancel'),
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning'
       })
     }

@@ -150,7 +150,6 @@ import { barOptions, lineOptions, pieOptions } from './echarts-data'
 
 defineOptions({ name: 'Home2' })
 
-const { t } = useI18n()
 const loading = ref(true)
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('panel')

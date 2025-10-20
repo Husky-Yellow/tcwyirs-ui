@@ -135,7 +135,7 @@ import { dateFormatter } from '@/utils/formatTime'
 defineOptions({ name: 'InfraFileConfig' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
+// 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -186,7 +186,7 @@ const handleDelete = async (id: number) => {
     await message.delConfirm()
     // 发起删除
     await FileConfigApi.deleteFileConfig(id)
-    message.success(t('common.delSuccess'))
+    message.success('删除成功')
     // 刷新列表
     await getList()
   } catch {}
@@ -197,7 +197,7 @@ const handleMaster = async (id) => {
   try {
     await message.confirm('是否确认修改配置编号为"' + id + '"的数据项为主配置?')
     await FileConfigApi.updateFileConfigMaster(id)
-    message.success(t('common.updateSuccess'))
+    message.success('修改成功')
     await getList()
   } catch {}
 }

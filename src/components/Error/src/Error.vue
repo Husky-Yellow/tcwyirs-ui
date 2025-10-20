@@ -12,25 +12,25 @@ interface ErrorMap {
   buttonText: string
 }
 
-const { t } = useI18n()
+
 
 const errorMap: {
   [key: string]: ErrorMap
 } = {
   '404': {
     url: pageError,
-    message: t('error.pageError'),
-    buttonText: t('error.returnToHome')
+    message: '抱歉，您访问的页面不存在。',
+    buttonText: '返回首页'
   },
   '500': {
     url: networkError,
-    message: t('error.networkError'),
-    buttonText: t('error.returnToHome')
+    message: '抱歉，服务器报告错误。',
+    buttonText: '返回首页'
   },
   '403': {
     url: noPermission,
-    message: t('error.noPermission'),
-    buttonText: t('error.returnToHome')
+    message: '抱歉，您无权访问此页面。',
+    buttonText: '返回首页'
   }
 }
 

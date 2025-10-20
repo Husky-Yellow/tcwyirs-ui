@@ -61,11 +61,11 @@ service.interceptors.request.use(
     // 设置租户
     if (tenantEnable && tenantEnable === 'true') {
       const tenantId = getTenantId()
-      if (tenantId) config.headers['tenant-id'] = tenantId
+      if (tenantId) config.headers['tenant-id'] = '1'
       // 只有登录时，才设置 visit-tenant-id 访问租户
       const visitTenantId = getVisitTenantId()
       if (config.headers.Authorization && visitTenantId) {
-        config.headers['visit-tenant-id'] = visitTenantId
+        config.headers['visit-tenant-id'] = '1'
       }
     }
     const method = config.method?.toUpperCase()

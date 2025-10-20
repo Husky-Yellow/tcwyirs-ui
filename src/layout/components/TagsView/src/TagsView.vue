@@ -21,7 +21,7 @@ const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('tags-view')
 
-const { t } = useI18n()
+
 
 const { currentRoute, push } = useRouter()
 
@@ -306,7 +306,7 @@ watch(
             :schema="[
               {
                 icon: 'ep:refresh',
-                label: t('common.reload'),
+                label: '重新加载',
                 disabled: selectedTag?.fullPath !== item.fullPath,
                 command: () => {
                   refreshSelectedTag(item)
@@ -314,7 +314,7 @@ watch(
               },
               {
                 icon: 'ep:close',
-                label: t('common.closeTab'),
+                label: '关闭标签页',
                 disabled: !!visitedViews?.length && selectedTag?.meta.affix,
                 command: () => {
                   closeSelectedTag(item)
@@ -323,7 +323,7 @@ watch(
               {
                 divided: true,
                 icon: 'ep:d-arrow-left',
-                label: t('common.closeTheLeftTab'),
+                label: '关闭左侧标签页',
                 disabled:
                   !!visitedViews?.length &&
                   (item.fullPath === visitedViews[0].fullPath ||
@@ -334,7 +334,7 @@ watch(
               },
               {
                 icon: 'ep:d-arrow-right',
-                label: t('common.closeTheRightTab'),
+                label: '关闭右侧标签页',
                 disabled:
                   !!visitedViews?.length &&
                   (item.fullPath === visitedViews[visitedViews.length - 1].fullPath ||
@@ -346,7 +346,7 @@ watch(
               {
                 divided: true,
                 icon: 'ep:discount',
-                label: t('common.closeOther'),
+                label: '关闭其他标签页',
                 disabled: selectedTag?.fullPath !== item.fullPath,
                 command: () => {
                   closeOthersTags()
@@ -354,7 +354,7 @@ watch(
               },
               {
                 icon: 'ep:minus',
-                label: t('common.closeAll'),
+                label: '关闭全部标签页',
                 command: () => {
                   closeAllTags()
                 }
@@ -425,14 +425,14 @@ watch(
       :schema="[
         {
           icon: 'ep:refresh',
-          label: t('common.reload'),
+          label: '重新加载',
           command: () => {
             refreshSelectedTag(selectedTag)
           }
         },
         {
           icon: 'ep:close',
-          label: t('common.closeTab'),
+          label: '关闭标签页',
           disabled: !!visitedViews?.length && selectedTag?.meta.affix,
           command: () => {
             closeSelectedTag(selectedTag!)
@@ -441,7 +441,7 @@ watch(
         {
           divided: true,
           icon: 'ep:d-arrow-left',
-          label: t('common.closeTheLeftTab'),
+          label: '关闭左侧标签页',
           disabled: !!visitedViews?.length && selectedTag?.fullPath === visitedViews[0].fullPath,
           command: () => {
             closeLeftTags()
@@ -449,7 +449,7 @@ watch(
         },
         {
           icon: 'ep:d-arrow-right',
-          label: t('common.closeTheRightTab'),
+          label: '关闭右侧标签页',
           disabled:
             !!visitedViews?.length &&
             selectedTag?.fullPath === visitedViews[visitedViews.length - 1].fullPath,
@@ -460,14 +460,14 @@ watch(
         {
           divided: true,
           icon: 'ep:discount',
-          label: t('common.closeOther'),
+          label: '关闭其他标签页',
           command: () => {
             closeOthersTags()
           }
         },
         {
           icon: 'ep:minus',
-          label: t('common.closeAll'),
+          label: '关闭全部标签页',
           command: () => {
             closeAllTags()
           }

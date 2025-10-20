@@ -35,7 +35,7 @@ import { useUpload } from '@/components/UploadFile/src/useUpload'
 
 defineOptions({ name: 'InfraFileForm' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -75,7 +75,7 @@ const submitFormSuccess = () => {
   formLoading.value = false
   unref(uploadRef)?.clearFiles()
   // 提示成功，并刷新
-  message.success(t('common.createSuccess'))
+  message.success('新增成功')
   emit('success')
 }
 

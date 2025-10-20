@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 
-const { t } = useI18n() // 国际化
+ // 国际化
 
 export function hasRole(app: App<Element>) {
   app.directive('hasRole', (el, binding) => {
@@ -22,7 +22,7 @@ export function hasRole(app: App<Element>) {
         el.parentNode && el.parentNode.removeChild(el)
       }
     } else {
-      throw new Error(t('permission.hasRole'))
+      throw new Error('请设置角色权限标签值')
     }
   })
 }

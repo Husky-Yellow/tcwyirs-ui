@@ -3,7 +3,7 @@
     <Dialog
       v-model="dialogVisible"
       :canFullscreen="false"
-      :title="t('cropper.modalTitle')"
+      :title="'头像上传'"
       maxHeight="380px"
       width="800px"
     >
@@ -22,12 +22,12 @@
 
           <div :class="`${prefixCls}-toolbar`">
             <el-upload :beforeUpload="handleBeforeUpload" :fileList="[]" accept="image/*">
-              <el-tooltip :content="t('cropper.selectImage')" placement="bottom">
+              <el-tooltip :content="'选择图片'" placement="bottom">
                 <XButton preIcon="ant-design:upload-outlined" type="primary" />
               </el-tooltip>
             </el-upload>
             <el-space>
-              <el-tooltip :content="t('cropper.btn_reset')" placement="bottom">
+              <el-tooltip :content="'重置'" placement="bottom">
                 <XButton
                   :disabled="!src"
                   preIcon="ant-design:reload-outlined"
@@ -36,7 +36,7 @@
                   @click="handlerToolbar('reset')"
                 />
               </el-tooltip>
-              <el-tooltip :content="t('cropper.btn_rotate_left')" placement="bottom">
+              <el-tooltip :content="'逆时针旋转'" placement="bottom">
                 <XButton
                   :disabled="!src"
                   preIcon="ant-design:rotate-left-outlined"
@@ -45,7 +45,7 @@
                   @click="handlerToolbar('rotate', -45)"
                 />
               </el-tooltip>
-              <el-tooltip :content="t('cropper.btn_rotate_right')" placement="bottom">
+              <el-tooltip :content="'顺时针旋转'" placement="bottom">
                 <XButton
                   :disabled="!src"
                   preIcon="ant-design:rotate-right-outlined"
@@ -54,7 +54,7 @@
                   @click="handlerToolbar('rotate', 45)"
                 />
               </el-tooltip>
-              <el-tooltip :content="t('cropper.btn_scale_x')" placement="bottom">
+              <el-tooltip :content="'水平翻转'" placement="bottom">
                 <XButton
                   :disabled="!src"
                   preIcon="vaadin:arrows-long-h"
@@ -63,7 +63,7 @@
                   @click="handlerToolbar('scaleX')"
                 />
               </el-tooltip>
-              <el-tooltip :content="t('cropper.btn_scale_y')" placement="bottom">
+              <el-tooltip :content="'垂直翻转'" placement="bottom">
                 <XButton
                   :disabled="!src"
                   preIcon="vaadin:arrows-long-v"
@@ -72,7 +72,7 @@
                   @click="handlerToolbar('scaleY')"
                 />
               </el-tooltip>
-              <el-tooltip :content="t('cropper.btn_zoom_in')" placement="bottom">
+              <el-tooltip :content="'放大'" placement="bottom">
                 <XButton
                   :disabled="!src"
                   preIcon="ant-design:zoom-in-outlined"
@@ -81,7 +81,7 @@
                   @click="handlerToolbar('zoom', 0.1)"
                 />
               </el-tooltip>
-              <el-tooltip :content="t('cropper.btn_zoom_out')" placement="bottom">
+              <el-tooltip :content="'缩小'" placement="bottom">
                 <XButton
                   :disabled="!src"
                   preIcon="ant-design:zoom-out-outlined"
@@ -95,7 +95,7 @@
         </div>
         <div :class="`${prefixCls}-right`">
           <div :class="`${prefixCls}-preview`">
-            <img v-if="previewSource" :alt="t('cropper.preview')" :src="previewSource" />
+            <img v-if="previewSource" :alt="'预览'" :src="previewSource" />
           </div>
           <template v-if="previewSource">
             <div :class="`${prefixCls}-group`">
@@ -108,7 +108,7 @@
         </div>
       </div>
       <template #footer>
-        <el-button type="primary" @click="handleOk">{{ t('cropper.okText') }}</el-button>
+        <el-button type="primary" @click="handleOk">{{ '确认并上传' }}</el-button>
       </template>
     </Dialog>
   </div>
@@ -116,7 +116,6 @@
 <script lang="ts" setup>
 import { useDesign } from '@/hooks/web/useDesign'
 import { dataURLtoBlob } from '@/utils/filt'
-import { useI18n } from 'vue-i18n'
 import type { CropendResult, Cropper } from './types'
 import { propTypes } from '@/utils/propTypes'
 import { CropperImage } from '@/components/Cropper'
@@ -128,7 +127,7 @@ const props = defineProps({
   circled: propTypes.bool.def(true)
 })
 const emit = defineEmits(['uploadSuccess'])
-const { t } = useI18n()
+
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('cropper-am')
 

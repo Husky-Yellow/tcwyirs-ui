@@ -61,7 +61,7 @@ interface AllSchemas {
   detailSchema: DescriptionsSchema[]
 }
 
-const { t } = useI18n()
+
 
 // 过滤所有结构
 export const useCrudSchemas = (

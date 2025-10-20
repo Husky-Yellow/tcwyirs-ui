@@ -121,7 +121,7 @@ import Demo02CategoryForm from './Demo02CategoryForm.vue'
 defineOptions({ name: 'Demo02Category' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
+// 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref([]) // 列表的数据
@@ -169,7 +169,7 @@ const handleDelete = async (id: number) => {
     await message.delConfirm()
     // 发起删除
     await Demo02CategoryApi.deleteDemo02Category(id)
-    message.success(t('common.delSuccess'))
+    message.success('删除成功')
     // 刷新列表
     await getList()
   } catch {}

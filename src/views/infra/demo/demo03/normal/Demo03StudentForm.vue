@@ -54,7 +54,7 @@ import * as Demo03StudentApi from '@/api/infra/demo/demo03/normal'
 import Demo03CourseForm from './components/Demo03CourseForm.vue'
 import Demo03GradeForm from './components/Demo03GradeForm.vue'
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -126,10 +126,10 @@ const submitForm = async () => {
     data.demo03Grade = demo03GradeFormRef.value.getData()
     if (formType.value === 'create') {
       await Demo03StudentApi.createDemo03Student(data)
-      message.success(t('common.createSuccess'))
+      message.success('新增成功')
     } else {
       await Demo03StudentApi.updateDemo03Student(data)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
     }
     dialogVisible.value = false
     // 发送操作成功的事件

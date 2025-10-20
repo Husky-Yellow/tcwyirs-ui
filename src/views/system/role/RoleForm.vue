@@ -43,7 +43,7 @@ import * as RoleApi from '@/api/system/role'
 
 defineOptions({ name: 'SystemRoleForm' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -111,10 +111,10 @@ const submitForm = async () => {
     const data = formData.value as unknown as RoleApi.RoleVO
     if (formType.value === 'create') {
       await RoleApi.createRole(data)
-      message.success(t('common.createSuccess'))
+      message.success('新增成功')
     } else {
       await RoleApi.updateRole(data)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
     }
     dialogVisible.value = false
     // 发送操作成功的事件

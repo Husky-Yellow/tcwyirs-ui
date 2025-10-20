@@ -54,7 +54,6 @@ import { getUserProfile, ProfileVO } from '@/api/system/user/profile'
 
 defineOptions({ name: 'ProfileUser' })
 
-const { t } = useI18n()
 const userInfo = ref({} as ProfileVO)
 const getUserInfo = async () => {
   const users = await getUserProfile()

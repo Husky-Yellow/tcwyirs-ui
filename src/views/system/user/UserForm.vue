@@ -106,7 +106,7 @@ import { FormRules } from 'element-plus'
 
 defineOptions({ name: 'SystemUserForm' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -185,10 +185,10 @@ const submitForm = async () => {
     const data = formData.value as unknown as UserApi.UserVO
     if (formType.value === 'create') {
       await UserApi.createUser(data)
-      message.success(t('common.createSuccess'))
+      message.success('新增成功')
     } else {
       await UserApi.updateUser(data)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
     }
     dialogVisible.value = false
     // 发送操作成功的事件

@@ -223,7 +223,7 @@ import SmsTemplateSendForm from './SmsTemplateSendForm.vue'
 defineOptions({ name: 'SystemSmsTemplate' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
+// 国际化
 
 const loading = ref(false) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -286,7 +286,7 @@ const handleDelete = async (id: number) => {
     await message.delConfirm()
     // 发起删除
     await SmsTemplateApi.deleteSmsTemplate(id)
-    message.success(t('common.delSuccess'))
+    message.success('删除成功')
     // 刷新列表
     await getList()
   } catch {}

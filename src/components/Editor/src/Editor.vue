@@ -5,7 +5,6 @@ import { i18nChangeLanguage, IDomEditor, IEditorConfig } from '@wangeditor/edito
 import { propTypes } from '@/utils/propTypes'
 import { isNumber } from '@/utils/is'
 import { ElMessage } from 'element-plus'
-import { useLocaleStore } from '@/store/modules/locale'
 import { getRefreshToken, getTenantId } from '@/utils/auth'
 import { getUploadUrl } from '@/components/UploadFile/src/useUpload'
 
@@ -13,11 +12,8 @@ defineOptions({ name: 'Editor' })
 
 type InsertFnType = (url: string, alt: string, href: string) => void
 
-const localeStore = useLocaleStore()
 
-const currentLocale = computed(() => localeStore.getCurrentLocale)
-
-i18nChangeLanguage(unref(currentLocale).lang)
+i18nChangeLanguage('zh-CN')
 
 const props = defineProps({
   editorId: propTypes.string.def('wangeEditor-1'),

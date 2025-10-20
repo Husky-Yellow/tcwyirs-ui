@@ -25,7 +25,7 @@ export default defineComponent({
   setup() {
     const { currentRoute } = useRouter()
 
-    const { t } = useI18n()
+
 
     const levelList = ref<AppRouteRecordRaw[]>([])
 
@@ -54,10 +54,10 @@ export default defineComponent({
             {meta?.icon && breadcrumbIcon.value ? (
               <div class="flex items-center">
                 <Icon icon={meta.icon} class="mr-[2px]" svgClass="inline-block"></Icon>
-                {t(v?.meta?.title)}
+                {v?.meta?.title}
               </div>
             ) : (
-              t(v?.meta?.title)
+              v?.meta?.title
             )}
           </ElBreadcrumbItem>
         )

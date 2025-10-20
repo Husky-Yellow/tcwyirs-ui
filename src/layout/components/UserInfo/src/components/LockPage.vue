@@ -29,7 +29,7 @@ const lockStore = useLockStore()
 
 const { hour, month, minute, meridiem, year, day, week } = useNow(true)
 
-const { t } = useI18n()
+
 
 // 解锁
 async function unLock() {
@@ -74,7 +74,7 @@ function handleShowForm(show = false) {
       v-show="showDate"
     >
       <Icon icon="ep:lock" />
-      <span>{{ t('lock.unlock') }}</span>
+      <span>{{ '点击解锁' }}</span>
     </div>
 
     <div class="flex w-screen h-screen justify-center items-center">
@@ -99,12 +99,12 @@ function handleShowForm(show = false) {
           </div>
           <ElInput
             type="password"
-            :placeholder="t('lock.placeholder')"
+            :placeholder="'请输入锁屏密码'"
             class="enter-x"
             v-model="password"
           />
           <span :class="`text-14px ${prefixCls}-entry__err-msg enter-x`" v-if="errMsg">
-            {{ t('lock.message') }}
+            {{ '锁屏密码错误' }}
           </span>
           <div :class="`${prefixCls}-entry__footer enter-x`">
             <ElButton
@@ -115,7 +115,7 @@ function handleShowForm(show = false) {
               :disabled="loading"
               @click="handleShowForm(true)"
             >
-              {{ t('common.back') }}
+              {{ '返回' }}
             </ElButton>
             <ElButton
               type="primary"
@@ -125,7 +125,7 @@ function handleShowForm(show = false) {
               :disabled="loading"
               @click="goLogin"
             >
-              {{ t('lock.backToLogin') }}
+              {{ '返回登录' }}
             </ElButton>
             <ElButton
               type="primary"
@@ -135,7 +135,7 @@ function handleShowForm(show = false) {
               @click="unLock()"
               :disabled="loading"
             >
-              {{ t('lock.entrySystem') }}
+              {{ '进入系统' }}
             </ElButton>
           </div>
         </div>

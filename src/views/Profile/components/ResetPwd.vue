@@ -10,8 +10,8 @@
       <InputPassword v-model="password.confirmPassword" strength />
     </el-form-item>
     <el-form-item>
-      <XButton :title="t('common.save')" type="primary" @click="submit(formRef)" />
-      <XButton :title="t('common.reset')" type="danger" @click="reset(formRef)" />
+      <XButton :title="'保存'" type="primary" @click="submit(formRef)" />
+      <XButton :title="'重置'" type="danger" @click="reset(formRef)" />
     </el-form-item>
   </el-form>
 </template>
@@ -23,7 +23,6 @@ import { updateUserPassword } from '@/api/system/user/profile'
 
 defineOptions({ name: 'ResetPwd' })
 
-const { t } = useI18n()
 const message = useMessage()
 const formRef = ref<FormInstance>()
 const password = reactive({
@@ -61,7 +60,7 @@ const submit = (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid) => {
     if (valid) {
       await updateUserPassword(password.oldPassword, password.newPassword)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
     }
   })
 }

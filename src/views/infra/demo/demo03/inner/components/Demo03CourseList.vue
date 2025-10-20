@@ -19,7 +19,7 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/inner'
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const props = defineProps<{

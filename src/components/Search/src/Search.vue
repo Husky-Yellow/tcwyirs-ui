@@ -9,7 +9,7 @@ import { FormSchema } from '@/types/form'
 
 defineOptions({ name: 'Search' })
 
-const { t } = useI18n()
+
 
 const props = defineProps({
   // 生成Form的布局结构数组
@@ -116,12 +116,12 @@ const setVisible = () => {
         <!-- update by 芋艿：去除搜索的 type="primary"，颜色变淡一点 -->
         <ElButton v-if="showSearch" @click="search">
           <Icon class="mr-5px" icon="ep:search" />
-          {{ t('common.query') }}
+          {{ '查询' }}
         </ElButton>
         <!-- update by 芋艿：将 icon="ep:refresh-right" 修改成 icon="ep:refresh"，和 ruoyi-vue 搜索保持一致  -->
         <ElButton v-if="showReset" @click="reset">
           <Icon class="mr-5px" icon="ep:refresh" />
-          {{ t('common.reset') }}
+          {{ '重置' }}
         </ElButton>
         <ElButton v-if="expand" text @click="setVisible">
           {{ t(visible ? 'common.shrink' : 'common.expand') }}
@@ -140,11 +140,11 @@ const setVisible = () => {
     <div :style="bottonButtonStyle">
       <ElButton v-if="showSearch" type="primary" @click="search">
         <Icon class="mr-5px" icon="ep:search" />
-        {{ t('common.query') }}
+        {{ '查询' }}
       </ElButton>
       <ElButton v-if="showReset" @click="reset">
         <Icon class="mr-5px" icon="ep:refresh-right" />
-        {{ t('common.reset') }}
+        {{ '重置' }}
       </ElButton>
       <ElButton v-if="expand" text @click="setVisible">
         {{ t(visible ? 'common.shrink' : 'common.expand') }}

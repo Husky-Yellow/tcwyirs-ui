@@ -19,15 +19,15 @@
         <div class="upload-handle" @click.stop>
           <div v-if="!disabled" class="handle-icon" @click="editImg">
             <Icon icon="ep:edit" />
-            <span v-if="showBtnText">{{ t('action.edit') }}</span>
+            <span v-if="showBtnText">{{ '编辑' }}</span>
           </div>
           <div class="handle-icon" @click="imagePreview(modelValue)">
             <Icon icon="ep:zoom-in" />
-            <span v-if="showBtnText">{{ t('action.detail') }}</span>
+            <span v-if="showBtnText">{{ '详情' }}</span>
           </div>
           <div v-if="showDelete && !disabled" class="handle-icon" @click="deleteImg">
             <Icon icon="ep:delete" />
-            <span v-if="showBtnText">{{ t('action.del') }}</span>
+            <span v-if="showBtnText">{{ '删除' }}</span>
           </div>
         </div>
       </template>
@@ -82,7 +82,7 @@ const props = defineProps({
   showBtnText: propTypes.bool.def(true), // 是否显示按钮文字
   directory: propTypes.string.def(undefined) // 上传目录 ==> 非必传（默认为 undefined）
 })
-const { t } = useI18n() // 国际化
+ // 国际化
 const message = useMessage() // 消息弹窗
 // 生成组件唯一id
 const uuid = ref('id-' + generateUUID())

@@ -334,7 +334,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['success'])
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
+// 国际化
 const { push } = useRouter() // 路由
 const userStore = useUserStoreWithOut() // 用户信息缓存
 const isDark = computed(() => useAppStore().getIsDark) // 是否黑暗模式
@@ -423,7 +423,7 @@ const handleDelete = async (row: any) => {
     await message.delConfirm()
     // 发起删除
     await ModelApi.deleteModel(row.id)
-    message.success(t('common.delSuccess'))
+    message.success('删除成功')
     // 刷新列表
     emit('success')
   } catch {}
@@ -594,7 +594,7 @@ const handleDeleteCategory = async () => {
     await message.confirm('确认删除分类吗?')
     // 发起删除
     await CategoryApi.deleteCategory(props.categoryInfo.id)
-    message.success(t('common.delSuccess'))
+    message.success('删除成功')
     // 刷新列表
     emit('success')
   } catch {}

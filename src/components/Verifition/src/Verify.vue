@@ -83,7 +83,7 @@ export default {
     }
   },
   setup(props) {
-    const { t } = useI18n()
+    
     const { captchaType, mode } = toRefs(props)
     const clickShow = ref(false)
     const verifyType = ref(undefined)

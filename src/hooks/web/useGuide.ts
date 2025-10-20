@@ -1,9 +1,8 @@
 import { Config, driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
 import { useDesign } from '@/hooks/web/useDesign'
-import { useI18n } from '@/hooks/web/useI18n'
 
-const { t } = useI18n()
+
 
 const { variables } = useDesign()
 
@@ -11,31 +10,31 @@ export const useGuide = (options?: Config) => {
   const driverObj = driver(
     options || {
       showProgress: true,
-      nextBtnText: t('common.nextLabel'),
-      prevBtnText: t('common.prevLabel'),
-      doneBtnText: t('common.doneLabel'),
+      nextBtnText: '下一步',
+      prevBtnText: '上一步',
+      doneBtnText: '结束',
       steps: [
         {
           element: `#${variables.namespace}-menu`,
           popover: {
-            title: t('common.menu'),
-            description: t('common.menuDes'),
+            title: '菜单',
+            description: '以路由的结构渲染的菜单栏',
             side: 'right'
           }
         },
         {
           element: `#${variables.namespace}-tool-header`,
           popover: {
-            title: t('common.tool'),
-            description: t('common.toolDes'),
+            title: '工具',
+            description: '用于设置定制系统',
             side: 'left'
           }
         },
         {
           element: `#${variables.namespace}-tags-view`,
           popover: {
-            title: t('common.tagsView'),
-            description: t('common.tagsViewDes'),
+            title: '标签页',
+            description: '用于记录路由历史记录',
             side: 'bottom'
           }
         }

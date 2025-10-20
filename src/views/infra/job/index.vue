@@ -158,7 +158,7 @@ import { InfraJobStatusEnum } from '@/utils/constants'
 
 defineOptions({ name: 'InfraJob' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 const { push } = useRouter() // 路由
 
@@ -227,7 +227,7 @@ const handleChangeStatus = async (row: JobApi.JobVO) => {
     const text = row.status === InfraJobStatusEnum.STOP ? '开启' : '关闭'
     await message.confirm(
       '确认要' + text + '定时任务编号为"' + row.id + '"的数据项?',
-      t('common.reminder')
+      '温馨提示'
     )
     const status =
       row.status === InfraJobStatusEnum.STOP ? InfraJobStatusEnum.NORMAL : InfraJobStatusEnum.STOP
@@ -245,7 +245,7 @@ const handleDelete = async (id: number) => {
     await message.delConfirm()
     // 发起删除
     await JobApi.deleteJob(id)
-    message.success(t('common.delSuccess'))
+    message.success('删除成功')
     // 刷新列表
     await getList()
   } catch {}
@@ -272,7 +272,7 @@ const handleCommand = (command, row) => {
 const handleRun = async (row: JobApi.JobVO) => {
   try {
     // 二次确认
-    await message.confirm('确认要立即执行一次' + row.name + '?', t('common.reminder'))
+    await message.confirm('确认要立即执行一次' + row.name + '?', '温馨提示')
     // 提交执行
     await JobApi.runJob(row.id)
     message.success('执行成功')

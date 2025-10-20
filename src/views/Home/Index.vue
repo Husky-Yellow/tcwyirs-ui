@@ -77,7 +77,7 @@
               href="https://github.com/yudaocode"
               target="_blank"
             >
-              {{ t('action.more') }}
+              {{ '更多' }}
             </el-link>
           </div>
         </template>
@@ -162,7 +162,7 @@
         <template #header>
           <div class="h-3 flex justify-between">
             <span>{{ t('workplace.notice') }}</span>
-            <el-link type="primary" :underline="false">{{ t('action.more') }}</el-link>
+            <el-link type="primary" :underline="false">{{ '更多' }}</el-link>
           </div>
         </template>
         <el-skeleton :loading="loading" animated>
@@ -248,7 +248,6 @@ import { Drawer } from '@/components/Drawer'
 
 defineOptions({ name: 'Index' })
 
-const { t } = useI18n()
 const router = useRouter()
 const userStore = useUserStore()
 // const { setWatermark } = useWatermark()

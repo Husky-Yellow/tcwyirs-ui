@@ -47,7 +47,7 @@ defineOptions({ name: 'UserSelectForm' })
 const emit = defineEmits<{
   confirm: [id: any, userList: any[]]
 }>()
-const { t } = useI18n() // 国际
+ // 国际
 const message = useMessage() // 消息弹窗
 const deptTree = ref<Tree[]>([]) // 部门树形结构化
 const deptList = ref<any[]>([]) // 保存扁平化的部门列表数据
@@ -124,7 +124,7 @@ const filterUserList = async (deptId?: number) => {
 /** 提交选择 */
 const submitForm = async () => {
   try {
-    message.success(t('common.updateSuccess'))
+    message.success('修改成功')
     dialogVisible.value = false
     // 从所有用户列表中筛选出已选择的用户
     const emitUserList = userList.value.filter((user: any) =>

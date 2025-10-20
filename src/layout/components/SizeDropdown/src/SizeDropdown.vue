@@ -15,7 +15,7 @@ defineProps({
   color: propTypes.string.def('')
 })
 
-const { t } = useI18n()
+
 
 const appStore = useAppStore()
 

@@ -162,7 +162,7 @@ import PreviewCode from './PreviewCode.vue'
 defineOptions({ name: 'InfraCodegen' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
+// 国际化
 const { push } = useRouter() // 路由跳转
 
 const loading = ref(true) // 列表的加载中
@@ -226,7 +226,7 @@ const handleDelete = async (id: number) => {
     await message.delConfirm()
     // 发起删除
     await CodegenApi.deleteCodegenTable(id)
-    message.success(t('common.delSuccess'))
+    message.success('删除成功')
     // 刷新列表
     await getList()
   } catch {}
@@ -237,7 +237,7 @@ const handleSyncDB = async (row: CodegenApi.CodegenTableVO) => {
   // 基于 DB 同步
   const tableName = row.tableName
   try {
-    await message.confirm('确认要强制同步' + tableName + '表结构吗?', t('common.reminder'))
+    await message.confirm('确认要强制同步' + tableName + '表结构吗?', '温馨提示')
     await CodegenApi.syncCodegenFromDB(row.id)
     message.success('同步成功')
   } catch {}

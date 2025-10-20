@@ -106,7 +106,7 @@ import * as OAuth2AccessTokenApi from '@/api/system/oauth2/token'
 defineOptions({ name: 'SystemTokenClient' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
+// 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -151,7 +151,7 @@ const handleForceLogout = async (accessToken: string) => {
     await message.confirm('是否要强制退出用户')
     // 发起删除
     await OAuth2AccessTokenApi.deleteAccessToken(accessToken)
-    message.success(t('common.success'))
+    message.success('成功')
     // 刷新列表
     await getList()
   } catch {}

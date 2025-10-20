@@ -2,7 +2,7 @@
 import { provide, computed, watch, onMounted } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 import { ComponentSize, ElConfigProvider } from 'element-plus'
-import { useLocaleStore } from '@/store/modules/locale'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { useWindowSize } from '@vueuse/core'
 import { useAppStore } from '@/store/modules/app'
 import { setCssVar } from '@/utils'
@@ -43,17 +43,12 @@ watch(
     immediate: true
   }
 )
-
-// 多语言相关
-const localeStore = useLocaleStore()
-
-const currentLocale = computed(() => localeStore.currentLocale)
 </script>
 
 <template>
   <ElConfigProvider
     :namespace="variables.elNamespace"
-    :locale="currentLocale.elLocale"
+    :locale="zhCn"
     :message="{ max: 5 }"
     :size="size"
   >

@@ -41,7 +41,7 @@ export const useRenderLayout = () => {
   const renderCustom = () => {
     return (
       <div
-        class="fixed inset-0 bg-cover bg-center bg-no-repeat"
+        class="h-full w-full bg-cover bg-center bg-no-repeat"
         style="background-image: url('/src/assets/imgs/project_bg.png')"
       >
         {/* ToolHeader 占满屏幕宽度 */}
@@ -102,9 +102,9 @@ export const useRenderLayout = () => {
               ]}
               style="transition: all var(--transition-time-02);"
             >
-              {hamburger.value && layout.value !== 'cutMenu' ? (
+              {/* {hamburger.value && layout.value !== 'cutMenu' ? (
                 <Collapse class="custom-hover mr-2" color="var(--top-header-text-color)"></Collapse>
-              ) : undefined}
+              ) : undefined} */}
               {breadcrumb.value ? <Breadcrumb></Breadcrumb> : undefined}
             </div>
 

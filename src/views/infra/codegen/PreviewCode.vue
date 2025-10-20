@@ -43,7 +43,7 @@
             :name="item.filePath"
           >
             <el-button class="float-right" text type="primary" @click="copy(item.code)">
-              {{ t('common.copy') }}
+              {{ '复制' }}
             </el-button>
             <el-scrollbar height="600px">
               <pre><code v-dompurify-html="highlightedCode(item)" class="hljs"></code></pre>
@@ -69,7 +69,7 @@ import typescript from 'highlight.js/lib/languages/typescript'
 
 defineOptions({ name: 'InfraCodegenPreviewCode' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -182,12 +182,12 @@ const handleFiles = (datas: CodegenApi.CodegenPreviewVO[]) => {
 const copy = async (text: string) => {
   const { copy, copied, isSupported } = useClipboard({ source: text })
   if (!isSupported) {
-    message.error(t('common.copyError'))
+    message.error('复制失败')
     return
   }
   await copy()
   if (unref(copied)) {
-    message.success(t('common.copySuccess'))
+    message.success('复制成功')
   }
 }
 

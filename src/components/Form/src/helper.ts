@@ -11,12 +11,12 @@ import { ColProps } from '@/types/components'
  * @description 用于自动设置placeholder
  */
 export const setTextPlaceholder = (schema: FormSchema): PlaceholderModel => {
-  const { t } = useI18n()
+  
   const textMap = ['Input', 'Autocomplete', 'InputNumber', 'InputPassword']
   const selectMap = ['Select', 'SelectV2', 'TimePicker', 'DatePicker', 'TimeSelect', 'TimeSelect']
   if (textMap.includes(schema?.component as string)) {
     return {
-      placeholder: t('common.inputText') + schema.label
+      placeholder: '请输入' + schema.label
     }
   }
   if (selectMap.includes(schema?.component as string)) {
@@ -28,13 +28,13 @@ export const setTextPlaceholder = (schema: FormSchema): PlaceholderModel => {
       )
     ) {
       return {
-        startPlaceholder: t('common.startTimeText'),
-        endPlaceholder: t('common.endTimeText'),
+        startPlaceholder: '开始时间',
+        endPlaceholder: '结束时间',
         rangeSeparator: '-'
       }
     } else {
       return {
-        placeholder: t('common.selectText') + schema.label
+        placeholder: '请选择' + schema.label
       }
     }
   }

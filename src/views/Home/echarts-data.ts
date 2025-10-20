@@ -1,7 +1,5 @@
 import { EChartsOption } from 'echarts'
 
-const { t } = useI18n()
-
 export const lineOptions: EChartsOption = {
   title: {
     text: t('analysis.monthlySales'),

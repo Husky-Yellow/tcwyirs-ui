@@ -10,7 +10,7 @@ const prefixCls = getPrefixCls('lock-dialog')
 
 const { required } = useValidator()
 
-const { t } = useI18n()
+
 
 const lockStore = useLockStore()
 
@@ -34,7 +34,7 @@ const dialogVisible = computed({
   }
 })
 
-const dialogTitle = ref(t('lock.lockScreen'))
+const dialogTitle = ref('锁定屏幕')
 
 const formData = ref({
   password: undefined
@@ -73,18 +73,18 @@ const handleLock = async () => {
       </span>
     </div>
     <el-form ref="formRef" :model="formData" :rules="formRules" label-width="80px">
-      <el-form-item :label="t('lock.lockPassword')" prop="password">
+      <el-form-item :label="'锁屏密码'" prop="password">
         <el-input
           type="password"
           v-model="formData.password"
-          :placeholder="'请输入' + t('lock.lockPassword')"
+          :placeholder="'请输入' + '锁屏密码'"
           clearable
           show-password
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <ElButton type="primary" @click="handleLock">{{ t('lock.lock') }}</ElButton>
+      <ElButton type="primary" @click="handleLock">{{ '锁定' }}</ElButton>
     </template>
   </Dialog>
 </template>

@@ -8,8 +8,8 @@
     </template>
   </Form>
   <div style="text-align: center">
-    <XButton :title="t('common.save')" type="primary" @click="submit()" />
-    <XButton :title="t('common.reset')" type="danger" @click="init()" />
+    <XButton :title="'保存'" type="primary" @click="submit()" />
+    <XButton :title="'重置'" type="danger" @click="init()" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -25,7 +25,6 @@ import { useUserStore } from '@/store/modules/user'
 
 defineOptions({ name: 'BasicInfo' })
 
-const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const userStore = useUserStore()
 
@@ -85,7 +84,7 @@ const submit = () => {
     if (valid) {
       const data = unref(formRef)?.formModel as UserProfileUpdateReqVO
       await updateUserProfile(data)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
       const profile = await init()
       userStore.setUserNicknameAction(profile.nickname)
       // 发送成功事件

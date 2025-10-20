@@ -6,7 +6,7 @@ import type { TableProps } from '@/components/Table/src/types'
 
 import { TableSetPropsType } from '@/types/table'
 
-const { t } = useI18n()
+
 interface ResponseType<T = any> {
   list: T[]
   total?: number
@@ -116,7 +116,7 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
     } else {
       await (config?.delListApi && config?.delListApi(ids))
     }
-    ElMessage.success(t('common.delSuccess'))
+    ElMessage.success('删除成功')
 
     // 计算出临界点
     tableObject.currentPage =
@@ -174,14 +174,14 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
       const tableRef = await getTable()
       if (multiple) {
         if (!tableRef?.selections.length) {
-          ElMessage.warning(t('common.delNoData'))
+          ElMessage.warning('请选择需要删除的数据')
           return
         }
       }
       if (message) {
-        ElMessageBox.confirm(t('common.delMessage'), t('common.confirmTitle'), {
-          confirmButtonText: t('common.ok'),
-          cancelButtonText: t('common.cancel'),
+        ElMessageBox.confirm('是否删除所选中数据？', '系统提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
           await delData(ids)
@@ -193,9 +193,9 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
     // 导出列表
     exportList: async (fileName: string) => {
       tableObject.exportLoading = true
-      ElMessageBox.confirm(t('common.exportMessage'), t('common.confirmTitle'), {
-        confirmButtonText: t('common.ok'),
-        cancelButtonText: t('common.cancel'),
+      ElMessageBox.confirm('是否确认导出数据项？', '系统提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning'
       })
         .then(async () => {

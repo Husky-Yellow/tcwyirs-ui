@@ -4,9 +4,6 @@ import '@/plugins/unocss'
 // 导入全局的svg图标
 import '@/plugins/svgIcon'
 
-// 初始化多语言
-import { setupI18n } from '@/plugins/vueI18n'
-
 // 引入状态管理
 import { setupStore } from '@/store'
 
@@ -41,13 +38,11 @@ import Logger from '@/utils/Logger'
 
 import VueDOMPurifyHTML from 'vue-dompurify-html' // 解决v-html 的安全隐患
 
-import { mockXHR } from './mock'
-mockXHR()
+// import { mockXHR } from './mock'
+// mockXHR()
 // 创建实例
 const setupAll = async () => {
   const app = createApp(App)
-
-  await setupI18n(app)
 
   setupStore(app)
 

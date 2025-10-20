@@ -20,7 +20,7 @@ export default defineComponent({
   setup() {
     const { push, currentRoute } = useRouter()
 
-    const { t } = useI18n()
+    
 
     const appStore = useAppStore()
 

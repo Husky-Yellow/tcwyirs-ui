@@ -30,7 +30,7 @@ import * as CodegenApi from '@/api/infra/codegen'
 
 defineOptions({ name: 'InfraCodegenEditTable' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 const { push, currentRoute } = useRouter() // 路由
 const { query } = useRoute() // 查询参数
@@ -69,7 +69,7 @@ const submitForm = async () => {
   try {
     // 提交请求
     await CodegenApi.updateCodegenTable(formData.value)
-    message.success(t('common.updateSuccess'))
+    message.success('修改成功')
     close()
   } catch {}
 }

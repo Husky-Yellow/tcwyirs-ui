@@ -46,7 +46,7 @@
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import * as Demo01ContactApi from '@/api/infra/demo/demo01'
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -98,10 +98,10 @@ const submitForm = async () => {
     const data = formData.value as unknown as Demo01ContactApi.Demo01ContactVO
     if (formType.value === 'create') {
       await Demo01ContactApi.createDemo01Contact(data)
-      message.success(t('common.createSuccess'))
+      message.success('新增成功')
     } else {
       await Demo01ContactApi.updateDemo01Contact(data)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
     }
     dialogVisible.value = false
     // 发送操作成功的事件

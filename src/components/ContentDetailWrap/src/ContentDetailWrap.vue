@@ -4,7 +4,7 @@ import { useDesign } from '@/hooks/web/useDesign'
 
 defineOptions({ name: 'ContentDetailWrap' })
 
-const { t } = useI18n()
+
 
 const { getPrefixCls } = useDesign()
 
@@ -34,7 +34,7 @@ onMounted(() => {
         <div :class="[`${prefixCls}-header__back`, 'flex pl-10px pr-10px ']">
           <ElButton @click="emit('back')">
             <Icon class="mr-5px" icon="ep:arrow-left" />
-            {{ t('common.back') }}
+            {{ '返回' }}
           </ElButton>
         </div>
         <div :class="[`${prefixCls}-header__title`, 'flex flex-1  justify-center']">

@@ -18,7 +18,7 @@
   <Dialog v-model="dialogVisible" :title="dialogTitle" max-height="600">
     <div v-if="dialogVisible" ref="editor">
       <el-button style="float: right" @click="copy(formData)">
-        {{ t('common.copy') }}
+        {{ '复制' }}
       </el-button>
       <el-scrollbar height="580">
         <div>
@@ -41,7 +41,7 @@ import formCreate from '@form-create/element-ui'
 
 defineOptions({ name: 'InfraBuild' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息
 
 // 表单设计器配置
@@ -138,11 +138,11 @@ const copy = async (text: string) => {
   const textToCopy = JSON.stringify(text, null, 2)
   const { copy, copied, isSupported } = useClipboard({ source: textToCopy })
   if (!isSupported) {
-    message.error(t('common.copyError'))
+    message.error('复制失败')
   } else {
     await copy()
     if (unref(copied)) {
-      message.success(t('common.copySuccess'))
+      message.success('复制成功')
     }
   }
 }

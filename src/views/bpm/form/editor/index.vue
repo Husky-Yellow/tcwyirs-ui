@@ -54,7 +54,7 @@ import { useRoute } from 'vue-router'
 
 defineOptions({ name: 'BpmFormEditor' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息
 const route = useRoute() // 路由
 const { push, currentRoute } = useRouter() // 路由
@@ -124,10 +124,10 @@ const submitForm = async () => {
     data.fields = encodeFields(designer) // 表单字段
     if (!data.id) {
       await FormApi.createForm(data)
-      message.success(t('common.createSuccess'))
+      message.success('新增成功')
     } else {
       await FormApi.updateForm(data)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
     }
     dialogVisible.value = false
     close()

@@ -12,7 +12,6 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import viteCompression from 'vite-plugin-compression'
 import topLevelAwait from 'vite-plugin-top-level-await'
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng'
 import UnoCSS from 'unocss/vite'
 import { viteMockServe } from 'vite-plugin-mock';
@@ -44,7 +43,6 @@ export function createVitePlugins() {
         'vue-router',
         // 可额外添加需要 autoImport 的组件
         {
-          '@/hooks/web/useI18n': ['useI18n'],
           '@/hooks/web/useMessage': ['useMessage'],
           '@/hooks/web/useTable': ['useTable'],
           '@/hooks/web/useCrudSchemas': ['useCrudSchemas'],
@@ -70,11 +68,6 @@ export function createVitePlugins() {
     EslintPlugin({
       cache: false,
       include: ['src/**/*.vue', 'src/**/*.ts', 'src/**/*.tsx'] // 检查的文件
-    }),
-    VueI18nPlugin({
-      runtimeOnly: true,
-      compositionOnly: true,
-      include: [resolve(__dirname, 'src/locales/**')]
     }),
     createSvgIconsPlugin({
       iconDirs: [pathResolve('src/assets/svgs')],

@@ -50,7 +50,7 @@ import { CommonStatusEnum } from '@/utils/constants'
 /** BPM 流程分类 表单 */
 defineOptions({ name: 'CategoryForm' })
 
-const { t } = useI18n() // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -102,10 +102,10 @@ const submitForm = async () => {
     const data = formData.value as unknown as CategoryVO
     if (formType.value === 'create') {
       await CategoryApi.createCategory(data)
-      message.success(t('common.createSuccess'))
+      message.success('新增成功')
     } else {
       await CategoryApi.updateCategory(data)
-      message.success(t('common.updateSuccess'))
+      message.success('修改成功')
     }
     dialogVisible.value = false
     // 发送操作成功的事件

@@ -12,7 +12,7 @@ const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('context-menu')
 
-const { t } = useI18n()
+
 
 const emit = defineEmits(['visibleChange'])
 

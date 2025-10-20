@@ -15,7 +15,7 @@ import LayoutRadioPicker from './components/LayoutRadioPicker.vue'
 
 defineOptions({ name: 'Setting' })
 
-const { t } = useI18n()
+
 const appStore = useAppStore()
 
 const { getPrefixCls } = useDesign()
@@ -180,11 +180,11 @@ const copyConfig = async () => {
     `
   })
   if (!isSupported) {
-    ElMessage.error(t('setting.copyFailed'))
+    ElMessage.error('拷贝失败')
   } else {
     await copy()
     if (unref(copied)) {
-      ElMessage.success(t('setting.copySuccess'))
+      ElMessage.success('拷贝成功')
     }
   }
 }
@@ -210,20 +210,20 @@ const clear = () => {
 
   <ElDrawer v-model="drawer" :z-index="4000" direction="rtl" size="350px">
     <template #header>
-      <span class="text-16px font-700">{{ t('setting.projectSetting') }}</span>
+      <span class="text-16px font-700">{{ '项目配置' }}</span>
     </template>
 
     <div class="text-center">
       <!-- 主题 -->
-      <ElDivider>{{ t('setting.theme') }}</ElDivider>
+      <ElDivider>{{ '主题' }}</ElDivider>
       <ThemeSwitch />
 
       <!-- 布局 -->
-      <ElDivider>{{ t('setting.layout') }}</ElDivider>
+      <ElDivider>{{ '布局' }}</ElDivider>
       <LayoutRadioPicker />
 
       <!-- 系统主题 -->
-      <ElDivider>{{ t('setting.systemTheme') }}</ElDivider>
+      <ElDivider>{{ '系统主题' }}</ElDivider>
       <ColorRadioPicker
         v-model="systemTheme"
         :schema="[
@@ -240,7 +240,7 @@ const clear = () => {
       />
 
       <!-- 头部主题 -->
-      <ElDivider>{{ t('setting.headerTheme') }}</ElDivider>
+      <ElDivider>{{ '头部主题' }}</ElDivider>
       <ColorRadioPicker
         v-model="headerTheme"
         :schema="[
@@ -258,7 +258,7 @@ const clear = () => {
 
       <!-- 菜单主题 -->
       <template v-if="layout !== 'top'">
-        <ElDivider>{{ t('setting.menuTheme') }}</ElDivider>
+        <ElDivider>{{ '菜单主题' }}</ElDivider>
         <ColorRadioPicker
           v-model="menuTheme"
           :schema="[
@@ -277,16 +277,16 @@ const clear = () => {
     </div>
 
     <!-- 界面显示 -->
-    <ElDivider>{{ t('setting.interfaceDisplay') }}</ElDivider>
+    <ElDivider>{{ '界面显示' }}</ElDivider>
     <InterfaceDisplay />
 
     <ElDivider />
     <div>
-      <ElButton class="w-full" type="primary" @click="copyConfig">{{ t('setting.copy') }}</ElButton>
+      <ElButton class="w-full" type="primary" @click="copyConfig">{{ '拷贝' }}</ElButton>
     </div>
     <div class="mt-5px">
       <ElButton class="w-full" type="danger" @click="clear">
-        {{ t('setting.clearAndReset') }}
+        {{ '清除缓存并且重置' }}
       </ElButton>
     </div>
   </ElDrawer>
