@@ -11,12 +11,16 @@ const prefixCls = getPrefixCls('content-wrap')
 defineProps({
   title: propTypes.string.def(''),
   message: propTypes.string.def(''),
-  bodyStyle: propTypes.object.def({ padding: '10px' })
+  bodyStyle: propTypes.object.def({ padding: '10px' }),
+  shadow: {
+    type: String as PropType<'never' | 'always' | 'hover'>,
+    default: 'never'
+  }
 })
 </script>
 
 <template>
-  <ElCard :body-style="bodyStyle" :class="[prefixCls, 'mb-15px']" shadow="never">
+  <ElCard :body-style="bodyStyle" :class="[prefixCls, 'mb-15px']" :shadow="shadow">
     <template v-if="title" #header>
       <div class="flex items-center">
         <span class="text-16px font-700">{{ title }}</span>

@@ -277,70 +277,6 @@
             </div>
           </div>
         </el-card>
-
-        <!-- 6. TagCardList - 标签卡片列表组件 -->
-        <el-card shadow="hover" class="demo-card">
-          <template #header>
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-12px">
-                <Icon icon="ep:collection-tag" :size="24" color="#E6A23C" />
-                <div>
-                  <h2 class="text-18px font-600">TagCardList - 标签卡片列表组件</h2>
-                  <p class="text-12px text-[var(--el-text-color-secondary)] mt-4px">
-                    卡片式布局,支持单选,带编辑删除操作
-                  </p>
-                </div>
-              </div>
-              <el-tag type="success">已完成</el-tag>
-            </div>
-          </template>
-
-          <div class="demo-content">
-            <!-- 搜索区域 -->
-            <div class="mb-16px">
-              <SearchForm
-                :schema="tagSearchSchema"
-                :model="tagSearchModel"
-                :cols-per-row="3"
-                :show-expand="false"
-                label-width="90px"
-                @search="handleTagSearch"
-                @reset="handleTagSearchReset"
-              />
-            </div>
-
-            <!-- 卡片列表 -->
-            <div class="mb-16px">
-              <TagCardList
-                v-model="selectedTagId"
-                :data="tagCardData"
-                :cols-per-row="4"
-                @edit="handleTagEdit"
-                @delete="handleTagDelete"
-                @status-change="handleTagStatusChange"
-              />
-            </div>
-
-            <div class="demo-info">
-              <div class="demo-info-item">
-                <span class="label">功能:</span>
-                <span>el-card 卡片展示,每行4个,点击卡片选中</span>
-              </div>
-              <div class="demo-info-item">
-                <span class="label">特性:</span>
-                <span>右上角状态开关切换启用/停用,编辑/删除操作</span>
-              </div>
-              <div class="demo-info-item">
-                <span class="label">样式:</span>
-                <span>权重颜色标识(高权重红色/中权重蓝色/低权重绿色)</span>
-              </div>
-              <div class="demo-info-item">
-                <span class="label">位置:</span>
-                <span class="code">src/components/TagCardList/</span>
-              </div>
-            </div>
-          </div>
-        </el-card>
       </div>
 
       <!-- 底部信息 -->
@@ -508,13 +444,9 @@ import type { RatingReviewResult } from '@/components/RatingReviewModal'
 import { Drawer } from '@/components/Drawer'
 import { SearchForm } from '@/components/SearchForm'
 import type { SearchFormSchema } from '@/components/SearchForm'
-import { TagCardList } from '@/components/TagCardList'
 import type { TagCardItem } from '@/components/TagCardList'
 import { ApprovalProcess } from '../../../temp-components/ApprovalProcess'
 import type { ApprovalStep } from '../../../temp-components/ApprovalProcess'
-import { MarkdownViewer } from '../../../temp-components/MarkdownViewer'
-import type { MenuItem } from '../../../temp-components/MarkdownViewer'
-
 defineOptions({ name: 'DemoPage' })
 
 const router = useRouter()

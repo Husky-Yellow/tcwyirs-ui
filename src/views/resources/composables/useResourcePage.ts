@@ -1,8 +1,8 @@
 import { ref, reactive } from 'vue'
-import type { ResourceItem, TableDataItem, PaginationData } from '../types'
+import type { ResourceItem, TableDataItem, PaginationData, TableAction } from '../types'
 
 interface UseResourcePageOptions {
-  showDeploy?: boolean
+  actions?: TableAction[]
   loadDataFn?: (params: any) => Promise<{ list: TableDataItem[]; total: number }>
 }
 
@@ -10,7 +10,7 @@ interface UseResourcePageOptions {
  * 资源页面通用逻辑 Hook
  */
 export const useResourcePage = (options: UseResourcePageOptions = {}) => {
-  const { showDeploy = false, loadDataFn } = options
+  const { actions = [], loadDataFn } = options
 
   // 搜索表单
   const searchForm = ref({
@@ -97,24 +97,6 @@ export const useResourcePage = (options: UseResourcePageOptions = {}) => {
     loadTableData()
   }
 
-  // 详情
-  const handleDetail = (row: TableDataItem) => {
-    console.log('查看详情:', row)
-    // TODO: 实现详情逻辑
-  }
-
-  // 编辑
-  const handleEdit = (row: TableDataItem) => {
-    console.log('编辑:', row)
-    // TODO: 实现编辑逻辑
-  }
-
-  // 部署
-  const handleDeploy = (row: TableDataItem) => {
-    console.log('部署/编排:', row)
-    // TODO: 实现部署逻辑
-  }
-
   // 初始化
   const init = () => {
     if (resourceListItems.value.length > 0) {
@@ -125,7 +107,7 @@ export const useResourcePage = (options: UseResourcePageOptions = {}) => {
 
   return {
     // 配置
-    showDeploy,
+    actions,
 
     // 数据
     searchForm,
@@ -141,9 +123,6 @@ export const useResourcePage = (options: UseResourcePageOptions = {}) => {
     handleReset,
     handleResourceSelect,
     handlePageChange,
-    handleDetail,
-    handleEdit,
-    handleDeploy,
     init
   }
 }

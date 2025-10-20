@@ -27,11 +27,11 @@ export const useSelectRule = (option: SelectRuleOption) => {
         $required: false
       }
     },
-    props(_, { t }) {
+    props() {
       if (!option.props) {
         option.props = []
       }
-      return localeProps(t, name + '.props', [makeRequiredRule(), ...option.props, ...rules])
+      return localeProps(name + '.props', [makeRequiredRule(), ...option.props, ...rules])
     }
   }
 }

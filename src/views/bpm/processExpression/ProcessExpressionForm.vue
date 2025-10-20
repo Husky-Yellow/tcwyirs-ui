@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import { ProcessExpressionApi, ProcessExpressionVO } from '@/api/bpm/processExpression'
-import { CommonStatusEnum } from '@/utils/constants'
+import { CommonStatusEnum, ActionTitleMap } from '@/utils/constants'
 
 /** BPM 流程 表单 */
 defineOptions({ name: 'ProcessExpressionForm' })
@@ -43,7 +43,9 @@ defineOptions({ name: 'ProcessExpressionForm' })
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
-const dialogTitle = ref('') // 弹窗的标题
+const dialogTitle = ref('')
+
+ // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
@@ -62,7 +64,7 @@ const formRef = ref() // 表单 Ref
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
   dialogVisible.value = true
-  dialogTitle.value = t('action.' + type)
+  dialogTitle.value = ActionTitleMap[type] || '操作'
   formType.value = type
   resetForm()
   // 修改时，设置数据

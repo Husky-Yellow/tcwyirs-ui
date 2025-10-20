@@ -17,8 +17,8 @@ export const useEditorRule = () => {
         $required: false
       }
     },
-    props(_, { t }) {
-      return localeProps(t, name + '.props', [
+    props() {
+      return localeProps(name + '.props', [
         makeRequiredRule(),
         {
           type: 'input',

@@ -382,7 +382,7 @@ watch(
                     class="mr-5px"
                   />
                   {{
-                    t(item?.meta?.title as string) +
+                    (item?.meta?.title || '') +
                     (item?.meta?.titleSuffix ? ` (${item?.meta?.titleSuffix})` : '')
                   }}
                   <Icon

@@ -68,7 +68,7 @@ defineExpose({
           :divided="item.divided"
         >
           <Icon :icon="item.icon" />
-          {{ t(item.label) }}
+          {{ item.label }}
         </ElDropdownItem>
       </ElDropdownMenu>
     </template>

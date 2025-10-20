@@ -168,7 +168,7 @@ const barArea = computed(() => {
 })
 const init = () => {
   if (explain.value === '') {
-    text.value = t('captcha.slide')
+    text.value = '向右滑动完成验证'
   } else {
     text.value = explain.value
   }
@@ -302,7 +302,7 @@ const end = () => {
         }
         passFlag.value = true
         tipWords.value = `${((endMovetime.value - startMoveTime.value) / 1000).toFixed(2)}s
-            ${t('captcha.success')}`
+            ${'验证成功'}`
         var captchaVerification = secretKey.value
           ? aesEncrypt(
               backToken.value + '---' + JSON.stringify({ x: moveLeftDistance, y: 5.0 }),
@@ -324,7 +324,7 @@ const end = () => {
           refresh()
         }, 1000)
         proxy.$parent.$emit('error', proxy)
-        tipWords.value = t('captcha.fail')
+        tipWords.value = '验证失败'
         setTimeout(() => {
           tipWords.value = ''
         }, 1000)

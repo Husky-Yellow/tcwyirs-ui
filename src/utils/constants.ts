@@ -463,3 +463,19 @@ export const BpmAutoApproveType = {
   APPROVE_ALL: 1, // 仅审批一次，后续重复的审批节点均自动通过
   APPROVE_SEQUENT: 2 // 仅针对连续审批的节点自动通过
 }
+
+// ========== 通用操作标题 ==========
+/**
+ * 表单操作类型标题映射
+ * 用于表单弹窗标题显示
+ */
+export const ActionTitleMap = {
+  create: '新增',
+  add: '新增',
+  edit: '编辑',
+  update: '编辑',
+  detail: '详情',
+  preview: '预览',
+  view: '查看'
+}
+

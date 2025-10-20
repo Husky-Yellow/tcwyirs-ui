@@ -4,7 +4,7 @@
     <el-card class="user w-1/3" shadow="hover">
       <template #header>
         <div class="card-header">
-          <span>{{ t('profile.user.title') }}</span>
+          <span>{{ '个人信息' }}</span>
         </div>
       </template>
       <ProfileUser ref="profileUserRef" />
@@ -12,13 +12,13 @@
     <el-card class="user ml-3 w-2/3" shadow="hover">
       <div>
         <el-tabs v-model="activeName" class="profile-tabs" style="height: 400px" tab-position="top">
-          <el-tab-pane :label="t('profile.info.basicInfo')" name="basicInfo">
+          <el-tab-pane :label="'基本设置'" name="basicInfo">
             <BasicInfo @success="handleBasicInfoSuccess" />
           </el-tab-pane>
-          <el-tab-pane :label="t('profile.info.resetPwd')" name="resetPwd">
+          <el-tab-pane :label="'密码设置'" name="resetPwd">
             <ResetPwd />
           </el-tab-pane>
-          <el-tab-pane :label="t('profile.info.userSocial')" name="userSocial">
+          <el-tab-pane :label="'社交绑定'" name="userSocial">
             <UserSocial v-model:activeName="activeName" />
           </el-tab-pane>
         </el-tabs>

@@ -116,7 +116,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as MenuApi from '@/api/system/menu'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
-import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants'
+import { CommonStatusEnum, SystemMenuTypeEnum, ActionTitleMap } from '@/utils/constants'
 import { defaultProps, handleTree } from '@/utils/tree'
 
 defineOptions({ name: 'SystemMenuForm' })
@@ -126,7 +126,9 @@ const { wsCache } = useCache()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
-const dialogTitle = ref('') // 弹窗的标题
+const dialogTitle = ref('')
+
+ // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
@@ -157,7 +159,7 @@ const formRef = ref() // 表单 Ref
 /** 打开弹窗 */
 const open = async (type: string, id?: number, parentId?: number) => {
   dialogVisible.value = true
-  dialogTitle.value = t('action.' + type)
+  dialogTitle.value = ActionTitleMap[type] || '操作'
   formType.value = type
   resetForm()
   if (parentId) {

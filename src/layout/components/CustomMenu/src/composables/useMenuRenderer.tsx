@@ -2,8 +2,7 @@ import { unref, type ComputedRef, type Ref } from 'vue'
 import { isUrl } from '@/utils/is'
 import { pathResolve } from '@/utils/routerHelper'
 import { hasOneShowingChild } from '../helper'
-import MenuItem from '../components/MenuItem'
-import MenuGroup from '../components/MenuGroup'
+import MenuItemRecursive from '../components/MenuItemRecursive'
 import CollapsedMenuItem from '../components/CollapsedMenuItem'
 
 interface RenderMenuOptions {
@@ -97,13 +96,14 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
           const itemTitle = (onlyOneChild.meta?.title || title) as string
 
           return (
-            <MenuItem
+            <MenuItemRecursive
               key={childPath}
               path={childPath}
               title={itemTitle}
               icon={itemIcon}
               level={level}
               isActive={isActive}
+              hasChildren={false}
               onClick={handleMenuClick}
             />
           )
@@ -113,35 +113,23 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
         const hasChildren = children && children.length > 0
         const isExpanded = expandedMenus.value.has(fullPath)
 
-        // 展开状态下的原有逻辑
-        if (hasChildren) {
-          return (
-            <MenuGroup
-              key={fullPath}
-              path={fullPath}
-              title={title as string}
-              icon={icon}
-              level={level}
-              isActive={isActive}
-              isExpanded={isExpanded}
-              onToggle={toggleExpand}
-            >
-              {renderMenuItems(children, level + 1, fullPath)}
-            </MenuGroup>
-          )
-        } else {
-          return (
-            <MenuItem
-              key={fullPath}
-              path={fullPath}
-              title={title as string}
-              icon={icon}
-              level={level}
-              isActive={isActive}
-              onClick={handleMenuClick}
-            />
-          )
-        }
+        // 统一使用 MenuItemRecursive 处理所有情况
+        return (
+          <MenuItemRecursive
+            key={fullPath}
+            path={fullPath}
+            title={title as string}
+            icon={icon}
+            level={level}
+            isActive={isActive}
+            hasChildren={hasChildren}
+            isExpanded={isExpanded}
+            onClick={handleMenuClick}
+            onToggle={toggleExpand}
+          >
+            {hasChildren && renderMenuItems(children, level + 1, fullPath)}
+          </MenuItemRecursive>
+        )
       })
       .filter(Boolean) as JSX.Element[]
   }

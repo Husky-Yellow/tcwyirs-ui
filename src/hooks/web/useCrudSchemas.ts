@@ -307,11 +307,7 @@ const filterDescriptionsSchema = (crudSchema: CrudSchema[]): DescriptionsSchema[
 // 给options添加国际化
 const filterOptions = (options: Recordable, labelField?: string) => {
   return options?.map((v: Recordable) => {
-    if (labelField) {
-      v['labelField'] = t(v.labelField)
-    } else {
-      v['label'] = t(v.label)
-    }
+    // i18n 已移除，保持原标签
     return v
   })
 }

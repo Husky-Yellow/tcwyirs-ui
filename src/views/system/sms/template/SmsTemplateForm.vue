@@ -67,7 +67,7 @@
 import { DICT_TYPE, getDictLabel, getIntDictOptions } from '@/utils/dict'
 import * as SmsTemplateApi from '@/api/system/sms/smsTemplate'
 import * as SmsChannelApi from '@/api/system/sms/smsChannel'
-import { CommonStatusEnum } from '@/utils/constants'
+import { CommonStatusEnum, ActionTitleMap } from '@/utils/constants'
 
 defineOptions({ name: 'SystemSmsTemplateForm' })
 
@@ -75,7 +75,9 @@ defineOptions({ name: 'SystemSmsTemplateForm' })
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
-const dialogTitle = ref('') // 弹窗的标题
+const dialogTitle = ref('')
+
+ // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型
 const formData = ref<SmsTemplateApi.SmsTemplateVO>({
@@ -103,7 +105,7 @@ const channelList = ref<SmsChannelApi.SmsChannelVO[]>([]) // 短信渠道列表
 
 const open = async (type: string, id?: number) => {
   dialogVisible.value = true
-  dialogTitle.value = t('action.' + type)
+  dialogTitle.value = ActionTitleMap[type] || '操作'
   formType.value = type
   resetForm()
   // 修改时，设置数据

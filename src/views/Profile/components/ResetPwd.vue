@@ -1,12 +1,12 @@
 <template>
   <el-form ref="formRef" :model="password" :rules="rules" :label-width="200">
-    <el-form-item :label="t('profile.password.oldPassword')" prop="oldPassword">
+    <el-form-item :label="'旧密码'" prop="oldPassword">
       <InputPassword v-model="password.oldPassword" />
     </el-form-item>
-    <el-form-item :label="t('profile.password.newPassword')" prop="newPassword">
+    <el-form-item :label="'新密码'" prop="newPassword">
       <InputPassword v-model="password.newPassword" strength />
     </el-form-item>
-    <el-form-item :label="t('profile.password.confirmPassword')" prop="confirmPassword">
+    <el-form-item :label="'确认密码'" prop="confirmPassword">
       <InputPassword v-model="password.confirmPassword" strength />
     </el-form-item>
     <el-form-item>
@@ -34,7 +34,7 @@ const password = reactive({
 // 表单校验
 const equalToPassword = (_rule, value, callback) => {
   if (password.newPassword !== value) {
-    callback(new Error(t('profile.password.diffPwd')))
+    callback(new Error('两次输入密码不一致'))
   } else {
     callback()
   }
@@ -42,15 +42,15 @@ const equalToPassword = (_rule, value, callback) => {
 
 const rules = reactive<FormRules>({
   oldPassword: [
-    { required: true, message: t('profile.password.oldPwdMsg'), trigger: 'blur' },
-    { min: 6, max: 20, message: t('profile.password.pwdRules'), trigger: 'blur' }
+    { required: true, message: '请输入旧密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
   ],
   newPassword: [
-    { required: true, message: t('profile.password.newPwdMsg'), trigger: 'blur' },
-    { min: 6, max: 20, message: t('profile.password.pwdRules'), trigger: 'blur' }
+    { required: true, message: '请输入新密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
   ],
   confirmPassword: [
-    { required: true, message: t('profile.password.cfPwdMsg'), trigger: 'blur' },
+    { required: true, message: '请输入确认密码', trigger: 'blur' },
     { required: true, validator: equalToPassword, trigger: 'blur' }
   ]
 })

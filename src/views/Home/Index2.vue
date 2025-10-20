@@ -14,7 +14,7 @@
               </div>
               <div class="flex flex-col justify-between">
                 <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
-                  >{{ t('analysis.newUser') }}
+                  >{{ '新增用户' }}
                 </div>
                 <CountTo
                   :duration="2600"
@@ -43,7 +43,7 @@
               </div>
               <div class="flex flex-col justify-between">
                 <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
-                  >{{ t('analysis.unreadInformation') }}
+                  >{{ '未读消息' }}
                 </div>
                 <CountTo
                   :duration="2600"
@@ -72,7 +72,7 @@
               </div>
               <div class="flex flex-col justify-between">
                 <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
-                  >{{ t('analysis.transactionAmount') }}
+                  >{{ '成交金额' }}
                 </div>
                 <CountTo
                   :duration="2600"
@@ -101,7 +101,7 @@
               </div>
               <div class="flex flex-col justify-between">
                 <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
-                  >{{ t('analysis.totalShopping') }}
+                  >{{ '购物总量' }}
                 </div>
                 <CountTo
                   :duration="2600"
@@ -184,7 +184,7 @@ const getUserAccessSource = async () => {
   set(
     pieOptionsData,
     'legend.data',
-    data.map((v) => t(v.name))
+    data.map((v) => v.name)
   )
   set(pieOptionsData, 'series.data', data)
 }
@@ -204,11 +204,11 @@ const getWeeklyUserActivity = async () => {
   set(
     barOptionsData,
     'xAxis.data',
-    data.map((v) => t(v.name))
+    data.map((v) => v.name)
   )
   set(barOptionsData, 'series', [
     {
-      name: t('analysis.activeQuantity'),
+      name: '活跃量',
       data: data.map((v) => v.value),
       type: 'bar'
     }
@@ -236,11 +236,11 @@ const getMonthlySales = async () => {
   set(
     lineOptionsData,
     'xAxis.data',
-    data.map((v) => t(v.name))
+    data.map((v) => v.name)
   )
   set(lineOptionsData, 'series', [
     {
-      name: t('analysis.estimate'),
+      name: '预计',
       smooth: true,
       type: 'line',
       data: data.map((v) => v.estimate),
@@ -248,7 +248,7 @@ const getMonthlySales = async () => {
       animationEasing: 'cubicInOut'
     },
     {
-      name: t('analysis.actual'),
+      name: '实际',
       smooth: true,
       type: 'line',
       itemStyle: {},

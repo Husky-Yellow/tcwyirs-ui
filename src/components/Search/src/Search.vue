@@ -124,7 +124,7 @@ const setVisible = () => {
           {{ '重置' }}
         </ElButton>
         <ElButton v-if="expand" text @click="setVisible">
-          {{ t(visible ? 'common.shrink' : 'common.expand') }}
+          {{ visible ? '收起' : '展开' }}
           <Icon :icon="visible ? 'ep:arrow-up' : 'ep:arrow-down'" />
         </ElButton>
         <!-- add by 芋艿：补充在搜索后的按钮 -->
@@ -147,7 +147,7 @@ const setVisible = () => {
         {{ '重置' }}
       </ElButton>
       <ElButton v-if="expand" text @click="setVisible">
-        {{ t(visible ? 'common.shrink' : 'common.expand') }}
+        {{ visible ? '收起' : '展开' }}
         <Icon :icon="visible ? 'ep:arrow-up' : 'ep:arrow-down'" />
       </ElButton>
       <!-- add by 芋艿：补充在搜索后的按钮 -->

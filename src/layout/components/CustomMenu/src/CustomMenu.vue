@@ -34,7 +34,7 @@ export default defineComponent({
       <div
         class={[
           `${prefixCls}`,
-          'h-full bg-#f5f7fa transition-width duration-300 ease relative',
+          'h-full transition-width duration-300 ease relative',
           unref(collapse) ? 'w-64px' : 'w-200px'
         ]}
       >

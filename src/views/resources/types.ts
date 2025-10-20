@@ -64,3 +64,21 @@ export interface ListResponse<T = TableDataItem> {
   list: T[]
   total: number
 }
+
+/**
+ * 表格操作项配置
+ */
+export interface TableAction {
+  /** 操作文字 */
+  label: string
+  /** 操作类型（用于权限控制等） */
+  type?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
+  /** 是否链接样式 */
+  link?: boolean
+  /** 点击回调 */
+  onClick: (row: TableDataItem) => void
+  /** 是否显示（可选，动态控制） */
+  show?: (row: TableDataItem) => boolean
+  /** 权限标识（可选） */
+  permission?: string
+}

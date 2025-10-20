@@ -6,41 +6,41 @@
     <ul class="list-group list-group-striped">
       <li class="list-group-item">
         <Icon class="mr-5px" icon="ep:user" />
-        {{ t('profile.user.username') }}
+        {{ '用户名称' }}
         <div class="pull-right">{{ userInfo?.username }}</div>
       </li>
       <li class="list-group-item">
         <Icon class="mr-5px" icon="ep:phone" />
-        {{ t('profile.user.mobile') }}
+        {{ '手机号码' }}
         <div class="pull-right">{{ userInfo?.mobile }}</div>
       </li>
       <li class="list-group-item">
         <Icon class="mr-5px" icon="fontisto:email" />
-        {{ t('profile.user.email') }}
+        {{ '用户邮箱' }}
         <div class="pull-right">{{ userInfo?.email }}</div>
       </li>
       <li class="list-group-item">
         <Icon class="mr-5px" icon="carbon:tree-view-alt" />
-        {{ t('profile.user.dept') }}
+        {{ '所属部门' }}
         <div v-if="userInfo?.dept" class="pull-right">{{ userInfo?.dept.name }}</div>
       </li>
       <li class="list-group-item">
         <Icon class="mr-5px" icon="ep:suitcase" />
-        {{ t('profile.user.posts') }}
+        {{ '所属岗位' }}
         <div v-if="userInfo?.posts" class="pull-right">
           {{ userInfo?.posts.map((post) => post.name).join(',') }}
         </div>
       </li>
       <li class="list-group-item">
         <Icon class="mr-5px" icon="icon-park-outline:peoples" />
-        {{ t('profile.user.roles') }}
+        {{ '所属角色' }}
         <div v-if="userInfo?.roles" class="pull-right">
           {{ userInfo?.roles.map((role) => role.name).join(',') }}
         </div>
       </li>
       <li class="list-group-item">
         <Icon class="mr-5px" icon="ep:calendar" />
-        {{ t('profile.user.createTime') }}
+        {{ '创建日期' }}
         <div class="pull-right">{{ formatDate(userInfo.createTime) }}</div>
       </li>
     </ul>

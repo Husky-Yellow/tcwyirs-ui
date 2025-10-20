@@ -11,10 +11,10 @@
               </el-avatar>
               <div>
                 <div class="text-20px">
-                  {{ t('workplace.welcome') }} {{ username }} {{ t('workplace.happyDay') }}
+                  {{ '你好' }} {{ username }} {{ '祝你开心每一天!' }}
                 </div>
                 <div class="mt-10px text-14px text-gray-500">
-                  {{ t('workplace.toady') }}，20℃ - 32℃！
+                  {{ '今日晴' }}，20℃ - 32℃！
                 </div>
                 <div class="mt-10px">
                   <el-button type="primary" size="small" @click="showReviewModal = true">
@@ -30,7 +30,7 @@
           <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
             <div class="h-70px flex items-center justify-end lt-sm:mt-10px">
               <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.project') }}</div>
+                <div class="mb-16px text-14px text-gray-400">{{ '项目数' }}</div>
                 <CountTo
                   class="text-20px"
                   :start-val="0"
@@ -40,7 +40,7 @@
               </div>
               <el-divider direction="vertical" />
               <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.toDo') }}</div>
+                <div class="mb-16px text-14px text-gray-400">{{ '待办' }}</div>
                 <CountTo
                   class="text-20px"
                   :start-val="0"
@@ -50,7 +50,7 @@
               </div>
               <el-divider direction="vertical" border-style="dashed" />
               <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.access') }}</div>
+                <div class="mb-16px text-14px text-gray-400">{{ '项目访问' }}</div>
                 <CountTo
                   class="text-20px"
                   :start-val="0"
@@ -70,7 +70,7 @@
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.project') }}</span>
+            <span>{{ '项目数' }}</span>
             <el-link
               type="primary"
               :underline="false"
@@ -142,7 +142,7 @@
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.shortcutOperation') }}</span>
+            <span>{{ '快捷入口' }}</span>
           </div>
         </template>
         <el-skeleton :loading="loading" animated>
@@ -161,7 +161,7 @@
       <el-card shadow="never" class="mt-8px">
         <template #header>
           <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.notice') }}</span>
+            <span>{{ '通知公告' }}</span>
             <el-link type="primary" :underline="false">{{ '更多' }}</el-link>
           </div>
         </template>
@@ -173,7 +173,7 @@
               </el-avatar>
               <div>
                 <div class="text-14px">
-                  <Highlight :keys="item.keys.map((v) => t(v))">
+                  <Highlight :keys="item.keys.map((v) => v)">
                     {{ item.type }} : {{ item.title }}
                   </Highlight>
                 </div>
@@ -453,11 +453,11 @@ const getUserAccessSource = async () => {
   set(
     pieOptionsData,
     'legend.data',
-    data.map((v) => t(v.name))
+    data.map((v) => v.name)
   )
   pieOptionsData!.series![0].data = data.map((v) => {
     return {
-      name: t(v.name),
+      name: v.name,
       value: v.value
     }
   })
@@ -478,11 +478,11 @@ const getWeeklyUserActivity = async () => {
   set(
     barOptionsData,
     'xAxis.data',
-    data.map((v) => t(v.name))
+    data.map((v) => v.name)
   )
   set(barOptionsData, 'series', [
     {
-      name: t('analysis.activeQuantity'),
+      name: '活跃量',
       data: data.map((v) => v.value),
       type: 'bar'
     }

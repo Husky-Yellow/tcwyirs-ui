@@ -22,7 +22,7 @@ export const useValidator = () => {
     return {
       min,
       max,
-      message: message || t('common.lengthRange', { min, max })
+      message: message || '长度范围为' + min + '到' + max
     }
   }
 

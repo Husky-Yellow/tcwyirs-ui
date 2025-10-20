@@ -21,6 +21,13 @@ const appStore = useAppStore()
 
 const sizeMap = computed(() => appStore.sizeMap)
 
+// 尺寸映射
+const sizeTextMap = {
+  default: '默认',
+  large: '大',
+  small: '小'
+}
+
 const setCurrentSize = (size: ElementPlusSize) => {
   appStore.setCurrentSize(size)
 }
@@ -32,7 +39,7 @@ const setCurrentSize = (size: ElementPlusSize) => {
     <template #dropdown>
       <ElDropdownMenu>
         <ElDropdownItem v-for="item in sizeMap" :key="item" :command="item">
-          {{ t(`size.${item}`) }}
+          {{ sizeTextMap[item] }}
         </ElDropdownItem>
       </ElDropdownMenu>
     </template>

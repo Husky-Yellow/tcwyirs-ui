@@ -2,8 +2,8 @@
   <Form ref="formRef" :labelWidth="200" :rules="rules" :schema="schema">
     <template #sex="form">
       <el-radio-group v-model="form['sex']">
-        <el-radio :value="1">{{ t('profile.user.man') }}</el-radio>
-        <el-radio :value="2">{{ t('profile.user.woman') }}</el-radio>
+        <el-radio :value="1">{{ '男' }}</el-radio>
+        <el-radio :value="2">{{ '女' }}</el-radio>
       </el-radio-group>
     </template>
   </Form>
@@ -35,20 +35,20 @@ const emit = defineEmits<{
 
 // 表单校验
 const rules = reactive<FormRules>({
-  nickname: [{ required: true, message: t('profile.rules.nickname'), trigger: 'blur' }],
+  nickname: [{ required: true, message: '请输入用户昵称', trigger: 'blur' }],
   email: [
-    { required: true, message: t('profile.rules.mail'), trigger: 'blur' },
+    { required: true, message: '请输入邮箱地址', trigger: 'blur' },
     {
       type: 'email',
-      message: t('profile.rules.truemail'),
+      message: '请输入正确的邮箱地址',
       trigger: ['blur', 'change']
     }
   ],
   mobile: [
-    { required: true, message: t('profile.rules.phone'), trigger: 'blur' },
+    { required: true, message: '请输入正确的手机号码', trigger: 'blur' },
     {
       pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-      message: t('profile.rules.truephone'),
+      message: '请输入正确的手机号码',
       trigger: 'blur'
     }
   ]
@@ -56,22 +56,22 @@ const rules = reactive<FormRules>({
 const schema = reactive<FormSchema[]>([
   {
     field: 'nickname',
-    label: t('profile.user.nickname'),
+    label: '用户昵称',
     component: 'Input'
   },
   {
     field: 'mobile',
-    label: t('profile.user.mobile'),
+    label: '手机号码',
     component: 'Input'
   },
   {
     field: 'email',
-    label: t('profile.user.email'),
+    label: '用户邮箱',
     component: 'Input'
   },
   {
     field: 'sex',
-    label: t('profile.user.sex'),
+    label: '性别',
     component: 'InputNumber',
     value: 0
   }

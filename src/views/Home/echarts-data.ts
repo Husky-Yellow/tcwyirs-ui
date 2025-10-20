@@ -2,23 +2,23 @@ import { EChartsOption } from 'echarts'
 
 export const lineOptions: EChartsOption = {
   title: {
-    text: t('analysis.monthlySales'),
+    text: '每月销售额',
     left: 'center'
   },
   xAxis: {
     data: [
-      t('analysis.january'),
-      t('analysis.february'),
-      t('analysis.march'),
-      t('analysis.april'),
-      t('analysis.may'),
-      t('analysis.june'),
-      t('analysis.july'),
-      t('analysis.august'),
-      t('analysis.september'),
-      t('analysis.october'),
-      t('analysis.november'),
-      t('analysis.december')
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月'
     ],
     boundaryGap: false,
     axisTick: {
@@ -45,12 +45,12 @@ export const lineOptions: EChartsOption = {
     }
   },
   legend: {
-    data: [t('analysis.estimate'), t('analysis.actual')],
+    data: ['预计', '实际'],
     top: 50
   },
   series: [
     {
-      name: t('analysis.estimate'),
+      name: '预计',
       smooth: true,
       type: 'line',
       data: [100, 120, 161, 134, 105, 160, 165, 114, 163, 185, 118, 123],
@@ -58,7 +58,7 @@ export const lineOptions: EChartsOption = {
       animationEasing: 'cubicInOut'
     },
     {
-      name: t('analysis.actual'),
+      name: '实际',
       smooth: true,
       type: 'line',
       itemStyle: {},
@@ -71,7 +71,7 @@ export const lineOptions: EChartsOption = {
 
 export const pieOptions: EChartsOption = {
   title: {
-    text: t('analysis.userAccessSource'),
+    text: '用户访问来源',
     left: 'center'
   },
   tooltip: {
@@ -82,25 +82,25 @@ export const pieOptions: EChartsOption = {
     orient: 'vertical',
     left: 'left',
     data: [
-      t('analysis.directAccess'),
-      t('analysis.mailMarketing'),
-      t('analysis.allianceAdvertising'),
-      t('analysis.videoAdvertising'),
-      t('analysis.searchEngines')
+      '直接访问',
+      '邮件营销',
+      '联盟广告',
+      '视频广告',
+      '搜索引擎'
     ]
   },
   series: [
     {
-      name: t('analysis.userAccessSource'),
+      name: '用户访问来源',
       type: 'pie',
       radius: '55%',
       center: ['50%', '60%'],
       data: [
-        { value: 335, name: t('analysis.directAccess') },
-        { value: 310, name: t('analysis.mailMarketing') },
-        { value: 234, name: t('analysis.allianceAdvertising') },
-        { value: 135, name: t('analysis.videoAdvertising') },
-        { value: 1548, name: t('analysis.searchEngines') }
+        { value: 335, name: '直接访问' },
+        { value: 310, name: '邮件营销' },
+        { value: 234, name: '联盟广告' },
+        { value: 135, name: '视频广告' },
+        { value: 1548, name: '搜索引擎' }
       ]
     }
   ]
@@ -108,7 +108,7 @@ export const pieOptions: EChartsOption = {
 
 export const barOptions: EChartsOption = {
   title: {
-    text: t('analysis.weeklyUserActivity'),
+    text: '每周用户活跃量',
     left: 'center'
   },
   tooltip: {
@@ -125,13 +125,13 @@ export const barOptions: EChartsOption = {
   xAxis: {
     type: 'category',
     data: [
-      t('analysis.monday'),
-      t('analysis.tuesday'),
-      t('analysis.wednesday'),
-      t('analysis.thursday'),
-      t('analysis.friday'),
-      t('analysis.saturday'),
-      t('analysis.sunday')
+      '周一',
+      '周二',
+      '周三',
+      '周四',
+      '周五',
+      '周六',
+      '周日'
     ],
     axisTick: {
       alignWithLabel: true
@@ -142,7 +142,7 @@ export const barOptions: EChartsOption = {
   },
   series: [
     {
-      name: t('analysis.activeQuantity'),
+      name: '活跃量',
       data: [13253, 34235, 26321, 12340, 24643, 1322, 1324],
       type: 'bar'
     }
@@ -151,30 +151,30 @@ export const barOptions: EChartsOption = {
 
 export const radarOption: EChartsOption = {
   legend: {
-    data: [t('workplace.personal'), t('workplace.team')]
+    data: ['个人', '团队']
   },
   radar: {
     // shape: 'circle',
     indicator: [
-      { name: t('workplace.quote'), max: 65 },
-      { name: t('workplace.contribution'), max: 160 },
-      { name: t('workplace.hot'), max: 300 },
-      { name: t('workplace.yield'), max: 130 },
-      { name: t('workplace.follow'), max: 100 }
+      { name: '引用', max: 65 },
+      { name: '贡献', max: 160 },
+      { name: '热度', max: 300 },
+      { name: '产量', max: 130 },
+      { name: '关注', max: 100 }
     ]
   },
   series: [
     {
-      name: `xxx${t('workplace.index')}`,
+      name: `xxx${'指数'}`,
       type: 'radar',
       data: [
         {
           value: [42, 30, 20, 35, 80],
-          name: t('workplace.personal')
+          name: '个人'
         },
         {
           value: [50, 140, 290, 100, 90],
-          name: t('workplace.team')
+          name: '团队'
         }
       ]
     }

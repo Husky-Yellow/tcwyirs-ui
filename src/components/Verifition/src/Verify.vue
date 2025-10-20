@@ -5,7 +5,7 @@
       :style="{ 'max-width': parseInt(imgSize.width) + 20 + 'px' }"
     >
       <div v-if="mode == 'pop'" class="verifybox-top">
-        {{ t('captcha.verification') }}
+        {{ '请完成安全验证' }}
         <span class="verifybox-close" @click="closeBox">
           <i class="iconfont icon-close"></i>
         </span>

@@ -5,10 +5,10 @@ import { dateFormatter } from '@/utils/formatTime'
 // 表单校验
 export const rules = reactive({
   mail: [
-    { required: true, message: t('profile.rules.mail'), trigger: 'blur' },
+    { required: true, message: '请输入邮箱地址', trigger: 'blur' },
     {
       type: 'email',
-      message: t('profile.rules.truemail'),
+      message: '请输入正确的邮箱地址',
       trigger: ['blur', 'change']
     }
   ],

@@ -6,12 +6,28 @@ export function makeRequiredRule() {
   }
 }
 
-export const localeProps = (t, prefix, rules) => {
+// 组件前缀映射表 - 将英文组件名映射为中文
+const componentPrefixMap = {
+  'fc-editor': '编辑器',
+  'fc-upload-file': '文件上传',
+  'fc-upload-img': '图片上传',
+  'fc-upload-imgs': '多图上传',
+  'fc-select': '选择器',
+  'fc-dict-select': '字典选择'
+}
+
+export const localeProps = (prefix, rules) => {
   return rules.map((rule) => {
     if (rule.field === 'formCreate$required') {
-      rule.title = t('props.required') || rule.title
+      rule.title = '必填'
     } else if (rule.field && rule.field !== '_optionType') {
-      rule.title = t('components.' + prefix + '.' + rule.field) || rule.title
+      // 如果没有标题，使用 prefix 和 field 生成默认标题
+      if (!rule.title) {
+        // 提取组件名（prefix 格式通常是 'fc-xxx.props'）
+        const componentName = prefix.split('.')[0]
+        const chinesePrefix = componentPrefixMap[componentName] || componentName
+        rule.title = `${chinesePrefix}.${rule.field}`
+      }
     }
     return rule
   })
