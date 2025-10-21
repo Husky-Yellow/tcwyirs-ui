@@ -6,11 +6,12 @@ export interface TenantVO {
   contactName: string
   contactMobile: string
   status: number
-  domain: string
+  domain?: string
+  website?: string
   packageId: number
   username: string
   password: string
-  expireTime: Date
+  expireTime: Date | number | string
   accountCount: number
   createTime: Date
 }
@@ -20,7 +21,7 @@ export interface TenantPageReqVO extends PageParam {
   contactName?: string
   contactMobile?: string
   status?: number
-  createTime?: Date[]
+  createTime?: string[]
 }
 
 export interface TenantExportReqVO {
@@ -28,40 +29,40 @@ export interface TenantExportReqVO {
   contactName?: string
   contactMobile?: string
   status?: number
-  createTime?: Date[]
+  createTime?: string[]
 }
 
 // 查询租户列表
 export const getTenantPage = (params: TenantPageReqVO) => {
-  return request.get({ url: '/system/tenant/page', params })
+  return request.get<PageResult<TenantVO[]>>({ url: '/system/tenant/page', params })
 }
 
 // 查询租户详情
 export const getTenant = (id: number) => {
-  return request.get({ url: '/system/tenant/get?id=' + id })
+  return request.get<TenantVO>({ url: '/system/tenant/get?id=' + id })
 }
 
 // 获取租户精简信息列表
 export const getTenantList = () => {
-  return request.get({ url: '/system/tenant/simple-list' })
+  return request.get<TenantVO[]>({ url: '/system/tenant/simple-list' })
 }
 
 // 新增租户
 export const createTenant = (data: TenantVO) => {
-  return request.post({ url: '/system/tenant/create', data })
+  return request.post<void>({ url: '/system/tenant/create', data })
 }
 
 // 修改租户
 export const updateTenant = (data: TenantVO) => {
-  return request.put({ url: '/system/tenant/update', data })
+  return request.put<void>({ url: '/system/tenant/update', data })
 }
 
 // 删除租户
 export const deleteTenant = (id: number) => {
-  return request.delete({ url: '/system/tenant/delete?id=' + id })
+  return request.delete<void>({ url: '/system/tenant/delete?id=' + id })
 }
 
 // 导出租户
 export const exportTenant = (params: TenantExportReqVO) => {
-  return request.download({ url: '/system/tenant/export-excel', params })
+  return request.download<Blob>({ url: '/system/tenant/export-excel', params })
 }

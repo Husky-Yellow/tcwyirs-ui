@@ -67,7 +67,7 @@ const formData = ref<NotifyTemplateApi.NotifyTemplateVO>({
   code: '',
   content: '',
   type: undefined,
-  params: '',
+  params: [],
   status: CommonStatusEnum.ENABLE,
   remark: ''
 })
@@ -132,7 +132,7 @@ const resetForm = () => {
     code: '',
     content: '',
     type: undefined,
-    params: '',
+    params: [],
     status: CommonStatusEnum.ENABLE,
     remark: ''
   }

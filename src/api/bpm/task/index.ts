@@ -102,12 +102,12 @@ export const copyTask = async (data: any) => {
   return await request.put({ url: '/bpm/task/copy', data })
 }
 
-// 获取我的待办任务
+/** @deprecated 该接口已废弃，请勿再使用 */
 export const myTodoTask = async (processInstanceId: string) => {
   return await request.get({ url: '/bpm/task/my-todo?processInstanceId=' + processInstanceId })
 }
 
-// 获取减签任务列表
+/** @deprecated 该接口已废弃，请勿再使用 */
 export const getChildrenTaskList = async (id: string) => {
   return await request.get({ url: '/bpm/task/list-by-parent-task-id?parentTaskId=' + id })
 }

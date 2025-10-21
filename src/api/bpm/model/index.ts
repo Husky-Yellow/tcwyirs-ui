@@ -48,6 +48,7 @@ export const updateModelSortBatch = async (ids: number[]) => {
   })
 }
 
+/** @deprecated 该接口已废弃，请勿再使用 */
 export const updateModelBpmn = async (data: ModelVO) => {
   return await request.put({ url: '/bpm/model/update-bpmn', data: data })
 }

@@ -20,11 +20,20 @@ export type OperateLogVO = {
   createTime: Date
 }
 
+export interface OperateLogPageReqVO extends PageParam {
+  userId?: number
+  type?: string
+  subType?: string
+  action?: string
+  createTime?: string[]
+  bizId?: number
+}
+
 // 查询操作日志列表
-export const getOperateLogPage = (params: PageParam) => {
-  return request.get({ url: '/system/operate-log/page', params })
+export const getOperateLogPage = (params: OperateLogPageReqVO) => {
+  return request.get<PageResult<OperateLogVO[]>>({ url: '/system/operate-log/page', params })
 }
 // 导出操作日志
-export const exportOperateLog = (params: any) => {
-  return request.download({ url: '/system/operate-log/export', params })
+export const exportOperateLog = (params: OperateLogPageReqVO) => {
+  return request.download<Blob>({ url: '/system/operate-log/export', params })
 }

@@ -5,6 +5,7 @@ import { toNumber } from 'es-toolkit/compat'
  * @param component 需要注册的组件
  * @param alias 组件别名
  * @returns any
+ * @deprecated 项目内未引用
  */
 export const withInstall = <T>(component: T, alias?: string) => {
   const comp = component as any
@@ -28,6 +29,7 @@ export const humpToUnderline = (str: string): string => {
 /**
  * @param str 需要转驼峰的下划线字符串
  * @returns 字符串驼峰
+ * @deprecated 项目内未引用
  */
 export const underlineToHump = (str: string): string => {
   if (!str) return ''
@@ -38,6 +40,7 @@ export const underlineToHump = (str: string): string => {
 
 /**
  * 驼峰转横杠
+ * @deprecated 项目内未引用
  */
 export const humpToDash = (str: string): string => {
   return str.replace(/([A-Z])/g, '-$1').toLowerCase()
@@ -106,6 +109,7 @@ export function formatTime(time: Date | number | string, fmt: string) {
 
 /**
  * 生成随机字符串
+ * @deprecated 项目内未引用
  */
 export function toAnyString() {
   const str: string = 'xxxxx-xxxxx-4xxxx-yxxxx-xxxxx'.replace(/[xy]/g, (c: string) => {
@@ -120,6 +124,7 @@ export function toAnyString() {
  * 生成指定长度的随机字符串
  *
  * @param length 字符串长度
+ * @deprecated 项目内未引用
  */
 export function generateRandomStr(length: number): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -135,6 +140,7 @@ export function generateRandomStr(length: number): string {
  *
  * @param supportedFileTypes 支持的文件类型数组，如 ['PDF', 'DOC', 'DOCX']
  * @returns 用于文件上传组件 accept 属性的字符串
+ * @deprecated 项目内未引用
  */
 export const generateAcceptedFileTypes = (supportedFileTypes: string[]): string => {
   const allowedExtensions = supportedFileTypes.map((ext) => ext.toLowerCase())
@@ -190,6 +196,7 @@ export const generateAcceptedFileTypes = (supportedFileTypes: string[]): string 
 
 /**
  * 首字母大写
+ * @deprecated 项目内未引用
  */
 export function firstUpperCase(str: string) {
   return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
@@ -248,6 +255,7 @@ export const fileSizeFormatter = (row, column, cellValue) => {
  * 将值复制到目标对象，且以目标对象属性为准，例：target: {a:1} source:{a:2,b:3} 结果为：{a:2}
  * @param target 目标对象
  * @param source 源对象
+ * @deprecated 项目内未引用
  */
 export const copyValueToTarget = (target: any, source: any) => {
   const newObj = Object.assign({}, target, source)
@@ -286,6 +294,7 @@ export const getUrlNumberValue = (key: string, urlStr: string = location.href): 
  * 构建排序字段
  * @param prop 字段名称
  * @param order 顺序
+ * @deprecated 项目内未引用
  */
 export const buildSortingField = ({ prop, order }) => {
   return { field: prop, order: order === 'ascending' ? 'asc' : 'desc' }
@@ -298,6 +307,7 @@ export const buildSortingField = ({ prop, order }) => {
  *
  * @param values 数字数组
  * @return 求和结果，默认为 0
+ * @deprecated 项目内未引用
  */
 export const getSumValue = (values: number[]): number => {
   return values.reduce((prev, curr) => {
@@ -315,6 +325,7 @@ export const getSumValue = (values: number[]): number => {
 /**
  * 将一个整数转换为分数保留两位小数
  * @param num
+ * @deprecated 项目内未引用
  */
 export const formatToFraction = (num: number | string | undefined): string => {
   if (typeof num === 'undefined') return '0.00'

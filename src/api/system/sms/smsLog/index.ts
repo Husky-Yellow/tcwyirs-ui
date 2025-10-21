@@ -8,7 +8,7 @@ export interface SmsLogVO {
   templateCode: string
   templateType: number | null
   templateContent: string
-  templateParams: Map<string, object> | null
+  templateParams: Record<string, unknown> | null
   apiTemplateId: string
   mobile: string
   userId: number | null
@@ -26,12 +26,22 @@ export interface SmsLogVO {
   createTime: Date | null
 }
 
+export interface SmsLogPageReqVO extends PageParam {
+  channelId?: number
+  templateId?: number
+  mobile?: string
+  sendStatus?: number
+  receiveStatus?: number
+  sendTime?: string[]
+  receiveTime?: string[]
+}
+
 // 查询短信日志列表
-export const getSmsLogPage = (params: PageParam) => {
-  return request.get({ url: '/mq/sms-log/page', params })
+export const getSmsLogPage = (params: SmsLogPageReqVO) => {
+  return request.get<PageResult<SmsLogVO[]>>({ url: '/mq/sms-log/page', params })
 }
 
 // 导出短信日志
-export const exportSmsLog = (params) => {
-  return request.download({ url: '/mq/sms-log/export-excel', params })
+export const exportSmsLog = (params: SmsLogPageReqVO) => {
+  return request.download<Blob>({ url: '/mq/sms-log/export-excel', params })
 }

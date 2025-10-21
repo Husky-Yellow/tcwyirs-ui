@@ -1,6 +1,7 @@
 import request from '@/config/axios'
 
 // 获得授权信息
+/** @deprecated 该接口已废弃，请勿再使用 */
 export const getAuthorize = (clientId: string) => {
   return request.get({ url: '/system/oauth2/authorize?clientId=' + clientId })
 }

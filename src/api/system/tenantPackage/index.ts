@@ -12,31 +12,38 @@ export interface TenantPackageVO {
   createTime: Date
 }
 
+export interface TenantPackagePageReqVO extends PageParam {
+  name?: string
+  status?: number
+  remark?: string
+  createTime?: string[]
+}
+
 // 查询租户套餐列表
-export const getTenantPackagePage = (params: PageParam) => {
-  return request.get({ url: '/system/tenant-package/page', params })
+export const getTenantPackagePage = (params: TenantPackagePageReqVO) => {
+  return request.get<PageResult<TenantPackageVO[]>>({ url: '/system/tenant-package/page', params })
 }
 
 // 获得租户
 export const getTenantPackage = (id: number) => {
-  return request.get({ url: '/system/tenant-package/get?id=' + id })
+  return request.get<TenantPackageVO>({ url: '/system/tenant-package/get?id=' + id })
 }
 
 // 新增租户套餐
 export const createTenantPackage = (data: TenantPackageVO) => {
-  return request.post({ url: '/system/tenant-package/create', data })
+  return request.post<void>({ url: '/system/tenant-package/create', data })
 }
 
 // 修改租户套餐
 export const updateTenantPackage = (data: TenantPackageVO) => {
-  return request.put({ url: '/system/tenant-package/update', data })
+  return request.put<void>({ url: '/system/tenant-package/update', data })
 }
 
 // 删除租户套餐
 export const deleteTenantPackage = (id: number) => {
-  return request.delete({ url: '/system/tenant-package/delete?id=' + id })
+  return request.delete<void>({ url: '/system/tenant-package/delete?id=' + id })
 }
 // 获取租户套餐精简信息列表
 export const getTenantPackageList = () => {
-  return request.get({ url: '/system/tenant-package/simple-list' })
+  return request.get<TenantPackageVO[]>({ url: '/system/tenant-package/simple-list' })
 }

@@ -12,6 +12,9 @@ export const CommonStatusEnum = {
 }
 
 // 全局用户类型枚举
+/**
+ * @deprecated 项目内未引用
+ */
 export const UserTypeEnum = {
   MEMBER: 1, // 会员
   ADMIN: 2 // 管理员
@@ -29,6 +32,7 @@ export const SystemMenuTypeEnum = {
 
 /**
  * 角色的类型枚举
+ * @deprecated 项目内未引用
  */
 export const SystemRoleTypeEnum = {
   SYSTEM: 1, // 内置角色
@@ -67,6 +71,7 @@ export const SystemUserSocialTypeEnum = {
 // ========== INFRA 模块 ==========
 /**
  * 代码生成模板类型
+ * @deprecated 项目内未引用
  */
 export const InfraCodegenTemplateTypeEnum = {
   CRUD: 1, // 基础 CRUD
@@ -94,6 +99,7 @@ export const InfraApiErrorLogProcessStatusEnum = {
 
 /**
  * 支付类型枚举
+ * @deprecated 项目内未引用
  */
 export const PayType = {
   WECHAT: 'WECHAT',
@@ -103,6 +109,7 @@ export const PayType = {
 
 /**
  * 支付订单状态枚举
+ * @deprecated 项目内未引用
  */
 export const PayOrderStatusEnum = {
   WAITING: {
@@ -168,6 +175,7 @@ export const PromotionDiscountTypeEnum = {
 }
 /**
  * 配送方式枚举
+ * @deprecated 项目内未引用
  */
 export const DeliveryTypeEnum = {
   EXPRESS: {
@@ -181,6 +189,7 @@ export const DeliveryTypeEnum = {
 }
 /**
  * 交易订单 - 状态
+ * @deprecated 项目内未引用
  */
 export const TradeOrderStatusEnum = {
   UNPAID: {
@@ -207,6 +216,9 @@ export const TradeOrderStatusEnum = {
 
 // ========== ERP - 企业资源计划 ==========
 
+/**
+ * @deprecated 项目内未引用
+ */
 export const ErpBizType = {
   PURCHASE_ORDER: 10,
   PURCHASE_IN: 11,

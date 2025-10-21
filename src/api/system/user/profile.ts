@@ -41,17 +41,17 @@ export interface UserProfileUpdateReqVO {
 
 // 查询用户个人信息
 export const getUserProfile = () => {
-  return request.get({ url: '/system/user/profile/get' })
+  return request.get<ProfileVO>({ url: '/system/user/profile/get' })
 }
 
 // 修改用户个人信息
 export const updateUserProfile = (data: UserProfileUpdateReqVO) => {
-  return request.put({ url: '/system/user/profile/update', data })
+  return request.put<void>({ url: '/system/user/profile/update', data })
 }
 
 // 用户密码重置
 export const updateUserPassword = (oldPassword: string, newPassword: string) => {
-  return request.put({
+  return request.put<void>({
     url: '/system/user/profile/update-password',
     data: {
       oldPassword: oldPassword,

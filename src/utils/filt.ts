@@ -1,3 +1,6 @@
+/**
+ * @deprecated 项目内未引用
+ */
 export const openWindow = (
   url: string,
   opt?: {
@@ -35,6 +38,9 @@ export const dataURLtoBlob = (base64Buf: string): Blob => {
  * img url to base64
  * @param url
  */
+/**
+ * @deprecated 项目内未引用
+ */
 export const urlToBase64 = (url: string, mineType?: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     let canvas = document.createElement('CANVAS') as Nullable<HTMLCanvasElement>
@@ -64,6 +70,9 @@ export const urlToBase64 = (url: string, mineType?: string): Promise<string> => 
  * @param mime
  * @param bom
  */
+/**
+ * @deprecated 项目内未引用
+ */
 export const downloadByOnlineUrl = (
   url: string,
   filename: string,
@@ -82,6 +91,9 @@ export const downloadByOnlineUrl = (
  * @param mime
  * @param bom
  */
+/**
+ * @deprecated 项目内未引用
+ */
 export const downloadByBase64 = (buf: string, filename: string, mime?: string, bom?: BlobPart) => {
   const base64Buf = dataURLtoBlob(buf)
   downloadByData(base64Buf, filename, mime, bom)
@@ -93,6 +105,9 @@ export const downloadByBase64 = (buf: string, filename: string, mime?: string, b
  * @param {*} filename
  * @param {*} mime
  * @param {*} bom
+ */
+/**
+ * @deprecated 项目内未引用
  */
 export const downloadByData = (data: BlobPart, filename: string, mime?: string, bom?: BlobPart) => {
   const blobData = typeof bom !== 'undefined' ? [bom, data] : [data]
@@ -115,6 +130,9 @@ export const downloadByData = (data: BlobPart, filename: string, mime?: string, 
 /**
  * Download file according to file address
  * @param {*} sUrl
+ */
+/**
+ * @deprecated 项目内未引用
  */
 export const downloadByUrl = ({
   url,

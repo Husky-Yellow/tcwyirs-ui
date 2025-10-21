@@ -1,39 +1,43 @@
 import request from '@/config/axios'
-import type { RegisterVO, UserLoginVO, PermissionInfoVO } from './types'
-
-export interface SmsCodeVO {
-  mobile: string
-  scene: number
-}
-
-export interface SmsLoginVO {
-  mobile: string
-  code: string
-}
+import type {
+  RegisterVO,
+  UserLoginVO,
+  PermissionInfoVO,
+  TokenType,
+  SmsCodeVO,
+  SmsLoginVO,
+  CaptchaRequestVO,
+  CaptchaCheckRequestVO,
+  CaptchaResponseVO,
+  SmsResetPasswordVO,
+  TenantWebsiteVO
+} from './types'
 
 // 登录
-export const login = (data: UserLoginVO) => {
-  return request.post({ url: '/system/auth/login', data })
+export const login = (data: UserLoginVO): Promise<TokenType> => {
+  return request.post<TokenType>({ url: '/system/auth/login', data })
 }
 
 // 注册
-export const register = (data: RegisterVO) => {
-  return request.post({ url: '/system/auth/register', data })
+export const register = (data: RegisterVO): Promise<unknown> => {
+  return request.post<unknown>({ url: '/system/auth/register', data })
 }
 
 // 使用租户名，获得租户编号
-export const getTenantIdByName = (name: string) => {
-  return request.get({ url: '/system/tenant/get-id-by-name?name=' + name })
+export const getTenantIdByName = (name: string): Promise<number> => {
+  return request.get<number>({ url: '/system/tenant/get-id-by-name?name=' + name })
 }
 
 // 使用租户域名，获得租户信息
-export const getTenantByWebsite = (website: string) => {
-  return request.get({ url: '/system/tenant/get-by-website?website=' + website })
+export const getTenantByWebsite = (website: string): Promise<TenantWebsiteVO | undefined> => {
+  return request.get<TenantWebsiteVO | undefined>({
+    url: '/system/tenant/get-by-website?website=' + website
+  })
 }
 
 // 登出
-export const loginOut = () => {
-  return request.post({ url: '/system/auth/logout' })
+export const loginOut = (): Promise<void> => {
+  return request.post<void>({ url: '/system/auth/logout' })
 }
 
 // 获取用户权限信息
@@ -42,18 +46,18 @@ export const getInfo = (): Promise<PermissionInfoVO> => {
 }
 
 //获取登录验证码
-export const sendSmsCode = (data: SmsCodeVO) => {
-  return request.post({ url: '/system/auth/send-sms-code', data })
+export const sendSmsCode = (data: SmsCodeVO): Promise<void> => {
+  return request.post<void>({ url: '/system/auth/send-sms-code', data })
 }
 
 // 短信验证码登录
-export const smsLogin = (data: SmsLoginVO) => {
-  return request.post({ url: '/system/auth/sms-login', data })
+export const smsLogin = (data: SmsLoginVO): Promise<TokenType> => {
+  return request.post<TokenType>({ url: '/system/auth/sms-login', data })
 }
 
 // 社交快捷登录，使用 code 授权码
-export function socialLogin(type: string, code: string, state: string) {
-  return request.post({
+export function socialLogin(type: string, code: string, state: string): Promise<TokenType> {
+  return request.post<TokenType>({
     url: '/system/auth/social-login',
     data: {
       type,
@@ -64,22 +68,36 @@ export function socialLogin(type: string, code: string, state: string) {
 }
 
 // 社交授权的跳转
-export const socialAuthRedirect = (type: number, redirectUri: string) => {
-  return request.get({
+export const socialAuthRedirect = (type: number, redirectUri: string): Promise<string> => {
+  return request.get<string>({
     url: '/system/auth/social-auth-redirect?type=' + type + '&redirectUri=' + redirectUri
   })
 }
 
-export const getCode = (data: any) => {
+export const getCode = (data: CaptchaRequestVO): Promise<CaptchaResponseVO> => {
   return request.postOriginal({ url: 'system/captcha/get', data })
 }
 
 // 滑动或者点选验证
-export const reqCheck = (data: any) => {
+export const reqCheck = (data: CaptchaCheckRequestVO): Promise<CaptchaResponseVO> => {
   return request.postOriginal({ url: 'system/captcha/check', data })
 }
 
 // 通过短信重置密码
-export const smsResetPassword = (data: any) => {
-  return request.post({ url: '/system/auth/reset-password', data })
+export const smsResetPassword = (data: SmsResetPasswordVO): Promise<void> => {
+  return request.post<void>({ url: '/system/auth/reset-password', data })
 }
+
+export type {
+  UserLoginVO,
+  RegisterVO,
+  SmsCodeVO,
+  SmsLoginVO,
+  TokenType,
+  PermissionInfoVO,
+  CaptchaRequestVO,
+  CaptchaCheckRequestVO,
+  CaptchaResponseVO,
+  SmsResetPasswordVO,
+  TenantWebsiteVO
+} from './types'

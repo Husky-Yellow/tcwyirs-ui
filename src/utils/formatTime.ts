@@ -3,6 +3,7 @@ import type { TableColumnCtx } from 'element-plus'
 
 /**
  * 日期快捷选项适用于 el-date-picker
+ * @deprecated 项目内未引用
  */
 export const defaultShortcuts = [
   {
@@ -74,6 +75,7 @@ export function formatDate(date: Date, format?: string): string {
 
 /**
  * 获取当前的日期+时间
+ * @deprecated 项目内未引用
  */
 export function getNowDateTime() {
   return dayjs()
@@ -83,6 +85,7 @@ export function getNowDateTime() {
  * 获取当前日期是第几周
  * @param dateTime 当前传入的日期值
  * @returns 返回第几周数字值
+ * @deprecated 项目内未引用
  */
 export function getWeek(dateTime: Date): number {
   const temptTime = new Date(dateTime.getTime())
@@ -109,6 +112,7 @@ export function getWeek(dateTime: Date): number {
  * @description param 24小时：60 * 60 * 24 * 1000
  * @description param 3天：   60 * 60* 24 * 1000 * 3
  * @returns 返回拼接后的时间字符串
+ * @deprecated 项目内未引用
  */
 export function formatPast(param: string | Date, format = 'YYYY-MM-DD HH:mm:ss'): string {
   // 传入格式处理、存储转换值
@@ -150,6 +154,7 @@ export function formatPast(param: string | Date, format = 'YYYY-MM-DD HH:mm:ss')
  * @param param 当前时间，new Date() 格式
  * @description param 调用 `formatAxis(new Date())` 输出 `上午好`
  * @returns 返回拼接后的时间字符串
+ * @deprecated 项目内未引用
  */
 export function formatAxis(param: Date): string {
   const hour: number = new Date(param).getHours()
@@ -207,6 +212,7 @@ export function dateFormatter(_row: any, _column: TableColumnCtx<any>, cellValue
  * @param row 行数据
  * @param column 字段
  * @param cellValue 字段值
+ * @deprecated 项目内未引用
  */
 export function dateFormatter2(_row: any, _column: TableColumnCtx<any>, cellValue: any): string {
   return cellValue ? formatDate(cellValue, 'YYYY-MM-DD') : ''
@@ -216,6 +222,7 @@ export function dateFormatter2(_row: any, _column: TableColumnCtx<any>, cellValu
  * 设置起始日期，时间为00:00:00
  * @param param 传入日期
  * @returns 带时间00:00:00的日期
+ * @deprecated 项目内未引用
  */
 export function beginOfDay(param: Date): Date {
   return new Date(param.getFullYear(), param.getMonth(), param.getDate(), 0, 0, 0)
@@ -225,6 +232,7 @@ export function beginOfDay(param: Date): Date {
  * 设置结束日期，时间为23:59:59
  * @param param 传入日期
  * @returns 带时间23:59:59的日期
+ * @deprecated 项目内未引用
  */
 export function endOfDay(param: Date): Date {
   return new Date(param.getFullYear(), param.getMonth(), param.getDate(), 23, 59, 59)
@@ -234,6 +242,7 @@ export function endOfDay(param: Date): Date {
  * 计算两个日期间隔天数
  * @param param1 日期1
  * @param param2 日期2
+ * @deprecated 项目内未引用
  */
 export function betweenDay(param1: Date, param2: Date): number {
   param1 = convertDate(param1)
@@ -246,6 +255,7 @@ export function betweenDay(param1: Date, param2: Date): number {
  * 日期计算
  * @param param1 日期
  * @param param2 添加的时间
+ * @deprecated 项目内未引用
  */
 export function addTime(param1: Date, param2: number): Date {
   param1 = convertDate(param1)
@@ -255,6 +265,7 @@ export function addTime(param1: Date, param2: number): Date {
 /**
  * 日期转换
  * @param param 日期
+ * @deprecated 项目内未引用
  */
 export function convertDate(param: Date | string): Date {
   if (typeof param === 'string') {
@@ -267,6 +278,7 @@ export function convertDate(param: Date | string): Date {
  * 指定的两个日期, 是否为同一天
  * @param a 日期 A
  * @param b 日期 B
+ * @deprecated 项目内未引用
  */
 export function isSameDay(a: dayjs.ConfigType, b: dayjs.ConfigType): boolean {
   if (!a || !b) return false
@@ -280,6 +292,7 @@ export function isSameDay(a: dayjs.ConfigType, b: dayjs.ConfigType): boolean {
  * 获取一天的开始时间、截止时间
  * @param date 日期
  * @param days 天数
+ * @deprecated 项目内未引用
  */
 export function getDayRange(
   date: dayjs.ConfigType,
@@ -291,6 +304,7 @@ export function getDayRange(
 
 /**
  * 获取最近7天的开始时间、截止时间
+ * @deprecated 项目内未引用
  */
 export function getLast7Days(): [dayjs.ConfigType, dayjs.ConfigType] {
   const lastWeekDay = dayjs().subtract(7, 'd')
@@ -300,6 +314,7 @@ export function getLast7Days(): [dayjs.ConfigType, dayjs.ConfigType] {
 
 /**
  * 获取最近30天的开始时间、截止时间
+ * @deprecated 项目内未引用
  */
 export function getLast30Days(): [dayjs.ConfigType, dayjs.ConfigType] {
   const lastMonthDay = dayjs().subtract(30, 'd')
@@ -309,6 +324,7 @@ export function getLast30Days(): [dayjs.ConfigType, dayjs.ConfigType] {
 
 /**
  * 获取最近1年的开始时间、截止时间
+ * @deprecated 项目内未引用
  */
 export function getLast1Year(): [dayjs.ConfigType, dayjs.ConfigType] {
   const lastYearDay = dayjs().subtract(1, 'y')
@@ -320,6 +336,7 @@ export function getLast1Year(): [dayjs.ConfigType, dayjs.ConfigType] {
  * 获取指定日期的开始时间、截止时间
  * @param beginDate 开始日期
  * @param endDate 截止日期
+ * @deprecated 项目内未引用
  */
 export function getDateRange(
   beginDate: dayjs.ConfigType,

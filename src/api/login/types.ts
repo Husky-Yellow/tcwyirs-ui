@@ -37,6 +37,16 @@ export type RegisterVO = {
   captchaVerification: string
 }
 
+export type SmsCodeVO = {
+  mobile: string
+  scene: number
+}
+
+export type SmsLoginVO = {
+  mobile: string
+  code: string
+}
+
 // 菜单信息
 export type MenuVO = {
   id: number
@@ -65,4 +75,43 @@ export type PermissionInfoVO = {
   roles: string[]
   permissions: string[]
   menus: MenuVO[]
+}
+
+export interface TenantWebsiteVO {
+  id: number
+  name: string
+  [key: string]: unknown
+}
+
+export interface CaptchaRequestVO {
+  captchaType: string
+  [key: string]: unknown
+}
+
+export interface CaptchaCheckRequestVO {
+  captchaType: string
+  pointJson: string
+  token: string
+}
+
+export interface CaptchaDataVO {
+  originalImageBase64: string
+  token: string
+  secretKey?: string
+  jigsawImageBase64?: string
+  wordList?: string[]
+}
+
+export interface CaptchaBaseResponse<T = Record<string, unknown>> {
+  repCode: string
+  repMsg: string
+  repData: T
+}
+
+export type CaptchaResponseVO = CaptchaBaseResponse<CaptchaDataVO>
+
+export interface SmsResetPasswordVO {
+  mobile: string
+  code: string
+  password: string
 }

@@ -19,12 +19,24 @@ export interface MailLogVO {
   sendException: string
 }
 
+export interface MailLogPageReqVO extends PageParam {
+  toMail?: string
+  userId?: number
+  userType?: number
+  accountId?: number
+  templateId?: number
+  sendStatus?: number
+  sendTime?: string[]
+}
+
 // 查询邮件日志列表
-export const getMailLogPage = async (params: PageParam) => {
-  return await request.get({ url: '/mq/mail-log/page', params })
+export const getMailLogPage = async (
+  params: MailLogPageReqVO
+): Promise<PageResult<MailLogVO[]>> => {
+  return await request.get<PageResult<MailLogVO[]>>({ url: '/mq/mail-log/page', params })
 }
 
 // 查询邮件日志详情
 export const getMailLog = async (id: number) => {
-  return await request.get({ url: '/mq/mail-log/get?id=' + id })
+  return await request.get<MailLogVO>({ url: '/mq/mail-log/get?id=' + id })
 }

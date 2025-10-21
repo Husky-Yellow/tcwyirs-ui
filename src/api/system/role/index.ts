@@ -17,44 +17,53 @@ export interface UpdateStatusReqVO {
   status: number
 }
 
+export interface RolePageReqVO extends PageParam {
+  name?: string
+  code?: string
+  status?: number
+  createTime?: string[]
+}
+
 // 查询角色列表
-export const getRolePage = async (params: PageParam) => {
-  return await request.get({ url: '/system/role/page', params })
+export const getRolePage = async (
+  params: RolePageReqVO
+): Promise<PageResult<RoleVO[]>> => {
+  return await request.get<PageResult<RoleVO[]>>({ url: '/system/role/page', params })
 }
 
 // 查询角色（精简)列表
 export const getSimpleRoleList = async (): Promise<RoleVO[]> => {
-  return await request.get({ url: '/system/role/simple-list' })
+  return await request.get<RoleVO[]>({ url: '/system/role/simple-list' })
 }
 
 // 查询角色详情
 export const getRole = async (id: number) => {
-  return await request.get({ url: '/system/role/get?id=' + id })
+  return await request.get<RoleVO>({ url: '/system/role/get?id=' + id })
 }
 
 // 新增角色
 export const createRole = async (data: RoleVO) => {
-  return await request.post({ url: '/system/role/create', data })
+  return await request.post<void>({ url: '/system/role/create', data })
 }
 
 // 修改角色
 export const updateRole = async (data: RoleVO) => {
-  return await request.put({ url: '/system/role/update', data })
+  return await request.put<void>({ url: '/system/role/update', data })
 }
 
-// 修改角色状态
+/** @deprecated 该接口已废弃，请勿再使用 */
 export const updateRoleStatus = async (data: UpdateStatusReqVO) => {
-  return await request.put({ url: '/system/role/update-status', data })
+  return await request.put<void>({ url: '/system/role/update-status', data })
 }
 
 // 删除角色
 export const deleteRole = async (id: number) => {
-  return await request.delete({ url: '/system/role/delete?id=' + id })
+  return await request.delete<void>({ url: '/system/role/delete?id=' + id })
 }
 
 // 导出角色
-export const exportRole = (params) => {
-  return request.download({
+export const exportRole = (params: RolePageReqVO) => {
+  return request.download<Blob>({
     url: '/system/role/export-excel',
     params
   })

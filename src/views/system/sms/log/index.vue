@@ -196,7 +196,7 @@ const message = useMessage() // 消息弹窗
 
 const loading = ref(false) // 列表的加载中
 const total = ref(0) // 列表的总页数
-const list = ref([]) // 列表的数据
+const list = ref<SmsLogApi.SmsLogVO[]>([]) // 列表的数据
 const queryFormRef = ref() // 搜索的表单
 const queryParams = reactive({
   pageNo: 1,
@@ -210,7 +210,7 @@ const queryParams = reactive({
   receiveTime: []
 })
 const exportLoading = ref(false) // 导出的加载中
-const channelList = ref<any[]>([]) // 短信渠道列表
+const channelList = ref<SmsChannelApi.SmsChannelVO[]>([]) // 短信渠道列表
 
 /** 查询列表 */
 const getList = async () => {

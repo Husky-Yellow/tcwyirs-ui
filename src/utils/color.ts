@@ -18,6 +18,7 @@ export const isHexColor = (color: string) => {
  * @param r
  * @param g
  * @param b
+ * @deprecated 项目内未引用
  */
 export const rgbToHex = (r: number, g: number, b: number) => {
   // tslint:disable-next-line:no-bitwise
@@ -65,6 +66,7 @@ export const colorIsDark = (color: string) => {
  * @param {string} color The color to process
  * @param {number} amount The amount to change the color by
  * @returns {string} The HEX representation of the processed color
+ * @deprecated 项目内未引用
  */
 export const darken = (color: string, amount: number) => {
   color = color.indexOf('#') >= 0 ? color.substring(1, color.length) : color
@@ -132,6 +134,7 @@ const contrast = (rgb1: string[], rgb2: number[]) => {
 /**
  * Determines what the best text color is (black or white) based con the contrast with the background
  * @param hexColor - Last selected color by the user
+ * @deprecated 项目内未引用
  */
 export const calculateBestTextColor = (hexColor: string) => {
   const rgbColor = hexToRGB(hexColor.substring(1))

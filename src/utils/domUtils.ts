@@ -27,6 +27,9 @@ const camelCase = function (name: string) {
 }
 
 /* istanbul ignore next */
+/**
+ * @deprecated 项目内未引用
+ */
 export function hasClass(el: Element, cls: string) {
   if (!el || !cls) return false
   if (cls.indexOf(' ') !== -1) {
@@ -40,6 +43,9 @@ export function hasClass(el: Element, cls: string) {
 }
 
 /* istanbul ignore next */
+/**
+ * @deprecated 项目内未引用
+ */
 export function addClass(el: Element, cls: string) {
   if (!el) return
   let curClass = el.className
@@ -61,6 +67,9 @@ export function addClass(el: Element, cls: string) {
 }
 
 /* istanbul ignore next */
+/**
+ * @deprecated 项目内未引用
+ */
 export function removeClass(el: Element, cls: string) {
   if (!el || !cls) return
   const classes = cls.split(' ')
@@ -98,6 +107,7 @@ export function getBoundingClientRect(element: Element): DOMRect | number {
  *   bottomIncludeBody：元素最底端距离文档最底部的距离
  *
  * @description:
+ * @deprecated 项目内未引用
  */
 export function getViewportOffset(element: Element): ViewportOffsetResult {
   const doc = document.documentElement
@@ -211,6 +221,9 @@ export const getStyle =
       }
 
 /* istanbul ignore next */
+/**
+ * @deprecated 项目内未引用
+ */
 export function setStyle(element: Element | any, styleName: any, value: any) {
   if (!element || !styleName) return
 
@@ -263,6 +276,9 @@ export const getScrollContainer = (el: Element, vertical?: any) => {
 }
 
 /* istanbul ignore next */
+/**
+ * @deprecated 项目内未引用
+ */
 export const isInContainer = (el: Element, container: any) => {
   if (isServer || !el || !container) return false
 

@@ -52,7 +52,7 @@ const columns: Column[] = [
   }
 ]
 const loading = ref(true) // 列表的加载中
-const list = ref([]) // 表格的数据
+const list = ref<AreaApi.AreaTreeItem[]>([]) // 表格的数据
 
 /** 获得数据列表 */
 const getList = async () => {

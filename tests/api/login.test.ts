@@ -15,7 +15,15 @@ import {
   reqCheck,
   smsResetPassword
 } from '@/api/login'
-import type { UserLoginVO, RegisterVO, SmsCodeVO, SmsLoginVO } from '@/api/login'
+import type {
+  UserLoginVO,
+  RegisterVO,
+  SmsCodeVO,
+  SmsLoginVO,
+  CaptchaRequestVO,
+  CaptchaCheckRequestVO,
+  SmsResetPasswordVO
+} from '@/api/login'
 
 // Mock axios request
 vi.mock('@/config/axios', () => ({
@@ -198,7 +206,7 @@ describe('api/login', () => {
 
   describe('getCode', () => {
     it('should call getCode API with correct data', () => {
-      const data = { type: 'login' }
+      const data: CaptchaRequestVO = { captchaType: 'login' }
 
       getCode(data)
 
@@ -211,9 +219,10 @@ describe('api/login', () => {
 
   describe('reqCheck', () => {
     it('should call reqCheck API with correct data', () => {
-      const data = {
-        captchaVerification: 'captcha123',
-        pointJson: '{"x":100,"y":200}'
+      const data: CaptchaCheckRequestVO = {
+        captchaType: 'blockPuzzle',
+        pointJson: '{"x":100,"y":200}',
+        token: 'token123'
       }
 
       reqCheck(data)
@@ -227,7 +236,7 @@ describe('api/login', () => {
 
   describe('smsResetPassword', () => {
     it('should call smsResetPassword API with correct data', () => {
-      const data = {
+      const data: SmsResetPasswordVO = {
         mobile: '13800138000',
         code: '123456',
         password: 'newpassword123'

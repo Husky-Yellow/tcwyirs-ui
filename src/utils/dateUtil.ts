@@ -7,10 +7,16 @@ import dayjs from 'dayjs'
 const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss'
 const DATE_FORMAT = 'YYYY-MM-DD'
 
+/**
+ * @deprecated 项目内未引用
+ */
 export function formatToDateTime(date?: dayjs.ConfigType, format = DATE_TIME_FORMAT): string {
   return dayjs(date).format(format)
 }
 
+/**
+ * @deprecated 项目内未引用
+ */
 export function formatToDate(date?: dayjs.ConfigType, format = DATE_FORMAT): string {
   return dayjs(date).format(format)
 }

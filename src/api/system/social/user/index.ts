@@ -13,12 +13,21 @@ export interface SocialUserVO {
   state: string
 }
 
+export interface SocialUserPageReqVO extends PageParam {
+  type?: number
+  openid?: string
+  nickname?: string
+  createTime?: string[]
+}
+
 // 查询社交用户列表
-export const getSocialUserPage = async (params) => {
-  return await request.get({ url: `/system/social-user/page`, params })
+export const getSocialUserPage = async (
+  params: SocialUserPageReqVO
+): Promise<PageResult<SocialUserVO[]>> => {
+  return await request.get<PageResult<SocialUserVO[]>>({ url: `/system/social-user/page`, params })
 }
 
 // 查询社交用户详情
 export const getSocialUser = async (id: number) => {
-  return await request.get({ url: `/system/social-user/get?id=` + id })
+  return await request.get<SocialUserVO>({ url: `/system/social-user/get?id=` + id })
 }

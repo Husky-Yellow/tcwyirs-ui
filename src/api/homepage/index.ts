@@ -1,30 +1,14 @@
 import request from '@/config/axios'
+import type { HomepageData } from './types'
 
-export interface ApplicationScenario {
-  id: string
-  title: string
-  description: string
-}
+export type {
+  ApplicationScenario,
+  QualityResource,
+  DataStatistic,
+  HomepageData
+} from './types'
 
-export interface QualityResource {
-  id: string
-  category: string
-  title: string
-  description: string
-}
-
-export interface DataStatistic {
-  label: string
-  value: number
-}
-
-export interface HomepageData {
-  applicationScenarios: ApplicationScenario[]
-  qualityResources: QualityResource[]
-  dataStatistics: DataStatistic[]
-}
-
-export const getHomepageData = () => {
+// 获取首页展示数据（mock）
+export const getHomepageData = (): Promise<HomepageData> => {
   return request.get<HomepageData>({ url: '/public/homepage' })
 }
-

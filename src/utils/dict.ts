@@ -79,6 +79,7 @@ export const getBoolDictOptions = (dictType: string) => {
  * @param dictType 字典类型
  * @param value 字典值
  * @return DictDataType 字典对象
+ * @deprecated 项目内未引用
  */
 export const getDictObj = (dictType: string, value: any): DictDataType | undefined => {
   const dictOptions: DictDataType[] = getDictOptions(dictType)
