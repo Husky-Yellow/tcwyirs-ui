@@ -2,35 +2,30 @@
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useAppStore } from '@/store/modules/app'
 import { Footer } from '@/layout/components/Footer'
+import { computedEager } from '@vueuse/core'
+import { ref, nextTick, provide } from 'vue'
 
 defineOptions({ name: 'AppView' })
 
 const appStore = useAppStore()
-
-const layout = computed(() => appStore.getLayout)
-
-const fixedHeader = computed(() => appStore.getFixedHeader)
-
-const footer = computed(() => appStore.getFooter)
-
 const tagsViewStore = useTagsViewStore()
 
-const getCaches = computed((): string[] => {
-  return tagsViewStore.getCachedViews
-})
+// 使用 computedEager 提前计算，减少响应式开销
+const layout = computedEager(() => appStore.getLayout)
+const fixedHeader = computedEager(() => appStore.getFixedHeader)
+const footer = computedEager(() => appStore.getFooter)
+const tagsView = computedEager(() => appStore.getTagsView)
 
-const tagsView = computed(() => appStore.getTagsView)
+// 使用 computedEager 优化 KeepAlive 缓存列表
+const getCaches = computedEager((): string[] => tagsViewStore.getCachedViews)
 
-//region 无感刷新
+// 无感刷新
 const routerAlive = ref(true)
-// 无感刷新，防止出现页面闪烁白屏
 const reload = () => {
   routerAlive.value = false
   nextTick(() => (routerAlive.value = true))
 }
-// 为组件后代提供刷新方法
 provide('reload', reload)
-//endregion
 </script>
 
 <template>

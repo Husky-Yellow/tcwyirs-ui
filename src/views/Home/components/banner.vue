@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-75 bg-cover bg-center bg-no-repeat rounded-3 relative overflow-hidden" style="background-image: linear-gradient(to right, #1F54DB, #FFFFFF), url('@/assets/imgs/home/home_banner.png')">
+  <div class="w-full h-196px bg-cover bg-center bg-no-repeat rounded-3 relative overflow-hidden" style="background-image: linear-gradient(to right, #1F54DB, #FFFFFF), url('@/assets/imgs/home/home_banner.png')">
     <div class="flex h-full items-center px-10 relative z-2 md:flex-row flex-col md:text-left text-center">
       <!-- Left section with text content -->
       <div class="flex-none w-45% pr-5 md:mb-0 mb-5">

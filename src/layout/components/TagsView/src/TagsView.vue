@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, nextTick, ref, unref, watch } from 'vue'
+import { computed, nextTick, ref, unref, watch, shallowRef } from 'vue'
 import type { RouteLocationNormalizedLoaded, RouterLinkProps } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { usePermissionStore } from '@/store/modules/permission'
@@ -8,7 +8,7 @@ import { useAppStore } from '@/store/modules/app'
 import { filterAffixTags } from './helper'
 import { ContextMenu, ContextMenuExpose } from '@/layout/components/ContextMenu'
 import { useDesign } from '@/hooks/web/useDesign'
-import { useTemplateRefsList } from '@vueuse/core'
+import { useTemplateRefsList, computedEager, useScroll, useThrottleFn } from '@vueuse/core'
 import { ElScrollbar } from 'element-plus'
 import { useScrollTo } from '@/hooks/event/useScrollTo'
 import { useTagsView } from '@/hooks/web/useTagsView'
@@ -17,36 +17,25 @@ import { cloneDeep } from 'es-toolkit'
 defineOptions({ name: 'TagsView' })
 
 const { getPrefixCls } = useDesign()
-
 const prefixCls = getPrefixCls('tags-view')
 
-
-
 const { currentRoute, push } = useRouter()
-
 const { closeAll, closeLeft, closeRight, closeOther, closeCurrent, refreshPage } = useTagsView()
 
 const permissionStore = usePermissionStore()
-
-const routers = computed(() => permissionStore.getRouters)
+const routers = computedEager(() => permissionStore.getRouters)
 
 const tagsViewStore = useTagsViewStore()
-
-const visitedViews = computed(() => tagsViewStore.getVisitedViews)
-
-const affixTagArr = ref<RouteLocationNormalizedLoaded[]>([])
-
-const selectedTag = computed(() => tagsViewStore.getSelectedTag)
-
+const visitedViews = computedEager(() => tagsViewStore.getVisitedViews)
+const selectedTag = computedEager(() => tagsViewStore.getSelectedTag)
 const setSelectTag = tagsViewStore.setSelectedTag
 
 const appStore = useAppStore()
+const tagsViewImmerse = computedEager(() => appStore.getTagsViewImmerse)
+const tagsViewIcon = computedEager(() => appStore.getTagsViewIcon)
+const isDark = computedEager(() => appStore.getIsDark)
 
-const tagsViewImmerse = computed(() => appStore.getTagsViewImmerse)
-
-const tagsViewIcon = computed(() => appStore.getTagsViewIcon)
-
-const isDark = computed(() => appStore.getIsDark)
+const affixTagArr = shallowRef<RouteLocationNormalizedLoaded[]>([])
 
 // 初始化tag
 const initTags = () => {
@@ -123,8 +112,14 @@ const closeRightTags = () => {
   closeRight()
 }
 
-// 滚动到选中的tag
-const moveToCurrentTag = async () => {
+const tagLinksRefs = useTemplateRefsList<RouterLinkProps>()
+const scrollbarRef = ref<ComponentRef<typeof ElScrollbar>>()
+
+// 使用 useScroll 自动跟踪滚动位置
+const { x: scrollLeft } = useScroll(computed(() => scrollbarRef.value?.wrapRef), { throttle: 16 })
+
+// 节流优化的滚动到当前tag
+const moveToCurrentTag = useThrottleFn(async () => {
   await nextTick()
   for (const v of unref(visitedViews)) {
     if (v.fullPath === unref(currentRoute).fullPath) {
@@ -132,66 +127,55 @@ const moveToCurrentTag = async () => {
       break
     }
   }
-}
-
-const tagLinksRefs = useTemplateRefsList<RouterLinkProps>()
+}, 100)
 
 const moveToTarget = (currentTag: RouteLocationNormalizedLoaded) => {
   const wrap$ = unref(scrollbarRef)?.wrapRef
-  let firstTag: Nullable<RouterLinkProps> = null
-  let lastTag: Nullable<RouterLinkProps> = null
+  if (!wrap$) return
 
   const tagList = unref(tagLinksRefs)
-  // find first tag and last tag
-  if (tagList.length > 0) {
-    firstTag = tagList[0]
-    lastTag = tagList[tagList.length - 1]
-  }
+  if (tagList.length === 0) return
+
+  const firstTag = tagList[0]
+  const lastTag = tagList[tagList.length - 1]
+
   if ((firstTag?.to as RouteLocationNormalizedLoaded).fullPath === currentTag.fullPath) {
-    // 直接滚动到0的位置
-    const { start } = useScrollTo({
-      el: wrap$!,
-      position: 'scrollLeft',
-      to: 0,
-      duration: 500
-    })
+    const { start } = useScrollTo({ el: wrap$, position: 'scrollLeft', to: 0, duration: 500 })
     start()
   } else if ((lastTag?.to as RouteLocationNormalizedLoaded).fullPath === currentTag.fullPath) {
-    // 滚动到最后的位置
     const { start } = useScrollTo({
-      el: wrap$!,
+      el: wrap$,
       position: 'scrollLeft',
-      to: wrap$!.scrollWidth - wrap$!.offsetWidth,
+      to: wrap$.scrollWidth - wrap$.offsetWidth,
       duration: 500
     })
     start()
   } else {
-    // find preTag and nextTag
-    const currentIndex: number = tagList.findIndex(
+    const currentIndex = tagList.findIndex(
       (item) => (item?.to as RouteLocationNormalizedLoaded).fullPath === currentTag.fullPath
     )
-    const tgsRefs = document.getElementsByClassName(`${prefixCls}__item`)
+    if (currentIndex === -1) return
 
+    const tgsRefs = document.getElementsByClassName(`${prefixCls}__item`)
     const prevTag = tgsRefs[currentIndex - 1] as HTMLElement
     const nextTag = tgsRefs[currentIndex + 1] as HTMLElement
 
-    // the tag's offsetLeft after of nextTag
-    const afterNextTagOffsetLeft = nextTag.offsetLeft + nextTag.offsetWidth + 4
+    if (!prevTag || !nextTag) return
 
-    // the tag's offsetLeft before of prevTag
+    const afterNextTagOffsetLeft = nextTag.offsetLeft + nextTag.offsetWidth + 4
     const beforePrevTagOffsetLeft = prevTag.offsetLeft - 4
 
-    if (afterNextTagOffsetLeft > unref(scrollLeftNumber) + wrap$!.offsetWidth) {
+    if (afterNextTagOffsetLeft > scrollLeft.value + wrap$.offsetWidth) {
       const { start } = useScrollTo({
-        el: wrap$!,
+        el: wrap$,
         position: 'scrollLeft',
-        to: afterNextTagOffsetLeft - wrap$!.offsetWidth,
+        to: afterNextTagOffsetLeft - wrap$.offsetWidth,
         duration: 500
       })
       start()
-    } else if (beforePrevTagOffsetLeft < unref(scrollLeftNumber)) {
+    } else if (beforePrevTagOffsetLeft < scrollLeft.value) {
       const { start } = useScrollTo({
-        el: wrap$!,
+        el: wrap$,
         position: 'scrollLeft',
         to: beforePrevTagOffsetLeft,
         duration: 500
@@ -222,36 +206,22 @@ const visibleChange = (visible: boolean, tagItem: RouteLocationNormalizedLoaded)
   }
 }
 
-// elscroll 实例
-const scrollbarRef = ref<ComponentRef<typeof ElScrollbar>>()
-
-// 保存滚动位置
-const scrollLeftNumber = ref(0)
-
-const scroll = ({ scrollLeft }) => {
-  scrollLeftNumber.value = scrollLeft as number
-}
-
 // 移动到某个位置
 const move = (to: number) => {
   const wrap$ = unref(scrollbarRef)?.wrapRef
+  if (!wrap$) return
   const { start } = useScrollTo({
-    el: wrap$!,
+    el: wrap$,
     position: 'scrollLeft',
-    to: unref(scrollLeftNumber) + to,
+    to: scrollLeft.value + to,
     duration: 500
   })
   start()
 }
 
 const canShowIcon = (item: RouteLocationNormalizedLoaded) => {
-  if (
-    (item?.matched?.[1]?.meta?.icon && unref(tagsViewIcon)) ||
-    (item?.meta?.affix && unref(tagsViewIcon) && item?.meta?.icon)
-  ) {
-    return true
-  }
-  return false
+  const showIcon = unref(tagsViewIcon)
+  return showIcon && (item?.matched?.[1]?.meta?.icon || (item?.meta?.affix && item?.meta?.icon))
 }
 
 onBeforeMount(() => {
@@ -286,7 +256,7 @@ watch(
       />
     </span>
     <div class="flex-1 overflow-hidden">
-      <ElScrollbar ref="scrollbarRef" class="h-full" @scroll="scroll">
+      <ElScrollbar ref="scrollbarRef" class="h-full">
         <div class="h-[var(--tags-view-height)] flex">
           <ContextMenu
             v-for="item in visitedViews"

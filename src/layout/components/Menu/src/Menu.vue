@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { PropType } from 'vue'
+import { PropType, markRaw } from 'vue'
 import { ElMenu, ElScrollbar } from 'element-plus'
 import { useAppStore } from '@/store/modules/app'
 import { usePermissionStore } from '@/store/modules/permission'
@@ -7,10 +7,13 @@ import { useRenderMenuItem } from './components/useRenderMenuItem'
 import { isUrl } from '@/utils/is'
 import { useDesign } from '@/hooks/web/useDesign'
 import { LayoutType } from '@/types/layout'
+import { computedEager } from '@vueuse/core'
 
 const { getPrefixCls } = useDesign()
-
 const prefixCls = getPrefixCls('menu')
+
+// 使用 markRaw 标记静态数据，避免响应式开销
+const VERTICAL_LAYOUTS = markRaw<LayoutType[]>(['classic', 'topLeft', 'cutMenu'])
 
 export default defineComponent({
   // eslint-disable-next-line vue/no-reserved-component-names
@@ -23,39 +26,25 @@ export default defineComponent({
   },
   setup(props) {
     const appStore = useAppStore()
-
-    const layout = computed(() => appStore.getLayout)
-
+    const permissionStore = usePermissionStore()
     const { push, currentRoute } = useRouter()
 
-    const permissionStore = usePermissionStore()
+    // 使用 computedEager 提前计算，减少响应式开销
+    const layout = computedEager(() => appStore.getLayout)
+    const collapse = computedEager(() => appStore.getCollapse)
+    const uniqueOpened = computedEager(() => appStore.getUniqueOpened)
 
-    const menuMode = computed((): 'vertical' | 'horizontal' => {
-      // 竖
-      const vertical: LayoutType[] = ['classic', 'topLeft', 'cutMenu']
-
-      if (vertical.includes(unref(layout))) {
-        return 'vertical'
-      } else {
-        return 'horizontal'
-      }
+    const menuMode = computedEager((): 'vertical' | 'horizontal' => {
+      return VERTICAL_LAYOUTS.includes(unref(layout)) ? 'vertical' : 'horizontal'
     })
 
-    const routers = computed(() =>
+    const routers = computedEager(() =>
       unref(layout) === 'cutMenu' ? permissionStore.getMenuTabRouters : permissionStore.getRouters
     )
 
-    const collapse = computed(() => appStore.getCollapse)
-
-    const uniqueOpened = computed(() => appStore.getUniqueOpened)
-
-    const activeMenu = computed(() => {
+    const activeMenu = computedEager(() => {
       const { meta, path } = unref(currentRoute)
-      // if set path, the sidebar will highlight the path you set
-      if (meta.activeMenu) {
-        return meta.activeMenu as string
-      }
-      return path
+      return (meta.activeMenu as string) || path
     })
 
     const menuSelect = (index: string) => {
@@ -241,6 +230,8 @@ $prefix-cls: #{$namespace}-menu;
 <style lang="scss">
 $prefix-cls: #{$namespace}-menu-popper;
 
+// Global styles for menu popper (dropdown submenu)
+// Note: These styles mirror the scoped styles above for consistency in popper menus
 .#{$prefix-cls}--vertical,
 .#{$prefix-cls}--horizontal {
   // 设置选中时子标题的颜色
@@ -259,9 +250,10 @@ $prefix-cls: #{$namespace}-menu-popper;
     }
   }
 
-  // 设置选中时的高亮背景
+  // 设置选中时的高亮背景和高亮颜色
   .el-menu-item.is-active {
     position: relative;
+    color: var(--left-menu-text-active-color) !important;
     background-color: var(--left-menu-bg-active-color) !important;
 
     &:hover {

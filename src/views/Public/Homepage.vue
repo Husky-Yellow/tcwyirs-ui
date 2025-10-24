@@ -1,18 +1,17 @@
 <template>
   <div ref="scrollContainerRef" class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth">
-    <PublicComponents ref="publicComponentsRef" />
-    <Header :is-scrolled="isScrolled" />
-    <main class="pt-56px">
-      <component :is="ReuseBanner" :on-navigate="() => navigateTo('/dashboard/index')" />
-      <component :is="ReuseDataStatistics" :statistics="dataStatistics" />
-      <component
-        :is="ReuseQualityResourcesSection"
+    <AppHeader :is-scrolled="isScrolled" />
+
+    <main>
+      <HomepageBanner @navigate="navigateTo('/dashboard/index')" />
+      <DataStatistics :statistics="dataStatistics" />
+      <QualityResourcesSection
         :resources="qualityResources"
-        :on-resource-click="({ id }) => navigateToDetail(id)"
-        :on-more-click="() => navigateTo('/marketplace')"
+        @resource-click="navigateToDetail"
+        @more-click="navigateTo('/marketplace')"
       />
-      <component :is="ReuseApplicationScenariosSection" :scenarios="applicationScenarios" />
-      <component :is="ReuseResourceSharingCTA" :on-navigate="() => navigateTo('/marketplace')" />
+      <ApplicationScenariosSection :scenarios="applicationScenarios" />
+      <ResourceSharingCTA @navigate="navigateTo('/marketplace')" />
     </main>
 
     <Footer :social-links="[]" @navigation="navigateTo" />
@@ -21,25 +20,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { Component } from 'vue'
-import PublicComponents from './components/PublicComponents.vue'
 import { useHomepageData } from './composables/useHomepageData'
 import { usePublic } from './composables/usePublic'
+import HomepageBanner from './components/HomepageBanner.vue'
+import DataStatistics from './components/DataStatistics.vue'
+import QualityResourcesSection from './components/QualityResourcesSection.vue'
+import ApplicationScenariosSection from './components/ApplicationScenariosSection.vue'
+import ResourceSharingCTA from './components/ResourceSharingCTA.vue'
 
 defineOptions({ name: 'Homepage' })
 
-// 数据
 const { qualityResources, applicationScenarios, dataStatistics } = useHomepageData()
-
-// 滚动和导航
 const { scrollContainerRef, isScrolled, navigateTo, navigateToDetail } = usePublic()
-
-// 可重用组件引用
-const publicComponentsRef = ref<InstanceType<typeof PublicComponents>>()
-const ReuseBanner = computed(() => publicComponentsRef.value?.Banner as Component | undefined)
-const ReuseQualityResourcesSection = computed(() => publicComponentsRef.value?.QualityResourcesSection as Component | undefined)
-const ReuseApplicationScenariosSection = computed(() => publicComponentsRef.value?.ApplicationScenariosSection as Component | undefined)
-const ReuseDataStatistics = computed(() => publicComponentsRef.value?.DataStatistics as Component | undefined)
-const ReuseResourceSharingCTA = computed(() => publicComponentsRef.value?.ResourceSharingCTA as Component | undefined)
 </script>

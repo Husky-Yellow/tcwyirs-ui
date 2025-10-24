@@ -35,7 +35,7 @@ export default defineComponent({
         class={[
           `${prefixCls}`,
           'h-full transition-width duration-300 ease relative',
-          unref(collapse) ? 'w-64px' : 'w-200px'
+          unref(collapse) ? 'w-[var(--left-menu-min-width)]' : 'w-[var(--custom-left-menu-max-width)]'
         ]}
       >
         <div
