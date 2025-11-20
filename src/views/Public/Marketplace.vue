@@ -1,44 +1,51 @@
 <template>
   <div class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth">
-    <AppHeader :is-scrolled="isScrolled" />
+    <AppHeader :is-scrolled="isScrolled" :showShadow="false" />
 
     <main>
       <!-- Banner 区域 -->
-      <section
-        class="relative min-h-280px py-56px flex items-center overflow-hidden bg-cover bg-center"
-        style="background-image: url('/src/assets/imgs/bg/Marketplace/MarketplaceBanner.png')"
-      >
-        <div class="max-w-1200px mx-auto px-20px w-full relative z-10">
-          <h1 class="text-52px font-800 text-white mb-16px leading-tight">
-            资源市场 | 智能要素超市
+      <section class="marketplace-banner relative min-h-280px py-56px flex items-center overflow-hidden">
+        <div class="max-w-1160px mx-auto w-full relative z-10">
+          <h1 class="mb-32px flex items-center gap-18px">
+            <span class="marketplace-title font-['Alibaba_PuHuiTi_2.0'] font-bold text-[32px]">
+              资源市场
+            </span>
+            <div class="flex bg-[#00000040] h-[28px] w-[2px]"></div>
+            <span class="font-['Alibaba_PuHuiTi_2.0'] font-bold text-[32px] leading-normal text-center text-black/85">
+              智能要素超市
+            </span>
           </h1>
-          <div class="mb-24px">
-            <el-input
+
+          <!-- 搜索框 -->
+          <div class="search-container flex items-center bg-white rounded-8px overflow-hidden max-w-880px">
+            <div class="search-dropdown relative flex items-center gap-8px px-16px py-12px cursor-pointer border-r border-gray-200">
+              <span class="font-['PingFang_SC'] text-[14px] text-[#1677FF]">全部资源</span>
+              <Icon icon="ep:arrow-down" class="text-[#1677FF]" />
+            </div>
+            <input
               v-model="searchKeyword"
-              placeholder="搜索智能要素..."
-              class="input-with-select"
-              style="max-width: 600px"
+              type="text"
+              placeholder="请输入关键词"
+              class="flex-1 px-16px py-12px outline-none font-['PingFang_SC'] text-[14px]"
               @keyup.enter="debouncedSearch"
+            />
+            <button
+              class="search-button px-20px py-12px bg-[#1677FF] hover:bg-[#0E5FD9] transition-colors"
+              @click="debouncedSearch"
             >
-              <template #prepend>
-                <el-select v-model="searchType" placeholder="选择" style="width: 115px">
-                  <el-option label="全部" value="all" />
-                  <el-option label="标题" value="title" />
-                  <el-option label="描述" value="description" />
-                </el-select>
-              </template>
-              <template #append>
-                <el-button :icon="Search" @click="debouncedSearch" />
-              </template>
-            </el-input>
+              <Icon icon="ep:search" class="text-white text-20px" />
+            </button>
           </div>
         </div>
       </section>
 
-      <!-- 产品列表区域 -->
-      <section class="products-section py-40px pb-80px bg-#F8F9FC">
-        <div class="max-w-1200px mx-auto px-20px">
-          <div class="grid gap-16px" :style="{ gridTemplateColumns: gridColumns }">
+      <!-- 资源展示区域 -->
+      <section class="py-40px pb-80px bg-[#F8F9FC]">
+        <div class="max-w-1160px mx-auto">
+          <h2 class="font-['PingFang_SC'] font-medium text-[32px] text-black/85 mb-40px">
+            资源展示
+          </h2>
+          <div class="grid grid-cols-4 gap-16px">
             <QualityResourceCard
               v-for="product in filteredProducts"
               :key="product.id"
@@ -56,30 +63,48 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Search } from '@element-plus/icons-vue'
-import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 import { usePublic } from './composables/usePublic'
 import { useMarketplace } from './composables/useMarketplace'
 import QualityResourceCard from './components/QualityResourceCard.vue'
 
 defineOptions({ name: 'Marketplace' })
 
-// 响应式断点检测
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const isMobile = breakpoints.smaller('sm')
-const isTablet = breakpoints.between('sm', 'lg')
-
-// 滚动和导航
 const { isScrolled, navigateTo, navigateToDetail } = usePublic()
-
-// 搜索和过滤
-const { searchKeyword, searchType, filteredProducts, debouncedSearch } = useMarketplace()
-
-// 响应式网格布局
-const gridColumns = computed(() => {
-  if (isMobile.value) return 'repeat(auto-fill, minmax(250px, 1fr))'
-  if (isTablet.value) return 'repeat(auto-fill, minmax(300px, 1fr))'
-  return 'repeat(auto-fill, minmax(274px, 1fr))'
-})
+const { searchKeyword, filteredProducts, debouncedSearch } = useMarketplace()
 </script>
+
+<style scoped>
+.marketplace-banner {
+  /* background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%); */
+  position: relative;
+}
+
+.marketplace-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/src/assets/imgs/bg/Marketplace/MarketplaceBanner.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+}
+
+.marketplace-title {
+  background: linear-gradient(90deg, #1677ff 0%, #16d4ff 50%, #1677ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.search-container {
+  box-shadow: 0 2px 12px rgba(22, 119, 255, 0.15);
+}
+
+.search-dropdown:hover {
+  background-color: #f5f5f5;
+}
+</style>

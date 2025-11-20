@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="min-h-screen relative bg-cover bg-center bg-no-repeat"
-    style="background-image: url('@/assets/imgs/bg/login/login_bg.png')"
-  >
+  <div class="login-container min-h-screen relative bg-cover bg-center bg-no-repeat">
     <!-- 左侧插图区域 -->
     <Transition appear enter-active-class="animate__fadeInLeft">
       <div
@@ -56,3 +53,9 @@ onUnmounted(() => {
   isPageLoaded.value = false
 })
 </script>
+
+<style scoped>
+.login-container {
+  background-image: url('@/assets/imgs/bg/login/login_bg.png');
+}
+</style>
