@@ -11,10 +11,7 @@ const appStore = useAppStore()
 const tagsViewStore = useTagsViewStore()
 
 // 使用 computedEager 提前计算，减少响应式开销
-const layout = computedEager(() => appStore.getLayout)
-const fixedHeader = computedEager(() => appStore.getFixedHeader)
 const footer = computedEager(() => appStore.getFooter)
-const tagsView = computedEager(() => appStore.getTagsView)
 
 // 使用 computedEager 优化 KeepAlive 缓存列表
 const getCaches = computedEager((): string[] => tagsViewStore.getCachedViews)

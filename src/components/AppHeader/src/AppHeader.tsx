@@ -11,6 +11,7 @@ import HeaderUser from './components/HeaderUser'
 interface Props {
   isScrolled?: boolean
   customStyle?: Record<string, any>
+  showShadow?: boolean
 }
 
 // 导航项配置
@@ -29,6 +30,10 @@ export default defineComponent({
     customStyle: {
       type: Object,
       default: () => ({})
+    },
+    showShadow: {
+      type: Boolean,
+      default: true
     }
   },
   setup(props: Props) {
@@ -89,8 +94,8 @@ export default defineComponent({
     return () => (
       <header
         class={[
-          'fixed top-0 left-0 right-0 backdrop-blur-md shadow-sm z-1000 transition-all duration-300',
-          { 'shadow-md': props.isScrolled }
+          'fixed top-0 left-0 right-0 backdrop-blur-md z-1000 transition-all duration-300',
+          { 'shadow-sm': props.showShadow, 'shadow-md': props.isScrolled }
         ]}
         style={props.customStyle}
       >

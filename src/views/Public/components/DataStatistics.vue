@@ -1,19 +1,24 @@
 <template>
-  <section class="py-60px bg-white">
-    <div class="max-w-1200px mx-auto px-33px">
-      <div class="grid grid-cols-4 gap-40px">
-        <div
-          v-for="stat in statistics"
-          :key="stat.label"
-          class="flex flex-col items-center justify-center"
+  <section class="py-40px bg-white">
+    <div
+      class="max-w-1134px mx-auto flex justify-between items-center"
+    >
+      <div
+        v-for="stat in statistics"
+        :key="stat.label"
+        class="flex flex-col items-center text-center font-['PingFang_SC']"
+      >
+        <CountTo
+          class="font-semibold text-[28px] leading-tight text-[#165DFF]"
+          :start-val="0"
+          :end-val="stat.value"
+          :duration="2600"
+        />
+        <p
+          class="font-normal text-[14px] leading-[22px] text-black/85"
         >
-          <div class="text-40px font-700 text-#3b82f6 mb-8px">
-            {{ stat.value.toLocaleString() }}
-          </div>
-          <div class="text-16px text-#6b7280">
-            {{ stat.label }}
-          </div>
-        </div>
+          {{ stat.label }}
+        </p>
       </div>
     </div>
   </section>

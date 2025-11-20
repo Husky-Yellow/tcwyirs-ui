@@ -56,33 +56,13 @@
     "**/dist/**": true,
     "**/yarn.lock": true
   },
-  "stylelint.enable": true,
-  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
-  "path-intellisense.mappings": {
-    "@/": "${workspaceRoot}/src"
-  },
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  },
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  },
-  "[less]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.codeActionsOnSave": {
@@ -90,50 +70,8 @@
     "source.fixAll.stylelint": "explicit"
   },
   "[vue]": {
-    "editor.defaultFormatter": "octref.vetur"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "i18n-ally.localesPaths": ["src/locales"],
-  "i18n-ally.keystyle": "nested",
-  "i18n-ally.sortKeys": true,
-  "i18n-ally.namespace": false,
-  "i18n-ally.enabledParsers": ["ts"],
-  "i18n-ally.sourceLanguage": "en",
-  "i18n-ally.displayLanguage": "zh-CN",
-  "i18n-ally.enabledFrameworks": ["vue", "react"],
-  "cSpell.words": [
-    "brotli",
-    "browserslist",
-    "codemirror",
-    "commitlint",
-    "cropperjs",
-    "echart",
-    "echarts",
-    "esnext",
-    "esno",
-    "iconify",
-    "INTLIFY",
-    "lintstagedrc",
-    "logicflow",
-    "nprogress",
-    "pinia",
-    "pnpm",
-    "qrcode",
-    "sider",
-    "sortablejs",
-    "stylelint",
-    "svgs",
-    "unocss",
-    "unplugin",
-    "unref",
-    "videojs",
-    "VITE",
-    "vitejs",
-    "vueuse",
-    "wangeditor",
-    "xingyu",
-    "yudao",
-    "zxcvbn"
-  ],
   // 控制相关文件嵌套展示
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
@@ -144,5 +82,4 @@
     "package.json": "pnpm-lock.yaml,yarn.lock,LICENSE,README*,CHANGELOG*,CNAME,.gitattributes,.eslintrc-auto-import.json,.gitignore,prettier.config.js,stylelint.config.js,commitlint.config.js,.stylelintignore,.prettierignore,.gitpod.yml,.eslintrc.js,.eslintignore"
   },
   "terminal.integrated.scrollback": 10000,
-  "nuxt.isNuxtApp": false
 }

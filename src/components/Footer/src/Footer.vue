@@ -1,39 +1,53 @@
 <template>
-  <!-- 页脚 -->
-  <footer class="bg-gradient-to-br from-#2d3748 to-#1a202c text-white py-80px pb-30px relative">
-    <div class="max-w-1200px mx-auto px-20px w-full">
-      <div class="grid grid-cols-[2fr_1fr_1fr_1fr] gap-50px mb-50px">
-        <div>
-          <div class="flex items-center mb-20px">
-            <img
-              src="@/assets/imgs/logo.png"
-              alt="TCWYIRS"
-              class="w-40px h-40px mr-12px rounded-8px"
-            />
-            <span
-              class="font-700 text-18px bg-gradient-to-r from-#667eea to-#764ba2 bg-clip-text text-transparent"
-              >{{ FOOTER_INFO.title }}</span
-            >
+  <footer class="bg-[#181D23] text-white py-60px">
+    <div class="max-w-1160px mx-auto">
+      <div class="grid grid-cols-[240px_1fr_1fr] gap-80px">
+        <!-- 左侧信息 -->
+        <div class="w-[240px]">
+          <div class="flex items-center gap-8px mb-16px">
+            <div class="w-20px h-20px rounded-4px flex items-center justify-center">
+              <span class="text-white text-12px font-bold">M</span>
+            </div>
+            <h3 class="font-['PingFang_SC'] font-normal text-[16px] text-white">
+              {{ FOOTER_INFO.title }}
+            </h3>
           </div>
-          <p class="text-16px text-#a0aec0 leading-1.6 mb-24px">
+          <p class="font-['PingFang_SC'] font-normal text-[14px] leading-[20px] text-white/60">
             {{ FOOTER_INFO.description }}
           </p>
         </div>
 
-        <!-- 服务区块 -->
-        <div v-for="section in serviceSections" :key="section.title" v-memo="[section.services]">
-          <h4
-            class="text-18px font-700 mb-20px text-#e2e8f0 relative after:content-[''] after:absolute after:bottom--8px after:left-0 after:w-30px after:h-2px after:bg-gradient-to-r after:from-#667eea after:to-#764ba2 after:rounded-1px"
-            >{{ section.title }}</h4
-          >
-          <ul class="list-none p-0">
+        <!-- 产品服务 -->
+        <div class="w-[400px]">
+          <h4 class="font-['PingFang_SC'] font-normal text-[16px] text-white mb-16px">
+            产品服务
+          </h4>
+          <ul class="list-none space-y-16px">
             <li
-              v-for="service in section.services"
+              v-for="service in productServices"
               :key="service.name"
-              class="text-15px text-#a0aec0 mb-12px cursor-pointer transition-all duration-300 ease py-4px relative hover:text-#e2e8f0 hover:translate-x-8px before:content-[''] before:absolute before:left--16px before:top-50% before:transform before:translate-y--50% before:w-4px before:h-4px before:bg-#667eea before:rounded-50% before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100"
+              class="font-['PingFang_SC'] font-normal text-[14px] text-white/60 cursor-pointer hover:text-white transition-colors"
               @click="hasValidPath(service.path) && handleNavigation(service.path)"
-              >{{ service.name }}</li
             >
+              {{ service.name }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- 服务支持 -->
+        <div class="w-[400px]">
+          <h4 class="font-['PingFang_SC'] font-normal text-[16px] text-white mb-16px">
+            服务支持
+          </h4>
+          <ul class="list-none space-y-16px">
+            <li
+              v-for="service in supportServices"
+              :key="service.name"
+              class="font-['PingFang_SC'] font-normal text-[14px] text-white/60 cursor-pointer hover:text-white transition-colors"
+              @click="hasValidPath(service.path) && handleNavigation(service.path)"
+            >
+              {{ service.name }}
+            </li>
           </ul>
         </div>
       </div>
@@ -42,70 +56,46 @@
 </template>
 
 <script setup lang="ts">
-// Types
-interface SocialLink {
-  name: string
-  icon: any
-  url: string
-}
-
 interface Service {
   name: string
   path: string | null
 }
 
-interface ServiceSection {
-  title: string
-  services: Service[]
-}
-
-// Props
 interface Props {
-  socialLinks?: SocialLink[]
+  socialLinks?: any[]
 }
 
 withDefaults(defineProps<Props>(), {
   socialLinks: () => []
 })
 
-// Emits
 const emit = defineEmits<{
   navigation: [path: string]
 }>()
 
-// Constants - 使用 readonly 和 markRaw 优化性能
-const FOOTER_INFO = readonly({
-  title: '泰城万业信息资源共享平台',
-  description: '致力于构建数字化生态平台，连接智能要素与创新需求'
-})
+const FOOTER_INFO = {
+  title: import.meta.env.VITE_APP_TITLE,
+  description: '领先的万物智联运营门户平台，提供全方位数据资源服务'
+} as const
 
-// Data - 使用 shallowRef 优化大对象性能
-const serviceSections = shallowRef<ServiceSection[]>([
-  {
-    title: '产品服务',
-    services: markRaw([
-      { name: '智能要素超市', path: '/marketplace' },
-      { name: '数字化解决方案', path: null },
-      { name: '技术咨询服务', path: null },
-      { name: '平台运维支持', path: null }
-    ])
-  },
-  {
-    title: '服务支持',
-    services: markRaw([
-      { name: '帮助中心', path: null },
-      { name: '技术支持', path: null },
-      { name: '意见反馈', path: null },
-      { name: '服务条款', path: null }
-    ])
-  }
-])
+const productServices: Service[] = [
+  { name: '智能要素超市', path: '/marketplace' },
+  { name: '研发中台', path: null },
+  { name: '生态合作', path: null },
+  { name: '解决方案中心', path: null }
+]
 
-// Computed - 使用 computed 缓存计算结果
+const supportServices: Service[] = [
+  { name: '文档中心', path: null },
+  { name: 'API 文档', path: null },
+  { name: '服务协议', path: null },
+  { name: '技术支持', path: null }
+]
+
 const hasValidPath = (path: string | null): path is string => Boolean(path)
 
-// Methods - 使用箭头函数和事件委托优化
 const handleNavigation = (path: string) => {
   emit('navigation', path)
 }
 </script>
+

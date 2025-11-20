@@ -68,12 +68,9 @@ export default defineComponent({
                 src={props.userAvatar}
                 class="transition-transform duration-200 hover:scale-105"
               />
-              <span class="text-14px transition-colors duration-200 text-[#1677FF] hover:text-[#409EFF]">
+              <span class="text-14px transition-colors duration-200 hover:text-[#409EFF]">
                 {props.userName}
               </span>
-              <ElIcon class="text-12px text-[#1677FF] ml-4px">
-                <ArrowRight />
-              </ElIcon>
             </div>
           </ElTooltip>
         ) : (

@@ -3,14 +3,14 @@
     ref="scrollContainerRef"
     class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth"
   >
-    <AppHeader :is-scrolled="isScrolled" />
+    <AppHeader :is-scrolled="isScrolled" :showShadow="false" />
 
     <main>
       <HomepageBanner @navigate="navigateTo('/dashboard/index')" />
       <DataStatistics :statistics="dataStatistics" />
       <QualityResourcesSection
         :resources="qualityResources"
-        @resource-click="navigateToDetail"
+        @resource-click="(resource) => navigateToDetail(resource.id)"
         @more-click="navigateTo('/marketplace')"
       />
       <ApplicationScenariosSection :scenarios="applicationScenarios" />

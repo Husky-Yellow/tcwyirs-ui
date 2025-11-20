@@ -1,21 +1,19 @@
 <template>
-  <section class="py-80px bg-white">
-    <div class="max-w-1200px mx-auto px-20px">
-      <div class="text-center mb-60px">
-        <h2 class="text-36px font-700 text-#1f2937 mb-16px">应用场景</h2>
+  <section class="py-60px bg-white">
+    <div class="max-w-1160px mx-auto">
+      <div class="text-center mb-73px">
+        <h2 class="mb-16px font-['PingFang_SC'] font-medium text-[32px] leading-normal text-black/85">应用场景</h2>
       </div>
 
-      <div class="grid grid-cols-2 gap-x-60px gap-y-40px">
-        <div v-for="scenario in scenarios" :key="scenario.id" class="flex flex-col gap-20px">
-          <div class="flex items-center gap-12px">
-            <div class="w-48px h-48px rounded-full bg-#E8F3FF flex items-center justify-center">
-              <span class="text-20px font-700 text-#409EFF">{{ scenario.id }}</span>
+      <div class="grid grid-cols-2 gap-x-220px gap-y-60px">
+        <div v-for="scenario in scenarios" :key="scenario.id" class="flex flex-col w-[470px]">
+           <div class="font-['Alibaba_PuHuiTi_2.0'] font-black text-[60px] text-[#1677FF] opacity-15">
+              {{ scenario.id }}
             </div>
-          </div>
 
-          <h3 class="text-18px font-600 text-#1f2937">{{ scenario.title }}</h3>
+          <h3 class="font-['PingFang_SC'] font-medium text-[22px] leading-normal text-gray-900/85 mt-[-34px]">{{ scenario.title }}</h3>
 
-          <p class="text-14px text-#6b7280">
+          <p class="mt-24px font-['PingFang_SC'] font-normal text-[14px] leading-[26px] text-black/65">
             {{ scenario.description }}
           </p>
         </div>

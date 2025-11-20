@@ -24,7 +24,7 @@
     remote
     placeholder="搜索"
     :remote-method="remoteMethod"
-    class="!w-260px"
+    class="!w-260px search-select"
     clearable
     @change="handleChange"
   >
@@ -139,3 +139,9 @@ defineExpose({
   }
 })
 </script>
+
+<style scoped>
+.search-select :deep(.el-select__wrapper) {
+  background-color: #bfbfbf4d;
+}
+</style>

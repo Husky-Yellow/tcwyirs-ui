@@ -3,40 +3,33 @@
     class="resource-share-card w-274px h-272px bg-white rounded-8px overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg hover:translate-y--4px"
     @click="$emit('click', resource)"
   >
-    <div class="relative w-full h-156px bg-gradient-to-br from-#e5e7eb to-#f3f4f6 overflow-hidden">
-      <div class="absolute inset-0 flex items-center justify-center">
-        <div class="absolute w-120px h-120px rounded-full bg-white/30 blur-20px"></div>
-        <div class="absolute w-80px h-80px rounded-full bg-black/5 top-20px right-30px"></div>
-      </div>
-
-      <div class="absolute inset-0 flex items-center justify-center">
-        <div class="relative flex items-center gap-8px">
-          <div class="w-60px h-60px rounded-full border-2 border-#cbd5e1 bg-white/80"></div>
-          <div class="text-80px font-800 text-#1f2937" style="line-height: 1">A</div>
-        </div>
-      </div>
+    <div class="w-full h-146px overflow-hidden">
+      <img
+        src="https://ts1.tc.mm.bing.net/th?id=OADD2.1234751583547257_1PVN4UXBJX2O895&pid=21.2&c=17&roil=0.0262&roit=0.1762&roir=0.9637&roib=0.6662&w=300&h=157&dynsize=1&qlt=90&dpr=2.00"
+        :alt="resource.title"
+        class="w-full h-full object-cover"
+      />
     </div>
 
-    <div class="p-16px">
+    <div class="py-18px px-16px">
       <div class="flex items-center gap-8px mb-8px">
-        <span class="px-8px py-2px bg-#f0f9ff text-#0284c7 text-12px rounded-4px">
+        <span class="w-[62px] h-[22px] flex items-center px-4px rounded-[2px] bg-[#F0F7FF] text-[12px] font-normal text-gray-600">
           {{ resource.category }}
         </span>
       </div>
 
-      <h3 class="text-16px font-600 text-#1f2937 mb-8px truncate">
-        {{ resource.title }}
-      </h3>
-
-      <p class="text-13px text-#6b7280 line-clamp-2 mb-8px" style="min-height: 36px">
-        {{ resource.description }}
-      </p>
-
-      <div class="flex items-center justify-between">
-        <span class="text-13px text-#3b82f6 hover:text-#2563eb transition-colors cursor-pointer">
+      <div class="flex items-center justify-between mb-8px">
+        <h3 class="text-16px font-600 text-#1f2937 truncate flex-1 mr-8px">
+          {{ resource.title }}
+        </h3>
+        <span class="text-13px text-#3b82f6 hover:text-#2563eb transition-colors cursor-pointer whitespace-nowrap">
           详情
         </span>
       </div>
+
+      <p class="text-13px text-#6b7280 truncate">
+        {{ resource.description }}
+      </p>
     </div>
   </div>
 </template>

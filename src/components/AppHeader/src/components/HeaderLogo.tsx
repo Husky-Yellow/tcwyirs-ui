@@ -11,7 +11,7 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: '吴兴区万物智联运营门户'
+      default: import.meta.env.VITE_APP_TITLE
     },
     logoUrl: {
       type: String,
@@ -36,3 +36,4 @@ export default defineComponent({
     )
   }
 })
+
