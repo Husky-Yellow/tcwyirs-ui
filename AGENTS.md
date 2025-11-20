@@ -1,1 +1,1 @@
-CLAUDE.md
+C:/Users/admin/Company/code/tcwyirs-ui/CLAUDE.md
