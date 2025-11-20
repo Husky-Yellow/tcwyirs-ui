@@ -22,7 +22,7 @@ import {
 import { InputPassword } from '@/components/InputPassword'
 import { Editor } from '@/components/Editor'
 import { UploadImg, UploadImgs, UploadFile } from '@/components/UploadFile'
-import { ComponentName } from '@/types/components'
+import { ComponentName } from '@/types/component'
 
 const componentMap: Recordable<Component, ComponentName> = {
   Radio: ElRadioGroup,

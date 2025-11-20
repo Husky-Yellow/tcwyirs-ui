@@ -6,7 +6,7 @@ import { usePermissionStore } from '@/store/modules/permission'
 import { useRenderMenuItem } from './components/useRenderMenuItem'
 import { isUrl } from '@/utils/is'
 import { useDesign } from '@/hooks/web/useDesign'
-import { LayoutType } from '@/types/layout'
+import { LayoutType } from '@/types/ui'
 import { computedEager } from '@vueuse/core'
 
 const { getPrefixCls } = useDesign()

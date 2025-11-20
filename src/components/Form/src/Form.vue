@@ -20,7 +20,7 @@ import { findIndex } from '@/utils'
 import { set } from 'es-toolkit/compat'
 import { FormProps } from './types'
 import { Icon } from '@/components/Icon'
-import { FormSchema, FormSetPropsType } from '@/types/form'
+import { FormSchema, FormSetPropsType } from '@/types/data'
 
 const { getPrefixCls } = useDesign()
 

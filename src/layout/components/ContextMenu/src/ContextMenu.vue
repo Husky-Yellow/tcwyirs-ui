@@ -3,7 +3,7 @@ import { PropType } from 'vue'
 
 import { useDesign } from '@/hooks/web/useDesign'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
-import { contextMenuSchema } from '@/types/contextMenu'
+import { ContextMenuSchema } from '@/types/ui'
 import type { ElDropdown } from 'element-plus'
 
 defineOptions({ name: 'ContextMenu' })
@@ -16,7 +16,7 @@ const emit = defineEmits(['visibleChange'])
 
 const props = defineProps({
   schema: {
-    type: Array as PropType<contextMenuSchema[]>,
+    type: Array as PropType<ContextMenuSchema[]>,
     default: () => []
   },
   trigger: {
@@ -29,7 +29,7 @@ const props = defineProps({
   }
 })
 
-const command = (item: contextMenuSchema) => {
+const command = (item: ContextMenuSchema) => {
   item.command && item.command(item)
 }
 

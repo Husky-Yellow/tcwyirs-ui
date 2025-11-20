@@ -1,4 +1,4 @@
-import { FormSchema } from '@/types/form'
+import { FormSchema } from '@/types/data'
 
 export interface PlaceholderModel {
   placeholder?: string

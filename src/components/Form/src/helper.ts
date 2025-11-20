@@ -1,8 +1,8 @@
 import type { Slots } from 'vue'
 import { getSlot } from '@/utils/tsxHelper'
 import { PlaceholderModel } from './types'
-import { FormSchema } from '@/types/form'
-import { ColProps } from '@/types/components'
+import { FormSchema } from '@/types/data'
+import { ColProps } from '@/types/component'
 
 /**
  *

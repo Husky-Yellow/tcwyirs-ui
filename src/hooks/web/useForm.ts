@@ -1,7 +1,7 @@
 import type { Form, FormExpose } from '@/components/Form'
 import type { ElForm } from 'element-plus'
 import type { FormProps } from '@/components/Form/src/types'
-import { FormSchema, FormSetPropsType } from '@/types/form'
+import { FormSchema, FormSetPropsType } from '@/types/data'
 
 export const useForm = (props?: FormProps) => {
   // From实例

@@ -5,7 +5,7 @@ import { propTypes } from '@/utils/propTypes'
 import { useForm } from '@/hooks/web/useForm'
 import { findIndex } from '@/utils'
 import { cloneDeep } from 'es-toolkit'
-import { FormSchema } from '@/types/form'
+import { FormSchema } from '@/types/data'
 
 defineOptions({ name: 'Search' })
 

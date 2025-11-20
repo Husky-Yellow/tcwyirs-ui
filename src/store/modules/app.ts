@@ -3,9 +3,9 @@ import { store } from '../index'
 import { humpToUnderline, setCssVar } from '@/utils'
 import { ElMessage } from 'element-plus'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
-import { ElementPlusSize } from '@/types/elementPlus'
-import { LayoutType } from '@/types/layout'
-import { ThemeTypes } from '@/types/theme'
+import { ElementPlusSize } from '@/types/ui'
+import { LayoutType } from '@/types/ui'
+import { ThemeTypes } from '@/types/ui'
 
 const { wsCache } = useCache()
 

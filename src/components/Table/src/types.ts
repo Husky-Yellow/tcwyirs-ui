@@ -1,4 +1,4 @@
-import { Pagination, TableColumn } from '@/types/table'
+import { Pagination, TableColumn } from '@/types/data'
 
 export type TableProps = {
   pageSize?: number

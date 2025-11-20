@@ -1,4 +1,4 @@
-import { ConfigGlobalTypes } from '@/types/configGlobal'
+import { ConfigGlobalTypes } from '@/types/ui'
 
 export const useConfigGlobal = () => {
   const configGlobal = inject('configGlobal', {}) as ConfigGlobalTypes

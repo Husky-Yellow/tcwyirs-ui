@@ -1,6 +1,6 @@
 import Table from './src/Table.vue'
 import { ElTable } from 'element-plus'
-import { TableSetPropsType } from '@/types/table'
+import { TableSetPropsType } from '@/types/data'
 import TableSelectForm from './src/TableSelectForm.vue'
 
 export interface TableExpose {

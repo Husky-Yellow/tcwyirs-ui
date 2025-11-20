@@ -5,7 +5,7 @@ import { cloneDeep } from 'es-toolkit'
 import { propTypes } from '@/utils/propTypes'
 import { useDesign } from '@/hooks/web/useDesign'
 import { isString } from '@/utils/is'
-import { QrcodeLogo } from '@/types/qrcode'
+import { QrcodeLogo } from '@/types/ui'
 
 defineOptions({ name: 'Qrcode' })
 

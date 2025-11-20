@@ -6,7 +6,7 @@ import { setIndex } from './helper'
 import { getSlot } from '@/utils/tsxHelper'
 import type { TableProps } from './types'
 import { set } from 'es-toolkit/compat'
-import { Pagination, TableColumn, TableSetPropsType, TableSlotDefault } from '@/types/table'
+import { Pagination, TableColumn, TableSetPropsType, TableSlotDefault } from '@/types/data'
 
 export default defineComponent({
   // eslint-disable-next-line vue/no-reserved-component-names

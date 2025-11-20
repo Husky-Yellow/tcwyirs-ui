@@ -1,3 +1,10 @@
+/**
+ * 组件类型定义
+ * 包含组件名称、属性、选项等通用组件类型
+ */
+
+// ========== 组件名称 ==========
+
 export type ComponentName =
   | 'Radio'
   | 'RadioButton'
@@ -25,6 +32,8 @@ export type ComponentName =
   | 'UploadImgs'
   | 'UploadFile'
 
+// ========== 列属性 ==========
+
 export type ColProps = {
   span?: number
   xs?: number
@@ -35,9 +44,11 @@ export type ColProps = {
   tag?: string
 }
 
+// ========== 组件选项 ==========
+
 export type ComponentOptions = {
   label?: string
-  value?: FormValueType
+  value?: any
   disabled?: boolean
   key?: string | number
   children?: ComponentOptions[]

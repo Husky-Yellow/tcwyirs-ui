@@ -1,6 +1,6 @@
 import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
 import { dateFormatter } from '@/utils/formatTime'
-import { TableColumn } from '@/types/table'
+import { TableColumn } from '@/types/data'
 import * as MailAccountApi from '@/api/system/mail/account'
 
 // 邮箱账号的列表

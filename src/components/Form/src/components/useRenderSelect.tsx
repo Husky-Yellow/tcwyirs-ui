@@ -1,5 +1,5 @@
-import { FormSchema } from '@/types/form'
-import { ComponentOptions } from '@/types/components'
+import { FormSchema } from '@/types/data'
+import { ComponentOptions } from '@/types/component'
 import { ElOption, ElOptionGroup } from 'element-plus'
 import { getSlot } from '@/utils/tsxHelper'
 import { Slots } from 'vue'

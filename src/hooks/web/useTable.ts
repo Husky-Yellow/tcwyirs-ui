@@ -4,7 +4,7 @@ import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { computed, nextTick, reactive, ref, unref, watch } from 'vue'
 import type { TableProps } from '@/components/Table/src/types'
 
-import { TableSetPropsType } from '@/types/table'
+import { TableSetPropsType } from '@/types/data'
 
 interface ResponseType<T = any> {
   list: T[]

@@ -14,7 +14,7 @@
 </template>
 <script lang="ts" setup>
 import type { FormRules } from 'element-plus'
-import { FormSchema } from '@/types/form'
+import { FormSchema } from '@/types/data'
 import type { FormExpose } from '@/components/Form'
 import {
   getUserProfile,

@@ -2,7 +2,7 @@
 import { PropType } from 'vue'
 import { useDesign } from '@/hooks/web/useDesign'
 import { propTypes } from '@/utils/propTypes'
-import { TipSchema } from '@/types/infoTip'
+import { TipSchema } from '@/types/ui'
 
 defineOptions({ name: 'InfoTip' })
 
