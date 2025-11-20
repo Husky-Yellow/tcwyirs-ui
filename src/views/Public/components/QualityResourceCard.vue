@@ -12,7 +12,7 @@
       <div class="absolute inset-0 flex items-center justify-center">
         <div class="relative flex items-center gap-8px">
           <div class="w-60px h-60px rounded-full border-2 border-#cbd5e1 bg-white/80"></div>
-          <div class="text-80px font-800 text-#1f2937" style="line-height: 1;">A</div>
+          <div class="text-80px font-800 text-#1f2937" style="line-height: 1">A</div>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
         {{ resource.title }}
       </h3>
 
-      <p class="text-13px text-#6b7280 line-clamp-2 mb-8px" style="min-height: 36px;">
+      <p class="text-13px text-#6b7280 line-clamp-2 mb-8px" style="min-height: 36px">
         {{ resource.description }}
       </p>
 

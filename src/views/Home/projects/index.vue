@@ -16,12 +16,7 @@
           />
         </el-form-item>
         <el-form-item label="项目状态:">
-          <el-select
-            v-model="queryParams.status"
-            placeholder="全部"
-            clearable
-            class="!w-200px"
-          >
+          <el-select v-model="queryParams.status" placeholder="全部" clearable class="!w-200px">
             <el-option label="全部" value="" />
             <el-option label="进行中" value="1" />
             <el-option label="已完结" value="2" />
@@ -47,14 +42,14 @@
       </div>
 
       <!-- 表格 -->
-      <el-table
-        v-loading="loading"
-        :data="projectList"
-        stripe
-        class="mb-20px"
-      >
+      <el-table v-loading="loading" :data="projectList" stripe class="mb-20px">
         <el-table-column prop="projectNo" label="项目编号" width="150" />
-        <el-table-column prop="projectName" label="项目名称" min-width="200" show-overflow-tooltip />
+        <el-table-column
+          prop="projectName"
+          label="项目名称"
+          min-width="200"
+          show-overflow-tooltip
+        />
         <el-table-column prop="projectType" label="项目类型" width="120" />
         <el-table-column prop="projectManager" label="项目经理" width="120" />
         <el-table-column label="项目状态" width="120">
@@ -74,9 +69,7 @@
           </template>
         </el-table-column>
         <el-table-column label="项目周期" width="220" sortable>
-          <template #default="{ row }">
-            {{ row.startDate }}~{{ row.endDate }}
-          </template>
+          <template #default="{ row }"> {{ row.startDate }}~{{ row.endDate }} </template>
         </el-table-column>
         <el-table-column label="操作" width="180" fixed="right">
           <template #default="{ row }">
@@ -286,15 +279,11 @@ const handleEdit = (row: any) => {
 // 删除
 const handleDelete = async (row: any) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除项目"${row.projectName}"吗？`,
-      '提示',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除项目"${row.projectName}"吗？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
     // TODO: 调用删除API
     ElMessage.success('删除成功')
     handleQuery()

@@ -20,19 +20,8 @@ const generateMockTasks = (count: number, status?: TaskStatusEnum) => {
     tasks.push({
       id: `task_${Mock.Random.guid()}`,
       processInstanceId: `process_${Mock.Random.guid()}`,
-      name: Mock.Random.pick([
-        '请假审批',
-        '报销审批',
-        '采购审批',
-        '合同审批',
-        '项目立项审批'
-      ]),
-      taskDefinitionKey: Mock.Random.pick([
-        'userTask1',
-        'userTask2',
-        'managerTask',
-        'hrTask'
-      ]),
+      name: Mock.Random.pick(['请假审批', '报销审批', '采购审批', '合同审批', '项目立项审批']),
+      taskDefinitionKey: Mock.Random.pick(['userTask1', 'userTask2', 'managerTask', 'hrTask']),
       status: status !== undefined ? status : Mock.Random.integer(0, 7),
       assignee: Mock.Random.cname(),
       assigneeId: Mock.Random.integer(1, 100),

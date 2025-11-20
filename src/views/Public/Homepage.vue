@@ -1,5 +1,8 @@
 <template>
-  <div ref="scrollContainerRef" class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth">
+  <div
+    ref="scrollContainerRef"
+    class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth"
+  >
     <AppHeader :is-scrolled="isScrolled" />
 
     <main>

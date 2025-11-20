@@ -36,4 +36,3 @@ defineOptions({ name: 'Index' })
 
 const { leftColumn, rightColumn, getSortedComponents } = useHomeLayout()
 </script>
-

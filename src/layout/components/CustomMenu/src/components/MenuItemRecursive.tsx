@@ -64,9 +64,7 @@ export default defineComponent({
 
     const itemClasses = [
       'flex items-center cursor-pointer transition-all duration-200 ease rd-6px',
-      props.isActive
-        ? 'bg-#e8f4ff text-#409eff'
-        : 'text-#606266 hover:bg-#f0f2f5'
+      props.isActive ? 'bg-#e8f4ff text-#409eff' : 'text-#606266 hover:bg-#f0f2f5'
     ]
 
     // 动态添加 padding
@@ -105,7 +103,10 @@ export default defineComponent({
           {props.level >= 2 && props.hasChildren && (
             <Icon
               icon={props.isExpanded ? 'ep:arrow-down' : 'ep:arrow-right'}
-              class={['text-12px transition-transform duration-200', props.isActive ? 'text-#409eff' : 'text-#909399']}
+              class={[
+                'text-12px transition-transform duration-200',
+                props.isActive ? 'text-#409eff' : 'text-#909399'
+              ]}
             />
           )}
         </div>

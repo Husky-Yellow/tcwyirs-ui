@@ -206,24 +206,17 @@ watch(dialogVisible, (newVal) => {
           :class="`${prefixCls}__textarea`"
           show-word-limit
         />
-        <div :class="`${prefixCls}__counter`">
-          {{ currentLength }} / {{ maxLength }}
-        </div>
+        <div :class="`${prefixCls}__counter`"> {{ currentLength }} / {{ maxLength }} </div>
       </div>
 
       <!-- 已选择标签显示区 -->
       <div v-if="selectedTagObjects.length > 0" :class="`${prefixCls}__section`">
-        <div :class="`${prefixCls}__section-title`">
-          已选择 ({{ selectedTagObjects.length }})
-        </div>
+        <div :class="`${prefixCls}__section-title`"> 已选择 ({{ selectedTagObjects.length }}) </div>
         <div :class="`${prefixCls}__selected-tags`">
           <div
             v-for="tag in selectedTagObjects"
             :key="tag.value"
-            :class="[
-              `${prefixCls}__selected-tag`,
-              `${prefixCls}__selected-tag--${tag.type}`
-            ]"
+            :class="[`${prefixCls}__selected-tag`, `${prefixCls}__selected-tag--${tag.type}`]"
           >
             <span :class="`${prefixCls}__selected-tag-label`">{{ tag.label }}</span>
             <Icon
@@ -245,9 +238,7 @@ watch(dialogVisible, (newVal) => {
     <template #footer>
       <div :class="`${prefixCls}__footer`">
         <ElButton @click="handleCancel">取 消</ElButton>
-        <ElButton type="primary" :disabled="!canSubmit" @click="handleSubmit">
-          发 布
-        </ElButton>
+        <ElButton type="primary" :disabled="!canSubmit" @click="handleSubmit"> 发 布 </ElButton>
       </div>
     </template>
   </Dialog>

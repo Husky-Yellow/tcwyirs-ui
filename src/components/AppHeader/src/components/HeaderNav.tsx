@@ -35,7 +35,7 @@ export default defineComponent({
 
     return () => (
       <nav class="flex items-center gap-30px">
-        {props.items.map(item => (
+        {props.items.map((item) => (
           <span
             key={item.key}
             class={[

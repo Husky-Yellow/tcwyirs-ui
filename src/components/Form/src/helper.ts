@@ -11,7 +11,6 @@ import { ColProps } from '@/types/components'
  * @description 用于自动设置placeholder
  */
 export const setTextPlaceholder = (schema: FormSchema): PlaceholderModel => {
-  
   const textMap = ['Input', 'Autocomplete', 'InputNumber', 'InputPassword']
   const selectMap = ['Select', 'SelectV2', 'TimePicker', 'DatePicker', 'TimeSelect', 'TimeSelect']
   if (textMap.includes(schema?.component as string)) {

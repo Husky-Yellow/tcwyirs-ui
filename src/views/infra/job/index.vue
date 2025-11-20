@@ -221,10 +221,7 @@ const handleChangeStatus = async (row: JobApi.JobVO) => {
   try {
     // 修改状态的二次确认
     const text = row.status === InfraJobStatusEnum.STOP ? '开启' : '关闭'
-    await message.confirm(
-      '确认要' + text + '定时任务编号为"' + row.id + '"的数据项?',
-      '温馨提示'
-    )
+    await message.confirm('确认要' + text + '定时任务编号为"' + row.id + '"的数据项?', '温馨提示')
     const status =
       row.status === InfraJobStatusEnum.STOP ? InfraJobStatusEnum.NORMAL : InfraJobStatusEnum.STOP
     await JobApi.updateJobStatus(row.id, status)

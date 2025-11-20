@@ -35,7 +35,9 @@ export default defineComponent({
         class={[
           `${prefixCls}`,
           'h-full transition-width duration-300 ease relative',
-          unref(collapse) ? 'w-[var(--left-menu-min-width)]' : 'w-[var(--custom-left-menu-max-width)]'
+          unref(collapse)
+            ? 'w-[var(--left-menu-min-width)]'
+            : 'w-[var(--custom-left-menu-max-width)]'
         ]}
       >
         <div
@@ -43,7 +45,10 @@ export default defineComponent({
           style="right: -14px;"
           onClick={toggleCollapse}
         >
-          <Icon icon={unref(collapse) ? 'ep:d-arrow-right' : 'ep:d-arrow-left'} class="text-16px text-#909399" />
+          <Icon
+            icon={unref(collapse) ? 'ep:d-arrow-right' : 'ep:d-arrow-left'}
+            class="text-16px text-#909399"
+          />
         </div>
         <ElScrollbar>{renderMenuItems(unref(routers))}</ElScrollbar>
       </div>

@@ -31,7 +31,10 @@ export interface NotifyTemplatePageReqVO extends PageParam {
 export const getNotifyTemplatePage = async (
   params: NotifyTemplatePageReqVO
 ): Promise<PageResult<NotifyTemplateVO[]>> => {
-  return await request.get<PageResult<NotifyTemplateVO[]>>({ url: '/mq/notify-template/page', params })
+  return await request.get<PageResult<NotifyTemplateVO[]>>({
+    url: '/mq/notify-template/page',
+    params
+  })
 }
 
 // 查询站内信模板详情

@@ -12,7 +12,6 @@ defineOptions({ name: 'Editor' })
 
 type InsertFnType = (url: string, alt: string, href: string) => void
 
-
 i18nChangeLanguage('zh-CN')
 
 const props = defineProps({

@@ -16,18 +16,7 @@ const generateMockPosts = (count: number) => {
     '人力资源',
     '财务专员'
   ]
-  const postCodes = [
-    'chairman',
-    'ceo',
-    'cto',
-    'pm',
-    'dev',
-    'qa',
-    'ops',
-    'ui',
-    'hr',
-    'finance'
-  ]
+  const postCodes = ['chairman', 'ceo', 'cto', 'pm', 'dev', 'qa', 'ops', 'ui', 'hr', 'finance']
 
   for (let i = 0; i < count && i < postNames.length; i++) {
     posts.push({

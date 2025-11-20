@@ -6,7 +6,7 @@
       <!-- Banner 区域 -->
       <section
         class="relative min-h-280px py-56px flex items-center overflow-hidden bg-cover bg-center"
-        style="background-image: url('/src/assets/imgs/bg/Marketplace/MarketplaceBanner.png');"
+        style="background-image: url('/src/assets/imgs/bg/Marketplace/MarketplaceBanner.png')"
       >
         <div class="max-w-1200px mx-auto px-20px w-full relative z-10">
           <h1 class="text-52px font-800 text-white mb-16px leading-tight">

@@ -48,11 +48,7 @@ const handleCancel = () => {
   <div>
     <el-button @click="showModal = true">打开评分弹窗</el-button>
 
-    <RatingReviewModal
-      v-model="showModal"
-      @submit="handleSubmit"
-      @cancel="handleCancel"
-    />
+    <RatingReviewModal v-model="showModal" @submit="handleSubmit" @cancel="handleCancel" />
   </div>
 </template>
 ```
@@ -101,43 +97,43 @@ const handleSubmit = (data: RatingReviewResult) => {
 
 #### Props
 
-| 属性名 | 说明 | 类型 | 默认值 |
-|--------|------|------|--------|
-| modelValue | 对话框是否显示(支持 v-model) | `boolean` | `false` |
-| title | 对话框标题 | `string` | `'评分/评论'` |
-| maxLength | 评论最大字符数 | `number` | `200` |
-| minSelection | 最小选择标签数或评论字符数(至少满足一个) | `number` | `1` |
-| positiveTags | 正面标签列表 | `RatingTag[]` | 默认5个正面标签 |
-| negativeTags | 负面标签列表 | `RatingTag[]` | 默认4个负面标签 |
+| 属性名       | 说明                                     | 类型          | 默认值          |
+| ------------ | ---------------------------------------- | ------------- | --------------- |
+| modelValue   | 对话框是否显示(支持 v-model)             | `boolean`     | `false`         |
+| title        | 对话框标题                               | `string`      | `'评分/评论'`   |
+| maxLength    | 评论最大字符数                           | `number`      | `200`           |
+| minSelection | 最小选择标签数或评论字符数(至少满足一个) | `number`      | `1`             |
+| positiveTags | 正面标签列表                             | `RatingTag[]` | 默认5个正面标签 |
+| negativeTags | 负面标签列表                             | `RatingTag[]` | 默认4个负面标签 |
 
 #### Events
 
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
-| update:modelValue | 对话框显示状态变化时触发 | `(value: boolean) => void` |
-| submit | 点击"发布"按钮时触发 | `(data: RatingReviewResult) => void` |
-| cancel | 点击"取消"按钮时触发 | `() => void` |
+| 事件名            | 说明                     | 回调参数                             |
+| ----------------- | ------------------------ | ------------------------------------ |
+| update:modelValue | 对话框显示状态变化时触发 | `(value: boolean) => void`           |
+| submit            | 点击"发布"按钮时触发     | `(data: RatingReviewResult) => void` |
+| cancel            | 点击"取消"按钮时触发     | `() => void`                         |
 
 #### 类型定义
 
 ```typescript
 // 标签类型
 export interface RatingTag {
-  label: string          // 标签显示文本
-  value: string          // 标签值(唯一标识)
-  type: 'positive' | 'negative'  // 标签类型
+  label: string // 标签显示文本
+  value: string // 标签值(唯一标识)
+  type: 'positive' | 'negative' // 标签类型
 }
 
 // 表单数据类型
 export interface RatingReviewFormData {
-  tags: string[]         // 已选标签值数组
-  review: string         // 评论文本
+  tags: string[] // 已选标签值数组
+  review: string // 评论文本
 }
 
 // 提交结果类型
 export interface RatingReviewResult {
-  tags: string[]         // 已选标签值数组
-  review: string         // 评论文本
+  tags: string[] // 已选标签值数组
+  review: string // 评论文本
 }
 ```
 

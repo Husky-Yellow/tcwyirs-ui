@@ -43,7 +43,9 @@ export default defineComponent({
     const isUserLoggedIn = computed(() => userStore.getIsSetUser)
 
     const userAvatar = computed(() =>
-      isUserLoggedIn.value && userStore.user?.avatar ? userStore.user.avatar : '@/assets/imgs/logo.png'
+      isUserLoggedIn.value && userStore.user?.avatar
+        ? userStore.user.avatar
+        : '@/assets/imgs/logo.png'
     )
 
     const userName = computed(() =>

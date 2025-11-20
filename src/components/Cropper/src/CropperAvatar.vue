@@ -34,7 +34,6 @@ const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('cropper-avatar')
 const message = useMessage()
 
-
 const cropperModelRef = ref()
 
 watchEffect(() => {

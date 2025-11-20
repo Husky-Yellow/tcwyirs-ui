@@ -25,9 +25,7 @@ export interface RolePageReqVO extends PageParam {
 }
 
 // 查询角色列表
-export const getRolePage = async (
-  params: RolePageReqVO
-): Promise<PageResult<RoleVO[]>> => {
+export const getRolePage = async (params: RolePageReqVO): Promise<PageResult<RoleVO[]>> => {
   return await request.get<PageResult<RoleVO[]>>({ url: '/system/role/page', params })
 }
 

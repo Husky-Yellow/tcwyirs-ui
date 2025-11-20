@@ -12,8 +12,6 @@ const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('context-menu')
 
-
-
 const emit = defineEmits(['visibleChange'])
 
 const props = defineProps({

@@ -14,16 +14,7 @@ const generateMockRoles = (count: number) => {
     'HR人员',
     '技术人员'
   ]
-  const roleCodes = [
-    'super_admin',
-    'admin',
-    'dept_admin',
-    'user',
-    'guest',
-    'finance',
-    'hr',
-    'tech'
-  ]
+  const roleCodes = ['super_admin', 'admin', 'dept_admin', 'user', 'guest', 'finance', 'hr', 'tech']
 
   for (let i = 0; i < count && i < roleNames.length; i++) {
     roles.push({
@@ -34,12 +25,7 @@ const generateMockRoles = (count: number) => {
       status: Mock.Random.pick([0, 1]), // 0-正常 1-停用
       type: Mock.Random.pick([1, 2]), // 1-自定义 2-内置
       dataScope: Mock.Random.integer(1, 5), // 1-全部 2-指定部门 3-本部门 4-本部门及以下 5-仅本人
-      dataScopeDeptIds: Mock.Random.pick([
-        [],
-        [1, 2, 3],
-        [1],
-        [2, 3]
-      ]),
+      dataScopeDeptIds: Mock.Random.pick([[], [1, 2, 3], [1], [2, 3]]),
       remark: Mock.Random.csentence(5, 15),
       createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
     })

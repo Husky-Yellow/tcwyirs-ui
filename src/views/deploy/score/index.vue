@@ -235,15 +235,17 @@ const handleTagDelete = (item: TagCardItem) => {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
-  }).then(() => {
-    const index = tagCardData.value.findIndex((t) => t.id === item.id)
-    if (index > -1) {
-      tagCardData.value.splice(index, 1)
-      ElMessage.success('删除成功!')
-    }
-  }).catch(() => {
-    ElMessage.info('已取消删除')
   })
+    .then(() => {
+      const index = tagCardData.value.findIndex((t) => t.id === item.id)
+      if (index > -1) {
+        tagCardData.value.splice(index, 1)
+        ElMessage.success('删除成功!')
+      }
+    })
+    .catch(() => {
+      ElMessage.info('已取消删除')
+    })
 }
 
 const handleTagStatusChange = (item: TagCardItem, status: boolean) => {
@@ -300,5 +302,4 @@ const handleTagFormConfirm = (data: TagFormData) => {
 const handleTagFormCancel = () => {
   console.log('取消保存')
 }
-
 </script>

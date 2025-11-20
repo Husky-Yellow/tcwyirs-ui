@@ -18,24 +18,14 @@
         />
       </el-form-item>
       <el-form-item label="资源类型:" prop="resourceType">
-        <el-select
-          v-model="queryParams.resourceType"
-          placeholder="全部"
-          clearable
-          class="!w-240px"
-        >
+        <el-select v-model="queryParams.resourceType" placeholder="全部" clearable class="!w-240px">
           <el-option label="数据资源" value="data" />
           <el-option label="应用资源" value="application" />
           <el-option label="组件资源" value="component" />
         </el-select>
       </el-form-item>
       <el-form-item label="申请状态:" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          placeholder="全部"
-          clearable
-          class="!w-240px"
-        >
+        <el-select v-model="queryParams.status" placeholder="全部" clearable class="!w-240px">
           <el-option label="申请中" value="pending" />
           <el-option label="申请失败" value="failed" />
           <el-option label="申请成功" value="success" />
@@ -82,9 +72,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="150" fixed="right">
         <template #default="scope">
-          <el-link type="primary" :underline="false" @click="handleDetail(scope.row)"
-            >详情</el-link
-          >
+          <el-link type="primary" :underline="false" @click="handleDetail(scope.row)">详情</el-link>
           <el-divider direction="vertical" />
           <el-link type="primary" :underline="false" @click="handleFeedback(scope.row)"
             >反馈</el-link

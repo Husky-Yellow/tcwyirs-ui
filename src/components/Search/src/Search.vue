@@ -9,8 +9,6 @@ import { FormSchema } from '@/types/form'
 
 defineOptions({ name: 'Search' })
 
-
-
 const props = defineProps({
   // 生成Form的布局结构数组
   schema: {

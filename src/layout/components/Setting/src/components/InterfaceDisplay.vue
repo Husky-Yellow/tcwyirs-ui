@@ -7,7 +7,6 @@ import { useAppStore } from '@/store/modules/app'
 
 defineOptions({ name: 'InterfaceDisplay' })
 
-
 const { getPrefixCls } = useDesign()
 const { setWatermark } = useWatermark()
 const prefixCls = getPrefixCls('interface-display')

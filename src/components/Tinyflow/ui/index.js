@@ -234,11 +234,7 @@ function ql(e, t) {
 // @__NO_SIDE_EFFECTS__
 function Me(e) {
   var t = nn | In,
-    n =
-      je !== null && je.f & nn
-        ? /** @type {Derived} */
-          je
-        : null
+    n = je !== null && je.f & nn ? /** @type {Derived} */ je : null
   return (
     qe === null || (n !== null && n.f & qt) ? (t |= qt) : (qe.f |= Yl),
     {
@@ -1099,11 +1095,7 @@ function Gt(e, t = !0) {
   var n = !1
   if ((t || e.f & pf) && e.nodes_start !== null) {
     for (var r = e.nodes_start, o = e.nodes_end; r !== null; ) {
-      var i =
-        r === o
-          ? null
-          : /** @type {TemplateNode} */
-            /* @__PURE__ */ xn(r)
+      var i = r === o ? null : /** @type {TemplateNode} */ /* @__PURE__ */ xn(r)
       ;(r.remove(), (r = i))
     }
     n = !0
@@ -1792,10 +1784,7 @@ function h1(e, t, n, r, o, i, s) {
           ((S = v.a) == null || S.measure(), (x ?? (x = /* @__PURE__ */ new Set())).add(v)))
   for (b = 0; b < u; b += 1) {
     if (((m = e[b]), (_ = i(m, b)), (v = c.get(_)), v === void 0)) {
-      var N = d
-        ? /** @type {TemplateNode} */
-          d.e.nodes_start
-        : n
+      var N = d ? /** @type {TemplateNode} */ d.e.nodes_start : n
       ;((p = pu(N, t, p, p === null ? t.first : p.next, m, _, b, r, o, s)),
         c.set(_, p),
         (C = []),
@@ -1902,14 +1891,8 @@ function pu(e, t, n, r, o, i, s, a, l, u) {
 }
 function Oa(e, t, n) {
   for (
-    var r = e.next
-        ? /** @type {TemplateNode} */
-          e.next.e.nodes_start
-        : n,
-      o = t
-        ? /** @type {TemplateNode} */
-          t.e.nodes_start
-        : n,
+    var r = e.next ? /** @type {TemplateNode} */ e.next.e.nodes_start : n,
+      o = t ? /** @type {TemplateNode} */ t.e.nodes_start : n,
       i =
         /** @type {TemplateNode} */
         e.e.nodes_start;
@@ -2159,8 +2142,7 @@ function io(e) {
 }
 function Qi(e, t) {
   var n = e.__attributes ?? (e.__attributes = {})
-  n.value ===
-    (n.value = t ?? void 0) || // treat null and undefined the same for the initial value // @ts-expect-error
+  n.value === (n.value = t ?? void 0) || // treat null and undefined the same for the initial value // @ts-expect-error
     // `progress` elements always need their value set when it's `0`
     (e.value === t && (t !== 0 || e.nodeName !== 'PROGRESS')) ||
     (e.value = t ?? '')
@@ -2454,10 +2436,7 @@ function Oi() {
       var i
       const o =
         /** @type {Record<string, Function | Function[]>} */
-        (i = e.s.$$events) == null
-          ? void 0
-          : /** @type {any} */
-            i[t]
+        (i = e.s.$$events) == null ? void 0 : /** @type {any} */ i[t]
       if (o) {
         const s = Co(o) ? o.slice() : [o],
           a = b1(

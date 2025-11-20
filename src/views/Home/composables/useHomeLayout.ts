@@ -40,9 +40,7 @@ export const useHomeLayout = () => {
    * 获取排序后的组件列表
    */
   const getSortedComponents = (components: any[]) => {
-    return components
-      .filter((comp) => !comp.hidden)
-      .sort((a, b) => (a.order || 0) - (b.order || 0))
+    return components.filter((comp) => !comp.hidden).sort((a, b) => (a.order || 0) - (b.order || 0))
   }
 
   return {

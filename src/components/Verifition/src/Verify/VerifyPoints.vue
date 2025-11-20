@@ -101,7 +101,6 @@ const props = defineProps({
   }
 })
 
-
 const { mode, captchaType } = toRefs(props)
 const { proxy } = getCurrentInstance()
 let secretKey = ref(''), //后端返回的ase加密秘钥

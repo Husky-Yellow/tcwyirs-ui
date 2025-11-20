@@ -33,6 +33,7 @@ src/views/Home/
 ### 1. 多角色配置
 
 系统支持根据不同角色展示不同的首页布局。每个角色可以配置：
+
 - 左右列的宽度比例
 - 显示哪些组件
 - 组件的顺序
@@ -44,12 +45,12 @@ src/views/Home/
 
 ```typescript
 export enum HomeComponentType {
-  BROWSED_RESOURCES = 'BrowsedResources',      // 浏览资源统计
-  FAVORITE_RESOURCES = 'FavoriteResources',    // 收藏资源
-  HELP_DOCS = 'HelpDocs',                      // 帮助文档
-  RESOURCE_USAGE = 'ResourceUsage',            // 资源使用看板
-  MESSAGES = 'Messages',                       // 消息列表
-  CUSTOM = 'Custom'                            // 自定义组件（预留）
+  BROWSED_RESOURCES = 'BrowsedResources', // 浏览资源统计
+  FAVORITE_RESOURCES = 'FavoriteResources', // 收藏资源
+  HELP_DOCS = 'HelpDocs', // 帮助文档
+  RESOURCE_USAGE = 'ResourceUsage', // 资源使用看板
+  MESSAGES = 'Messages', // 消息列表
+  CUSTOM = 'Custom' // 自定义组件（预留）
 }
 ```
 
@@ -158,7 +159,7 @@ withDefaults(defineProps<Props>(), {
 ```typescript
 export enum HomeComponentType {
   // ... 现有类型
-  MY_CUSTOM = 'MyCustom'  // 添加新类型
+  MY_CUSTOM = 'MyCustom' // 添加新类型
 }
 ```
 
@@ -197,18 +198,22 @@ components: [
 ## 📊 内置角色配置
 
 ### Admin（管理员）
+
 - **左侧**（16栏）：浏览资源 + 收藏资源 + 帮助文档
 - **右侧**（8栏）：资源使用看板 + 消息
 
 ### User（普通用户）
+
 - **左侧**（16栏）：浏览资源 + 帮助文档
 - **右侧**（8栏）：消息
 
 ### Guest（访客）
+
 - **左侧**（16栏）：帮助文档
 - **右侧**（8栏）：公告
 
 ### DataAdmin（数据管理员）
+
 - **左侧**（18栏）：资源使用看板 + 浏览资源
 - **右侧**（6栏）：系统通知
 
@@ -218,12 +223,12 @@ components: [
 
 ```typescript
 interface HomeComponentConfig {
-  type: HomeComponentType       // 组件类型（必填）
-  title?: string               // 组件标题（可选，覆盖默认标题）
-  showViewAll?: boolean        // 是否显示"全部"链接（可选）
-  props?: Record<string, any>  // 自定义参数（可选）
-  hidden?: boolean             // 是否隐藏（可选）
-  order?: number               // 排序权重，数字越小越靠前（可选）
+  type: HomeComponentType // 组件类型（必填）
+  title?: string // 组件标题（可选，覆盖默认标题）
+  showViewAll?: boolean // 是否显示"全部"链接（可选）
+  props?: Record<string, any> // 自定义参数（可选）
+  hidden?: boolean // 是否隐藏（可选）
+  order?: number // 排序权重，数字越小越靠前（可选）
 }
 ```
 
@@ -232,11 +237,11 @@ interface HomeComponentConfig {
 ```typescript
 interface HomeColumnConfig {
   span: {
-    xl: number   // 超大屏幕（≥1920px）
-    lg: number   // 大屏幕（≥1200px）
-    md: number   // 中等屏幕（≥992px）
-    sm: number   // 小屏幕（≥768px）
-    xs: number   // 超小屏幕（<768px）
+    xl: number // 超大屏幕（≥1920px）
+    lg: number // 大屏幕（≥1200px）
+    md: number // 中等屏幕（≥992px）
+    sm: number // 小屏幕（≥768px）
+    xs: number // 超小屏幕（<768px）
   }
   components: HomeComponentConfig[]
 }

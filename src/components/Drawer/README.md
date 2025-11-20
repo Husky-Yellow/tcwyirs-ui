@@ -124,27 +124,19 @@ const showBottom = ref(false)
   <div>
     <!-- 从右侧打开(默认) -->
     <el-button @click="showRight = true">从右侧打开</el-button>
-    <Drawer v-model="showRight" title="右侧抽屉" direction="rtl">
-      内容区域
-    </Drawer>
+    <Drawer v-model="showRight" title="右侧抽屉" direction="rtl"> 内容区域 </Drawer>
 
     <!-- 从左侧打开 -->
     <el-button @click="showLeft = true">从左侧打开</el-button>
-    <Drawer v-model="showLeft" title="左侧抽屉" direction="ltr">
-      内容区域
-    </Drawer>
+    <Drawer v-model="showLeft" title="左侧抽屉" direction="ltr"> 内容区域 </Drawer>
 
     <!-- 从顶部打开 -->
     <el-button @click="showTop = true">从顶部打开</el-button>
-    <Drawer v-model="showTop" title="顶部抽屉" direction="ttb" size="300px">
-      内容区域
-    </Drawer>
+    <Drawer v-model="showTop" title="顶部抽屉" direction="ttb" size="300px"> 内容区域 </Drawer>
 
     <!-- 从底部打开 -->
     <el-button @click="showBottom = true">从底部打开</el-button>
-    <Drawer v-model="showBottom" title="底部抽屉" direction="btt" size="300px">
-      内容区域
-    </Drawer>
+    <Drawer v-model="showBottom" title="底部抽屉" direction="btt" size="300px"> 内容区域 </Drawer>
   </div>
 </template>
 ```
@@ -207,7 +199,7 @@ const handleSave = async () => {
 
   try {
     // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
     console.log('保存数据:', formData.value)
     ElMessage.success('保存成功!')
@@ -221,9 +213,7 @@ const handleSave = async () => {
 </script>
 
 <template>
-  <el-button type="primary" @click="showDrawer = true">
-    打开编辑器
-  </el-button>
+  <el-button type="primary" @click="showDrawer = true"> 打开编辑器 </el-button>
 
   <Drawer
     v-model="showDrawer"
@@ -262,21 +252,14 @@ const handleSave = async () => {
       </el-form-item>
 
       <el-form-item label="内容">
-        <el-input
-          v-model="formData.content"
-          type="textarea"
-          :rows="8"
-          placeholder="请输入内容"
-        />
+        <el-input v-model="formData.content" type="textarea" :rows="8" placeholder="请输入内容" />
       </el-form-item>
     </el-form>
 
     <!-- 底部操作栏 -->
     <template #footer>
       <el-button @click="showDrawer = false">取消</el-button>
-      <el-button type="primary" :loading="loading" @click="handleSave">
-        保存
-      </el-button>
+      <el-button type="primary" :loading="loading" @click="handleSave"> 保存 </el-button>
     </template>
   </Drawer>
 </template>
@@ -284,19 +267,19 @@ const handleSave = async () => {
 
 ## Props
 
-| 属性名 | 说明 | 类型 | 默认值 |
-|--------|------|------|--------|
-| modelValue | 是否显示抽屉(支持 v-model) | `boolean` | `false` |
-| title | 抽屉标题 | `string` | `''` |
-| size | 抽屉尺寸 | `string \| number` | `'30%'` |
-| direction | 抽屉打开方向 | `'ltr' \| 'rtl' \| 'ttb' \| 'btt'` | `'rtl'` |
-| showClose | 是否显示关闭按钮 | `boolean` | `true` |
-| modal | 是否显示遮罩层 | `boolean` | `true` |
-| closeOnClickModal | 点击遮罩层是否关闭抽屉 | `boolean` | `true` |
-| closeOnPressEscape | 按 ESC 键是否关闭抽屉 | `boolean` | `true` |
-| destroyOnClose | 关闭时销毁子元素 | `boolean` | `true` |
-| withHeader | 是否显示头部 | `boolean` | `true` |
-| zIndex | 层级 | `number` | `2000` |
+| 属性名             | 说明                       | 类型                               | 默认值  |
+| ------------------ | -------------------------- | ---------------------------------- | ------- |
+| modelValue         | 是否显示抽屉(支持 v-model) | `boolean`                          | `false` |
+| title              | 抽屉标题                   | `string`                           | `''`    |
+| size               | 抽屉尺寸                   | `string \| number`                 | `'30%'` |
+| direction          | 抽屉打开方向               | `'ltr' \| 'rtl' \| 'ttb' \| 'btt'` | `'rtl'` |
+| showClose          | 是否显示关闭按钮           | `boolean`                          | `true`  |
+| modal              | 是否显示遮罩层             | `boolean`                          | `true`  |
+| closeOnClickModal  | 点击遮罩层是否关闭抽屉     | `boolean`                          | `true`  |
+| closeOnPressEscape | 按 ESC 键是否关闭抽屉      | `boolean`                          | `true`  |
+| destroyOnClose     | 关闭时销毁子元素           | `boolean`                          | `true`  |
+| withHeader         | 是否显示头部               | `boolean`                          | `true`  |
+| zIndex             | 层级                       | `number`                           | `2000`  |
 
 ### Direction 说明
 
@@ -307,21 +290,21 @@ const handleSave = async () => {
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
+| 事件名            | 说明                   | 回调参数                   |
+| ----------------- | ---------------------- | -------------------------- |
 | update:modelValue | 抽屉显示状态变化时触发 | `(value: boolean) => void` |
-| open | 抽屉打开动画开始时触发 | `() => void` |
-| opened | 抽屉打开动画结束时触发 | `() => void` |
-| close | 抽屉关闭动画开始时触发 | `() => void` |
-| closed | 抽屉关闭动画结束时触发 | `() => void` |
+| open              | 抽屉打开动画开始时触发 | `() => void`               |
+| opened            | 抽屉打开动画结束时触发 | `() => void`               |
+| close             | 抽屉关闭动画开始时触发 | `() => void`               |
+| closed            | 抽屉关闭动画结束时触发 | `() => void`               |
 
 ## Slots
 
-| 插槽名 | 说明 | 作用域 |
-|--------|------|--------|
-| default | 抽屉主体内容 | - |
-| header | 自定义头部内容 | - |
-| footer | 自定义底部内容 | - |
+| 插槽名  | 说明           | 作用域 |
+| ------- | -------------- | ------ |
+| default | 抽屉主体内容   | -      |
+| header  | 自定义头部内容 | -      |
+| footer  | 自定义底部内容 | -      |
 
 ## 类型定义
 
@@ -346,6 +329,7 @@ export interface DrawerProps {
 组件使用了项目的 SCSS 变量和 Element Plus 主题变量,自动适配项目主题。
 
 默认样式类:
+
 - `.v-drawer` - 抽屉根容器
 - `.v-drawer__header` - 头部容器
 - `.v-drawer__title` - 标题文本
@@ -409,11 +393,7 @@ export interface DrawerProps {
 ### 3. 需要防止误关闭时
 
 ```vue
-<Drawer
-  v-model="visible"
-  :close-on-click-modal="false"
-  :close-on-press-escape="false"
->
+<Drawer v-model="visible" :close-on-click-modal="false" :close-on-press-escape="false">
   <div><!-- 重要表单 --></div>
 </Drawer>
 ```
@@ -443,12 +423,12 @@ src/components/Drawer/
 
 ## 与 Dialog 组件的区别
 
-| 特性 | Drawer | Dialog |
-|------|--------|--------|
-| 展示方式 | 从屏幕边缘滑入 | 居中弹出 |
+| 特性     | Drawer             | Dialog             |
+| -------- | ------------------ | ------------------ |
+| 展示方式 | 从屏幕边缘滑入     | 居中弹出           |
 | 适用场景 | 表单编辑、详情展示 | 确认提示、简单表单 |
-| 空间利用 | 不遮挡主界面 | 完全遮挡 |
-| 层级关系 | 更适合多级内容 | 更适合单层交互 |
-| 用户体验 | 更流畅自然 | 更明确强调 |
+| 空间利用 | 不遮挡主界面       | 完全遮挡           |
+| 层级关系 | 更适合多级内容     | 更适合单层交互     |
+| 用户体验 | 更流畅自然         | 更明确强调         |
 
 根据实际场景选择合适的组件!

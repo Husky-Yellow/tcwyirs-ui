@@ -5,13 +5,7 @@
     size="280px"
     @close="handleClose"
   >
-    <el-form
-      ref="formRef"
-      :model="formData"
-      :rules="rules"
-      label-position="top"
-      class="!p-0"
-    >
+    <el-form ref="formRef" :model="formData" :rules="rules" label-position="top" class="!p-0">
       <!-- 标签名称 -->
       <el-form-item label="标签名称" prop="title" required>
         <el-input v-model="formData.title" placeholder="请输入" />
@@ -85,15 +79,9 @@ const defaultFormData: TagFormData = {
 const formData = ref<TagFormData>({ ...defaultFormData })
 
 const rules: FormRules = {
-  title: [
-    { required: true, message: '请输入标签名称', trigger: 'blur' }
-  ],
-  scoreType: [
-    { required: true, message: '请选择分数类型', trigger: 'change' }
-  ],
-  weight: [
-    { required: true, message: '请选择分数权重', trigger: 'change' }
-  ]
+  title: [{ required: true, message: '请输入标签名称', trigger: 'blur' }],
+  scoreType: [{ required: true, message: '请选择分数类型', trigger: 'change' }],
+  weight: [{ required: true, message: '请选择分数权重', trigger: 'change' }]
 }
 
 // 暴露给父组件的 open 方法

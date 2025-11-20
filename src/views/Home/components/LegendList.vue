@@ -1,10 +1,6 @@
 <template>
   <div class="legend-list">
-    <div
-      v-for="item in items"
-      :key="item.name"
-      class="legend-item"
-    >
+    <div v-for="item in items" :key="item.name" class="legend-item">
       <div class="legend-item__left">
         <span class="legend-dot" :style="{ backgroundColor: item.color }"></span>
         <span class="legend-name">{{ item.name }}</span>

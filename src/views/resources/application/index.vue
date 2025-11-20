@@ -93,13 +93,7 @@ const actions: TableAction[] = [
 ]
 
 // 使用通用逻辑
-const {
-  loading,
-  tableData,
-  pagination,
-  handlePageChange,
-  init
-} = useResourcePage({ actions })
+const { loading, tableData, pagination, handlePageChange, init } = useResourcePage({ actions })
 
 // 搜索
 const handleSearch = (values: any) => {

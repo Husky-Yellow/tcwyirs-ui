@@ -11,22 +11,26 @@ SearchForm 是一个自适应的搜索表单组件,支持多种表单控件,自�
 ## ✨ 核心特性
 
 ### 1. 自适应网格布局
+
 - ✅ 使用 CSS Grid 布局
 - ✅ 一行最多显示 3 个搜索项 (可配置)
 - ✅ 自动换行
 
 ### 2. 展开/收起功能
+
 - ✅ 超过 3 个搜索项时自动显示展开按钮
 - ✅ 收起时只显示前 2 个搜索项 (为按钮预留位置)
 - ✅ 展开时显示所有搜索项
 - ✅ 可配置默认展开状态
 
 ### 3. 按钮布局
+
 - ✅ **重置**、**搜索**、**展开/收起** 按钮固定在右下角
 - ✅ 按钮区域占据最后一列
 - ✅ 使用 `grid-column: -1` 实现固定右侧
 
 ### 4. 支持多种表单组件
+
 - ✅ **Input** - 文本输入框
 - ✅ **Select** - 下拉选择器
 - ✅ **DatePicker** - 日期选择器
@@ -124,23 +128,23 @@ const handleReset = () => {
 
 ## 🔧 Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
-| schema | 搜索表单配置数组 | `SearchFormSchema[]` | `[]` (必填) |
-| model | 表单数据对象 | `Recordable` | `{}` |
-| colsPerRow | 每行显示的搜索项数量 | `number` | `3` |
-| showExpand | 是否显示展开/收起按钮 | `boolean` | `true` |
-| defaultExpanded | 默认是否展开 | `boolean` | `false` |
-| labelWidth | label 宽度 | `string` | `'100px'` |
-| showSearch | 是否显示搜索按钮 | `boolean` | `true` |
-| showReset | 是否显示重置按钮 | `boolean` | `true` |
+| 参数            | 说明                  | 类型                 | 默认值      |
+| --------------- | --------------------- | -------------------- | ----------- |
+| schema          | 搜索表单配置数组      | `SearchFormSchema[]` | `[]` (必填) |
+| model           | 表单数据对象          | `Recordable`         | `{}`        |
+| colsPerRow      | 每行显示的搜索项数量  | `number`             | `3`         |
+| showExpand      | 是否显示展开/收起按钮 | `boolean`            | `true`      |
+| defaultExpanded | 默认是否展开          | `boolean`            | `false`     |
+| labelWidth      | label 宽度            | `string`             | `'100px'`   |
+| showSearch      | 是否显示搜索按钮      | `boolean`            | `true`      |
+| showReset       | 是否显示重置按钮      | `boolean`            | `true`      |
 
 ## 📤 Events
 
-| 事件名 | 说明 | 参数 |
-|--------|------|------|
+| 事件名 | 说明               | 参数                   |
+| ------ | ------------------ | ---------------------- |
 | search | 点击搜索按钮时触发 | `(values: Recordable)` |
-| reset | 点击重置按钮时触发 | `()` |
+| reset  | 点击重置按钮时触发 | `()`                   |
 
 ## 📝 SearchFormSchema 配置
 
@@ -151,7 +155,14 @@ interface SearchFormSchema {
   // 标签
   label: string
   // 组件类型
-  component: 'Input' | 'Select' | 'DatePicker' | 'DateRangePicker' | 'TimePicker' | 'InputNumber' | 'slot'
+  component:
+    | 'Input'
+    | 'Select'
+    | 'DatePicker'
+    | 'DateRangePicker'
+    | 'TimePicker'
+    | 'InputNumber'
+    | 'slot'
   // 组件属性
   componentProps?: {
     placeholder?: string
@@ -168,6 +179,7 @@ interface SearchFormSchema {
 ## 🎨 布局说明
 
 ### 收起状态 (默认)
+
 ```
 ┌──────────────┬──────────────┬──────────────────────────┐
 │  搜索项 1    │  搜索项 2    │  [重置] [搜索] [展开↓]   │
@@ -175,6 +187,7 @@ interface SearchFormSchema {
 ```
 
 ### 展开状态 (超过3个时)
+
 ```
 ┌──────────────┬──────────────┬──────────────┐
 │  搜索项 1    │  搜索项 2    │  搜索项 3    │
@@ -198,10 +211,11 @@ interface SearchFormSchema {
 const searchFormRef = ref()
 
 // 调用方法
-searchFormRef.value.validate()      // 验证表单
-searchFormRef.value.resetFields()   // 重置表单
-searchFormRef.value.getFormData()   // 获取表单数据
-searchFormRef.value.setFormData({   // 设置表单数据
+searchFormRef.value.validate() // 验证表单
+searchFormRef.value.resetFields() // 重置表单
+searchFormRef.value.getFormData() // 获取表单数据
+searchFormRef.value.setFormData({
+  // 设置表单数据
   keyword: 'test'
 })
 </script>
@@ -217,29 +231,34 @@ searchFormRef.value.setFormData({   // 设置表单数据
 ## 🎯 设计亮点
 
 ### 1. 智能收起
+
 当搜索项超过 `colsPerRow` 时:
+
 - 自动显示展开按钮
 - 收起时保留前 `colsPerRow - 1` 个搜索项 (为按钮预留位置)
 
 ### 2. 按钮固定右下角
+
 使用 CSS Grid 的 `grid-column: -1` 特性:
+
 - 按钮区域始终在最后一列
 - 无论有多少搜索项,按钮位置固定
 
 ### 3. 响应式布局
+
 - Grid 自动换行
 - 每个搜索项占据相同宽度
 - 间距统一 (16px)
 
 ## 🔄 与项目中 Search 组件的区别
 
-| 特性 | SearchForm (新) | Search (旧) |
-|------|-----------------|-------------|
-| 布局方式 | CSS Grid | Form inline |
-| 按钮位置 | 固定右下角 | inline 或 bottom |
+| 特性     | SearchForm (新)         | Search (旧)           |
+| -------- | ----------------------- | --------------------- |
+| 布局方式 | CSS Grid                | Form inline           |
+| 按钮位置 | 固定右下角              | inline 或 bottom      |
 | 收起逻辑 | 基于数量自动收起前N-1个 | 基于 expandField 字段 |
-| 组件定义 | 直接在 schema 中定义 | 基于 FormSchema |
-| 复杂度 | 简单直观 | 依赖 Form 组件 |
+| 组件定义 | 直接在 schema 中定义    | 基于 FormSchema       |
+| 复杂度   | 简单直观                | 依赖 Form 组件        |
 
 ## 📁 文件结构
 
@@ -261,6 +280,4 @@ src/components/SearchForm/
 
 ---
 
-**创建时间**: 2025-10-19
-**状态**: ✅ 已完成
-**类型**: 正式组件
+**创建时间**: 2025-10-19 **状态**: ✅ 已完成 **类型**: 正式组件

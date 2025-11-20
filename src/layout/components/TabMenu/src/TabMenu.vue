@@ -20,8 +20,6 @@ export default defineComponent({
   setup() {
     const { push, currentRoute } = useRouter()
 
-    
-
     const appStore = useAppStore()
 
     const collapse = computed(() => appStore.getCollapse)

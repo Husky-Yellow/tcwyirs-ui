@@ -24,9 +24,9 @@ const props = defineProps({
 
 const emit = defineEmits<{
   'update:modelValue': [value: string | number]
-  'edit': [item: TagCardItem]
-  'delete': [item: TagCardItem]
-  'statusChange': [item: TagCardItem, status: boolean]
+  edit: [item: TagCardItem]
+  delete: [item: TagCardItem]
+  statusChange: [item: TagCardItem, status: boolean]
 }>()
 
 // 选中的卡片
@@ -63,9 +63,9 @@ const handleDelete = (item: TagCardItem, e: Event) => {
 // 获取权重颜色类
 const getWeightClass = (weight: string) => {
   const weightMap: Record<string, string> = {
-    '高权重': 'high',
-    '中权重': 'medium',
-    '低权重': 'low'
+    高权重: 'high',
+    中权重: 'medium',
+    低权重: 'low'
   }
   return weightMap[weight] || 'medium'
 }

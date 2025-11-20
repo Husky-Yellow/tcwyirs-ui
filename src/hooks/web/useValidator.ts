@@ -1,7 +1,5 @@
 import { FormItemRule } from 'element-plus'
 
-
-
 interface LengthRange {
   min: number
   max: number

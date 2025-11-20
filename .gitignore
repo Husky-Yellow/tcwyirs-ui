@@ -7,3 +7,10 @@ pnpm-debug
 auto-*.d.ts
 .idea
 .history
+
+# Mock 编译文件
+src/mock/**/*.mjs
+src/mock/**/*.bundled_*.mjs
+src/mock/**/__*.bundled_*.mjs
+src/mock/**/_*.bundled_*.mjs
+stats.html

@@ -1,12 +1,7 @@
 <template>
   <div class="stat-card">
     <div class="stat-card__label">{{ label }}</div>
-    <CountTo
-      class="stat-card__value"
-      :start-val="0"
-      :end-val="value"
-      :duration="duration"
-    />
+    <CountTo class="stat-card__value" :start-val="0" :end-val="value" :duration="duration" />
   </div>
 </template>
 

@@ -31,12 +31,7 @@
     <template #prefix>
       <el-icon class="el-input__icon"><Search /></el-icon>
     </template>
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-    />
+    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
   </el-select>
   <div v-else class="custom-hover" @click.stop="showTopSearch = !showTopSearch">
     <Icon icon="ep:search" />

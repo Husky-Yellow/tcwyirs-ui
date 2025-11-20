@@ -17,7 +17,11 @@ export const useHomepageData = () => {
     isLoading.value = true
     try {
       const data = await getHomepageData()
-      applicationScenarios.splice(0, applicationScenarios.length, ...(data.applicationScenarios || []))
+      applicationScenarios.splice(
+        0,
+        applicationScenarios.length,
+        ...(data.applicationScenarios || [])
+      )
       qualityResources.splice(0, qualityResources.length, ...(data.qualityResources || []))
       dataStatistics.splice(0, dataStatistics.length, ...(data.dataStatistics || []))
     } catch (e) {

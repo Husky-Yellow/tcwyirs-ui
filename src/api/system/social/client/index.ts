@@ -23,7 +23,10 @@ export interface SocialClientPageReqVO extends PageParam {
 export const getSocialClientPage = async (
   params: SocialClientPageReqVO
 ): Promise<PageResult<SocialClientVO[]>> => {
-  return await request.get<PageResult<SocialClientVO[]>>({ url: `/system/social-client/page`, params })
+  return await request.get<PageResult<SocialClientVO[]>>({
+    url: `/system/social-client/page`,
+    params
+  })
 }
 
 // 查询社交客户端详情

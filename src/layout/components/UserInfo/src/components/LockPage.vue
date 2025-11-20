@@ -29,8 +29,6 @@ const lockStore = useLockStore()
 
 const { hour, month, minute, meridiem, year, day, week } = useNow(true)
 
-
-
 // 解锁
 async function unLock() {
   if (!password.value) {

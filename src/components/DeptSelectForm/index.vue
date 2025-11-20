@@ -41,7 +41,7 @@ const emit = defineEmits<{
   confirm: [deptList: any[]]
 }>()
 
- // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 
 const props = defineProps({

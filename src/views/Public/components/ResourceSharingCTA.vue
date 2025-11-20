@@ -1,11 +1,17 @@
 <template>
   <section
     class="py-100px relative overflow-hidden"
-    style="background: linear-gradient(180deg, rgba(248, 249, 252, 0.95) 0%, rgba(243, 246, 255, 0.4) 100%);"
+    style="
+      background: linear-gradient(
+        180deg,
+        rgba(248, 249, 252, 0.95) 0%,
+        rgba(243, 246, 255, 0.4) 100%
+      );
+    "
   >
     <div
       class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
-      style="background-image: url('/src/assets/imgs/bg/homepage/resource-sharing-bg.png');"
+      style="background-image: url('/src/assets/imgs/bg/homepage/resource-sharing-bg.png')"
     ></div>
 
     <div class="relative max-w-1200px mx-auto px-20px">

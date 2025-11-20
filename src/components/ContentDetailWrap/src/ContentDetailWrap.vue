@@ -4,8 +4,6 @@ import { useDesign } from '@/hooks/web/useDesign'
 
 defineOptions({ name: 'ContentDetailWrap' })
 
-
-
 const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('content-detail-wrap')

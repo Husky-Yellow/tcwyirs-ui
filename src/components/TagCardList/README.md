@@ -11,28 +11,33 @@ TagCardList 是一个卡片式列表组件,用于展示标签数据,支持单选
 ## ✨ 核心特性
 
 ### 1. 卡片式布局
+
 - ✅ 使用 CSS Grid 布局
 - ✅ 每行最多显示 4 个卡片 (可配置)
 - ✅ 自动换行,间距统一
 
 ### 2. 单选功能
+
 - ✅ 支持 v-model 双向绑定
 - ✅ 点击卡片即可选中
 - ✅ 选中状态高亮显示 (蓝色边框 + 浅蓝背景)
 - ✅ 右上角显示单选按钮
 
 ### 3. 交互效果
+
 - ✅ 鼠标悬停时卡片边框变蓝色
 - ✅ 悬停时显示阴影效果
 - ✅ 选中时背景色变化
 - ✅ 平滑过渡动画
 
 ### 4. 操作功能
+
 - ✅ 编辑按钮 - 触发 edit 事件
 - ✅ 删除按钮 - 触发 delete 事件
 - ✅ 操作按钮支持事件冒泡阻止
 
 ### 5. 权重颜色标识
+
 - 🔴 **高权重** - 红色背景 (#fef0f0) + 红色文字 (#f56c6c)
 - 🔵 **中权重** - 蓝色背景 (#ecf5ff) + 蓝色文字 (#409eff)
 - 🟢 **低权重** - 绿色背景 (#f0f9ff) + 绿色文字 (#67c23a)
@@ -43,12 +48,7 @@ TagCardList 是一个卡片式列表组件,用于展示标签数据,支持单选
 
 ```vue
 <template>
-  <TagCardList
-    v-model="selectedId"
-    :data="tagList"
-    @edit="handleEdit"
-    @delete="handleDelete"
-  />
+  <TagCardList v-model="selectedId" :data="tagList" @edit="handleEdit" @delete="handleDelete" />
 </template>
 
 <script setup lang="ts">
@@ -115,31 +115,28 @@ const handleDelete = (item: TagCardItem) => {
     />
 
     <!-- 卡片列表 -->
-    <TagCardList
-      v-model="selectedId"
-      :data="filteredList"
-    />
+    <TagCardList v-model="selectedId" :data="filteredList" />
   </div>
 </template>
 ```
 
 ## 🔧 Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
-| data | 卡片数据数组 | `TagCardItem[]` | `[]` |
-| modelValue | 当前选中的卡片ID | `string \| number` | - |
-| showRadio | 是否显示单选按钮 | `boolean` | `true` |
-| colsPerRow | 每行显示的卡片数量 | `number` | `4` |
-| showActions | 是否显示操作按钮 | `boolean` | `true` |
+| 参数        | 说明               | 类型               | 默认值 |
+| ----------- | ------------------ | ------------------ | ------ |
+| data        | 卡片数据数组       | `TagCardItem[]`    | `[]`   |
+| modelValue  | 当前选中的卡片ID   | `string \| number` | -      |
+| showRadio   | 是否显示单选按钮   | `boolean`          | `true` |
+| colsPerRow  | 每行显示的卡片数量 | `number`           | `4`    |
+| showActions | 是否显示操作按钮   | `boolean`          | `true` |
 
 ## 📤 Events
 
-| 事件名 | 说明 | 参数 |
-|--------|------|------|
-| update:modelValue | 选中值变化时触发 | `(value: string \| number)` |
-| edit | 点击编辑按钮时触发 | `(item: TagCardItem)` |
-| delete | 点击删除按钮时触发 | `(item: TagCardItem)` |
+| 事件名            | 说明               | 参数                        |
+| ----------------- | ------------------ | --------------------------- |
+| update:modelValue | 选中值变化时触发   | `(value: string \| number)` |
+| edit              | 点击编辑按钮时触发 | `(item: TagCardItem)`       |
+| delete            | 点击删除按钮时触发 | `(item: TagCardItem)`       |
 
 ## 📝 TagCardItem 数据结构
 
@@ -192,21 +189,25 @@ interface TagCardItem {
 ## 💡 设计亮点
 
 ### 1. 响应式网格布局
+
 - 使用 CSS Grid 自动布局
 - 间距统一 (16px)
 - 自适应宽度
 
 ### 2. 清晰的视觉层次
+
 - 边框: 默认浅灰 → 悬停蓝色 → 选中蓝色
 - 背景: 默认白色 → 选中浅蓝
 - 阴影: 悬停时显示
 
 ### 3. 权重颜色系统
+
 - 高权重用红色,表示重要性高
 - 中权重用蓝色,表示中等重要
 - 低权重用绿色,表示相对次要
 
 ### 4. 流畅的交互
+
 - 所有状态变化都有过渡动画
 - 按钮点击事件阻止冒泡
 - 空状态友好提示
@@ -214,6 +215,7 @@ interface TagCardItem {
 ## 🔄 状态管理
 
 ### 选中状态
+
 ```vue
 <script setup>
 const selectedId = ref(1)
@@ -226,6 +228,7 @@ watch(selectedId, (newVal) => {
 ```
 
 ### 数据操作
+
 ```vue
 <script setup>
 const tagList = ref<TagCardItem[]>([...])
@@ -256,6 +259,7 @@ const updateTag = (id: string | number, updates: Partial<TagCardItem>) => {
 ## 🎨 样式自定义
 
 ### 修改每行列数
+
 ```vue
 <!-- 每行3个 -->
 <TagCardList :cols-per-row="3" :data="list" />
@@ -265,6 +269,7 @@ const updateTag = (id: string | number, updates: Partial<TagCardItem>) => {
 ```
 
 ### 修改间距
+
 ```scss
 .tag-card-list-grid {
   gap: 24px; // 默认 16px
@@ -272,6 +277,7 @@ const updateTag = (id: string | number, updates: Partial<TagCardItem>) => {
 ```
 
 ### 自定义权重颜色
+
 ```scss
 .tag-card-weight {
   &--high {
@@ -323,6 +329,4 @@ src/components/TagCardList/
 
 ---
 
-**创建时间**: 2025-10-19
-**状态**: ✅ 已完成
-**类型**: 正式组件
+**创建时间**: 2025-10-19 **状态**: ✅ 已完成 **类型**: 正式组件

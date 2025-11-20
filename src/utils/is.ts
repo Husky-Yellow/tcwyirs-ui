@@ -111,10 +111,7 @@ export const isNonEmptyArray = <T>(val: unknown): val is [T, ...T[]] => {
 /**
  * 判断数组的所有元素是否都满足条件
  */
-export const isArrayOf = <T>(
-  val: unknown,
-  predicate: (item: unknown) => item is T
-): val is T[] => {
+export const isArrayOf = <T>(val: unknown, predicate: (item: unknown) => item is T): val is T[] => {
   return Array.isArray(val) && val.every(predicate)
 }
 

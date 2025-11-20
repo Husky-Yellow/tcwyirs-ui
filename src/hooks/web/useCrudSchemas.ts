@@ -61,8 +61,6 @@ interface AllSchemas {
   detailSchema: DescriptionsSchema[]
 }
 
-
-
 // 过滤所有结构
 export const useCrudSchemas = (
   crudSchema: CrudSchema[]

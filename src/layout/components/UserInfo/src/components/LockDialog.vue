@@ -10,8 +10,6 @@ const prefixCls = getPrefixCls('lock-dialog')
 
 const { required } = useValidator()
 
-
-
 const lockStore = useLockStore()
 
 const props = defineProps({

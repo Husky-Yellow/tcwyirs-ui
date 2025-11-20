@@ -335,10 +335,7 @@ const handleDelete = async (id: number) => {
 const handleResetPwd = async (row: UserApi.UserVO) => {
   try {
     // 重置的二次确认
-    const result = await message.prompt(
-      '请输入"' + row.username + '"的新密码',
-      '温馨提示'
-    )
+    const result = await message.prompt('请输入"' + row.username + '"的新密码', '温馨提示')
     const password = result.value
     // 发起重置
     await UserApi.resetUserPassword(row.id, password)

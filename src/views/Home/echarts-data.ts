@@ -81,13 +81,7 @@ export const pieOptions: EChartsOption = {
   legend: {
     orient: 'vertical',
     left: 'left',
-    data: [
-      '直接访问',
-      '邮件营销',
-      '联盟广告',
-      '视频广告',
-      '搜索引擎'
-    ]
+    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
   },
   series: [
     {
@@ -124,15 +118,7 @@ export const barOptions: EChartsOption = {
   },
   xAxis: {
     type: 'category',
-    data: [
-      '周一',
-      '周二',
-      '周三',
-      '周四',
-      '周五',
-      '周六',
-      '周日'
-    ],
+    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
     axisTick: {
       alignWithLabel: true
     }

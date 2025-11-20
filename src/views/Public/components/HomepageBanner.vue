@@ -1,7 +1,7 @@
 <template>
   <section
     class="relative min-h-500px flex items-center overflow-hidden bg-cover bg-center"
-    style="background-image: url('/src/assets/imgs/bg/homepage/banner-background.png');"
+    style="background-image: url('/src/assets/imgs/bg/homepage/banner-background.png')"
   >
     <div class="max-w-1200px mx-auto px-20px w-full">
       <div class="flex items-center justify-between gap-60px">

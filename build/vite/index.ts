@@ -1,11 +1,11 @@
 import { resolve } from 'path'
+import type { PluginOption } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
 import progress from 'vite-plugin-progress'
 import EslintPlugin from 'vite-plugin-eslint'
 import PurgeIcons from 'vite-plugin-purge-icons'
 import { ViteEjsPlugin } from 'vite-plugin-ejs'
-// @ts-ignore
 import ElementPlus from 'unplugin-element-plus/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -14,9 +14,14 @@ import viteCompression from 'vite-plugin-compression'
 import topLevelAwait from 'vite-plugin-top-level-await'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng'
 import UnoCSS from 'unocss/vite'
-import { viteMockServe } from 'vite-plugin-mock';
+import { viteMockServe } from 'vite-plugin-mock'
 
-export function createVitePlugins() {
+/**
+ * 创建 Vite 插件配置
+ * @param isBuild 是否为生产构建
+ * @returns Vite 插件数组
+ */
+export function createVitePlugins(isBuild = false): PluginOption[] {
   const root = process.cwd()
 
   // 路径查找
@@ -24,24 +29,34 @@ export function createVitePlugins() {
     return resolve(root, '.', dir)
   }
 
-  return [
+  const plugins: PluginOption[] = [
+    // Vue 核心插件
     Vue(),
     VueJsx(),
+
+    // UnoCSS 原子化 CSS
     UnoCSS(),
+
+    // 构建进度显示
     progress(),
+
+    // 图标按需加载
     PurgeIcons(),
+
+    // Element Plus 按需引入样式
     ElementPlus({}),
+
+    // 自动导入 API
     AutoImport({
       include: [
-        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.[tj]sx?$/,
         /\.vue$/,
-        /\.vue\?vue/, // .vue
-        /\.md$/ // .md
+        /\.vue\?vue/,
+        /\.md$/
       ],
       imports: [
         'vue',
         'vue-router',
-        // 可额外添加需要 autoImport 的组件
         {
           '@/hooks/web/useMessage': ['useMessage'],
           '@/hooks/web/useTable': ['useTable'],
@@ -53,46 +68,72 @@ export function createVitePlugins() {
       dts: 'src/types/auto-imports.d.ts',
       resolvers: [ElementPlusResolver()],
       eslintrc: {
-        enabled: false, // Default `false`
-        filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
-        globalsPropValue: true // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
+        enabled: false,
+        filepath: './.eslintrc-auto-import.json',
+        globalsPropValue: true
       }
     }),
+
+    // 自动导入组件
     Components({
-      // 生成自定义 `auto-components.d.ts` 全局声明
       dts: 'src/types/auto-components.d.ts',
-      // 自定义组件的解析器
       resolvers: [ElementPlusResolver()],
-      globs: ["src/components/**/**.{vue,tsx,md}", '!src/components/DiyEditor/components/mobile/**']
+      globs: [
+        'src/components/**/**.{vue,tsx}',
+        '!src/components/**/README.md',
+        '!src/components/DiyEditor/components/mobile/**'
+      ]
     }),
-    EslintPlugin({
-      cache: false,
-      include: ['src/**/*.vue', 'src/**/*.ts', 'src/**/*.tsx'] // 检查的文件
-    }),
+
+    // SVG 图标插件
     createSvgIconsPlugin({
       iconDirs: [pathResolve('src/assets/svgs')],
-      symbolId: 'icon-[dir]-[name]',
+      symbolId: 'icon-[dir]-[name]'
     }),
-    viteCompression({
-      verbose: true, // 是否在控制台输出压缩结果
-      disable: false, // 是否禁用
-      threshold: 10240, // 体积大于 threshold 才会被压缩,单位 b
-      algorithm: 'gzip', // 压缩算法,可选 [ 'gzip' , 'brotliCompress' ,'deflate' , 'deflateRaw']
-      ext: '.gz', // 生成的压缩包后缀
-      deleteOriginFile: false //压缩后是否删除源文件
-    }),
+
+    // EJS 模板支持
     ViteEjsPlugin(),
+
+    // Top-level await 支持
     topLevelAwait({
-      // https://juejin.cn/post/7152191742513512485
-      // The export name of top-level await promise for each chunk module
       promiseExportName: '__tla',
-      // The function to generate import names of top-level await promise in each chunk module
       promiseImportName: (i) => `__tla_${i}`
-    }),
-    viteMockServe({
-      mockPath: 'src/mock',
-      enable: true,
-      logger: true
     })
   ]
+
+  // 开发环境插件
+  if (!isBuild) {
+    plugins.push(
+      // ESLint 检查 (仅开发环境，启用缓存提升性能)
+      EslintPlugin({
+        cache: true,
+        cacheLocation: 'node_modules/.cache/eslint',
+        include: ['src/**/*.vue', 'src/**/*.ts', 'src/**/*.tsx']
+      }),
+
+      // Mock 数据服务 (仅开发环境)
+      viteMockServe({
+        mockPath: 'src/mock',
+        enable: true,
+        logger: true
+      })
+    )
+  }
+
+  // 生产环境插件
+  if (isBuild) {
+    plugins.push(
+      // Gzip 压缩 (仅生产环境)
+      viteCompression({
+        verbose: true,
+        disable: false,
+        threshold: 10240,
+        algorithm: 'gzip',
+        ext: '.gz',
+        deleteOriginFile: false
+      })
+    )
+  }
+
+  return plugins
 }

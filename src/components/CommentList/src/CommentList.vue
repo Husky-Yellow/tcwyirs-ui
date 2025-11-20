@@ -42,12 +42,18 @@
               <span class="text-12px text-#999">{{ comment.time }}</span>
             </div>
             <p class="text-14px text-#333 leading-1.8 mb-12px">{{ comment.content }}</p>
-            <div class="text-13px text-#999 cursor-pointer hover:text-#409eff transition-colors inline-block" @click="handleReply(comment)">
+            <div
+              class="text-13px text-#999 cursor-pointer hover:text-#409eff transition-colors inline-block"
+              @click="handleReply(comment)"
+            >
               回复
             </div>
 
             <!-- 子评论区域 -->
-            <div v-if="comment.replies && comment.replies.length > 0 && comment.showReplies" class="mt-16px">
+            <div
+              v-if="comment.replies && comment.replies.length > 0 && comment.showReplies"
+              class="mt-16px"
+            >
               <div
                 v-for="reply in comment.replies"
                 :key="reply.id"
@@ -62,7 +68,9 @@
                     <span class="text-12px text-#999">{{ reply.time }}</span>
                   </div>
                   <p class="text-13px text-#333 leading-1.6 mb-8px">{{ reply.content }}</p>
-                  <div class="text-12px text-#999 cursor-pointer hover:text-#409eff transition-colors inline-block">
+                  <div
+                    class="text-12px text-#999 cursor-pointer hover:text-#409eff transition-colors inline-block"
+                  >
                     我回复{{ reply.userName }}
                   </div>
                 </div>
@@ -70,7 +78,10 @@
             </div>
           </div>
           <!-- 右上角评分 -->
-          <div class="absolute top-0 right-0 text-32px font-700 leading-none" :class="getScoreColor(comment.score)">
+          <div
+            class="absolute top-0 right-0 text-32px font-700 leading-none"
+            :class="getScoreColor(comment.score)"
+          >
             {{ comment.score }}
           </div>
           <!-- 展开/收起按钮（右下角，与评分右对齐） -->

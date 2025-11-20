@@ -28,14 +28,20 @@ export interface NotifyMessagePageReqVO extends PageParam {
 export const getNotifyMessagePage = async (
   params: NotifyMessagePageReqVO
 ): Promise<PageResult<NotifyMessageVO[]>> => {
-  return await request.get<PageResult<NotifyMessageVO[]>>({ url: '/mq/notify-message/page', params })
+  return await request.get<PageResult<NotifyMessageVO[]>>({
+    url: '/mq/notify-message/page',
+    params
+  })
 }
 
 // 获得我的站内信分页
 export const getMyNotifyMessagePage = async (
   params: NotifyMessagePageReqVO
 ): Promise<PageResult<NotifyMessageVO[]>> => {
-  return await request.get<PageResult<NotifyMessageVO[]>>({ url: '/mq/notify-message/my-page', params })
+  return await request.get<PageResult<NotifyMessageVO[]>>({
+    url: '/mq/notify-message/my-page',
+    params
+  })
 }
 
 // 批量标记已读

@@ -43,7 +43,9 @@
               </div>
             </div>
 
-            <div class="flex-shrink-0 w-280px h-200px bg-#f0f2f5 rounded-8px flex items-center justify-center">
+            <div
+              class="flex-shrink-0 w-280px h-200px bg-#f0f2f5 rounded-8px flex items-center justify-center"
+            >
               <div class="text-#999 text-14px">资源图示</div>
             </div>
           </div>
@@ -54,7 +56,10 @@
       <section class="py-40px">
         <div class="max-w-1200px mx-auto px-20px">
           <div class="bg-white rounded-8px p-32px">
-            <ResourceInfo :basic-info="resourceDetail.basicInfo" :data-info="resourceDetail.dataInfo" />
+            <ResourceInfo
+              :basic-info="resourceDetail.basicInfo"
+              :data-info="resourceDetail.dataInfo"
+            />
           </div>
         </div>
       </section>

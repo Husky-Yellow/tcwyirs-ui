@@ -10,9 +10,7 @@
               <h1 class="text-24px font-700 text-[var(--el-text-color-primary)] mb-4px">
                 组件展示 Demo
               </h1>
-              <p class="text-14px text-[var(--el-text-color-secondary)]">
-                Component Showcase
-              </p>
+              <p class="text-14px text-[var(--el-text-color-secondary)]"> Component Showcase </p>
             </div>
           </div>
           <el-button type="primary" @click="navigateToHome">
@@ -88,18 +86,10 @@
 
           <div class="demo-content">
             <div class="mb-16px flex gap-12px flex-wrap">
-              <el-button type="success" @click="showDrawerRight = true">
-                从右侧打开
-              </el-button>
-              <el-button type="success" @click="showDrawerLeft = true">
-                从左侧打开
-              </el-button>
-              <el-button type="success" @click="showDrawerTop = true">
-                从顶部打开
-              </el-button>
-              <el-button type="success" @click="showDrawerBottom = true">
-                从底部打开
-              </el-button>
+              <el-button type="success" @click="showDrawerRight = true"> 从右侧打开 </el-button>
+              <el-button type="success" @click="showDrawerLeft = true"> 从左侧打开 </el-button>
+              <el-button type="success" @click="showDrawerTop = true"> 从顶部打开 </el-button>
+              <el-button type="success" @click="showDrawerBottom = true"> 从底部打开 </el-button>
             </div>
 
             <!-- 抽屉演示: 带表单的资源发布 -->
@@ -196,17 +186,15 @@
         <el-divider />
         <p class="text-14px text-[var(--el-text-color-secondary)]">
           共 3 个组件 | 创建时间: 2025-10-19 |
-          <span class="text-[var(--el-color-primary)] cursor-pointer" @click="showInfo">查看详细信息</span>
+          <span class="text-[var(--el-color-primary)] cursor-pointer" @click="showInfo"
+            >查看详细信息</span
+          >
         </p>
       </div>
     </div>
 
     <!-- 评分弹窗 -->
-    <RatingReviewModal
-      v-model="showReviewModal"
-      title="组件评价"
-      @submit="handleReviewSubmit"
-    />
+    <RatingReviewModal v-model="showReviewModal" title="组件评价" @submit="handleReviewSubmit" />
 
     <!-- 抽屉组件演示 -->
     <Drawer v-model="showDrawerRight" title="从右侧打开的抽屉" size="500px" direction="rtl">
@@ -295,7 +283,6 @@
         <el-button type="primary" @click="handleResourceSubmit">发布资源</el-button>
       </template>
     </Drawer>
-
   </div>
 </template>
 

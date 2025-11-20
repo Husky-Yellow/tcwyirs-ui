@@ -1,17 +1,19 @@
 # AGENT PLAYBOOK -- tcwyirs-ui
 
 ## Tech Stack Snapshot
-- Vue 3 + TypeScript with Vite 4 bundling and hot module replacement.
-- Element Plus UI kit, FormCreate designer, UnoCSS utilities, global SCSS, and SVG icon pipeline.
+- Vue 3 + TypeScript with Vite 5.1.4 bundling and hot module replacement.
+- Element Plus 2.11.3 UI kit, FormCreate designer, UnoCSS utilities, global SCSS, and SVG icon pipeline.
 - Pinia state (with persisted storage) and Vue Router 4 for navigation and permissions.
 - Axios-based service layer under `src/config/axios` for request/response interceptors, token injection, and tenant-aware error handling.
-- Vitest + Vue Test Utils for unit tests; ESLint, Stylelint, and Prettier enforce formatting and conventions.
+- Vitest + Vue Test Utils for unit tests; ESLint with caching enforces formatting and conventions.
+- Build optimizations: esbuild minification (20-40x faster than terser), environment-based plugin loading, intelligent code splitting across 8 vendor chunks.
 
 ## Install & Run
 - Use `pnpm install` to sync dependencies (project published as `yudao-ui-admin-vue3`).
 - Local dev defaults to `.env.local`: `pnpm dev` (alias for `vite --mode env.local`).
 - Alternate environments: `pnpm dev-server`, `pnpm build:local|dev|test|stage|prod`, `pnpm serve:dev|prod`, `pnpm preview` (build + preview).
-- Maintenance scripts: `pnpm clean`, `pnpm clean:cache`, `pnpm ts:check`, and lint bundles (`pnpm lint:eslint`, `pnpm lint:style`, `pnpm lint:format`).
+- Maintenance scripts: `pnpm clean`, `pnpm clean:cache`, `pnpm ts:check`, and lint commands (`pnpm lint:eslint`, `pnpm lint:style`, `pnpm format`).
+- Dev performance: ESLint caching enabled at `node_modules/.cache/eslint` for faster linting on subsequent runs.
 
 ## Environment Profiles
 - Base vars in `.env`, overrides in `.env.*`. Key flags: `VITE_APP_TITLE`, `VITE_PORT`, tenant and captcha toggles, default login credentials.
@@ -25,9 +27,10 @@
 - `src/store/modules`: Pinia modules (`user`, `permission`, `dict`, etc.) centralize state with persistence. Use `useXStoreWithOut` helpers outside setup functions.
 - `src/api`: REST clients grouped by domain (`system`, `bpm`, `homepage`, `marketplace`). Follow existing request helpers and typing patterns.
 - `src/plugins`: Element Plus configuration, UnoCSS, SVG icons, animate.css, FormCreate. Add new integrations via `setupX` functions for consistency.
-- `src/components`: reusable/global components auto-registered through `setupGlobCom`.
+- `src/components`: reusable/global components auto-registered through `setupGlobCom`. Note: README.md files are excluded from auto-import to avoid naming conflicts.
 - `src/views`: feature-first page implementations. Keep nested modules inside their domain folder.
 - Supporting utilities: `src/hooks`, `src/utils`, `src/directives`, `src/mock` (enable via `mockXHR`), `public` (static assets), `build/` (generated output).
+- `build/vite`: Vite configuration split across `index.ts` (plugins), `optimize.ts` (dependency pre-bundling), with environment-aware plugin loading.
 
 ## Patterns & Conventions
 - File naming: `kebab-case.vue/ts`. Components use `PascalCase` in templates; scripts use `camelCase`; shared constants use `SCREAMING_SNAKE_CASE`.
@@ -36,6 +39,7 @@
 - Permissions: attach `meta.permissions` or `meta.roles` to route records and pair with the `v-auth` directive provided by `setupAuth`.
 - Forms: prefer FormCreate schema configs; when hand-rolling forms, reuse Element Plus components and existing validation utilities.
 - Persistence: Pinia modules persist via plugin; update storage keys deliberately to avoid breaking logout or tenant switching logic.
+- Code splitting: production builds automatically separate dependencies into 8 vendor chunks (vue, element-plus, echarts, form-create, form-designer, editor, utils, bpmn) for optimal caching and parallel loading.
 
 ## Vue 3 APIs & Hooks Snapshot
 - Composition style: 138 of 382 `.vue` files (~36%) already use `<script setup>`. Favor it for new work unless Options API compatibility is required.
@@ -53,7 +57,8 @@
 
 ## Testing & Quality Gates
 - Tests colocate with source (`*.test.ts`, `*.spec.tsx`). Use `pnpm test`, `pnpm test:run`, `pnpm test:coverage`, or `pnpm test:ui` (interactive).
-- Static analysis: `pnpm lint:eslint`, `pnpm lint:style`, `pnpm lint:format`. Combine with `pnpm ts:check` before PRs.
+- Static analysis: `pnpm lint:eslint` (with cache for performance), `pnpm lint:style`, `pnpm format`. Combine with `pnpm ts:check` before PRs.
+- ESLint runs only in dev mode with caching enabled; production builds skip linting for faster deployment.
 - Document coverage gaps or manual QA steps when automation is not feasible.
 
 ## Delivery Workflow

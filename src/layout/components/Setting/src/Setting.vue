@@ -14,7 +14,6 @@ import LayoutRadioPicker from './components/LayoutRadioPicker.vue'
 
 defineOptions({ name: 'Setting' })
 
-
 const appStore = useAppStore()
 
 const { getPrefixCls } = useDesign()

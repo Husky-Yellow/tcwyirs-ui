@@ -12,8 +12,6 @@ interface ErrorMap {
   buttonText: string
 }
 
-
-
 const errorMap: {
   [key: string]: ErrorMap
 } = {

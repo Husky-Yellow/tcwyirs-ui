@@ -72,8 +72,22 @@ const DEFAULT_DETAIL: Omit<ResourceDetail, 'id'> = {
     monthlyHits: '21'
   },
   reviews: {
-    positive: ['资源内容丰富', '操作使用便捷', '符合日常需求', '资源数据精准', '这是一个好资源', '这是一个很好的好评'],
-    negative: ['资源内容不符合描述', '体验不佳', '内容出错', '与业务场景不太匹配', '数据内容出现错误', '申请时长太久'],
+    positive: [
+      '资源内容丰富',
+      '操作使用便捷',
+      '符合日常需求',
+      '资源数据精准',
+      '这是一个好资源',
+      '这是一个很好的好评'
+    ],
+    negative: [
+      '资源内容不符合描述',
+      '体验不佳',
+      '内容出错',
+      '与业务场景不太匹配',
+      '数据内容出现错误',
+      '申请时长太久'
+    ],
     score: 79
   },
   comments: [
@@ -147,14 +161,54 @@ interface CategoryItem {
 }
 
 const PRODUCTS: MarketplaceProduct[] = [
-  { id: '1', title: '智能数据库管理系统', description: '高效的数据库管理和优化工具，支持多种数据库类型，提供可视化界面与性能监控', category: '数据管理' },
-  { id: '2', title: '云计算弹性伸缩平台', description: '弹性可扩展的云计算解决方案，提供 IaaS 与 PaaS，支持自动伸缩', category: '云计算' },
-  { id: '3', title: 'AI 智能算法集', description: '涵盖机器学习、深度学习等多个领域的前沿算法，提供 API 服务', category: '人工智能' },
-  { id: '4', title: '物联网设备接入平台', description: '支持海量设备接入，提供设备管理、数据采集与远程控制', category: '物联网' },
-  { id: '5', title: '区块链开发框架', description: '简化智能合约开发与部署流程，支持多种区块链网络', category: '区块链' },
-  { id: '6', title: '大数据实时分析平台', description: '支持实时流处理与批量分析，提供可视化报表', category: '大数据' },
-  { id: '7', title: '网络安全防护系统', description: '威胁检测、防护与应急响应，保护企业数字资产', category: '网络安全' },
-  { id: '8', title: '跨平台移动应用开发套件', description: '一次开发多端部署，支持 iOS/Android 等平台', category: '移动开发' }
+  {
+    id: '1',
+    title: '智能数据库管理系统',
+    description: '高效的数据库管理和优化工具，支持多种数据库类型，提供可视化界面与性能监控',
+    category: '数据管理'
+  },
+  {
+    id: '2',
+    title: '云计算弹性伸缩平台',
+    description: '弹性可扩展的云计算解决方案，提供 IaaS 与 PaaS，支持自动伸缩',
+    category: '云计算'
+  },
+  {
+    id: '3',
+    title: 'AI 智能算法集',
+    description: '涵盖机器学习、深度学习等多个领域的前沿算法，提供 API 服务',
+    category: '人工智能'
+  },
+  {
+    id: '4',
+    title: '物联网设备接入平台',
+    description: '支持海量设备接入，提供设备管理、数据采集与远程控制',
+    category: '物联网'
+  },
+  {
+    id: '5',
+    title: '区块链开发框架',
+    description: '简化智能合约开发与部署流程，支持多种区块链网络',
+    category: '区块链'
+  },
+  {
+    id: '6',
+    title: '大数据实时分析平台',
+    description: '支持实时流处理与批量分析，提供可视化报表',
+    category: '大数据'
+  },
+  {
+    id: '7',
+    title: '网络安全防护系统',
+    description: '威胁检测、防护与应急响应，保护企业数字资产',
+    category: '网络安全'
+  },
+  {
+    id: '8',
+    title: '跨平台移动应用开发套件',
+    description: '一次开发多端部署，支持 iOS/Android 等平台',
+    category: '移动开发'
+  }
 ]
 
 const CATEGORIES: CategoryItem[] = [

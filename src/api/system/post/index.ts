@@ -17,9 +17,7 @@ export interface PostPageReqVO extends PageParam {
 }
 
 // 查询岗位列表
-export const getPostPage = async (
-  params: PostPageReqVO
-): Promise<PageResult<PostVO[]>> => {
+export const getPostPage = async (params: PostPageReqVO): Promise<PageResult<PostVO[]>> => {
   return await request.get<PageResult<PostVO[]>>({ url: '/system/post/page', params })
 }
 

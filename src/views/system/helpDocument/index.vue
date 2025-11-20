@@ -44,7 +44,7 @@ const menuItemMap = computed(() => {
   const map = new Map<string, MenuItem>()
   const buildMap = (items: MenuItem[]) => {
     if (!items || !Array.isArray(items)) return
-    items.forEach(item => {
+    items.forEach((item) => {
       map.set(item.value, item)
       if (item.children?.length) {
         buildMap(item.children)
@@ -71,18 +71,25 @@ const handleMenuSelect = (key: string) => {
 }
 
 // 监听 menuItems 变化,重置 activeKey
-watch(() => props.menuItems, (newItems) => {
-  if (newItems && newItems.length && !findMenuItem(activeKey.value)) {
-    activeKey.value = newItems[0]?.value || ''
-  }
-}, { deep: true })
+watch(
+  () => props.menuItems,
+  (newItems) => {
+    if (newItems && newItems.length && !findMenuItem(activeKey.value)) {
+      activeKey.value = newItems[0]?.value || ''
+    }
+  },
+  { deep: true }
+)
 
 // 监听 defaultActiveKey 变化
-watch(() => props.defaultActiveKey, (newKey) => {
-  if (newKey && findMenuItem(newKey)) {
-    activeKey.value = newKey
+watch(
+  () => props.defaultActiveKey,
+  (newKey) => {
+    if (newKey && findMenuItem(newKey)) {
+      activeKey.value = newKey
+    }
   }
-})
+)
 
 // 初始化默认选中
 onMounted(() => {
@@ -119,46 +126,59 @@ const MenuItemRenderer = defineComponent({
     }
   },
   setup(props) {
-    const iconSize = computed(() => props.level === 0 ? 18 : 16)
+    const iconSize = computed(() => (props.level === 0 ? 18 : 16))
 
     return () => {
       if (!props.items || !Array.isArray(props.items) || props.items.length === 0) {
         return null
       }
 
-      return props.items.map(item => {
+      return props.items.map((item) => {
         if (item.children?.length) {
-          return h(resolveComponent('el-sub-menu'), {
-            key: item.value,
-            index: item.value
-          }, {
-            title: () => [
-              item.icon ? h(resolveComponent('Icon'), {
-                icon: item.icon,
-                size: iconSize.value,
-                class: 'mr-8px'
-              }) : null,
-              h('span', item.label)
-            ],
-            default: () => h(MenuItemRenderer, {
-              items: item.children,
-              level: props.level + 1
-            })
-          })
+          return h(
+            resolveComponent('el-sub-menu'),
+            {
+              key: item.value,
+              index: item.value
+            },
+            {
+              title: () => [
+                item.icon
+                  ? h(resolveComponent('Icon'), {
+                      icon: item.icon,
+                      size: iconSize.value,
+                      class: 'mr-8px'
+                    })
+                  : null,
+                h('span', item.label)
+              ],
+              default: () =>
+                h(MenuItemRenderer, {
+                  items: item.children,
+                  level: props.level + 1
+                })
+            }
+          )
         } else {
-          return h(resolveComponent('el-menu-item'), {
-            key: item.value,
-            index: item.value
-          }, {
-            default: () => [
-              item.icon ? h(resolveComponent('Icon'), {
-                icon: item.icon,
-                size: iconSize.value,
-                class: 'mr-8px'
-              }) : null,
-              h('span', item.label)
-            ]
-          })
+          return h(
+            resolveComponent('el-menu-item'),
+            {
+              key: item.value,
+              index: item.value
+            },
+            {
+              default: () => [
+                item.icon
+                  ? h(resolveComponent('Icon'), {
+                      icon: item.icon,
+                      size: iconSize.value,
+                      class: 'mr-8px'
+                    })
+                  : null,
+                h('span', item.label)
+              ]
+            }
+          )
         }
       })
     }
@@ -177,17 +197,11 @@ const MenuItemRenderer = defineComponent({
     >
       <div class="p-16px">
         <slot name="menu-header">
-          <div class="text-16px font-600 text-[var(--el-text-color-primary)] mb-16px">
-            目录
-          </div>
+          <div class="text-16px font-600 text-[var(--el-text-color-primary)] mb-16px"> 目录 </div>
         </slot>
       </div>
 
-      <el-menu
-        :default-active="activeKey"
-        class="border-none"
-        @select="handleMenuSelect"
-      >
+      <el-menu :default-active="activeKey" class="border-none" @select="handleMenuSelect">
         <MenuItemRenderer :items="menuItems" />
       </el-menu>
     </div>
@@ -396,7 +410,8 @@ const MenuItemRenderer = defineComponent({
       }
     }
 
-    :deep(ul), :deep(ol) {
+    :deep(ul),
+    :deep(ol) {
       padding-left: 28px;
       margin-bottom: 16px;
 
@@ -410,7 +425,8 @@ const MenuItemRenderer = defineComponent({
         }
       }
 
-      ul, ol {
+      ul,
+      ol {
         margin-top: 8px;
         margin-bottom: 8px;
       }
@@ -442,7 +458,8 @@ const MenuItemRenderer = defineComponent({
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
-      th, td {
+      th,
+      td {
         border: 1px solid var(--el-border-color);
         padding: 12px 16px;
         text-align: left;
@@ -503,7 +520,9 @@ const MenuItemRenderer = defineComponent({
       border-radius: 8px;
       margin: 20px 0;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s;
 
       &:hover {
         transform: scale(1.02);
@@ -518,18 +537,21 @@ const MenuItemRenderer = defineComponent({
     }
 
     // 强调样式
-    :deep(strong), :deep(b) {
+    :deep(strong),
+    :deep(b) {
       font-weight: 700;
       color: var(--el-text-color-primary);
     }
 
-    :deep(em), :deep(i) {
+    :deep(em),
+    :deep(i) {
       font-style: italic;
       color: var(--el-text-color-regular);
     }
 
     // 删除线
-    :deep(del), :deep(s) {
+    :deep(del),
+    :deep(s) {
       text-decoration: line-through;
       color: var(--el-text-color-placeholder);
     }
@@ -564,7 +586,8 @@ const MenuItemRenderer = defineComponent({
       :deep(table) {
         font-size: 14px;
 
-        th, td {
+        th,
+        td {
           padding: 8px;
         }
       }

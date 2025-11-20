@@ -24,8 +24,7 @@ const generateMockApiAccessLogs = (count: number) => {
       requestUrl: Mock.Random.pick(urls),
       requestParams: JSON.stringify({ pageNo: 1, pageSize: 10 }),
       userIp: Mock.Random.ip(),
-      userAgent:
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
       operateModule: Mock.Random.pick(['系统管理', '流程管理', '基础设施']),
       operateName: Mock.Random.pick(['查询列表', '新增', '修改', '删除']),
       operateType: Mock.Random.integer(1, 5),
@@ -52,14 +51,10 @@ const generateMockApiErrorLogs = (count: number) => {
       userType: Mock.Random.pick([1, 2]),
       applicationName: 'tcwyirs-ui',
       requestMethod: Mock.Random.pick(['GET', 'POST', 'PUT', 'DELETE']),
-      requestUrl: Mock.Random.pick([
-        '/admin-api/system/user/page',
-        '/admin-api/system/role/list'
-      ]),
+      requestUrl: Mock.Random.pick(['/admin-api/system/user/page', '/admin-api/system/role/list']),
       requestParams: JSON.stringify({ id: 123 }),
       userIp: Mock.Random.ip(),
-      userAgent:
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
       exceptionTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
       exceptionName: Mock.Random.pick([
         'NullPointerException',

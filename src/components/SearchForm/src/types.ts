@@ -4,7 +4,14 @@ export interface SearchFormSchema {
   // 标签
   label: string
   // 组件类型
-  component: 'Input' | 'Select' | 'DatePicker' | 'DateRangePicker' | 'TimePicker' | 'InputNumber' | 'slot'
+  component:
+    | 'Input'
+    | 'Select'
+    | 'DatePicker'
+    | 'DateRangePicker'
+    | 'TimePicker'
+    | 'InputNumber'
+    | 'slot'
   // 组件属性
   componentProps?: {
     placeholder?: string

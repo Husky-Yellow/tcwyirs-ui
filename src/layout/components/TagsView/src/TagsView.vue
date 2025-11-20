@@ -116,7 +116,10 @@ const tagLinksRefs = useTemplateRefsList<RouterLinkProps>()
 const scrollbarRef = ref<ComponentRef<typeof ElScrollbar>>()
 
 // 使用 useScroll 自动跟踪滚动位置
-const { x: scrollLeft } = useScroll(computed(() => scrollbarRef.value?.wrapRef), { throttle: 16 })
+const { x: scrollLeft } = useScroll(
+  computed(() => scrollbarRef.value?.wrapRef),
+  { throttle: 16 }
+)
 
 // 节流优化的滚动到当前tag
 const moveToCurrentTag = useThrottleFn(async () => {

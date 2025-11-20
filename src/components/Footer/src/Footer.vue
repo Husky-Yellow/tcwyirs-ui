@@ -1,7 +1,6 @@
 <template>
   <!-- 页脚 -->
   <footer class="bg-gradient-to-br from-#2d3748 to-#1a202c text-white py-80px pb-30px relative">
-
     <div class="max-w-1200px mx-auto px-20px w-full">
       <div class="grid grid-cols-[2fr_1fr_1fr_1fr] gap-50px mb-50px">
         <div>
@@ -22,11 +21,7 @@
         </div>
 
         <!-- 服务区块 -->
-        <div
-          v-for="section in serviceSections"
-          :key="section.title"
-          v-memo="[section.services]"
-        >
+        <div v-for="section in serviceSections" :key="section.title" v-memo="[section.services]">
           <h4
             class="text-18px font-700 mb-20px text-#e2e8f0 relative after:content-[''] after:absolute after:bottom--8px after:left-0 after:w-30px after:h-2px after:bg-gradient-to-r after:from-#667eea after:to-#764ba2 after:rounded-1px"
             >{{ section.title }}</h4
@@ -47,7 +42,6 @@
 </template>
 
 <script setup lang="ts">
-
 // Types
 interface SocialLink {
   name: string

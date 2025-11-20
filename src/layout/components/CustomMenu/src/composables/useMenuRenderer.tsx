@@ -87,25 +87,34 @@ export const useMenuRenderer = (options: RenderMenuOptions) => {
     unref(routers).forEach((firstLevel) => {
       if (!firstLevel.children || firstLevel.meta?.hidden) return
 
-      const parentPath = isUrl(firstLevel.path) ? firstLevel.path : pathResolve('/', firstLevel.path)
+      const parentPath = isUrl(firstLevel.path)
+        ? firstLevel.path
+        : pathResolve('/', firstLevel.path)
 
       firstLevel.children
         .filter((secondLevel) => !secondLevel.meta?.hidden)
         .forEach((secondLevel) => {
           const { meta = {} } = secondLevel
           const { title, icon } = meta
-          const { oneShowingChild, onlyOneChild } = hasOneShowingChild(secondLevel.children, secondLevel)
-          const fullPath = isUrl(secondLevel.path) ? secondLevel.path : pathResolve(parentPath, secondLevel.path)
+          const { oneShowingChild, onlyOneChild } = hasOneShowingChild(
+            secondLevel.children,
+            secondLevel
+          )
+          const fullPath = isUrl(secondLevel.path)
+            ? secondLevel.path
+            : pathResolve(parentPath, secondLevel.path)
 
           const finalPath = shouldUseOnlyChild(oneShowingChild, onlyOneChild, meta)
             ? pathResolve(fullPath, onlyOneChild!.path)
             : fullPath
 
           const isActive = unref(activeMenu) === finalPath
-          const hasChildren = secondLevel.children && secondLevel.children.length > 0 && !oneShowingChild
-          const children: SubMenuItem[] = hasChildren && secondLevel.children
-            ? buildNestedChildren(secondLevel.children, fullPath)
-            : []
+          const hasChildren =
+            secondLevel.children && secondLevel.children.length > 0 && !oneShowingChild
+          const children: SubMenuItem[] =
+            hasChildren && secondLevel.children
+              ? buildNestedChildren(secondLevel.children, fullPath)
+              : []
 
           allSecondLevelItems.push(
             <CollapsedMenuItemWithSubmenu

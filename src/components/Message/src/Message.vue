@@ -1,7 +1,13 @@
 <script lang="ts" setup>
 import { ref, computed, watchEffect, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useIntervalFn, useDebounceFn, useLocalStorage, useBreakpoints, breakpointsTailwind } from '@vueuse/core'
+import {
+  useIntervalFn,
+  useDebounceFn,
+  useLocalStorage,
+  useBreakpoints,
+  breakpointsTailwind
+} from '@vueuse/core'
 import { formatDate } from '@/utils/formatTime'
 import * as NotifyMessageApi from '@/api/system/notify/message'
 import { useUserStoreWithOut } from '@/store/modules/user'
@@ -129,12 +135,7 @@ onUnmounted(() => {
 </script>
 <template>
   <div class="message">
-    <ElPopover
-      :width="popoverWidth"
-      placement="bottom"
-      trigger="click"
-      :disabled="!isUserLoggedIn"
-    >
+    <ElPopover :width="popoverWidth" placement="bottom" trigger="click" :disabled="!isUserLoggedIn">
       <template #reference>
         <ElBadge :is-dot="hasUnreadMessages">
           <Icon
@@ -154,22 +155,34 @@ onUnmounted(() => {
           </div>
 
           <!-- 错误状态 -->
-          <div v-else-if="error" class="flex flex-col items-center justify-center h-200px text-center p-20px">
+          <div
+            v-else-if="error"
+            class="flex flex-col items-center justify-center h-200px text-center p-20px"
+          >
             <Icon icon="ep:warning" class="text-48px text-red-500 mb-16px" />
             <p class="text-14px text-gray-600 mb-16px">{{ error }}</p>
             <ElButton size="small" @click="debouncedGetList">重试</ElButton>
           </div>
 
           <!-- 空状态 -->
-          <div v-else-if="!hasMessages" class="flex flex-col items-center justify-center h-200px text-center p-20px">
+          <div
+            v-else-if="!hasMessages"
+            class="flex flex-col items-center justify-center h-200px text-center p-20px"
+          >
             <Icon icon="ep:chat-dot-square" class="text-48px text-gray-400 mb-16px" />
             <p class="text-14px text-gray-600">暂无消息</p>
           </div>
 
           <!-- 消息列表 -->
-          <el-scrollbar v-else class="flex flex-col" :style="{ height: isMobile ? '300px' : '400px' }">
+          <el-scrollbar
+            v-else
+            class="flex flex-col"
+            :style="{ height: isMobile ? '300px' : '400px' }"
+          >
             <template v-for="item in list" :key="item.id">
-              <div class="flex items-center py-20px border-b border-[var(--el-border-color-light)] last:border-none hover:bg-gray-50 transition-colors">
+              <div
+                class="flex items-center py-20px border-b border-[var(--el-border-color-light)] last:border-none hover:bg-gray-50 transition-colors"
+              >
                 <img
                   alt="用户头像"
                   class="w-40px h-40px rounded-full mx-5px ml-5px mr-20px object-cover"
@@ -177,7 +190,8 @@ onUnmounted(() => {
                 />
                 <div class="flex flex-col flex-1 min-w-0">
                   <span class="mb-5px text-14px leading-1.4 break-words">
-                    <span class="font-medium text-gray-800">{{ item.templateNickname }}</span>：
+                    <span class="font-medium text-gray-800">{{ item.templateNickname }}</span
+                    >：
                     <span class="text-gray-700">{{ item.templateContent }}</span>
                   </span>
                   <span class="text-12px text-[var(--el-text-color-secondary)]">
@@ -192,13 +206,7 @@ onUnmounted(() => {
 
       <!-- 底部操作 -->
       <div class="mt-10px text-right border-t border-[var(--el-border-color-light)] pt-10px">
-        <XButton
-          preIcon="ep:view"
-          title="查看全部"
-          type="primary"
-          size="small"
-          @click="goMyList"
-        />
+        <XButton preIcon="ep:view" title="查看全部" type="primary" size="small" @click="goMyList" />
       </div>
     </ElPopover>
   </div>

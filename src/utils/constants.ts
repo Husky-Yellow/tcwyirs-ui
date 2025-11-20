@@ -126,7 +126,6 @@ export const PayOrderStatusEnum = {
   }
 }
 
-
 // ========== MALL - 营销模块 ==========
 /**
  * 优惠劵模板的有限期类型的枚举

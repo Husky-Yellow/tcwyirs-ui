@@ -22,8 +22,7 @@ const generateMockOperateLogs = (count: number) => {
       requestMethod: Mock.Random.pick(['GET', 'POST', 'PUT', 'DELETE']),
       requestUrl: `/admin-api/system/${Mock.Random.pick(['user', 'role', 'menu', 'dept'])}/${Mock.Random.pick(['page', 'create', 'update', 'delete'])}`,
       userIp: Mock.Random.ip(),
-      userAgent:
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
       creator: Mock.Random.cname(),
       creatorName: Mock.Random.cname(),
       createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
@@ -49,8 +48,7 @@ const generateMockLoginLogs = (count: number) => {
       result: result,
       status: result === 0 ? 0 : 1, // 0-成功 1-失败
       userIp: Mock.Random.ip(),
-      userAgent:
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
       createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }

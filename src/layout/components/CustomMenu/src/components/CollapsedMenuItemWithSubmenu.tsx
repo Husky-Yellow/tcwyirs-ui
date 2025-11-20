@@ -116,7 +116,10 @@ export default defineComponent({
             {item.icon && (
               <Icon
                 icon={item.icon}
-                class={['mr-8px text-16px flex-shrink-0', item.isActive ? 'text-#409eff' : 'text-#909399']}
+                class={[
+                  'mr-8px text-16px flex-shrink-0',
+                  item.isActive ? 'text-#409eff' : 'text-#909399'
+                ]}
               />
             )}
             <span class={['text-14px font-normal whitespace-nowrap', hasChildren ? 'flex-1' : '']}>
@@ -142,10 +145,18 @@ export default defineComponent({
     ]
 
     return () => (
-      <div ref={menuItemRef} class="relative" onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>
+      <div
+        ref={menuItemRef}
+        class="relative"
+        onMouseenter={handleMouseEnter}
+        onMouseleave={handleMouseLeave}
+      >
         <div class={mainItemClasses} onClick={handleClick} title={props.title}>
           {props.icon && (
-            <Icon icon={props.icon} class={['m-0 text-20px', props.isActive ? 'text-#409eff' : 'text-#909399']} />
+            <Icon
+              icon={props.icon}
+              class={['m-0 text-20px', props.isActive ? 'text-#409eff' : 'text-#909399']}
+            />
           )}
           {props.hasChildren && (
             <div class="absolute right-2px top-50% transform -translate-y-50%">
@@ -157,7 +168,10 @@ export default defineComponent({
         {props.hasChildren && props.children.length > 0 && isHovering.value && (
           <div
             class="fixed bg-white shadow-lg rd-8px py-8px min-w-200px max-w-280px z-2000 border border-#e4e7ed max-h-500px overflow-y-auto"
-            style={{ left: `${submenuPosition.value.left}px`, top: `${submenuPosition.value.top}px` }}
+            style={{
+              left: `${submenuPosition.value.left}px`,
+              top: `${submenuPosition.value.top}px`
+            }}
             onMouseenter={clearHoverTimer}
             onMouseleave={handleMouseLeave}
           >

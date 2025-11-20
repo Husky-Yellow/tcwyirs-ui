@@ -82,7 +82,7 @@ const props = defineProps({
   showBtnText: propTypes.bool.def(true), // 是否显示按钮文字
   directory: propTypes.string.def(undefined) // 上传目录 ==> 非必传（默认为 undefined）
 })
- // 国际化
+// 国际化
 const message = useMessage() // 消息弹窗
 // 生成组件唯一id
 const uuid = ref('id-' + generateUUID())
