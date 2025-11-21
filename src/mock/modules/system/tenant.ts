@@ -26,7 +26,29 @@ const generateMockTenants = (count: number) => {
 
 const mockTenants = generateMockTenants(15)
 
+// 租户套餐数据
+const mockTenantPackages = [
+  { id: 1, name: '基础版' },
+  { id: 2, name: '标准版' },
+  { id: 3, name: '专业版' },
+  { id: 4, name: '企业版' },
+  { id: 5, name: '旗舰版' }
+]
+
 const mockConfigs: MockConfig[] = [
+  // 获取租户套餐精简列表
+  {
+    url: '/admin-api/system/tenant-package/simple-list',
+    type: 'get',
+    response: (): ApiResponse<any[]> => {
+      return {
+        code: 0,
+        data: mockTenantPackages,
+        msg: ''
+      }
+    }
+  },
+
   // 获取租户分页列表
   {
     url: '/admin-api/system/tenant/page',

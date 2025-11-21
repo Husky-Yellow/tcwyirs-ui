@@ -29,18 +29,53 @@ interface CaptchaResponse {
   img: string
 }
 
-// Mock 用户数据
-const mockUser: UserVO = {
-  id: 1,
-  username: 'admin',
-  nickname: '芋道源码',
-  deptId: 103,
-  email: '11aoteman@126.com',
-  mobile: '15888888888',
-  sex: 1,
-  avatar: 'http://test.governance.iocoder.cn/test/20250502/avatar_1746154660449.png',
-  loginIp: '127.0.0.1',
-  loginDate: new Date().toISOString()
+// 当前登录用户
+let currentUser: string = 'admin'
+
+// 用户配置
+const userConfigs: Record<string, { user: UserVO; roles: string[]; permissions: string[] }> = {
+  admin: {
+    user: {
+      id: 1,
+      nickname: '超级管理员',
+      avatar: 'http://test.governance.iocoder.cn/test/20250502/avatar_1746154660449.png',
+      deptId: 103,
+      username: 'admin',
+      email: 'admin@example.com'
+    },
+    roles: ['super_admin'],
+    permissions: ['*:*:*'] // 超级管理员拥有所有权限
+  },
+  test: {
+    user: {
+      id: 2,
+      nickname: '测试用户',
+      avatar: '',
+      deptId: 104,
+      username: 'test',
+      email: 'test@example.com'
+    },
+    roles: ['test'],
+    permissions: [
+      'system:user:query',
+      'system:user:list',
+      'system:dept:query',
+      'system:dict:query',
+      'system:notice:query'
+    ]
+  },
+  guest: {
+    user: {
+      id: 3,
+      nickname: '访客用户',
+      avatar: '',
+      deptId: 105,
+      username: 'guest',
+      email: 'guest@example.com'
+    },
+    roles: ['guest'],
+    permissions: [] // 无权限
+  }
 }
 
 const mockConfigs: MockConfig[] = [
@@ -51,15 +86,16 @@ const mockConfigs: MockConfig[] = [
     response: ({ body }: { body: UserLoginVO }): ApiResponse<LoginResponse> => {
       const { username, password } = body
 
-      // 简单的模拟验证
-      if (username === 'admin' && password === 'admin123') {
+      // 支持多个用户登录 (密码统一为 admin123)
+      if (userConfigs[username] && password === 'admin123') {
+        currentUser = username // 记录当前登录用户
         return {
           code: 0,
           data: {
-            userId: 1,
-            accessToken: 'mock-access-token-' + Date.now(),
-            refreshToken: 'mock-refresh-token-' + Date.now(),
-            expiresTime: Date.now() + 24 * 60 * 60 * 1000 // 24小时后过期
+            userId: userConfigs[username].user.id!,
+            accessToken: `mock-access-token-${username}-${Date.now()}`,
+            refreshToken: `mock-refresh-token-${username}-${Date.now()}`,
+            expiresTime: Date.now() + 24 * 60 * 60 * 1000
           },
           msg: '登录成功'
         }
@@ -77,165 +113,15 @@ const mockConfigs: MockConfig[] = [
   {
     url: '/admin-api/system/auth/get-permission-info',
     type: 'get',
-    response: (): ApiResponse<PermissionInfo> => ({
-      code: 0,
-      data: {
-        user: {
-          id: 1,
-          nickname: '芋道源码',
-          avatar: 'http://test.governance.iocoder.cn/test/20250502/avatar_1746154660449.png',
-          deptId: 103,
-          username: 'admin',
-          email: '11aoteman@126.com'
-        },
-        roles: ['common', 'super_admin'],
-        permissions: [
-          '',
-          'infra:config:create',
-          'system:sms-template:update',
-          'system:menu:query',
-          'system:social-client:create',
-          'infra:file-config:query',
-          'system:mail-template:query',
-          'infra:config:export',
-          'system:user:query',
-          'infra:file-config:create',
-          'system:mail-template:update',
-          'system:user:export',
-          'system:dept:update',
-          'infra:api-access-log:export',
-          'infra:data-source-config:update',
-          'system:social-user:query',
-          'system:dept:query',
-          'infra:file-config:export',
-          'system:mail-account:create',
-          'infra:demo01-contact:query',
-          'system:tenant-package:delete',
-          'infra:demo02-category:query',
-          'system:role:delete',
-          'system:dept:create',
-          'system:notice:update',
-          'system:menu:create',
-          'system:tenant:query',
-          'system:mail-template:create',
-          'infra:codegen:download',
-          'system:dict:query',
-          'infra:api-error-log:query',
-          'infra:demo03-student:delete',
-          'system:dict:update',
-          'infra:demo01-contact:delete',
-          'system:notice:create',
-          'system:sms-log:query',
-          'system:notify-template:query',
-          'infra:job:delete',
-          'system:tenant:export',
-          'system:post:update',
-          'infra:api-error-log:update-status',
-          'system:oauth2-client:delete',
-          'system:tenant:create',
-          'system:mail-account:update',
-          'system:mail-account:delete',
-          'infra:demo02-category:update',
-          'system:post:export',
-          'infra:file:delete',
-          'infra:data-source-config:create',
-          'system:social-client:update',
-          'system:sms-template:create',
-          'infra:job:trigger',
-          'system:sms-channel:update',
-          'system:sms-channel:query',
-          'system:menu:update',
-          'infra:demo02-category:delete',
-          'system:login-log:query',
-          'system:role:update',
-          'system:tenant:visit',
-          'system:notice:delete',
-          'system:login-log:export',
-          'system:notify-template:send-notify',
-          'system:user:create',
-          'system:role:export',
-          'infra:file-config:update',
-          'system:notify-template:delete',
-          'system:notify-message:query',
-          'infra:demo01-contact:update',
-          'system:permission:assign-user-role',
-          'system:post:delete',
-          'infra:demo03-student:create',
-          'infra:config:update',
-          'infra:job:update',
-          'system:mail-template:delete',
-          'infra:job:export',
-          'infra:demo01-contact:export',
-          'infra:api-error-log:export',
-          'infra:demo02-category:export',
-          'infra:job:create',
-          'system:permission:assign-role-menu',
-          'infra:config:query',
-          'infra:demo02-category:create',
-          'system:sms-template:send-sms',
-          'system:dept:delete',
-          'system:tenant:update',
-          'system:tenant-package:update',
-          'system:mail-template:send-mail',
-          'infra:codegen:create',
-          'system:sms-template:delete',
-          'infra:data-source-config:delete',
-          'system:notify-template:create',
-          'infra:file-config:delete',
-          'infra:codegen:preview',
-          'system:dict:create',
-          'system:notify-template:update',
-          'infra:api-access-log:query',
-          'system:mail-log:query',
-          'infra:redis:get-monitor-info',
-          'system:oauth2-token:delete',
-          'system:notice:query',
-          'infra:file:query',
-          'system:oauth2-client:create',
-          'infra:config:delete',
-          'system:user:update-password',
-          'system:oauth2-token:page',
-          'system:dict:export',
-          'system:mail-account:query',
-          'system:post:query',
-          'system:sms-channel:create',
-          'system:post:create',
-          'infra:codegen:delete',
-          'infra:redis:get-key-list',
-          'system:user:delete',
-          'system:sms-template:export',
-          'infra:build:list',
-          'infra:codegen:update',
-          'infra:data-source-config:export',
-          'system:user:import',
-          'infra:job:query',
-          'system:user:update',
-          'system:social-client:delete',
-          'system:menu:delete',
-          'system:sms-template:query',
-          'infra:data-source-config:query',
-          'system:oauth2-client:update',
-          'system:permission:assign-role-data-scope',
-          'system:tenant-package:create',
-          'infra:demo03-student:update',
-          'system:user:list',
-          'infra:demo01-contact:create',
-          'system:operate-log:query',
-          'system:sms-log:export',
-          'infra:codegen:query',
-          'system:social-client:query',
-          'system:sms-channel:delete',
-          'system:tenant:delete',
-          'system:tenant-package:query',
-          'system:role:create',
-          'infra:demo03-student:query',
-          'system:dict:delete',
-          'system:oauth2-client:query',
-          'system:operate-log:export',
-          'system:role:query',
-          'infra:demo03-student:export'
-        ],
-        menus: [
+    response: (): ApiResponse<PermissionInfo> => {
+      const config = userConfigs[currentUser] || userConfigs.admin
+      return {
+        code: 0,
+        data: {
+          user: config.user,
+          roles: config.roles,
+          permissions: config.permissions,
+          menus: [
           {
             id: 1,
             parentId: 0,
@@ -1032,9 +918,10 @@ const mockConfigs: MockConfig[] = [
             ]
           }
         ]
-      },
-      msg: ''
-    })
+        },
+        msg: ''
+      }
+    }
   },
 
   // 刷新访问令牌

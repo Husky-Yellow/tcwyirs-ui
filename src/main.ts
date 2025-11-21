@@ -34,8 +34,6 @@ import App from './App.vue'
 
 import './permission'
 
-import Logger from '@/utils/Logger'
-
 import VueDOMPurifyHTML from 'vue-dompurify-html' // 解决v-html 的安全隐患
 
 import { mockXHR } from './mock'
@@ -67,4 +65,3 @@ const setupAll = async () => {
 
 setupAll()
 
-Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)

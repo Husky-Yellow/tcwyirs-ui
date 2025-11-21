@@ -51,14 +51,7 @@ export default defineComponent({
         const meta = v.meta as RouteMeta
         return (
           <ElBreadcrumbItem to={{ path: disabled ? '' : v.path }} key={v.name}>
-            {meta?.icon && breadcrumbIcon.value ? (
-              <div class="flex items-center">
-                <Icon icon={meta.icon} class="mr-[2px]" svgClass="inline-block" />
-                {v?.meta?.title}
-              </div>
-            ) : (
-              v?.meta?.title
-            )}
+            {meta?.title}
           </ElBreadcrumbItem>
         )
       })
@@ -105,7 +98,7 @@ $prefix-cls: #{$elNamespace}-breadcrumb;
     }
   }
 
-  :deep(.#{$prefix-cls}__item):not(:last-child) {
+  :deep(.#{$prefix-cls}__item):last-child {
     .#{$prefix-cls}__inner {
       color: var(--top-header-text-color);
 
@@ -115,7 +108,7 @@ $prefix-cls: #{$elNamespace}-breadcrumb;
     }
   }
 
-  :deep(.#{$prefix-cls}__item):last-child {
+  :deep(.#{$prefix-cls}__item):not(:last-child) {
     .#{$prefix-cls}__inner {
       display: flex;
       align-items: center;

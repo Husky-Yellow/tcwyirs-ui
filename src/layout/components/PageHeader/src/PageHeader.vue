@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Breadcrumb } from '@/layout/components/Breadcrumb'
-import { Icon } from '@/components/Icon'
+import { Back } from '@element-plus/icons-vue'
 
 defineOptions({ name: 'PageHeader' })
 
@@ -26,20 +26,15 @@ const handleBack = () => {
 </script>
 
 <template>
-  <div v-if="showHeader" class="p-3 bg-white rounded-2 mb-3">
-    <!-- 面包屑 -->
-    <div v-if="showBreadcrumb" class="mb-2">
-      <Breadcrumb />
-    </div>
-    <!-- 返回按钮 + 标题 -->
-    <div v-if="showBack" class="flex items-center gap-2">
-      <span
-        class="flex items-center justify-center cursor-pointer text-gray-500 hover:text-[var(--el-color-primary)] transition-colors"
-        @click="handleBack"
-      >
-        <Icon icon="ep:arrow-left" :size="18" />
-      </span>
-      <span class="text-4 font-500 text-gray-800">{{ pageTitle }}</span>
+  <div v-if="showHeader">
+    <Breadcrumb v-if="showBreadcrumb" class="mb-12px" />
+    <div
+      v-if="showBack"
+      class="inline-flex items-center py-24px cursor-pointer text-black/85 hover:text-[var(--el-color-primary)] transition-colors"
+      @click="handleBack"
+    >
+      <el-icon :size="18"><Back /></el-icon>
+      <span class="font-['PingFang_SC'] font-medium text-[20px] leading-[28px] ml-16px">{{ pageTitle }}</span>
     </div>
   </div>
 </template>
