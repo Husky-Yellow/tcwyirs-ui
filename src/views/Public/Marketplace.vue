@@ -17,24 +17,39 @@
           </h1>
 
           <!-- 搜索框 -->
-          <div class="search-container flex items-center bg-white rounded-8px overflow-hidden max-w-880px">
-            <div class="search-dropdown relative flex items-center gap-8px px-16px py-12px cursor-pointer border-r border-gray-200">
-              <span class="font-['PingFang_SC'] text-[14px] text-[#1677FF]">全部资源</span>
-              <Icon icon="ep:arrow-down" class="text-[#1677FF]" />
-            </div>
-            <input
+          <div class="search-container relative flex items-center bg-white rounded-8px overflow-hidden max-w-880px">
+            <el-dropdown trigger="click" @command="handleCategoryChange">
+              <div class="search-dropdown flex items-center gap-8px px-16px py-10px cursor-pointer">
+                <span class="font-['PingFang_SC'] text-[14px] font-medium text-[#1677FF]">{{ selectedCategory }}</span>
+                <Icon icon="ep:arrow-down" class="text-[#1677FF] text-12px" />
+              </div>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item
+                    v-for="item in categoryOptions"
+                    :key="item.value"
+                    :command="item.value"
+                  >
+                    {{ item.label }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            <div class="w-[1px] h-[20px] bg-[#E8E8E8]"></div>
+            <el-input
               v-model="searchKeyword"
-              type="text"
               placeholder="请输入关键词"
-              class="flex-1 px-16px py-12px outline-none font-['PingFang_SC'] text-[14px]"
+              class="flex-1 search-input"
               @keyup.enter="debouncedSearch"
-            />
-            <button
-              class="search-button px-20px py-12px bg-[#1677FF] hover:bg-[#0E5FD9] transition-colors"
-              @click="debouncedSearch"
             >
-              <Icon icon="ep:search" class="text-white text-20px" />
-            </button>
+              <template #suffix>
+                <Icon
+                  icon="ep:search"
+                  class="text-[#1677FF] text-18px cursor-pointer hover:opacity-80 transition-opacity"
+                  @click="debouncedSearch"
+                />
+              </template>
+            </el-input>
           </div>
         </div>
       </section>
@@ -63,6 +78,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { usePublic } from './composables/usePublic'
 import { useMarketplace } from './composables/useMarketplace'
 import QualityResourceCard from './components/QualityResourceCard.vue'
@@ -71,6 +87,25 @@ defineOptions({ name: 'Marketplace' })
 
 const { isScrolled, navigateTo, navigateToDetail } = usePublic()
 const { searchKeyword, filteredProducts, debouncedSearch } = useMarketplace()
+
+// 分类下拉
+const selectedCategory = ref('全部资源')
+const categoryOptions = [
+  { label: '全部资源', value: 'all' },
+  { label: '数据资源', value: 'data' },
+  { label: '算法资源', value: 'algorithm' },
+  { label: '模型资源', value: 'model' },
+  { label: '工具资源', value: 'tool' }
+]
+
+const handleCategoryChange = (command: string) => {
+  const selected = categoryOptions.find(item => item.value === command)
+  if (selected) {
+    selectedCategory.value = selected.label
+    // TODO: 根据分类筛选资源
+    console.log('Selected category:', command)
+  }
+}
 </script>
 
 <style scoped>
@@ -87,10 +122,9 @@ const { searchKeyword, filteredProducts, debouncedSearch } = useMarketplace()
   right: 0;
   bottom: 0;
   background-image: url('/src/assets/imgs/bg/Marketplace/MarketplaceBanner.png');
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.3;
 }
 
 .marketplace-title {
@@ -102,6 +136,33 @@ const { searchKeyword, filteredProducts, debouncedSearch } = useMarketplace()
 
 .search-container {
   box-shadow: 0 2px 12px rgba(22, 119, 255, 0.15);
+  position: relative;
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(90deg, #136FFF 1%, #01C8FF 39%, #136FFF 100%) border-box;
+}
+
+.search-input :deep(.el-input__wrapper) {
+  box-shadow: none;
+  border: none;
+  padding: 10px 16px;
+  background-color: transparent;
+}
+
+.search-input :deep(.el-input__inner) {
+  font-family: 'PingFang SC';
+  font-size: 14px;
+  color: #000000d9;
+}
+
+.search-input :deep(.el-input__inner::placeholder) {
+  color: #bfbfbf;
+}
+
+.search-input :deep(.el-input__suffix) {
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
 }
 
 .search-dropdown:hover {

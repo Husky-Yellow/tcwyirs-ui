@@ -2,13 +2,19 @@
   <div>
     <div class="flex items-center justify-between mb-20px">
       <h3 class="text-16px font-600 text-#1a1a1a">评论</h3>
-      <div class="text-14px text-#999">
-        评分：<span class="text-#409eff text-20px font-600 ml-4px">{{ overallScore }}</span>
+      <div class="flex items-end font-['PingFang_SC']">
+        <span class="text-18px leading-none text-black/45">评分：</span>
+        <CountTo
+          class="font-medium text-24px leading-none text-#1677FF"
+          :start-val="0"
+          :end-val="overallScore"
+          :duration="2600"
+        />
       </div>
     </div>
 
     <!-- 评论输入 -->
-    <div v-if="showInput" class="flex gap-12px mb-32px">
+    <div v-if="showInput" class="flex gap-12px">
       <el-avatar :size="40" class="flex-shrink-0">
         <el-icon :size="20"><User /></el-icon>
       </el-avatar>
@@ -23,6 +29,8 @@
         <el-button type="primary" @click="handlePublish">发 布</el-button>
       </div>
     </div>
+
+    <div class="h-1px bg-black/6 mt-60px mb-40px" ></div>
 
     <!-- 评论列表 -->
     <div class="space-y-16px">
@@ -43,7 +51,7 @@
             </div>
             <p class="text-14px text-#333 leading-1.8 mb-12px">{{ comment.content }}</p>
             <div
-              class="text-13px text-#999 cursor-pointer hover:text-#409eff transition-colors inline-block"
+              class="text-13px text-#999 cursor-pointer hover:text-#409eff transition-colors"
               @click="handleReply(comment)"
             >
               回复
@@ -51,7 +59,7 @@
 
             <!-- 子评论区域 -->
             <div
-              v-if="comment.replies && comment.replies.length > 0 && comment.showReplies"
+              v-if="comment.replies?.length && comment.showReplies"
               class="mt-16px"
             >
               <div
@@ -68,9 +76,7 @@
                     <span class="text-12px text-#999">{{ reply.time }}</span>
                   </div>
                   <p class="text-13px text-#333 leading-1.6 mb-8px">{{ reply.content }}</p>
-                  <div
-                    class="text-12px text-#999 cursor-pointer hover:text-#409eff transition-colors inline-block"
-                  >
+                  <div class="text-12px text-#999 cursor-pointer hover:text-#409eff transition-colors">
                     我回复{{ reply.userName }}
                   </div>
                 </div>
@@ -78,31 +84,20 @@
             </div>
           </div>
           <!-- 右上角评分 -->
-          <div
-            class="absolute top-0 right-0 text-32px font-700 leading-none"
+          <CountTo
+            class="absolute top-0 right-0 font-semibold text-20px"
             :class="getScoreColor(comment.score)"
-          >
-            {{ comment.score }}
-          </div>
-          <!-- 展开/收起按钮（右下角，与评分右对齐） -->
+            :start-val="0"
+            :end-val="comment.score"
+            :duration="2600"
+          />
+          <!-- 展开/收起按钮 -->
           <div
-            v-if="comment.replies && comment.replies.length > 0"
-            class="absolute bottom-0 right-0"
+            v-if="comment.replies?.length"
+            class="absolute bottom-0 right-0 text-12px text-#165DFF cursor-pointer"
+            @click="comment.showReplies = !comment.showReplies"
           >
-            <div
-              v-if="comment.showReplies"
-              class="text-13px text-#409eff cursor-pointer hover:text-#66b1ff transition-colors"
-              @click="comment.showReplies = false"
-            >
-              收起评论
-            </div>
-            <div
-              v-else
-              class="text-13px text-#409eff cursor-pointer hover:text-#66b1ff transition-colors"
-              @click="comment.showReplies = true"
-            >
-              ({{ comment.replies.length }}) 展开评论
-            </div>
+            {{ comment.showReplies ? '收起评论' : `(${comment.replies.length}) 展开评论` }}
           </div>
         </div>
       </div>

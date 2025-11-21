@@ -1,65 +1,40 @@
 <template>
   <div class="bg-white">
-    <h2 class="text-24px font-600 text-#1a1a1a mb-32px">数据资源信息</h2>
+    <h2 class="border-b border-[#0000000f] border-solid border-x-0 border-t-0 font-['PingFang_SC'] font-medium text-20px leading-24px text-black/85 pb-22px">
+      数据资源信息
+    </h2>
 
     <!-- 基本信息 -->
-    <div class="mb-40px">
-      <h3 class="text-18px font-600 text-#1a1a1a mb-24px">基本信息</h3>
+    <div class="mb-40px mt-24px">
+      <h3 class="font-['PingFang_SC'] font-medium text-14px leading-24px text-black/85 mb-24px">基本信息</h3>
       <div class="grid grid-cols-4 gap-x-40px gap-y-20px">
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">资源名称：</span>
-          <span class="text-14px text-#333">{{ basicInfo.resourceName }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">资源标签：</span>
-          <span class="text-14px text-#333">{{ basicInfo.resourceTag }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">资源联系人：</span>
-          <span class="text-14px text-#333">{{ basicInfo.creator }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">资源上架时间：</span>
-          <span class="text-14px text-#333">{{ basicInfo.publishTime }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">归属方：</span>
-          <span class="text-14px text-#333">{{ basicInfo.owner }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">归属应用：</span>
-          <span class="text-14px text-#333">{{ basicInfo.application }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">资源联系人：</span>
-          <span class="text-14px text-#333">{{ basicInfo.contact }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">联系方式：</span>
-          <span class="text-14px text-#333">{{ basicInfo.contactPhone }}</span>
-        </div>
-        <div class="flex flex-col gap-8px col-span-4">
-          <span class="text-14px text-#999">描述：</span>
-          <span class="text-14px text-#333">{{ basicInfo.descriptionText }}</span>
+        <div
+          v-for="item in basicInfoItems"
+          :key="item.label"
+          class="flex items-baseline gap-8px"
+          :class="item.fullWidth ? 'col-span-4' : ''"
+        >
+          <span class="font-['PingFang_SC'] font-normal text-14px leading-22px text-black/45 whitespace-nowrap">
+            {{ item.label }}：
+          </span>
+          <span class="font-['PingFang_SC'] font-normal text-14px leading-22px text-black/88">
+            {{ item.value }}
+          </span>
         </div>
       </div>
     </div>
 
     <!-- 数据信息 -->
-    <div>
-      <h3 class="text-18px font-600 text-#1a1a1a mb-24px">数据信息</h3>
+    <div class="mt-28px">
+      <h3 class="font-['PingFang_SC'] font-medium text-14px leading-24px text-black/85 mb-24px">数据信息</h3>
       <div class="grid grid-cols-3 gap-x-40px gap-y-20px">
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">申请量：</span>
-          <span class="text-14px text-#333">{{ dataInfo.applications }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">访问量：</span>
-          <span class="text-14px text-#333">{{ dataInfo.visits }}</span>
-        </div>
-        <div class="flex flex-col gap-8px">
-          <span class="text-14px text-#999">月度数数：</span>
-          <span class="text-14px text-#333">{{ dataInfo.monthlyHits }}</span>
+        <div v-for="item in dataInfoItems" :key="item.label" class="flex items-baseline gap-8px">
+          <span class="font-['PingFang_SC'] font-normal text-14px leading-22px text-black/45 whitespace-nowrap">
+            {{ item.label }}：
+          </span>
+          <span class="font-['PingFang_SC'] font-normal text-14px leading-22px text-black/88">
+            {{ item.value }}
+          </span>
         </div>
       </div>
     </div>
@@ -67,6 +42,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 defineOptions({ name: 'ResourceInfo' })
 
 interface BasicInfo {
@@ -92,5 +69,23 @@ interface Props {
   dataInfo: DataInfo
 }
 
-withDefaults(defineProps<Props>(), {})
+const props = withDefaults(defineProps<Props>(), {})
+
+const basicInfoItems = computed(() => [
+  { label: '资源名称', value: props.basicInfo.resourceName },
+  { label: '资源标签', value: props.basicInfo.resourceTag },
+  { label: '资源联系人', value: props.basicInfo.creator },
+  { label: '资源上架时间', value: props.basicInfo.publishTime },
+  { label: '归属方', value: props.basicInfo.owner },
+  { label: '归属应用', value: props.basicInfo.application },
+  { label: '资源联系人', value: props.basicInfo.contact },
+  { label: '联系方式', value: props.basicInfo.contactPhone },
+  { label: '描述', value: props.basicInfo.descriptionText, fullWidth: true }
+])
+
+const dataInfoItems = computed(() => [
+  { label: '申请量', value: props.dataInfo.applications },
+  { label: '访问量', value: props.dataInfo.visits },
+  { label: '月度数数', value: props.dataInfo.monthlyHits }
+])
 </script>

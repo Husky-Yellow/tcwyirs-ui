@@ -4,47 +4,53 @@
 
     <main>
       <!-- 面包屑导航 -->
-      <section class="py-16px bg-#F8F9FC">
-        <div class="max-w-1200px mx-auto px-20px">
-          <div class="flex items-center gap-8px text-14px">
-            <span class="text-#999">&lt;</span>
-            <span
-              @click="navigateTo('/marketplace')"
-              class="text-#999 cursor-pointer hover:text-#409eff transition-colors"
-            >
-              查看全部资源
-            </span>
-          </div>
+      <section class="pt-84px bg-#F8F9FC">
+        <div class="max-w-1160px mx-auto flex items-center gap-8px text-14px">
+          <span
+            @click="navigateTo('/marketplace')"
+            class="text-#000000a6 cursor-pointer hover:text-#409eff transition-colors font-['PingFang_SC'] font-normal text-[14px] leading-[22px] tracking-0 text-left"
+          >
+            <span class="text-#000000a6 cursor-pointer">&lt;</span>
+            查看全部资源
+          </span>
         </div>
       </section>
 
       <!-- Banner 区域 -->
-      <section class="py-40px bg-#F8F9FC">
-        <div class="max-w-1200px mx-auto px-20px">
+      <section class="pt-38px pb-50px bg-#F8F9FC">
+        <div class="max-w-1160px mx-auto">
           <div class="flex items-center justify-between">
             <div class="flex-1 pr-60px">
-              <h1 class="text-36px font-700 text-#1a1a1a mb-24px">
+              <h1 class="text-36px font-700 text-#1a1a1a mb-20px">
                 {{ resourceDetail.title }}
               </h1>
 
-              <p class="text-15px text-#666 mb-32px">
+              <p class="font-['PingFang_SC'] font-normal text-[14px] leading-[22px] tracking-0 text-left text-black/65 w-[730px] border-b border-[#0000000f] border-solid border-x-0 border-t-0 pb-24px">
                 {{ resourceDetail.description }}
               </p>
 
-              <div class="flex items-center gap-16px">
-                <el-button type="primary" size="large" class="px-32px">
-                  <el-icon class="mr-8px"><Download /></el-icon>
+              <div class="flex items-center gap-24px mt-26px">
+                <button
+                  class="apply-btn flex items-center gap-10px pl-20px pr-12px py-8px text-white text-14px font-medium"
+                >
                   申请资源
-                </el-button>
-                <el-button size="large" class="px-24px" plain>
-                  <el-icon class="mr-8px"><QuestionFilled /></el-icon>
-                  问题反馈
-                </el-button>
+                  <span
+                    class="arrow-icon flex items-center justify-center w-24px h-24px bg-white rounded-full"
+                  >
+                    <Icon icon="ep:arrow-right" class="text-14px text-#1677FF" />
+                  </span>
+                </button>
+                <div
+                  class="flex items-center gap-6px cursor-pointer text-#1677FF hover:opacity-80 transition-opacity"
+                >
+                  <Icon icon="ep:warning" class="text-16px" />
+                  <span class="text-14px">问题反馈</span>
+                </div>
               </div>
             </div>
 
             <div
-              class="flex-shrink-0 w-280px h-200px bg-#f0f2f5 rounded-8px flex items-center justify-center"
+              class="flex-shrink-0 w-340px h-210px bg-#f0f2f5 rounded-8px flex items-center justify-center"
             >
               <div class="text-#999 text-14px">资源图示</div>
             </div>
@@ -53,61 +59,53 @@
       </section>
 
       <!-- 数据资源信息 -->
-      <section class="py-40px">
-        <div class="max-w-1200px mx-auto px-20px">
-          <div class="bg-white rounded-8px p-32px">
-            <ResourceInfo
-              :basic-info="resourceDetail.basicInfo"
-              :data-info="resourceDetail.dataInfo"
-            />
-          </div>
-        </div>
+      <section class="max-w-1160px mx-auto bg-white rounded-8px py-60px">
+        <ResourceInfo :basic-info="resourceDetail.basicInfo" :data-info="resourceDetail.dataInfo" />
       </section>
 
       <!-- 评分及评论 -->
-      <section class="pb-60px">
-        <div class="max-w-1200px mx-auto px-20px">
-          <div class="bg-white rounded-8px p-32px">
-            <h2 class="text-24px font-600 text-#1a1a1a mb-32px">评分及评论</h2>
+      <section class="max-w-1160px mx-auto pb-60px">
+        <h2
+          class="border-b border-[#0000000f] border-solid border-x-0 border-t-0 font-['PingFang_SC'] font-medium text-[20px] leading-[24px] tracking-0 text-left text-black/85 pb-34px"
+          >评分及评论</h2
+        >
 
-            <div class="grid grid-cols-2 gap-40px mb-40px">
-              <div>
-                <h3 class="text-16px font-600 text-#1a1a1a mb-16px">好评</h3>
-                <div class="flex flex-wrap gap-12px">
-                  <el-tag
-                    v-for="tag in resourceDetail.reviews.positive"
-                    :key="tag"
-                    type="primary"
-                    class="cursor-pointer"
-                  >
-                    {{ tag }}
-                  </el-tag>
-                </div>
-              </div>
-
-              <div>
-                <h3 class="text-16px font-600 text-#1a1a1a mb-16px">差评</h3>
-                <div class="flex flex-wrap gap-12px">
-                  <el-tag
-                    v-for="tag in resourceDetail.reviews.negative"
-                    :key="tag"
-                    type="danger"
-                    class="cursor-pointer"
-                  >
-                    {{ tag }}
-                  </el-tag>
-                </div>
-              </div>
+        <div class="grid grid-cols-2 pt-32px gap-40px pb-44px">
+          <div>
+            <h3 class="text-16px font-600 text-#1a1a1a pb-16px">好评</h3>
+            <div class="flex flex-wrap gap-12px">
+              <el-tag
+                v-for="tag in resourceDetail.reviews.positive"
+                :key="tag"
+                type="primary"
+                class="cursor-pointer"
+              >
+                {{ tag }}
+              </el-tag>
             </div>
+          </div>
 
-            <CommentList
-              :comments="resourceDetail.comments"
-              :overall-score="resourceDetail.reviews.score"
-              @publish="handlePublishComment"
-              @reply="handleReplyComment"
-            />
+          <div>
+            <h3 class="text-16px font-600 text-#1a1a1a pb-16px">差评</h3>
+            <div class="flex flex-wrap gap-12px">
+              <el-tag
+                v-for="tag in resourceDetail.reviews.negative"
+                :key="tag"
+                type="danger"
+                class="cursor-pointer"
+              >
+                {{ tag }}
+              </el-tag>
+            </div>
           </div>
         </div>
+
+        <CommentList
+          :comments="resourceDetail.comments"
+          :overall-score="resourceDetail.reviews.score"
+          @publish="handlePublishComment"
+          @reply="handleReplyComment"
+        />
       </section>
     </main>
 
@@ -118,7 +116,6 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { Download, QuestionFilled } from '@element-plus/icons-vue'
 import CommentList from '@/components/CommentList/src/CommentList.vue'
 import { ResourceInfo } from '@/components/ResourceInfo'
 import { usePublic } from './composables/usePublic'
@@ -140,3 +137,24 @@ const handleReplyComment = (comment: any) => {
   // TODO: 显示回复框或调用 API
 }
 </script>
+
+<style scoped>
+.apply-btn {
+  background: linear-gradient(90deg, #136fff 1%, #01c8ff 39%, #136fff 100%);
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+}
+
+.apply-btn:hover {
+  opacity: 0.85;
+}
+
+.apply-btn:disabled,
+.apply-btn.is-disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+</style>
