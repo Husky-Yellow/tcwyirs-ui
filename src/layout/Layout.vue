@@ -2,7 +2,6 @@
 import { computed, defineComponent, watch } from 'vue'
 import { useAppStore } from '@/store/modules/app'
 import { Backtop } from '@/components/Backtop'
-import { Setting } from '@/layout/components/Setting'
 import { useRenderLayout } from './components/useRenderLayout'
 import { useDesign } from '@/hooks/web/useDesign'
 import { useNetwork } from '@/hooks/web/useNetwork'
@@ -68,8 +67,6 @@ export default defineComponent({
         {renderLayout()}
 
         <Backtop></Backtop>
-
-        <Setting></Setting>
       </section>
     )
   }

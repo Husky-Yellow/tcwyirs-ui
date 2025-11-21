@@ -11,7 +11,6 @@ const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('layout')
 const appStore = useAppStore()
 
-const BACKGROUND_IMAGE_URL = '/src/assets/imgs/project_bg.png'
 const TRANSITION_STYLE = 'transition: all var(--transition-time-02);'
 
 // 使用 computedEager 提前计算，减少响应式开销
@@ -66,10 +65,7 @@ export const useRenderLayout = () => {
     ]
 
     return (
-      <div
-        class="h-full w-full bg-cover bg-center bg-no-repeat"
-        style={`background-image: url('${BACKGROUND_IMAGE_URL}')`}
-      >
+      <div class="layout-bg h-full w-full">
         <div
           class={['fixed top-0 left-0 w-full z-20', { 'layout-border__bottom': !tagsView.value }]}
         >

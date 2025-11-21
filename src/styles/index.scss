@@ -18,6 +18,26 @@
   justify-content: flex-start;
 }
 
+/* layout 背景图片 */
+.layout-bg {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 402px;
+    background-image: url('@/assets/imgs/bg/homepage/bg_top_img.png');
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    pointer-events: none;
+  }
+}
+
 /* nprogress 适配 element-plus 的主题色 */
 #nprogress {
   & .bar {

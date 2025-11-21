@@ -1,10 +1,6 @@
 <template>
   <div
-    class="w-full h-196px bg-cover bg-center bg-no-repeat rounded-3 relative overflow-hidden"
-    style="
-      background-image:
-        linear-gradient(to right, #1f54db, #ffffff), url('@/assets/imgs/home/home_banner.png');
-    "
+    class="banner w-full h-196px bg-cover bg-center bg-no-repeat rounded-3 relative overflow-hidden"
   >
     <div
       class="flex h-full items-center px-10 relative z-2 md:flex-row flex-col md:text-left text-center"
@@ -26,3 +22,9 @@
 <script setup lang="ts">
 defineOptions({ name: 'IndexBanner' })
 </script>
+
+<style scoped>
+.banner {
+  background-image: url('@/assets/imgs/home/home_banner.png');
+}
+</style>

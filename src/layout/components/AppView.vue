@@ -2,6 +2,7 @@
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useAppStore } from '@/store/modules/app'
 import { Footer } from '@/layout/components/Footer'
+import { PageHeader } from '@/layout/components/PageHeader'
 import { computedEager } from '@vueuse/core'
 import { ref, nextTick, provide } from 'vue'
 
@@ -35,6 +36,7 @@ provide('reload', reload)
       }
     ]"
   >
+    <PageHeader />
     <router-view v-if="routerAlive">
       <template #default="{ Component, route }">
         <keep-alive :include="getCaches">
