@@ -1,9 +1,9 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成岗位数据
 const generateMockPosts = (count: number) => {
-  const posts = []
+  const posts: any[] = []
   const postNames = [
     '董事长',
     '总经理',
@@ -24,9 +24,9 @@ const generateMockPosts = (count: number) => {
       name: postNames[i],
       code: postCodes[i],
       sort: i + 1,
-      status: Mock.Random.pick([0, 1]), // 0-正常 1-停用
-      remark: Mock.Random.csentence(5, 15),
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      status: Random.pick([0, 1]), // 0-正常 1-停用
+      remark: Random.csentence(5, 15),
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return posts
@@ -94,7 +94,7 @@ const mockConfigs: MockConfig[] = [
     response: (): ApiResponse<number> => {
       return {
         code: 0,
-        data: Mock.Random.integer(1000, 9999),
+        data: Random.integer(1000, 9999),
         msg: '创建成功'
       }
     }

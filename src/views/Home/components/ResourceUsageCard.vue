@@ -1,7 +1,7 @@
 <template>
   <AppCard title="资源使用看板">
     <template #header>
-      <div class="py-11px px-20px">
+      <div class="px-20px py-11px">
         资源使用看板
         <el-link type="primary" :underline="false" @click="handleViewApplications">
           我申请的资源

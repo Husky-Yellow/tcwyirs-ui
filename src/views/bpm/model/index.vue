@@ -1,11 +1,11 @@
 <template>
   <ContentWrap>
-    <div class="flex justify-between pl-20px items-center">
+    <div class="flex items-center justify-between pl-20px">
       <h3 class="font-extrabold">流程模型</h3>
       <!-- 搜索工作栏 -->
       <el-form
         v-if="!isCategorySorting"
-        class="-mb-15px flex mr-10px"
+        class="mr-10px flex -mb-15px"
         :model="queryParams"
         ref="queryFormRef"
         :inline="true"

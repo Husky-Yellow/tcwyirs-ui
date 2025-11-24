@@ -3,23 +3,23 @@
     <div class="mx-auto">
       <!-- 头部导航栏 -->
       <div
-        class="absolute top-0 left-0 right-0 h-50px bg-white border-bottom z-10 flex items-center px-20px"
+        class="border-bottom absolute left-0 right-0 top-0 z-10 h-50px flex items-center bg-white px-20px"
       >
         <!-- 左侧标题 -->
         <div class="w-200px flex items-center overflow-hidden">
-          <Icon icon="ep:arrow-left" class="cursor-pointer flex-shrink-0" @click="handleBack" />
-          <span class="ml-10px text-16px truncate" :title="formData.name || '创建流程'">
+          <Icon icon="ep:arrow-left" class="flex-shrink-0 cursor-pointer" @click="handleBack" />
+          <span class="ml-10px truncate text-16px" :title="formData.name || '创建流程'">
             {{ formData.name || '创建流程' }}
           </span>
         </div>
 
         <!-- 步骤条 -->
-        <div class="flex-1 flex items-center justify-center h-full">
-          <div class="w-400px flex items-center justify-between h-full">
+        <div class="h-full flex flex-1 items-center justify-center">
+          <div class="h-full w-400px flex items-center justify-between">
             <div
               v-for="(step, index) in steps"
               :key="index"
-              class="flex items-center cursor-pointer mx-15px relative h-full"
+              class="relative mx-15px h-full flex cursor-pointer items-center"
               :class="[
                 currentStep === index
                   ? 'text-[#3473ff] border-[#3473ff] border-b-2 border-b-solid'
@@ -28,7 +28,7 @@
               @click="handleStepClick(index)"
             >
               <div
-                class="w-28px h-28px rounded-full flex items-center justify-center mr-8px border-2 border-solid text-15px"
+                class="mr-8px h-28px w-28px flex items-center justify-center border-2 rounded-full border-solid text-15px"
                 :class="[
                   currentStep === index
                     ? 'bg-[#3473ff] text-white border-[#3473ff]'
@@ -37,7 +37,7 @@
               >
                 {{ index + 1 }}
               </div>
-              <span class="text-16px font-bold whitespace-nowrap">{{ step.title }}</span>
+              <span class="whitespace-nowrap text-16px font-bold">{{ step.title }}</span>
             </div>
           </div>
         </div>

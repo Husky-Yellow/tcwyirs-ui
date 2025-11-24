@@ -182,7 +182,7 @@
         @change="updateElementTask"
       />
       <XButton
-        class="!w-1/1 mt-5px"
+        class="mt-5px !w-1/1"
         type="success"
         preIcon="ep:select"
         title="选择表达式"

@@ -1,33 +1,33 @@
 <template>
   <div
-    class="resource-share-card w-274px h-272px bg-white rounded-8px overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg hover:translate-y--4px"
+    class="resource-share-card h-272px w-274px cursor-pointer overflow-hidden rounded-8px bg-white transition-all duration-300 hover:translate-y--4px hover:shadow-lg"
     @click="$emit('click', resource)"
   >
-    <div class="w-full h-146px overflow-hidden">
+    <div class="h-146px w-full overflow-hidden">
       <img
         src="https://ts1.tc.mm.bing.net/th?id=OADD2.1234751583547257_1PVN4UXBJX2O895&pid=21.2&c=17&roil=0.0262&roit=0.1762&roir=0.9637&roib=0.6662&w=300&h=157&dynsize=1&qlt=90&dpr=2.00"
         :alt="resource.title"
-        class="w-full h-full object-cover"
+        class="h-full w-full object-cover"
       />
     </div>
 
-    <div class="py-18px px-16px">
-      <div class="flex items-center gap-8px mb-8px">
-        <span class="w-[62px] h-[22px] flex items-center px-4px rounded-[2px] bg-[#F0F7FF] text-[12px] font-normal text-gray-600">
+    <div class="px-16px py-18px">
+      <div class="mb-8px flex items-center gap-8px">
+        <span class="h-[22px] w-[62px] flex items-center rounded-[2px] bg-[#F0F7FF] px-4px text-[12px] text-gray-600 font-normal">
           {{ resource.category }}
         </span>
       </div>
 
-      <div class="flex items-center justify-between mb-8px">
-        <h3 class="text-16px font-600 text-#1f2937 truncate flex-1 mr-8px">
+      <div class="mb-8px flex items-center justify-between">
+        <h3 class="mr-8px flex-1 truncate text-16px text-#1f2937 font-600">
           {{ resource.title }}
         </h3>
-        <span class="text-13px text-#3b82f6 hover:text-#2563eb transition-colors cursor-pointer whitespace-nowrap">
+        <span class="cursor-pointer whitespace-nowrap text-13px text-#3b82f6 transition-colors hover:text-#2563eb">
           详情
         </span>
       </div>
 
-      <p class="text-13px text-#6b7280 truncate">
+      <p class="truncate text-13px text-#6b7280">
         {{ resource.description }}
       </p>
     </div>

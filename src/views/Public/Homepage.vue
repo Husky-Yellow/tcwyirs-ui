@@ -1,7 +1,7 @@
 <template>
   <div
     ref="scrollContainerRef"
-    class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth"
+    class="h-screen w-full overflow-x-hidden overflow-y-auto scroll-smooth"
   >
     <AppHeader :is-scrolled="isScrolled" :showShadow="false" />
 

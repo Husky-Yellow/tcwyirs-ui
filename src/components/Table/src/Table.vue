@@ -9,7 +9,7 @@ import { set } from 'es-toolkit/compat'
 import { Pagination, TableColumn, TableSetPropsType, TableSlotDefault } from '@/types/data'
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
+   
   name: 'Table',
   props: {
     pageSize: propTypes.number.def(10),

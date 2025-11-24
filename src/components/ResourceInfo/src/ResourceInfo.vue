@@ -1,12 +1,12 @@
 <template>
   <div class="bg-white">
-    <h2 class="border-b border-[#0000000f] border-solid border-x-0 border-t-0 font-['PingFang_SC'] font-medium text-20px leading-24px text-black/85 pb-22px">
+    <h2 class="border-x-0 border-b border-t-0 border-[#0000000f] border-solid pb-22px text-20px text-black/85 font-medium leading-24px font-['PingFang_SC']">
       数据资源信息
     </h2>
 
     <!-- 基本信息 -->
     <div class="mb-40px mt-24px">
-      <h3 class="font-['PingFang_SC'] font-medium text-14px leading-24px text-black/85 mb-24px">基本信息</h3>
+      <h3 class="mb-24px text-14px text-black/85 font-medium leading-24px font-['PingFang_SC']">基本信息</h3>
       <div class="grid grid-cols-4 gap-x-40px gap-y-20px">
         <div
           v-for="item in basicInfoItems"
@@ -14,10 +14,10 @@
           class="flex items-baseline gap-8px"
           :class="item.fullWidth ? 'col-span-4' : ''"
         >
-          <span class="font-['PingFang_SC'] font-normal text-14px leading-22px text-black/45 whitespace-nowrap">
+          <span class="whitespace-nowrap text-14px text-black/45 font-normal leading-22px font-['PingFang_SC']">
             {{ item.label }}：
           </span>
-          <span class="font-['PingFang_SC'] font-normal text-14px leading-22px text-black/88">
+          <span class="text-14px text-black/88 font-normal leading-22px font-['PingFang_SC']">
             {{ item.value }}
           </span>
         </div>
@@ -26,13 +26,13 @@
 
     <!-- 数据信息 -->
     <div class="mt-28px">
-      <h3 class="font-['PingFang_SC'] font-medium text-14px leading-24px text-black/85 mb-24px">数据信息</h3>
+      <h3 class="mb-24px text-14px text-black/85 font-medium leading-24px font-['PingFang_SC']">数据信息</h3>
       <div class="grid grid-cols-3 gap-x-40px gap-y-20px">
         <div v-for="item in dataInfoItems" :key="item.label" class="flex items-baseline gap-8px">
-          <span class="font-['PingFang_SC'] font-normal text-14px leading-22px text-black/45 whitespace-nowrap">
+          <span class="whitespace-nowrap text-14px text-black/45 font-normal leading-22px font-['PingFang_SC']">
             {{ item.label }}：
           </span>
-          <span class="font-['PingFang_SC'] font-normal text-14px leading-22px text-black/88">
+          <span class="text-14px text-black/88 font-normal leading-22px font-['PingFang_SC']">
             {{ item.value }}
           </span>
         </div>

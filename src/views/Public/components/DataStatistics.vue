@@ -1,7 +1,7 @@
 <template>
-  <section class="py-40px bg-white">
+  <section class="bg-white py-40px">
     <div
-      class="max-w-1134px mx-auto flex justify-between items-center"
+      class="mx-auto max-w-1134px flex items-center justify-between"
     >
       <div
         v-for="stat in statistics"
@@ -9,13 +9,13 @@
         class="flex flex-col items-center text-center font-['PingFang_SC']"
       >
         <CountTo
-          class="font-semibold text-[28px] leading-tight text-[#165DFF]"
+          class="text-[28px] text-[#165DFF] font-semibold leading-tight"
           :start-val="0"
           :end-val="stat.value"
           :duration="2600"
         />
         <p
-          class="font-normal text-[14px] leading-[22px] text-black/85"
+          class="text-[14px] text-black/85 font-normal leading-[22px]"
         >
           {{ stat.label }}
         </p>

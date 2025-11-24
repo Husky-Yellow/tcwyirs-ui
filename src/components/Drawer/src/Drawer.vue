@@ -78,13 +78,13 @@ const handleClosed = () => {
     <template v-if="withHeader" #header>
       <slot name="header">
         <div class="flex items-center justify-between">
-          <span class="text-16px font-600 text-[var(--el-text-color-primary)]">{{ title }}</span>
+          <span class="text-16px text-[var(--el-text-color-primary)] font-600">{{ title }}</span>
         </div>
       </slot>
     </template>
 
     <!-- 主体内容插槽 -->
-    <div class="p-20px h-full overflow-y-auto">
+    <div class="h-full overflow-y-auto p-20px">
       <slot></slot>
     </div>
 

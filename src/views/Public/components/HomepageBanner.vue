@@ -3,20 +3,20 @@
     class="relative min-h-500px flex items-center overflow-hidden bg-cover bg-center"
     style="background-image: url('/src/assets/imgs/bg/homepage/banner-background.png')"
   >
-    <div class="max-w-1200px mx-auto px-20px w-full">
+    <div class="mx-auto max-w-1200px w-full px-20px">
       <div class="flex items-center justify-between gap-60px">
-        <div class="w-full max-w-700px flex-shrink-0">
-          <h1 class="text-50px mb-20px leading-tight">
+        <div class="max-w-700px w-full flex-shrink-0">
+          <h1 class="mb-20px text-50px leading-tight">
             <span class="gradient-text font-alibaba mr-17px">芯连万物</span>
-            <span class="text-#1f2937 font-alibaba font-bold text-[50px] text-black/85">共创万物智联时代</span>
+            <span class="font-alibaba text-[50px] text-#1f2937 text-black/85 font-bold">共创万物智联时代</span>
           </h1>
 
-          <p class="font-['PingFang_SC'] font-normal text-[14px] text-black/65">
+          <p class="text-[14px] text-black/65 font-normal font-['PingFang_SC']">
             构筑互联互通的资源共享协作网络，实现企业级数智资源、应用资源、组建资源的高动共用
           </p>
 
           <button
-            class="gradient-button mt-84px px-40px py-16px text-white text-16px font-500 rounded-full cursor-pointer transition-all duration-300"
+            class="gradient-button mt-84px cursor-pointer rounded-full px-40px py-16px text-16px text-white font-500 transition-all duration-300"
             @click="$emit('navigate')"
           >
             进入工作台
@@ -27,7 +27,7 @@
           <img
             src="/src/assets/imgs/bg/homepage/banner-illustration.png"
             alt="Banner Illustration"
-            class="w-326px h-314px"
+            class="h-314px w-326px"
           />
         </div>
       </div>

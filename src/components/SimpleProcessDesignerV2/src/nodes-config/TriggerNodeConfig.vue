@@ -53,7 +53,7 @@
         <!-- 表单数据修改触发器 -->
         <div v-if="configForm.type === TriggerTypeEnum.FORM_UPDATE">
           <div v-for="(formSetting, index) in configForm.formSettings" :key="index">
-            <el-card class="w-580px mt-4">
+            <el-card class="mt-4 w-580px">
               <template #header>
                 <div class="flex items-center justify-between">
                   <div>修改表单设置 {{ index + 1 }}</div>
@@ -137,7 +137,7 @@
                     />
                   </el-form-item>
                 </div>
-                <div class="mr-1 pt-1 cursor-pointer">
+                <div class="mr-1 cursor-pointer pt-1">
                   <el-form-item>
                     <Icon
                       icon="ep:delete"
@@ -164,7 +164,7 @@
         <!-- 表单数据删除触发器 -->
         <div v-if="configForm.type === TriggerTypeEnum.FORM_DELETE">
           <div v-for="(formSetting, index) in configForm.formSettings" :key="index">
-            <el-card class="w-580px mt-4">
+            <el-card class="mt-4 w-580px">
               <template #header>
                 <div class="flex items-center justify-between">
                   <div>删除表单设置 {{ index + 1 }}</div>

@@ -53,7 +53,7 @@
         <template #default="scope">
           <div class="flex items-center justify-center">
             <span
-              class="inline-block w-8px h-8px rounded-full"
+              class="inline-block h-8px w-8px rounded-full"
               :class="{
                 'bg-blue-500': scope.row.status === 'pending',
                 'bg-red-500': scope.row.status === 'failed',

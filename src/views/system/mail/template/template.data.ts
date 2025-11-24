@@ -4,7 +4,7 @@ import { TableColumn } from '@/types/data'
 import * as MailAccountApi from '@/api/system/mail/account'
 
 // 邮箱账号的列表
-const accountList = await MailAccountApi.getSimpleMailAccountList()
+const accountList: MailAccountApi.MailAccountVO[] = await MailAccountApi.getSimpleMailAccountList()
 
 // 表单校验
 export const rules = reactive({

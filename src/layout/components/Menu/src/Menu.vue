@@ -16,7 +16,6 @@ const prefixCls = getPrefixCls('menu')
 const VERTICAL_LAYOUTS = markRaw<LayoutType[]>(['classic', 'topLeft', 'cutMenu'])
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Menu',
   props: {
     menuSelect: {

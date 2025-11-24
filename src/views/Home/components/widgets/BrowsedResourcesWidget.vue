@@ -1,7 +1,7 @@
 <template>
   <AppCard class="mt-16px">
     <template #header>
-      <div class="py-11px px-20px">
+      <div class="px-20px py-11px">
         {{ title }}
         <el-link v-if="showViewAll" type="primary" :underline="false">全部</el-link>
       </div>

@@ -60,7 +60,7 @@ export default defineComponent({
         {!props.isLoggedIn ? (
           <ElTooltip content="点击登录" placement="bottom">
             <div
-              class="flex items-center gap-8px cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap"
+              class="flex cursor-pointer items-center gap-8px whitespace-nowrap transition-opacity hover:opacity-80"
               onClick={props.onLogin}
             >
               <ElAvatar
@@ -77,7 +77,7 @@ export default defineComponent({
           <ElDropdown trigger="click" onCommand={handleCommand}>
             {{
               default: () => (
-                <div class="flex items-center gap-8px cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap">
+                <div class="flex cursor-pointer items-center gap-8px whitespace-nowrap transition-opacity hover:opacity-80">
                   <ElAvatar
                     size={32}
                     src={props.userAvatar}

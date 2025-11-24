@@ -1,6 +1,6 @@
 <template>
   <div class="simple-process-model-container position-relative">
-    <div class="position-absolute top-0px right-0px bg-#fff z-index-button-group">
+    <div class="z-index-button-group position-absolute right-0px top-0px bg-#fff">
       <el-row type="flex" justify="end">
         <el-button-group key="scale-control" size="default">
           <el-button v-if="!readonly" size="default" @click="exportJson">

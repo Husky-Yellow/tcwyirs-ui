@@ -102,7 +102,7 @@
             />
           </el-form-item>
           <el-form-item class="font-bold" label-position="top">
-            <div class="flex justify-end w-full">
+            <div class="w-full flex justify-end">
               <el-button @click="resetQuery">清空</el-button>
               <el-button @click="showPopover = false">取消</el-button>
               <el-button type="primary" @click="handleQuery">确认</el-button>

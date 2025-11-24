@@ -1,14 +1,14 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成流程模型数据
 const generateMockModels = (count: number) => {
-  const models = []
+  const models: any[] = []
   for (let i = 1; i <= count; i++) {
     models.push({
-      id: Mock.Random.guid(),
-      key: `process_${Mock.Random.word(5, 10)}`,
-      name: Mock.Random.pick([
+      id: Random.guid(),
+      key: `process_${Random.word(5, 10)}`,
+      name: Random.pick([
         '请假审批流程',
         '报销审批流程',
         '采购申请流程',
@@ -16,23 +16,23 @@ const generateMockModels = (count: number) => {
         '项目立项流程',
         '人员招聘流程'
       ]),
-      description: Mock.Random.csentence(10, 30),
-      category: Mock.Random.pick(['OA', 'HR', 'Finance', 'Purchase']),
-      formType: Mock.Random.integer(10, 20),
-      formId: Mock.Random.integer(1, 100),
+      description: Random.csentence(10, 30),
+      category: Random.pick(['OA', 'HR', 'Finance', 'Purchase']),
+      formType: Random.integer(10, 20),
+      formId: Random.integer(1, 100),
       formCustomCreatePath: '/bpm/oa/leave/create',
       formCustomViewPath: '/bpm/oa/leave/detail',
-      version: Mock.Random.integer(1, 10),
+      version: Random.integer(1, 10),
       metaInfo: '{}',
-      icon: Mock.Random.pick(['el-icon-document', 'el-icon-folder', 'el-icon-setting']),
-      status: Mock.Random.integer(1, 2), // 1-激活 2-挂起
+      icon: Random.pick(['el-icon-document', 'el-icon-folder', 'el-icon-setting']),
+      status: Random.integer(1, 2), // 1-激活 2-挂起
       processDefinition: {
-        id: `def_${Mock.Random.guid()}`,
-        version: Mock.Random.integer(1, 5),
-        suspensionState: Mock.Random.integer(1, 2)
+        id: `def_${Random.guid()}`,
+        version: Random.integer(1, 5),
+        suspensionState: Random.integer(1, 2)
       },
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      updateTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      updateTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return models
@@ -65,7 +65,7 @@ const mockConfigs: MockConfig[] = [
   {
     url: '/admin-api/bpm/model/get',
     type: 'get',
-    response: ({ query }): ApiResponse<any> => {
+    response: (): ApiResponse<any> => {
       const model = mockModels[0]
       return {
         code: 0,
@@ -82,7 +82,7 @@ const mockConfigs: MockConfig[] = [
     response: (): ApiResponse<string> => {
       return {
         code: 0,
-        data: Mock.Random.guid(),
+        data: Random.guid(),
         msg: '创建成功'
       }
     }

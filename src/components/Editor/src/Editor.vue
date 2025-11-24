@@ -216,12 +216,12 @@ defineExpose({
 </script>
 
 <template>
-  <div class="border-1 border-solid border-[var(--tags-view-border-color)] z-10">
+  <div class="z-10 border-1 border-[var(--tags-view-border-color)] border-solid">
     <!-- 工具栏 -->
     <Toolbar
       :editor="editorRef"
       :editorId="editorId"
-      class="border-0 b-b-1 border-solid border-[var(--tags-view-border-color)]"
+      class="border-0 b-b-1 border-[var(--tags-view-border-color)] border-solid"
     />
     <!-- 编辑器 -->
     <Editor

@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-white rounded-12px shadow-sm">
+  <div class="rounded-12px bg-white shadow-sm">
     <div>
       <slot name="header"> </slot>
     </div>
-    <div class="py-12px px-20px">
+    <div class="px-20px py-12px">
       <slot></slot>
     </div>
   </div>

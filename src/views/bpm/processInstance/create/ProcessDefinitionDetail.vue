@@ -2,7 +2,7 @@
   <ContentWrap :bodyStyle="{ padding: '10px 20px 0' }">
     <div class="processInstance-wrap-main">
       <el-scrollbar>
-        <div class="text-#878c93 h-15px">流程：{{ selectProcessDefinition.name }}</div>
+        <div class="h-15px text-#878c93">流程：{{ selectProcessDefinition.name }}</div>
         <el-divider class="!my-8px" />
 
         <!-- 中间主要内容 tab 栏 -->
@@ -54,11 +54,11 @@
         </el-tabs>
 
         <!-- 底部操作栏 -->
-        <div class="b-t-solid border-t-1px border-[var(--el-border-color)]">
+        <div class="border-t-1px border-[var(--el-border-color)] b-t-solid">
           <!-- 操作栏按钮 -->
           <div
             v-if="activeTab === 'form'"
-            class="h-50px bottom-10 text-14px flex items-center color-#32373c dark:color-#fff font-bold btn-container"
+            class="btn-container bottom-10 h-50px flex items-center text-14px color-#32373c font-bold dark:color-#fff"
           >
             <el-button plain type="success" @click="submitForm">
               <Icon icon="ep:select" />&nbsp; 发起

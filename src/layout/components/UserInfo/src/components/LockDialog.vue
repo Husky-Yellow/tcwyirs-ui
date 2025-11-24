@@ -65,8 +65,8 @@ const handleLock = async () => {
     :title="dialogTitle"
   >
     <div class="flex flex-col items-center">
-      <img :src="avatar" alt="" class="w-70px h-70px rounded-[50%]" />
-      <span class="text-14px my-10px text-[var(--top-header-text-color)]">
+      <img :src="avatar" alt="" class="h-70px w-70px rounded-[50%]" />
+      <span class="my-10px text-14px text-[var(--top-header-text-color)]">
         {{ userName }}
       </span>
     </div>

@@ -1,5 +1,5 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 任务状态枚举
 enum TaskStatusEnum {
@@ -15,29 +15,29 @@ enum TaskStatusEnum {
 
 // 生成 Mock 任务数据
 const generateMockTasks = (count: number, status?: TaskStatusEnum) => {
-  const tasks = []
+  const tasks: any[] = []
   for (let i = 1; i <= count; i++) {
     tasks.push({
-      id: `task_${Mock.Random.guid()}`,
-      processInstanceId: `process_${Mock.Random.guid()}`,
-      name: Mock.Random.pick(['请假审批', '报销审批', '采购审批', '合同审批', '项目立项审批']),
-      taskDefinitionKey: Mock.Random.pick(['userTask1', 'userTask2', 'managerTask', 'hrTask']),
-      status: status !== undefined ? status : Mock.Random.integer(0, 7),
-      assignee: Mock.Random.cname(),
-      assigneeId: Mock.Random.integer(1, 100),
-      startTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      id: `task_${Random.guid()}`,
+      processInstanceId: `process_${Random.guid()}`,
+      name: Random.pick(['请假审批', '报销审批', '采购审批', '合同审批', '项目立项审批']),
+      taskDefinitionKey: Random.pick(['userTask1', 'userTask2', 'managerTask', 'hrTask']),
+      status: status !== undefined ? status : Random.integer(0, 7),
+      assignee: Random.cname(),
+      assigneeId: Random.integer(1, 100),
+      startTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
       endTime:
         status === TaskStatusEnum.APPROVE || status === TaskStatusEnum.REJECT
-          ? Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+          ? Random.datetime('yyyy-MM-dd HH:mm:ss')
           : null,
-      dueDate: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      formKey: Mock.Random.pick(['leave-form', 'expense-form', 'contract-form']),
-      processDefinitionId: `process:${Mock.Random.integer(1, 10)}:${Mock.Random.integer(1, 5)}`,
-      processDefinitionName: Mock.Random.pick(['请假流程', '报销流程', '采购流程', '合同审批流程']),
-      businessKey: `BUS_${Mock.Random.integer(10000, 99999)}`,
-      reason: Mock.Random.csentence(10, 30),
-      comment: Mock.Random.csentence(5, 20),
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      dueDate: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      formKey: Random.pick(['leave-form', 'expense-form', 'contract-form']),
+      processDefinitionId: `process:${Random.integer(1, 10)}:${Random.integer(1, 5)}`,
+      processDefinitionName: Random.pick(['请假流程', '报销流程', '采购流程', '合同审批流程']),
+      businessKey: `BUS_${Random.integer(10000, 99999)}`,
+      reason: Random.csentence(10, 30),
+      comment: Random.csentence(5, 20),
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return tasks
@@ -141,7 +141,7 @@ const mockConfigs: MockConfig[] = [
   {
     url: '/admin-api/bpm/task/list-by-process-instance-id',
     type: 'get',
-    response: ({ query }): ApiResponse<any[]> => {
+    response: (): ApiResponse<any[]> => {
       const tasks = generateMockTasks(5)
       return {
         code: 0,

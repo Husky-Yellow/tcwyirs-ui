@@ -1,10 +1,10 @@
 <template>
-  <div class="p-20px bg-#f5f6fa min-h-[calc(100vh-56px)]">
+  <div class="min-h-[calc(100vh-56px)] bg-#f5f6fa p-20px">
     <!-- 页面标题 -->
-    <div class="text-20px font-600 text-#333 mb-20px">项目管理</div>
+    <div class="mb-20px text-20px text-#333 font-600">项目管理</div>
 
     <!-- 搜索表单区域 -->
-    <div class="bg-white p-20px rounded-8px border-2 border-solid border-#1677ff mb-20px">
+    <div class="mb-20px border-2 border-#1677ff rounded-8px border-solid bg-white p-20px">
       <el-form :model="queryParams" :inline="true">
         <el-form-item label="项目名称:">
           <el-input
@@ -31,10 +31,10 @@
     </div>
 
     <!-- 列表区域 -->
-    <div class="bg-white p-20px rounded-8px">
+    <div class="rounded-8px bg-white p-20px">
       <!-- 标题和新增按钮 -->
-      <div class="flex justify-between items-center mb-20px">
-        <span class="text-16px font-500 text-#333">项目列表</span>
+      <div class="mb-20px flex items-center justify-between">
+        <span class="text-16px text-#333 font-500">项目列表</span>
         <el-button type="primary" @click="handleAdd">
           <el-icon class="mr-5px"><Plus /></el-icon>
           新增项目
@@ -61,7 +61,7 @@
               class="inline-flex items-center gap-6px rounded-4px"
             >
               <span
-                class="w-6px h-6px rounded-50% inline-block"
+                class="inline-block h-6px w-6px rounded-50%"
                 :class="getStatusDotClass(row.status)"
               ></span>
               {{ getStatusText(row.status) }}
@@ -81,7 +81,7 @@
       </el-table>
 
       <!-- 分页 -->
-      <div class="flex justify-center mt-20px">
+      <div class="mt-20px flex justify-center">
         <el-pagination
           v-model:current-page="queryParams.pageNo"
           v-model:page-size="queryParams.pageSize"

@@ -187,17 +187,17 @@ const MenuItemRenderer = defineComponent({
 </script>
 
 <template>
-  <div class="markdown-viewer flex h-full bg-white">
+  <div class="markdown-viewer h-full flex bg-white">
     <!-- 左侧导航菜单 -->
     <div
-      class="markdown-viewer-menu flex-shrink-0 border-r border-[var(--el-border-color-lighter)] overflow-y-auto"
+      class="markdown-viewer-menu flex-shrink-0 overflow-y-auto border-r border-[var(--el-border-color-lighter)]"
       :style="{ width: menuWidth }"
       role="navigation"
       aria-label="文档导航"
     >
       <div class="p-16px">
         <slot name="menu-header">
-          <div class="text-16px font-600 text-[var(--el-text-color-primary)] mb-16px"> 目录 </div>
+          <div class="mb-16px text-16px text-[var(--el-text-color-primary)] font-600"> 目录 </div>
         </slot>
       </div>
 
@@ -217,7 +217,7 @@ const MenuItemRenderer = defineComponent({
         <el-skeleton :rows="10" animated />
       </div>
       <slot v-else :active-key="activeKey">
-        <div class="text-center text-[var(--el-text-color-placeholder)] py-40px">
+        <div class="py-40px text-center text-[var(--el-text-color-placeholder)]">
           请在左侧选择内容查看
         </div>
       </slot>

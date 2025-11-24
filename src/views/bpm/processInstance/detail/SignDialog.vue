@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="signDialogVisible" title="签名" width="935">
     <div class="position-relative">
-      <Vue3Signature class="b b-solid b-gray" ref="signature" w="900px" h="400px" />
+      <Vue3Signature class="b b-gray b-solid" ref="signature" w="900px" h="400px" />
       <el-button
         class="pos-absolute bottom-20px right-10px"
         type="primary"

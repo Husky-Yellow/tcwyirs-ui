@@ -8,10 +8,10 @@
           :src="auditIconsMap[processInstance.status]"
           alt=""
         />
-        <div class="text-#878c93 h-15px">编号：{{ id }}</div>
+        <div class="h-15px text-#878c93">编号：{{ id }}</div>
         <el-divider class="!my-8px" />
-        <div class="flex items-center gap-5 mb-10px h-40px">
-          <div class="text-26px font-bold mb-5px">{{ processInstance.name }}</div>
+        <div class="mb-10px h-40px flex items-center gap-5">
+          <div class="mb-5px text-26px font-bold">{{ processInstance.name }}</div>
           <dict-tag
             v-if="processInstance.status"
             :type="DICT_TYPE.BPM_PROCESS_INSTANCE_STATUS"
@@ -19,9 +19,9 @@
           />
         </div>
 
-        <div class="flex items-center gap-5 mb-10px text-13px h-35px">
+        <div class="mb-10px h-35px flex items-center gap-5 text-13px">
           <div
-            class="bg-gray-100 h-35px rounded-3xl flex items-center p-8px gap-2 dark:color-gray-600"
+            class="h-35px flex items-center gap-2 rounded-3xl bg-gray-100 p-8px dark:color-gray-600"
           >
             <el-avatar
               :size="28"
@@ -42,11 +42,11 @@
             <div class="form-scroll-area">
               <el-scrollbar>
                 <el-row>
-                  <el-col :span="17" class="!flex !flex-col formCol">
+                  <el-col :span="17" class="formCol !flex !flex-col">
                     <!-- 表单信息 -->
                     <div
                       v-loading="processInstanceLoading"
-                      class="form-box flex flex-col mb-30px flex-1"
+                      class="form-box mb-30px flex flex-1 flex-col"
                     >
                       <!-- 情况一：流程表单 -->
                       <el-col v-if="processDefinition?.formType === BpmModelFormType.NORMAL">
@@ -109,7 +109,7 @@
           </el-tab-pane>
         </el-tabs>
 
-        <div class="b-t-solid border-t-1px border-[var(--el-border-color)]">
+        <div class="border-t-1px border-[var(--el-border-color)] b-t-solid">
           <!-- 操作栏按钮 -->
           <ProcessInstanceOperationButton
             ref="operationButtonRef"

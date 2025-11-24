@@ -1,8 +1,8 @@
 <template>
-  <section class="py-60px bg-[#F8F9FC]">
-    <div class="max-w-1160px mx-auto">
-      <div class="text-center mb-49px">
-        <h2 class="font-['PingFang_SC'] font-medium text-[32px] sm:text-[36px] md:text-[40px] leading-normal text-center text-black/85">优质资源共享</h2>
+  <section class="bg-[#F8F9FC] py-60px">
+    <div class="mx-auto max-w-1160px">
+      <div class="mb-49px text-center">
+        <h2 class="text-center text-[32px] text-black/85 font-medium leading-normal font-['PingFang_SC'] md:text-[40px] sm:text-[36px]">优质资源共享</h2>
       </div>
 
       <div class="grid grid-cols-4 gap-16px">
@@ -14,9 +14,9 @@
         />
       </div>
 
-      <div class="text-right mt-22px">
+      <div class="mt-22px text-right">
         <span
-          class="text-14px text-#3b82f6 cursor-pointer hover:text-#2563eb transition-colors"
+          class="cursor-pointer text-14px text-#3b82f6 transition-colors hover:text-#2563eb"
           @click="$emit('more-click')"
         >
           更多资源

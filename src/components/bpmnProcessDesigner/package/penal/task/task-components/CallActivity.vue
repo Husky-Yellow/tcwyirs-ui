@@ -45,7 +45,7 @@
 
       <el-divider />
       <div>
-        <div class="flex mb-10px">
+        <div class="mb-10px flex">
           <el-text>输入参数</el-text>
           <XButton
             class="ml-auto"
@@ -80,7 +80,7 @@
 
       <el-divider />
       <div>
-        <div class="flex mb-10px">
+        <div class="mb-10px flex">
           <el-text>输出参数</el-text>
           <XButton
             class="ml-auto"

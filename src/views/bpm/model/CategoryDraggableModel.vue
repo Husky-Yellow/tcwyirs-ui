@@ -1,19 +1,19 @@
 <template>
-  <div class="flex items-center h-50px" v-memo="[categoryInfo.name, isCategorySorting]">
+  <div class="h-50px flex items-center" v-memo="[categoryInfo.name, isCategorySorting]">
     <!-- 头部：分类名 -->
     <div class="flex items-center">
       <el-tooltip content="拖动排序" v-if="isCategorySorting">
         <Icon
           :size="22"
           icon="ic:round-drag-indicator"
-          class="ml-10px category-drag-icon cursor-move text-#8a909c"
+          class="category-drag-icon ml-10px cursor-move text-#8a909c"
         />
       </el-tooltip>
       <h3 class="ml-20px mr-8px text-18px">{{ categoryInfo.name }}</h3>
-      <div class="color-gray-600 text-16px"> ({{ categoryInfo.modelList?.length || 0 }}) </div>
+      <div class="text-16px color-gray-600"> ({{ categoryInfo.modelList?.length || 0 }}) </div>
     </div>
     <!-- 头部：操作 -->
-    <div class="flex-1 flex" v-show="!isCategorySorting">
+    <div class="flex flex-1" v-show="!isCategorySorting">
       <div
         v-if="categoryInfo.modelList.length > 0"
         class="ml-20px flex items-center"
@@ -84,10 +84,10 @@
               <el-tooltip content="拖动排序" v-if="isModelSorting">
                 <Icon
                   icon="ic:round-drag-indicator"
-                  class="drag-icon cursor-move text-#8a909c mr-10px"
+                  class="drag-icon mr-10px cursor-move text-#8a909c"
                 />
               </el-tooltip>
-              <el-image v-if="row.icon" :src="row.icon" class="h-38px w-38px mr-10px rounded" />
+              <el-image v-if="row.icon" :src="row.icon" class="mr-10px h-38px w-38px rounded" />
               <div v-else class="flow-icon">
                 <span style="font-size: 12px; color: #fff">{{ subString(row.name, 0, 2) }}</span>
               </div>
@@ -203,7 +203,7 @@
               发布
             </el-button>
             <el-dropdown
-              class="!align-middle ml-5px"
+              class="ml-5px !align-middle"
               @command="(command) => handleModelCommand(command, scope.row)"
               v-if="hasPermiMore"
             >
@@ -258,13 +258,13 @@
   <!-- 弹窗：重命名分类 -->
   <Dialog :fullscreen="false" class="rename-dialog" v-model="renameCategoryVisible" width="400">
     <template #title>
-      <div class="pl-10px font-bold text-18px"> 重命名分类 </div>
+      <div class="pl-10px text-18px font-bold"> 重命名分类 </div>
     </template>
     <div class="px-30px">
       <el-input v-model="renameCategoryForm.name" />
     </div>
     <template #footer>
-      <div class="pr-25px pb-25px">
+      <div class="pb-25px pr-25px">
         <el-button @click="renameCategoryVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleRenameConfirm">确 定</el-button>
       </div>

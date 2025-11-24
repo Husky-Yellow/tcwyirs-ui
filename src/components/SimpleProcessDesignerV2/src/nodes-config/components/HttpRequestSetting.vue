@@ -66,7 +66,7 @@
             <el-input class="w-160px" v-model="item.value" placeholder="请求返回字段" />
           </el-form-item>
         </div>
-        <div class="mr-1 pt-1 cursor-pointer">
+        <div class="mr-1 cursor-pointer pt-1">
           <Icon
             icon="ep:delete"
             :size="18"

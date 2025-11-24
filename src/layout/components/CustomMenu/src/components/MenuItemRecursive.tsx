@@ -54,7 +54,7 @@ export default defineComponent({
     if (props.level === 1 && props.hasChildren) {
       return () => (
         <div key={props.path} class="mb-0">
-          <div class="px-12px py-8px text-12px text-#909399 font-normal mt-16px mb-4px">
+          <div class="mb-4px mt-16px px-12px py-8px text-12px text-#909399 font-normal">
             {props.title}
           </div>
           <div class="pl-0">{slots.default?.()}</div>

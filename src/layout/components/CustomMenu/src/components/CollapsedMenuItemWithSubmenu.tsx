@@ -128,7 +128,7 @@ export default defineComponent({
             {hasChildren && (
               <Icon
                 icon={isExpanded ? 'ep:arrow-down' : 'ep:arrow-right'}
-                class="text-12px text-#909399 ml-8px flex-shrink-0"
+                class="ml-8px flex-shrink-0 text-12px text-#909399"
               />
             )}
           </div>
@@ -167,7 +167,7 @@ export default defineComponent({
 
         {props.hasChildren && props.children.length > 0 && isHovering.value && (
           <div
-            class="fixed bg-white shadow-lg rd-8px py-8px min-w-200px max-w-280px z-2000 border border-#e4e7ed max-h-500px overflow-y-auto"
+            class="fixed z-2000 max-h-500px max-w-280px min-w-200px overflow-y-auto border border-#e4e7ed rd-8px bg-white py-8px shadow-lg"
             style={{
               left: `${submenuPosition.value.left}px`,
               top: `${submenuPosition.value.top}px`
@@ -175,7 +175,7 @@ export default defineComponent({
             onMouseenter={clearHoverTimer}
             onMouseleave={handleMouseLeave}
           >
-            <div class="px-16px py-8px text-12px text-#909399 font-500 border-b border-#e4e7ed mb-4px">
+            <div class="mb-4px border-b border-#e4e7ed px-16px py-8px text-12px text-#909399 font-500">
               {props.title}
             </div>
             {props.children.map((child) => renderSubMenuItem(child, 0))}

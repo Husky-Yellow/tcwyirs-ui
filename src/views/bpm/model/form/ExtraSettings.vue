@@ -29,7 +29,7 @@
           </el-input>
           <el-select
             v-model="modelData.processIdRule.infix"
-            class="w-130px! ml-5px"
+            class="ml-5px w-130px!"
             placeholder="中缀"
             :disabled="!modelData.processIdRule.enable"
           >
@@ -42,13 +42,13 @@
           </el-select>
           <el-input
             v-model="modelData.processIdRule.postfix"
-            class="w-80px! ml-5px"
+            class="ml-5px w-80px!"
             placeholder="后缀"
             :disabled="!modelData.processIdRule.enable"
           />
           <el-input-number
             v-model="modelData.processIdRule.length"
-            class="w-120px! ml-5px"
+            class="ml-5px w-120px!"
             :min="5"
             :disabled="!modelData.processIdRule.enable"
           />
@@ -144,7 +144,7 @@
       <template #label>
         <el-text size="large" tag="b">流程前置通知</el-text>
       </template>
-      <div class="flex flex-col w-100%">
+      <div class="w-100% flex flex-col">
         <div class="flex">
           <el-switch
             v-model="processBeforeTriggerEnable"
@@ -164,7 +164,7 @@
       <template #label>
         <el-text size="large" tag="b">流程后置通知</el-text>
       </template>
-      <div class="flex flex-col w-100%">
+      <div class="w-100% flex flex-col">
         <div class="flex">
           <el-switch
             v-model="processAfterTriggerEnable"
@@ -184,7 +184,7 @@
       <template #label>
         <el-text size="large" tag="b">任务前置通知</el-text>
       </template>
-      <div class="flex flex-col w-100%">
+      <div class="w-100% flex flex-col">
         <div class="flex">
           <el-switch
             v-model="taskBeforeTriggerEnable"
@@ -204,7 +204,7 @@
       <template #label>
         <el-text size="large" tag="b">任务后置通知</el-text>
       </template>
-      <div class="flex flex-col w-100%">
+      <div class="w-100% flex flex-col">
         <div class="flex">
           <el-switch
             v-model="taskAfterTriggerEnable"

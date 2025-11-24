@@ -1,35 +1,35 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成站内信消息数据
 const generateMockNotifyMessages = (count: number) => {
-  const messages = []
+  const messages: any[] = []
   const templateTypes = [1, 2, 3] // 1-系统通知 2-业务通知 3-提醒通知
 
   for (let i = 1; i <= count; i++) {
-    const readStatus = Mock.Random.boolean()
+    const readStatus = Random.boolean()
     messages.push({
-      id: Mock.Random.integer(1, 10000),
-      userId: Mock.Random.integer(1, 100),
-      userType: Mock.Random.pick([1, 2]),
-      templateId: Mock.Random.integer(1, 20),
-      templateCode: `notify_template_${Mock.Random.integer(1, 20)}`,
-      templateNickname: Mock.Random.pick([
+      id: Random.integer(1, 10000),
+      userId: Random.integer(1, 100),
+      userType: Random.pick([1, 2]),
+      templateId: Random.integer(1, 20),
+      templateCode: `notify_template_${Random.integer(1, 20)}`,
+      templateNickname: Random.pick([
         '系统升级通知',
         '任务提醒',
         '审批通知',
         '系统公告',
         '账号安全提醒'
       ]),
-      templateContent: Mock.Random.csentence(15, 50),
-      templateType: Mock.Random.pick(templateTypes),
+      templateContent: Random.csentence(15, 50),
+      templateType: Random.pick(templateTypes),
       templateParams: JSON.stringify({
-        userName: Mock.Random.cname(),
-        time: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+        userName: Random.cname(),
+        time: Random.datetime('yyyy-MM-dd HH:mm:ss')
       }),
       readStatus: readStatus,
-      readTime: readStatus ? Mock.Random.datetime('yyyy-MM-dd HH:mm:ss') : null,
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      readTime: readStatus ? Random.datetime('yyyy-MM-dd HH:mm:ss') : null,
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return messages

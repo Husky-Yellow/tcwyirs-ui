@@ -1,9 +1,9 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成API访问日志数据
 const generateMockApiAccessLogs = (count: number) => {
-  const logs = []
+  const logs: any[] = []
   const methods = ['GET', 'POST', 'PUT', 'DELETE']
   const urls = [
     '/admin-api/system/user/page',
@@ -15,25 +15,25 @@ const generateMockApiAccessLogs = (count: number) => {
 
   for (let i = 1; i <= count; i++) {
     logs.push({
-      id: Mock.Random.integer(1, 100000),
-      traceId: Mock.Random.guid(),
-      userId: Mock.Random.integer(1, 100),
-      userType: Mock.Random.pick([1, 2]), // 1-用户 2-管理员
+      id: Random.integer(1, 100000),
+      traceId: Random.guid(),
+      userId: Random.integer(1, 100),
+      userType: Random.pick([1, 2]), // 1-用户 2-管理员
       applicationName: 'tcwyirs-ui',
-      requestMethod: Mock.Random.pick(methods),
-      requestUrl: Mock.Random.pick(urls),
+      requestMethod: Random.pick(methods),
+      requestUrl: Random.pick(urls),
       requestParams: JSON.stringify({ pageNo: 1, pageSize: 10 }),
-      userIp: Mock.Random.ip(),
+      userIp: Random.ip(),
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
-      operateModule: Mock.Random.pick(['系统管理', '流程管理', '基础设施']),
-      operateName: Mock.Random.pick(['查询列表', '新增', '修改', '删除']),
-      operateType: Mock.Random.integer(1, 5),
-      beginTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      endTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      duration: Mock.Random.integer(10, 5000),
-      resultCode: Mock.Random.pick([0, 500]),
-      resultMsg: Mock.Random.pick(['', '成功', '参数错误', '权限不足']),
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      operateModule: Random.pick(['系统管理', '流程管理', '基础设施']),
+      operateName: Random.pick(['查询列表', '新增', '修改', '删除']),
+      operateType: Random.integer(1, 5),
+      beginTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      endTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      duration: Random.integer(10, 5000),
+      resultCode: Random.pick([0, 500]),
+      resultMsg: Random.pick(['', '成功', '参数错误', '权限不足']),
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return logs
@@ -41,37 +41,37 @@ const generateMockApiAccessLogs = (count: number) => {
 
 // 生成API错误日志数据
 const generateMockApiErrorLogs = (count: number) => {
-  const logs = []
+  const logs: any[] = []
 
   for (let i = 1; i <= count; i++) {
     logs.push({
-      id: Mock.Random.integer(1, 10000),
-      traceId: Mock.Random.guid(),
-      userId: Mock.Random.integer(1, 100),
-      userType: Mock.Random.pick([1, 2]),
+      id: Random.integer(1, 10000),
+      traceId: Random.guid(),
+      userId: Random.integer(1, 100),
+      userType: Random.pick([1, 2]),
       applicationName: 'tcwyirs-ui',
-      requestMethod: Mock.Random.pick(['GET', 'POST', 'PUT', 'DELETE']),
-      requestUrl: Mock.Random.pick(['/admin-api/system/user/page', '/admin-api/system/role/list']),
+      requestMethod: Random.pick(['GET', 'POST', 'PUT', 'DELETE']),
+      requestUrl: Random.pick(['/admin-api/system/user/page', '/admin-api/system/role/list']),
       requestParams: JSON.stringify({ id: 123 }),
-      userIp: Mock.Random.ip(),
+      userIp: Random.ip(),
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
-      exceptionTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      exceptionName: Mock.Random.pick([
+      exceptionTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      exceptionName: Random.pick([
         'NullPointerException',
         'IllegalArgumentException',
         'ServiceException'
       ]),
-      exceptionMessage: Mock.Random.csentence(10, 30),
-      exceptionRootCauseMessage: Mock.Random.csentence(10, 30),
+      exceptionMessage: Random.csentence(10, 30),
+      exceptionRootCauseMessage: Random.csentence(10, 30),
       exceptionStackTrace: `java.lang.NullPointerException\n\tat com.example.service.UserService.getUser(UserService.java:123)\n\tat com.example.controller.UserController.getUser(UserController.java:45)`,
       exceptionClassName: 'com.example.controller.UserController',
       exceptionFileName: 'UserController.java',
       exceptionMethodName: 'getUser',
-      exceptionLineNumber: Mock.Random.integer(1, 500),
-      processStatus: Mock.Random.pick([0, 1, 2]), // 0-未处理 1-已处理 2-已忽略
-      processTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      processUserId: Mock.Random.integer(1, 10),
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      exceptionLineNumber: Random.integer(1, 500),
+      processStatus: Random.pick([0, 1, 2]), // 0-未处理 1-已处理 2-已忽略
+      processTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      processUserId: Random.integer(1, 10),
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return logs

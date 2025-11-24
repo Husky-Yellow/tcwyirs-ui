@@ -2,7 +2,7 @@
 import { useAppStore } from '@/store/modules/app'
 import { useDesign } from '@/hooks/web/useDesign'
 
-// eslint-disable-next-line vue/no-reserved-component-names
+ 
 defineOptions({ name: 'Footer' })
 
 const { getPrefixCls } = useDesign()
@@ -20,7 +20,7 @@ const currentYear = computed(() => new Date().getFullYear())
 <template>
   <div
     :class="prefixCls"
-    class="h-[var(--app-footer-height)] bg-[var(--app-content-bg-color)] text-center leading-[var(--app-footer-height)] text-[var(--el-text-color-placeholder)] dark:bg-[var(--el-bg-color)] overflow-hidden"
+    class="h-[var(--app-footer-height)] overflow-hidden bg-[var(--app-content-bg-color)] text-center text-[var(--el-text-color-placeholder)] leading-[var(--app-footer-height)] dark:bg-[var(--el-bg-color)]"
   >
     <span class="text-14px">Copyright ©{{ currentYear }} {{ title }}</span>
   </div>

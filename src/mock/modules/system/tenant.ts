@@ -1,24 +1,24 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成租户数据
 const generateMockTenants = (count: number) => {
-  const tenants = []
+  const tenants: any[] = []
 
   for (let i = 1; i <= count; i++) {
     tenants.push({
       id: i,
-      name: `${Mock.Random.pick(['科技', '信息', '网络', '数据', '智能'])}有限公司`,
-      contactName: Mock.Random.cname(),
-      contactMobile: Mock.mock(/^1[3-9]\d{9}$/),
-      status: Mock.Random.pick([0, 1]), // 0-正常 1-停用
+      name: `${Random.pick(['科技', '信息', '网络', '数据', '智能'])}有限公司`,
+      contactName: Random.cname(),
+      contactMobile: Random.phone(),
+      status: Random.pick([0, 1]), // 0-正常 1-停用
       domain: `tenant${i}.example.com`,
-      packageId: Mock.Random.integer(1, 5),
+      packageId: Random.integer(1, 5),
       username: `tenant${i}`,
       password: '******',
-      expireTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      accountCount: Mock.Random.integer(10, 100),
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      expireTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      accountCount: Random.integer(10, 100),
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return tenants
@@ -107,7 +107,7 @@ const mockConfigs: MockConfig[] = [
     response: (): ApiResponse<number> => {
       return {
         code: 0,
-        data: Mock.Random.integer(1000, 9999),
+        data: Random.integer(1000, 9999),
         msg: '创建成功'
       }
     }

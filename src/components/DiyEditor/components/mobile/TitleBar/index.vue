@@ -1,7 +1,7 @@
 <template>
   <div class="title-bar" :style="{ height: `${property.height}px` }">
     <el-image v-if="property.bgImgUrl" :src="property.bgImgUrl" fit="cover" class="w-full" />
-    <div class="absolute left-0 top-0 w-full h-full flex flex-col justify-center">
+    <div class="absolute left-0 top-0 h-full w-full flex flex-col justify-center">
       <!-- 标题 -->
       <div
         :style="{

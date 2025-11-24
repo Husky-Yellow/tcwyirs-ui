@@ -30,7 +30,7 @@ watch(
 <template>
   <div
     v-loading="loading"
-    class="w-full h-[calc(100vh-var(--top-tool-height)-var(--tags-view-height)-var(--app-content-padding)-var(--app-content-padding)-2px)]"
+    class="h-[calc(100vh-var(--top-tool-height)-var(--tags-view-height)-var(--app-content-padding)-var(--app-content-padding)-2px)] w-full"
   >
     <iframe
       ref="frameRef"

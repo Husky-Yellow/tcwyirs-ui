@@ -1,13 +1,13 @@
 <template>
   <div class="demo-page h-screen overflow-y-auto bg-[#f5f7fa]">
     <!-- 页面头部 -->
-    <div class="bg-white border-b border-[var(--el-border-color-lighter)]">
-      <div class="max-w-1400px mx-auto px-24px py-20px">
+    <div class="border-b border-[var(--el-border-color-lighter)] bg-white">
+      <div class="mx-auto max-w-1400px px-24px py-20px">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-12px">
             <Icon icon="ep:box" :size="32" color="#409EFF" />
             <div>
-              <h1 class="text-24px font-700 text-[var(--el-text-color-primary)] mb-4px">
+              <h1 class="mb-4px text-24px text-[var(--el-text-color-primary)] font-700">
                 组件展示 Demo
               </h1>
               <p class="text-14px text-[var(--el-text-color-secondary)]"> Component Showcase </p>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- 主内容区 -->
-    <div class="max-w-1400px mx-auto px-24px py-32px pb-60px">
+    <div class="mx-auto max-w-1400px px-24px py-32px pb-60px">
       <!-- 组件展示卡片 -->
       <div class="grid grid-cols-1 gap-24px">
         <!-- 1. 评分/评论组件 -->
@@ -33,7 +33,7 @@
                 <Icon icon="ep:star" :size="24" color="#409EFF" />
                 <div>
                   <h2 class="text-18px font-600">RatingReviewModal - 评分/评论组件</h2>
-                  <p class="text-12px text-[var(--el-text-color-secondary)] mt-4px">
+                  <p class="mt-4px text-12px text-[var(--el-text-color-secondary)]">
                     支持标签选择和评论输入,实时显示已选择标签
                   </p>
                 </div>
@@ -75,7 +75,7 @@
                 <Icon icon="ep:menu" :size="24" color="#67C23A" />
                 <div>
                   <h2 class="text-18px font-600">Drawer - 抽屉组件</h2>
-                  <p class="text-12px text-[var(--el-text-color-secondary)] mt-4px">
+                  <p class="mt-4px text-12px text-[var(--el-text-color-secondary)]">
                     基于 ElDrawer 封装,支持四个方向,使用 UnoCSS
                   </p>
                 </div>
@@ -85,7 +85,7 @@
           </template>
 
           <div class="demo-content">
-            <div class="mb-16px flex gap-12px flex-wrap">
+            <div class="mb-16px flex flex-wrap gap-12px">
               <el-button type="success" @click="showDrawerRight = true"> 从右侧打开 </el-button>
               <el-button type="success" @click="showDrawerLeft = true"> 从左侧打开 </el-button>
               <el-button type="success" @click="showDrawerTop = true"> 从顶部打开 </el-button>
@@ -128,7 +128,7 @@
                 <Icon icon="ep:search" :size="24" color="#F56C6C" />
                 <div>
                   <h2 class="text-18px font-600">SearchForm - 搜索表单组件</h2>
-                  <p class="text-12px text-[var(--el-text-color-secondary)] mt-4px">
+                  <p class="mt-4px text-12px text-[var(--el-text-color-secondary)]">
                     自适应布局,支持展开/收起,按钮固定在右下角
                   </p>
                 </div>
@@ -186,7 +186,7 @@
         <el-divider />
         <p class="text-14px text-[var(--el-text-color-secondary)]">
           共 3 个组件 | 创建时间: 2025-10-19 |
-          <span class="text-[var(--el-color-primary)] cursor-pointer" @click="showInfo"
+          <span class="cursor-pointer text-[var(--el-color-primary)]" @click="showInfo"
             >查看详细信息</span
           >
         </p>
@@ -199,8 +199,8 @@
     <!-- 抽屉组件演示 -->
     <Drawer v-model="showDrawerRight" title="从右侧打开的抽屉" size="500px" direction="rtl">
       <div class="demo-drawer-content">
-        <h3 class="text-16px font-600 mb-12px">抽屉内容示例</h3>
-        <p class="text-14px text-[var(--el-text-color-regular)] mb-16px">
+        <h3 class="mb-12px text-16px font-600">抽屉内容示例</h3>
+        <p class="mb-16px text-14px text-[var(--el-text-color-regular)]">
           这是一个从右侧打开的抽屉,支持完整的插槽功能。
         </p>
         <el-form label-width="80px">
@@ -220,21 +220,21 @@
 
     <Drawer v-model="showDrawerLeft" title="从左侧打开的抽屉" size="500px" direction="ltr">
       <div class="demo-drawer-content">
-        <h3 class="text-16px font-600 mb-12px">左侧抽屉</h3>
+        <h3 class="mb-12px text-16px font-600">左侧抽屉</h3>
         <p>这是从左侧打开的抽屉示例。</p>
       </div>
     </Drawer>
 
     <Drawer v-model="showDrawerTop" title="从顶部打开的抽屉" size="300px" direction="ttb">
       <div class="demo-drawer-content">
-        <h3 class="text-16px font-600 mb-12px">顶部抽屉</h3>
+        <h3 class="mb-12px text-16px font-600">顶部抽屉</h3>
         <p>这是从顶部打开的抽屉示例。</p>
       </div>
     </Drawer>
 
     <Drawer v-model="showDrawerBottom" title="从底部打开的抽屉" size="300px" direction="btt">
       <div class="demo-drawer-content">
-        <h3 class="text-16px font-600 mb-12px">底部抽屉</h3>
+        <h3 class="mb-12px text-16px font-600">底部抽屉</h3>
         <p>这是从底部打开的抽屉示例。</p>
       </div>
     </Drawer>

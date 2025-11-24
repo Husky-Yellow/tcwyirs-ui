@@ -1,16 +1,16 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成通知公告数据
 const generateMockNotices = (count: number) => {
-  const notices = []
+  const notices: any[] = []
   const types = [1, 2, 3] // 1-通知 2-公告 3-其他
 
   for (let i = 1; i <= count; i++) {
-    const type = Mock.Random.pick(types)
+    const type = Random.pick(types)
     notices.push({
-      id: Mock.Random.integer(1, 1000),
-      title: Mock.Random.pick([
+      id: Random.integer(1, 1000),
+      title: Random.pick([
         '系统维护通知',
         '重要公告',
         '节假日放假通知',
@@ -19,12 +19,12 @@ const generateMockNotices = (count: number) => {
         '新功能上线通知'
       ]),
       type: type,
-      content: Mock.Random.cparagraph(3, 7),
-      status: Mock.Random.pick([0, 1]), // 0-草稿 1-已发布
-      remark: Mock.Random.csentence(5, 15),
-      creator: Mock.Random.cname(),
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      updateTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      content: Random.cparagraph(3, 7),
+      status: Random.pick([0, 1]), // 0-草稿 1-已发布
+      remark: Random.csentence(5, 15),
+      creator: Random.cname(),
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      updateTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return notices
@@ -75,7 +75,7 @@ const mockConfigs: MockConfig[] = [
     response: (): ApiResponse<number> => {
       return {
         code: 0,
-        data: Mock.Random.integer(1000, 9999),
+        data: Random.integer(1000, 9999),
         msg: '创建成功'
       }
     }

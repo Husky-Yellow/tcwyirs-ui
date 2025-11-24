@@ -100,7 +100,7 @@ export default defineComponent({
         style={props.customStyle}
       >
         <div class="w-full px-30px">
-          <div class="flex items-center justify-between h-56px">
+          <div class="h-56px flex items-center justify-between">
             <HeaderLogo onClick={handleLogoClick} />
 
             <div class="flex items-center gap-40px">

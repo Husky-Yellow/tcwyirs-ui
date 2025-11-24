@@ -24,7 +24,7 @@
     remote
     placeholder="搜索"
     :remote-method="remoteMethod"
-    class="!w-260px search-select"
+    class="search-select !w-260px"
     clearable
     @change="handleChange"
   >

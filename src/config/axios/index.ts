@@ -23,9 +23,9 @@ export default {
     const res = await request({ method: 'POST', ...option })
     return res.data as unknown as T
   },
-  postOriginal: async (option: any) => {
+  postOriginal: async <T = any>(option: any): Promise<T> => {
     const res = await request({ method: 'POST', ...option })
-    return res
+    return res as unknown as T
   },
   delete: async <T = any>(option: any) => {
     const res = await request({ method: 'DELETE', ...option })

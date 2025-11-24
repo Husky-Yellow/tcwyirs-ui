@@ -3,7 +3,7 @@ import type { PluginOption } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
 import progress from 'vite-plugin-progress'
-import EslintPlugin from 'vite-plugin-eslint'
+import checker from 'vite-plugin-checker'
 import PurgeIcons from 'vite-plugin-purge-icons'
 import { ViteEjsPlugin } from 'vite-plugin-ejs'
 import ElementPlus from 'unplugin-element-plus/vite'
@@ -14,7 +14,6 @@ import viteCompression from 'vite-plugin-compression'
 import topLevelAwait from 'vite-plugin-top-level-await'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng'
 import UnoCSS from 'unocss/vite'
-import { viteMockServe } from 'vite-plugin-mock'
 
 /**
  * 创建 Vite 插件配置
@@ -104,19 +103,16 @@ export function createVitePlugins(isBuild = false): PluginOption[] {
   // 开发环境插件
   if (!isBuild) {
     plugins.push(
-      // ESLint 检查 (仅开发环境，启用缓存提升性能)
-      EslintPlugin({
-        cache: true,
-        cacheLocation: 'node_modules/.cache/eslint',
-        include: ['src/**/*.vue', 'src/**/*.ts', 'src/**/*.tsx']
-      }),
-
-      // Mock 数据服务 (仅开发环境)
-      viteMockServe({
-        mockPath: 'src/mock',
-        enable: true,
-        logger: true
+      // TypeScript 检查 (仅开发环境)
+      // 注意: ESLint 和 vueTsc 检查禁用，因为 vite-plugin-checker 0.6.x 不兼容 ESLint 9 和 vue-tsc 2.x
+      // 请使用 pnpm lint:eslint 手动运行 ESLint
+      checker({
+        typescript: true,
+        overlay: {
+          initialIsOpen: false
+        }
       })
+      // MSW mock 在 main.ts 中通过 setupMock() 初始化
     )
   }
 

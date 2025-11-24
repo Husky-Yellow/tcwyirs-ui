@@ -5,7 +5,7 @@
       <el-table-column label="流程名称" align="center" prop="name" min-width="150" />
       <el-table-column label="流程图标" align="center" min-width="50">
         <template #default="{ row }">
-          <el-image v-if="row.icon" :src="row.icon" class="h-24px w-24pxrounded" />
+          <el-image v-if="row.icon" :src="row.icon" class="w-24pxrounded h-24px" />
         </template>
       </el-table-column>
       <el-table-column label="可见范围" prop="startUserIds" min-width="100">

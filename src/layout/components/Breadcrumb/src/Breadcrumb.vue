@@ -1,22 +1,16 @@
 <script lang="tsx">
 import { ElBreadcrumb, ElBreadcrumbItem } from 'element-plus'
-import { ref, watch, computed, unref, defineComponent, TransitionGroup, shallowRef } from 'vue'
+import { watch, computed, unref, defineComponent, TransitionGroup, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePermissionStore } from '@/store/modules/permission'
 import { filterBreadcrumb } from './helper'
 import { filter, treeToList } from '@/utils/tree'
 import type { RouteLocationNormalizedLoaded, RouteMeta } from 'vue-router'
-import { Icon } from '@/components/Icon'
-import { useAppStore } from '@/store/modules/app'
 import { useDesign } from '@/hooks/web/useDesign'
 import { computedEager, useMemoize } from '@vueuse/core'
 
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('breadcrumb')
-const appStore = useAppStore()
-
-// 使用 computedEager 提前计算面包屑图标配置
-const breadcrumbIcon = computedEager(() => appStore.getBreadcrumbIcon)
 
 export default defineComponent({
   name: 'Breadcrumb',
@@ -71,7 +65,7 @@ export default defineComponent({
     )
 
     return () => (
-      <ElBreadcrumb separator="/" class={`${prefixCls} flex items-center h-full ml-[10px]`}>
+      <ElBreadcrumb separator="/" class={`${prefixCls} ml-[10px] h-full flex items-center`}>
         <TransitionGroup appear enter-active-class="animate__animated animate__fadeInRight">
           {renderBreadcrumb()}
         </TransitionGroup>

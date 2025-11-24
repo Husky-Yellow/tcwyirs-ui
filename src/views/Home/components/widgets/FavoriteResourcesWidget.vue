@@ -1,7 +1,7 @@
 <template>
   <AppCard class="mt-16px">
     <template #header>
-      <div class="py-11px px-20px flex justify-between items-center">
+      <div class="flex items-center justify-between px-20px py-11px">
         <span>{{ title }}</span>
         <el-link v-if="showViewAll" type="primary" :underline="false">全部</el-link>
       </div>
@@ -10,13 +10,13 @@
     <el-row :gutter="16" class="mb-16px">
       <el-col :span="12">
         <div class="stat-item">
-          <div class="text-14px text-gray-400 mb-8px">最近浏览</div>
+          <div class="mb-8px text-14px text-gray-400">最近浏览</div>
           <div class="text-24px font-600">{{ favoriteResources.recent }}</div>
         </div>
       </el-col>
       <el-col :span="12">
         <div class="stat-item">
-          <div class="text-14px text-gray-400 mb-8px">全部数量</div>
+          <div class="mb-8px text-14px text-gray-400">全部数量</div>
           <div class="text-24px font-600">{{ favoriteResources.total }}</div>
         </div>
       </el-col>
@@ -26,10 +26,10 @@
       <div
         v-for="item in favoriteList"
         :key="item.id"
-        class="favorite-item flex items-center py-8px cursor-pointer hover:bg-gray-50 transition-colors"
+        class="favorite-item flex cursor-pointer items-center py-8px transition-colors hover:bg-gray-50"
         @click="handleClick(item)"
       >
-        <Icon icon="carbon:user-avatar" class="text-20px text-primary mr-8px" />
+        <Icon icon="carbon:user-avatar" class="text-primary mr-8px text-20px" />
         <span class="text-14px">{{ item.name }}</span>
       </div>
     </div>

@@ -1,41 +1,41 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成流程实例数据
 const generateMockProcessInstances = (count: number) => {
-  const instances = []
+  const instances: any[] = []
   const statusList = [1, 2, 3, 4] // 1-进行中 2-已完成 3-已取消 4-已拒绝
 
   for (let i = 1; i <= count; i++) {
-    const status = Mock.Random.pick(statusList)
+    const status = Random.pick(statusList)
     instances.push({
-      id: `instance_${Mock.Random.guid()}`,
-      name: Mock.Random.pick([
+      id: `instance_${Random.guid()}`,
+      name: Random.pick([
         '张三的请假申请',
         '李四的报销申请',
         '王五的采购申请',
         '赵六的合同审批'
       ]),
-      processDefinitionId: `process:${Mock.Random.integer(1, 10)}:${Mock.Random.integer(1, 5)}`,
-      processDefinitionName: Mock.Random.pick([
+      processDefinitionId: `process:${Random.integer(1, 10)}:${Random.integer(1, 5)}`,
+      processDefinitionName: Random.pick([
         '请假审批流程',
         '报销审批流程',
         '采购审批流程',
         '合同审批流程'
       ]),
-      category: Mock.Random.pick(['OA', 'HR', 'Finance', 'Purchase']),
+      category: Random.pick(['OA', 'HR', 'Finance', 'Purchase']),
       status: status,
       result: status === 2 ? 2 : status === 4 ? 3 : status === 3 ? 4 : 1,
-      startUserId: Mock.Random.integer(1, 100),
-      startUserNickname: Mock.Random.cname(),
-      startTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      endTime: status !== 1 ? Mock.Random.datetime('yyyy-MM-dd HH:mm:ss') : null,
-      durationInMillis: status !== 1 ? Mock.Random.integer(3600000, 86400000) : null,
-      businessKey: `BUS_${Mock.Random.integer(10000, 99999)}`,
+      startUserId: Random.integer(1, 100),
+      startUserNickname: Random.cname(),
+      startTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      endTime: status !== 1 ? Random.datetime('yyyy-MM-dd HH:mm:ss') : null,
+      durationInMillis: status !== 1 ? Random.integer(3600000, 86400000) : null,
+      businessKey: `BUS_${Random.integer(10000, 99999)}`,
       formVariables: {
-        reason: Mock.Random.csentence(10, 30),
-        days: Mock.Random.integer(1, 10),
-        amount: Mock.Random.float(100, 10000, 2, 2)
+        reason: Random.csentence(10, 30),
+        days: Random.integer(1, 10),
+        amount: Random.float(100, 10000, 2, 2)
       },
       tasks: []
     })
@@ -91,7 +91,7 @@ const mockConfigs: MockConfig[] = [
   {
     url: '/admin-api/bpm/process-instance/get',
     type: 'get',
-    response: ({ query }): ApiResponse<any> => {
+    response: (): ApiResponse<any> => {
       const instance = mockProcessInstances[0]
       return {
         code: 0,
@@ -108,7 +108,7 @@ const mockConfigs: MockConfig[] = [
     response: (): ApiResponse<string> => {
       return {
         code: 0,
-        data: `instance_${Mock.Random.guid()}`,
+        data: `instance_${Random.guid()}`,
         msg: '创建成功'
       }
     }
@@ -136,24 +136,24 @@ const mockConfigs: MockConfig[] = [
         code: 0,
         data: [
           {
-            id: Mock.Random.guid(),
-            taskId: Mock.Random.guid(),
+            id: Random.guid(),
+            taskId: Random.guid(),
             taskName: '部门审批',
-            assignee: Mock.Random.cname(),
+            assignee: Random.cname(),
             status: 2,
             reason: '同意',
-            createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-            endTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+            createTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+            endTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
           },
           {
-            id: Mock.Random.guid(),
-            taskId: Mock.Random.guid(),
+            id: Random.guid(),
+            taskId: Random.guid(),
             taskName: 'HR审批',
-            assignee: Mock.Random.cname(),
+            assignee: Random.cname(),
             status: 2,
             reason: '同意',
-            createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-            endTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+            createTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+            endTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
           }
         ],
         msg: ''

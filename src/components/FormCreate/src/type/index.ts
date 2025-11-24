@@ -23,7 +23,7 @@ export interface DragRule {
   label: string
   children?: string
   inside?: true
-  drag?: true | String
+  drag?: true | string
   dragBtn?: false
   mask?: false
 

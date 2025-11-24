@@ -7,7 +7,6 @@ import {
   getAccessToken,
   getRefreshToken,
   getTenantId,
-  getVisitTenantId,
   removeToken,
   setToken
 } from '@/utils/auth'
@@ -16,7 +15,6 @@ import errorCode from './errorCode'
 import { resetRouter } from '@/router'
 import { deleteUserCache } from '@/hooks/web/useCache'
 
-const tenantEnable = import.meta.env.VITE_APP_TENANT_ENABLE
 const { result_code, base_url, request_timeout } = config
 
 // 需要忽略的提示。忽略后，自动 Promise.reject('error')

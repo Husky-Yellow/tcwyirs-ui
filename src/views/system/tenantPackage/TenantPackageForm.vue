@@ -11,7 +11,7 @@
         <el-input v-model="formData.name" placeholder="请输入套餐名" />
       </el-form-item>
       <el-form-item label="菜单权限">
-        <el-card class="w-full h-400px !overflow-y-scroll" shadow="never">
+        <el-card class="h-400px w-full !overflow-y-scroll" shadow="never">
           <template #header>
             全选/全不选:
             <el-switch

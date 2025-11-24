@@ -1,9 +1,9 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成角色数据
 const generateMockRoles = (count: number) => {
-  const roles = []
+  const roles: any[] = []
   const roleNames = [
     '超级管理员',
     '系统管理员',
@@ -22,12 +22,12 @@ const generateMockRoles = (count: number) => {
       name: roleNames[i],
       code: roleCodes[i],
       sort: i + 1,
-      status: Mock.Random.pick([0, 1]), // 0-正常 1-停用
-      type: Mock.Random.pick([1, 2]), // 1-自定义 2-内置
-      dataScope: Mock.Random.integer(1, 5), // 1-全部 2-指定部门 3-本部门 4-本部门及以下 5-仅本人
-      dataScopeDeptIds: Mock.Random.pick([[], [1, 2, 3], [1], [2, 3]]),
-      remark: Mock.Random.csentence(5, 15),
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      status: Random.pick([0, 1]), // 0-正常 1-停用
+      type: Random.pick([1, 2]), // 1-自定义 2-内置
+      dataScope: Random.integer(1, 5), // 1-全部 2-指定部门 3-本部门 4-本部门及以下 5-仅本人
+      dataScopeDeptIds: Random.pick([[], [1, 2, 3], [1], [2, 3]]),
+      remark: Random.csentence(5, 15),
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return roles
@@ -95,7 +95,7 @@ const mockConfigs: MockConfig[] = [
     response: (): ApiResponse<number> => {
       return {
         code: 0,
-        data: Mock.Random.integer(1000, 9999),
+        data: Random.integer(1000, 9999),
         msg: '创建成功'
       }
     }

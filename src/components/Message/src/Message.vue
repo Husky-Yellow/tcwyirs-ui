@@ -150,26 +150,26 @@ onUnmounted(() => {
       <ElTabs v-model="activeName" class="w-full">
         <ElTabPane label="我的站内信" name="notice">
           <!-- 加载状态 -->
-          <div v-if="isLoading" class="flex items-center justify-center h-200px">
+          <div v-if="isLoading" class="h-200px flex items-center justify-center">
             <ElLoading />
           </div>
 
           <!-- 错误状态 -->
           <div
             v-else-if="error"
-            class="flex flex-col items-center justify-center h-200px text-center p-20px"
+            class="h-200px flex flex-col items-center justify-center p-20px text-center"
           >
-            <Icon icon="ep:warning" class="text-48px text-red-500 mb-16px" />
-            <p class="text-14px text-gray-600 mb-16px">{{ error }}</p>
+            <Icon icon="ep:warning" class="mb-16px text-48px text-red-500" />
+            <p class="mb-16px text-14px text-gray-600">{{ error }}</p>
             <ElButton size="small" @click="debouncedGetList">重试</ElButton>
           </div>
 
           <!-- 空状态 -->
           <div
             v-else-if="!hasMessages"
-            class="flex flex-col items-center justify-center h-200px text-center p-20px"
+            class="h-200px flex flex-col items-center justify-center p-20px text-center"
           >
-            <Icon icon="ep:chat-dot-square" class="text-48px text-gray-400 mb-16px" />
+            <Icon icon="ep:chat-dot-square" class="mb-16px text-48px text-gray-400" />
             <p class="text-14px text-gray-600">暂无消息</p>
           </div>
 
@@ -181,16 +181,16 @@ onUnmounted(() => {
           >
             <template v-for="item in list" :key="item.id">
               <div
-                class="flex items-center py-20px border-b border-[var(--el-border-color-light)] last:border-none hover:bg-gray-50 transition-colors"
+                class="flex items-center border-b border-[var(--el-border-color-light)] py-20px transition-colors last:border-none hover:bg-gray-50"
               >
                 <img
                   alt="用户头像"
-                  class="w-40px h-40px rounded-full mx-5px ml-5px mr-20px object-cover"
+                  class="mx-5px ml-5px mr-20px h-40px w-40px rounded-full object-cover"
                   src="@/assets/imgs/avatar.gif"
                 />
-                <div class="flex flex-col flex-1 min-w-0">
-                  <span class="mb-5px text-14px leading-1.4 break-words">
-                    <span class="font-medium text-gray-800">{{ item.templateNickname }}</span
+                <div class="min-w-0 flex flex-1 flex-col">
+                  <span class="mb-5px break-words text-14px leading-1.4">
+                    <span class="text-gray-800 font-medium">{{ item.templateNickname }}</span
                     >：
                     <span class="text-gray-700">{{ item.templateContent }}</span>
                   </span>
@@ -205,7 +205,7 @@ onUnmounted(() => {
       </ElTabs>
 
       <!-- 底部操作 -->
-      <div class="mt-10px text-right border-t border-[var(--el-border-color-light)] pt-10px">
+      <div class="mt-10px border-t border-[var(--el-border-color-light)] pt-10px text-right">
         <XButton preIcon="ep:view" title="查看全部" type="primary" size="small" @click="goMyList" />
       </div>
     </ElPopover>

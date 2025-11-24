@@ -1,32 +1,32 @@
 <template>
-  <footer class="bg-[#181D23] text-white py-60px">
-    <div class="max-w-1160px mx-auto">
+  <footer class="bg-[#181D23] py-60px text-white">
+    <div class="mx-auto max-w-1160px">
       <div class="grid grid-cols-[240px_1fr_1fr] gap-80px">
         <!-- 左侧信息 -->
         <div class="w-[240px]">
-          <div class="flex items-center gap-8px mb-16px">
-            <div class="w-20px h-20px rounded-4px flex items-center justify-center">
-              <span class="text-white text-12px font-bold">M</span>
+          <div class="mb-16px flex items-center gap-8px">
+            <div class="h-20px w-20px flex items-center justify-center rounded-4px">
+              <span class="text-12px text-white font-bold">M</span>
             </div>
-            <h3 class="font-['PingFang_SC'] font-normal text-[16px] text-white">
+            <h3 class="text-[16px] text-white font-normal font-['PingFang_SC']">
               {{ FOOTER_INFO.title }}
             </h3>
           </div>
-          <p class="font-['PingFang_SC'] font-normal text-[14px] leading-[20px] text-white/60">
+          <p class="text-[14px] text-white/60 font-normal leading-[20px] font-['PingFang_SC']">
             {{ FOOTER_INFO.description }}
           </p>
         </div>
 
         <!-- 产品服务 -->
         <div class="w-[400px]">
-          <h4 class="font-['PingFang_SC'] font-normal text-[16px] text-white mb-16px">
+          <h4 class="mb-16px text-[16px] text-white font-normal font-['PingFang_SC']">
             产品服务
           </h4>
           <ul class="list-none space-y-16px">
             <li
               v-for="service in productServices"
               :key="service.name"
-              class="font-['PingFang_SC'] font-normal text-[14px] text-white/60 cursor-pointer hover:text-white transition-colors"
+              class="cursor-pointer text-[14px] text-white/60 font-normal font-['PingFang_SC'] transition-colors hover:text-white"
               @click="hasValidPath(service.path) && handleNavigation(service.path)"
             >
               {{ service.name }}
@@ -36,14 +36,14 @@
 
         <!-- 服务支持 -->
         <div class="w-[400px]">
-          <h4 class="font-['PingFang_SC'] font-normal text-[16px] text-white mb-16px">
+          <h4 class="mb-16px text-[16px] text-white font-normal font-['PingFang_SC']">
             服务支持
           </h4>
           <ul class="list-none space-y-16px">
             <li
               v-for="service in supportServices"
               :key="service.name"
-              class="font-['PingFang_SC'] font-normal text-[14px] text-white/60 cursor-pointer hover:text-white transition-colors"
+              class="cursor-pointer text-[14px] text-white/60 font-normal font-['PingFang_SC'] transition-colors hover:text-white"
               @click="hasValidPath(service.path) && handleNavigation(service.path)"
             >
               {{ service.name }}

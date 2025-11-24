@@ -1,17 +1,17 @@
 <template>
   <div
-    class="banner w-full h-196px bg-cover bg-center bg-no-repeat rounded-3 relative overflow-hidden"
+    class="banner relative h-196px w-full overflow-hidden rounded-3 bg-cover bg-center bg-no-repeat"
   >
     <div
-      class="flex h-full items-center px-10 relative z-2 md:flex-row flex-col md:text-left text-center"
+      class="relative z-2 h-full flex flex-col items-center px-10 text-center md:flex-row md:text-left"
     >
       <!-- Left section with text content -->
-      <div class="flex-none w-45% pr-5 md:mb-0 mb-5">
-        <h1 class="text-8 md:text-8 text-6 font-bold leading-tight mb-4">
+      <div class="mb-5 w-45% flex-none pr-5 md:mb-0">
+        <h1 class="mb-4 text-6 text-8 font-bold leading-tight md:text-8">
           <span class="text-black">早上好,欢迎来到</span>
           <span class="text-blue-500">万物智联平台</span>
         </h1>
-        <p class="text-base md:text-base text-sm text-gray-600 leading-relaxed m-0">
+        <p class="m-0 text-base text-sm text-gray-600 leading-relaxed md:text-base">
           万物智联运营门户平台这是一段关于平台介绍的文文本,这是一段关于平台介绍的文文本,这是一段关于平台介绍的文文本
         </p>
       </div>

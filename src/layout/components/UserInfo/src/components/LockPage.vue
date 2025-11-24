@@ -63,11 +63,11 @@ function handleShowForm(show = false) {
 <template>
   <div
     :class="prefixCls"
-    class="fixed inset-0 flex h-screen w-screen bg-black items-center justify-center"
+    class="fixed inset-0 h-screen w-screen flex items-center justify-center bg-black"
   >
     <div
       :class="`${prefixCls}__unlock`"
-      class="absolute top-0 left-1/2 flex pt-5 h-16 items-center justify-center sm:text-md xl:text-xl text-white flex-col cursor-pointer transform translate-x-1/2"
+      class="sm:text-md absolute left-1/2 top-0 h-16 flex flex-col translate-x-1/2 transform cursor-pointer items-center justify-center pt-5 text-white xl:text-xl"
       @click="handleShowForm(false)"
       v-show="showDate"
     >
@@ -75,10 +75,10 @@ function handleShowForm(show = false) {
       <span>{{ '点击解锁' }}</span>
     </div>
 
-    <div class="flex w-screen h-screen justify-center items-center">
-      <div :class="`${prefixCls}__hour`" class="relative mr-5 md:mr-20 w-2/5 h-2/5 md:h-4/5">
+    <div class="h-screen w-screen flex items-center justify-center">
+      <div :class="`${prefixCls}__hour`" class="relative mr-5 h-2/5 w-2/5 md:mr-20 md:h-4/5">
         <span>{{ hour }}</span>
-        <span class="meridiem absolute left-5 top-5 text-md xl:text-xl" v-show="showDate">
+        <span class="meridiem text-md absolute left-5 top-5 xl:text-xl" v-show="showDate">
           {{ meridiem }}
         </span>
       </div>
@@ -90,8 +90,8 @@ function handleShowForm(show = false) {
       <div :class="`${prefixCls}-entry`" v-show="!showDate">
         <div :class="`${prefixCls}-entry-content`">
           <div class="flex flex-col items-center">
-            <img :src="avatar" alt="" class="w-70px h-70px rounded-[50%]" />
-            <span class="text-14px my-10px text-[var(--logo-title-text-color)]">
+            <img :src="avatar" alt="" class="h-70px w-70px rounded-[50%]" />
+            <span class="my-10px text-14px text-[var(--logo-title-text-color)]">
               {{ userName }}
             </span>
           </div>
@@ -108,7 +108,7 @@ function handleShowForm(show = false) {
             <ElButton
               type="primary"
               size="small"
-              class="mt-2 mr-2 enter-x"
+              class="enter-x mr-2 mt-2"
               link
               :disabled="loading"
               @click="handleShowForm(true)"
@@ -118,7 +118,7 @@ function handleShowForm(show = false) {
             <ElButton
               type="primary"
               size="small"
-              class="mt-2 mr-2 enter-x"
+              class="enter-x mr-2 mt-2"
               link
               :disabled="loading"
               @click="goLogin"
@@ -140,8 +140,8 @@ function handleShowForm(show = false) {
       </div>
     </transition>
 
-    <div class="absolute bottom-5 w-full text-gray-300 xl:text-xl 2xl:text-3xl text-center enter-y">
-      <div class="text-5xl mb-4 enter-x" v-show="!showDate">
+    <div class="enter-y absolute bottom-5 w-full text-center text-gray-300 2xl:text-3xl xl:text-xl">
+      <div class="enter-x mb-4 text-5xl" v-show="!showDate">
         {{ hour }}:{{ minute }} <span class="text-3xl">{{ meridiem }}</span>
       </div>
       <div class="text-2xl">{{ year }}/{{ month }}/{{ day }} {{ week }}</div>

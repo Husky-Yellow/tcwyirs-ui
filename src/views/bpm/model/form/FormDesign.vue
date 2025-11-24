@@ -67,8 +67,8 @@
       "
       class="mt-20px"
     >
-      <div class="flex items-center mb-15px">
-        <div class="h-15px w-4px bg-[#1890ff] mr-10px"></div>
+      <div class="mb-15px flex items-center">
+        <div class="mr-10px h-15px w-4px bg-[#1890ff]"></div>
         <span class="text-15px font-bold">表单预览</span>
       </div>
       <form-create

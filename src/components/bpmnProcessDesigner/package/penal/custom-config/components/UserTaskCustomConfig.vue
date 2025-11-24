@@ -97,7 +97,7 @@
     <div class="button-setting-pane">
       <div class="button-setting-title">
         <div class="button-title-label">操作按钮</div>
-        <div class="pl-4 button-title-label">显示名称</div>
+        <div class="button-title-label pl-4">显示名称</div>
         <div class="button-title-label">启用</div>
       </div>
       <div class="button-setting-item" v-for="(item, index) in buttonsSettingEl" :key="index">

@@ -1,13 +1,13 @@
 <template>
-  <section class="py-60px relative overflow-hidden section-bg">
-    <div class="max-w-1124px mx-auto">
+  <section class="section-bg relative overflow-hidden py-60px">
+    <div class="mx-auto max-w-1124px">
       <div class="flex flex-col items-start">
-        <h2 class="font-['PingFang_SC'] font-medium text-[24px] leading-normal text-black/85">
+        <h2 class="text-[24px] text-black/85 font-medium leading-normal font-['PingFang_SC']">
           资源共享，带你享受资源互连互通的便利性
         </h2>
 
         <button
-          class="gradient-button mt-24px px-40px py-12px text-white text-16px font-500 rounded-8px cursor-pointer transition-all duration-300"
+          class="gradient-button mt-24px cursor-pointer rounded-8px px-40px py-12px text-16px text-white font-500 transition-all duration-300"
           @click="$emit('navigate')"
         >
           智能要素超市

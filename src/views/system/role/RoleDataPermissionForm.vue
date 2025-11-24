@@ -23,7 +23,7 @@
       label="部门范围"
       label-width="80px"
     >
-      <el-card class="w-full h-400px !overflow-y-scroll" shadow="never">
+      <el-card class="h-400px w-full !overflow-y-scroll" shadow="never">
         <template #header>
           全选/全不选:
           <el-switch

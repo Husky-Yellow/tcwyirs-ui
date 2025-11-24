@@ -1,7 +1,7 @@
 <template>
   <AppCard class="mt-16px">
     <template #header>
-      <div class="py-11px px-20px">
+      <div class="px-20px py-11px">
         {{ title }}
         <el-link v-if="showViewAll" type="primary" :underline="false">全部</el-link>
       </div>
@@ -11,7 +11,7 @@
       <div
         v-for="item in helpDocs"
         :key="item.id"
-        class="help-doc-item py-10px border-b border-gray-100 last:border-b-0 cursor-pointer hover:text-primary transition-colors"
+        class="help-doc-item hover:text-primary cursor-pointer border-b border-gray-100 py-10px transition-colors last:border-b-0"
         @click="handleClick(item)"
       >
         <div class="text-14px">{{ item.title }}</div>

@@ -25,8 +25,8 @@
         <div class="divide-line"></div>
       </div>
     </template>
-    <div v-if="currentNode.type === NodeType.USER_TASK_NODE" class="flex flex-items-center mb-3">
-      <span class="font-size-16px mr-3">审批类型 :</span>
+    <div v-if="currentNode.type === NodeType.USER_TASK_NODE" class="mb-3 flex flex-items-center">
+      <span class="mr-3 font-size-16px">审批类型 :</span>
       <el-radio-group v-model="approveType">
         <el-radio
           v-for="(item, index) in APPROVE_TYPE"
@@ -423,7 +423,7 @@
           <div class="button-setting-desc">操作按钮</div>
           <div class="button-setting-title">
             <div class="button-title-label">操作按钮</div>
-            <div class="pl-4 button-title-label">显示名称</div>
+            <div class="button-title-label pl-4">显示名称</div>
             <div class="button-title-label">启用</div>
           </div>
           <div class="button-setting-item" v-for="(item, index) in buttonsSetting" :key="index">

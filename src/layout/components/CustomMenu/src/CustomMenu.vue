@@ -41,7 +41,7 @@ export default defineComponent({
         ]}
       >
         <div
-          class="absolute top-12px w-28px h-28px flex items-center justify-center cursor-pointer bg-white rd-4px transition-all duration-300 ease hover:bg-#e8eaed shadow-sm z-10"
+          class="absolute top-12px z-10 h-28px w-28px flex cursor-pointer items-center justify-center rd-4px bg-white shadow-sm transition-all duration-300 ease hover:bg-#e8eaed"
           style="right: -14px;"
           onClick={toggleCollapse}
         >

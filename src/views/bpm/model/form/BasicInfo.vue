@@ -83,7 +83,7 @@
         <div
           v-for="user in selectedStartUsers"
           :key="user.id"
-          class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
+          class="position-relative h-35px flex items-center rounded-3xl bg-gray-100 pr-8px dark:color-gray-600"
         >
           <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="user.avatar" />
           <el-avatar class="!m-5px" :size="28" v-else>
@@ -104,9 +104,9 @@
         <div
           v-for="dept in selectedStartDepts"
           :key="dept.id"
-          class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
+          class="position-relative h-35px flex items-center rounded-3xl bg-gray-100 pr-8px dark:color-gray-600"
         >
-          <Icon icon="ep:office-building" class="!m-5px text-20px" />
+          <Icon icon="ep:office-building" class="text-20px !m-5px" />
           {{ dept.name }}
           <Icon
             icon="ep:close"
@@ -124,7 +124,7 @@
         <div
           v-for="user in selectedManagerUsers"
           :key="user.id"
-          class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
+          class="position-relative h-35px flex items-center rounded-3xl bg-gray-100 pr-8px dark:color-gray-600"
         >
           <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="user.avatar" />
           <el-avatar class="!m-5px" :size="28" v-else>

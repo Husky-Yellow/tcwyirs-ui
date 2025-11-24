@@ -1,27 +1,27 @@
 <template>
-  <div class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth">
+  <div class="h-screen w-full overflow-x-hidden overflow-y-auto scroll-smooth">
     <AppHeader :is-scrolled="isScrolled" :showShadow="false" />
 
     <main>
       <!-- Banner 区域 -->
-      <section class="marketplace-banner relative min-h-280px py-56px flex items-center overflow-hidden">
-        <div class="max-w-1160px mx-auto w-full relative z-10">
+      <section class="marketplace-banner relative min-h-280px flex items-center overflow-hidden py-56px">
+        <div class="relative z-10 mx-auto max-w-1160px w-full">
           <h1 class="mb-32px flex items-center gap-18px">
-            <span class="marketplace-title font-['Alibaba_PuHuiTi_2.0'] font-bold text-[32px]">
+            <span class="marketplace-title text-[32px] font-bold font-['Alibaba_PuHuiTi_2.0']">
               资源市场
             </span>
-            <div class="flex bg-[#00000040] h-[28px] w-[2px]"></div>
-            <span class="font-['Alibaba_PuHuiTi_2.0'] font-bold text-[32px] leading-normal text-center text-black/85">
+            <div class="h-[28px] w-[2px] flex bg-[#00000040]"></div>
+            <span class="text-center text-[32px] text-black/85 font-bold leading-normal font-['Alibaba_PuHuiTi_2.0']">
               智能要素超市
             </span>
           </h1>
 
           <!-- 搜索框 -->
-          <div class="search-container relative flex items-center bg-white rounded-8px overflow-hidden max-w-880px">
+          <div class="search-container relative max-w-880px flex items-center overflow-hidden rounded-8px bg-white">
             <el-dropdown trigger="click" @command="handleCategoryChange">
-              <div class="search-dropdown flex items-center gap-8px px-16px py-10px cursor-pointer">
-                <span class="font-['PingFang_SC'] text-[14px] font-medium text-[#1677FF]">{{ selectedCategory }}</span>
-                <Icon icon="ep:arrow-down" class="text-[#1677FF] text-12px" />
+              <div class="search-dropdown flex cursor-pointer items-center gap-8px px-16px py-10px">
+                <span class="text-[14px] text-[#1677FF] font-medium font-['PingFang_SC']">{{ selectedCategory }}</span>
+                <Icon icon="ep:arrow-down" class="text-12px text-[#1677FF]" />
               </div>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -35,17 +35,17 @@
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-            <div class="w-[1px] h-[20px] bg-[#E8E8E8]"></div>
+            <div class="h-[20px] w-[1px] bg-[#E8E8E8]"></div>
             <el-input
               v-model="searchKeyword"
               placeholder="请输入关键词"
-              class="flex-1 search-input"
+              class="search-input flex-1"
               @keyup.enter="debouncedSearch"
             >
               <template #suffix>
                 <Icon
                   icon="ep:search"
-                  class="text-[#1677FF] text-18px cursor-pointer hover:opacity-80 transition-opacity"
+                  class="cursor-pointer text-18px text-[#1677FF] transition-opacity hover:opacity-80"
                   @click="debouncedSearch"
                 />
               </template>
@@ -55,9 +55,9 @@
       </section>
 
       <!-- 资源展示区域 -->
-      <section class="py-40px pb-80px bg-[#F8F9FC]">
-        <div class="max-w-1160px mx-auto">
-          <h2 class="font-['PingFang_SC'] font-medium text-[32px] text-black/85 mb-40px">
+      <section class="bg-[#F8F9FC] py-40px pb-80px">
+        <div class="mx-auto max-w-1160px">
+          <h2 class="mb-40px text-[32px] text-black/85 font-medium font-['PingFang_SC']">
             资源展示
           </h2>
           <div class="grid grid-cols-4 gap-16px">

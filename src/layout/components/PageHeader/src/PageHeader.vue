@@ -30,11 +30,11 @@ const handleBack = () => {
     <Breadcrumb v-if="showBreadcrumb" class="mb-12px" />
     <div
       v-if="showBack"
-      class="inline-flex items-center py-24px cursor-pointer text-black/85 hover:text-[var(--el-color-primary)] transition-colors"
+      class="inline-flex cursor-pointer items-center py-24px text-black/85 transition-colors hover:text-[var(--el-color-primary)]"
       @click="handleBack"
     >
       <el-icon :size="18"><Back /></el-icon>
-      <span class="font-['PingFang_SC'] font-medium text-[20px] leading-[28px] ml-16px">{{ pageTitle }}</span>
+      <span class="ml-16px text-[20px] font-medium leading-[28px] font-['PingFang_SC']">{{ pageTitle }}</span>
     </div>
   </div>
 </template>

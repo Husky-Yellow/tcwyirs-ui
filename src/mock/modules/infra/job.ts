@@ -1,9 +1,9 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import Mock from 'mockjs'
+import { Random } from '../../utils'
 
 // 生成定时任务数据
 const generateMockJobs = (count: number) => {
-  const jobs = []
+  const jobs: any[] = []
   const handlerNames = [
     'sysUserSessionTimeoutJob',
     'accountExpireJob',
@@ -14,28 +14,28 @@ const generateMockJobs = (count: number) => {
 
   for (let i = 1; i <= count; i++) {
     jobs.push({
-      id: Mock.Random.integer(1, 1000),
-      name: Mock.Random.pick([
+      id: Random.integer(1, 1000),
+      name: Random.pick([
         '用户会话超时清理',
         '账号过期检查',
         '数据备份任务',
         '邮件发送任务',
         '报表生成任务'
       ]),
-      status: Mock.Random.pick([0, 1]), // 0-停止 1-运行
-      handlerName: Mock.Random.pick(handlerNames),
-      handlerParam: Mock.Random.pick(['', 'param1=value1', 'days=7']),
-      cronExpression: Mock.Random.pick([
+      status: Random.pick([0, 1]), // 0-停止 1-运行
+      handlerName: Random.pick(handlerNames),
+      handlerParam: Random.pick(['', 'param1=value1', 'days=7']),
+      cronExpression: Random.pick([
         '0 0 0 * * ?',
         '0 0/30 * * * ?',
         '0 0 12 * * ?',
         '0 15 10 ? * *'
       ]),
-      retryCount: Mock.Random.integer(0, 3),
-      retryInterval: Mock.Random.integer(1000, 5000),
-      monitorTimeout: Mock.Random.integer(0, 30000),
-      createTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss'),
-      updateTime: Mock.Random.datetime('yyyy-MM-dd HH:mm:ss')
+      retryCount: Random.integer(0, 3),
+      retryInterval: Random.integer(1000, 5000),
+      monitorTimeout: Random.integer(0, 30000),
+      createTime: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+      updateTime: Random.datetime('yyyy-MM-dd HH:mm:ss')
     })
   }
   return jobs
@@ -86,7 +86,7 @@ const mockConfigs: MockConfig[] = [
     response: (): ApiResponse<number> => {
       return {
         code: 0,
-        data: Mock.Random.integer(1000, 9999),
+        data: Random.integer(1000, 9999),
         msg: '创建成功'
       }
     }
@@ -149,11 +149,9 @@ const mockConfigs: MockConfig[] = [
     url: '/admin-api/infra/job/get_next_times',
     type: 'get',
     response: (): ApiResponse<string[]> => {
-      const times = []
-      const now = new Date()
+      const times: any[] = []
       for (let i = 1; i <= 5; i++) {
-        const nextTime = new Date(now.getTime() + i * 3600000)
-        times.push(Mock.mock('@datetime("yyyy-MM-dd HH:mm:ss")'))
+        times.push(Random.datetime('yyyy-MM-dd HH:mm:ss'))
       }
       return {
         code: 0,

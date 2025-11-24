@@ -299,7 +299,7 @@ const updateElementFormKey = () => {
     formKey: formKey.value
   })
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const updateElementBusinessKey = () => {
   bpmnInstances().modeling.updateModdleProperties(toRaw(bpmnELement.value), formData.value, {
     businessKey: businessKey.value

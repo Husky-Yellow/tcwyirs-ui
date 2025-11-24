@@ -1,47 +1,47 @@
 <template>
-  <div class="w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth">
+  <div class="h-screen w-full overflow-x-hidden overflow-y-auto scroll-smooth">
     <AppHeader :is-scrolled="isScrolled" :custom-style="{ background: '#fff' }" />
 
     <main>
       <!-- 面包屑导航 -->
-      <section class="pt-84px bg-#F8F9FC">
-        <div class="max-w-1160px mx-auto flex items-center gap-8px text-14px">
+      <section class="bg-#F8F9FC pt-84px">
+        <div class="mx-auto max-w-1160px flex items-center gap-8px text-14px">
           <span
             @click="navigateTo('/marketplace')"
-            class="text-#000000a6 cursor-pointer hover:text-#409eff transition-colors font-['PingFang_SC'] font-normal text-[14px] leading-[22px] tracking-0 text-left"
+            class="cursor-pointer text-left text-[14px] text-#000000a6 font-normal leading-[22px] tracking-0 font-['PingFang_SC'] transition-colors hover:text-#409eff"
           >
-            <span class="text-#000000a6 cursor-pointer">&lt;</span>
+            <span class="cursor-pointer text-#000000a6">&lt;</span>
             查看全部资源
           </span>
         </div>
       </section>
 
       <!-- Banner 区域 -->
-      <section class="pt-38px pb-50px bg-#F8F9FC">
-        <div class="max-w-1160px mx-auto">
+      <section class="bg-#F8F9FC pb-50px pt-38px">
+        <div class="mx-auto max-w-1160px">
           <div class="flex items-center justify-between">
             <div class="flex-1 pr-60px">
-              <h1 class="text-36px font-700 text-#1a1a1a mb-20px">
+              <h1 class="mb-20px text-36px text-#1a1a1a font-700">
                 {{ resourceDetail.title }}
               </h1>
 
-              <p class="font-['PingFang_SC'] font-normal text-[14px] leading-[22px] tracking-0 text-left text-black/65 w-[730px] border-b border-[#0000000f] border-solid border-x-0 border-t-0 pb-24px">
+              <p class="w-[730px] border-x-0 border-b border-t-0 border-[#0000000f] border-solid pb-24px text-left text-[14px] text-black/65 font-normal leading-[22px] tracking-0 font-['PingFang_SC']">
                 {{ resourceDetail.description }}
               </p>
 
-              <div class="flex items-center gap-24px mt-26px">
+              <div class="mt-26px flex items-center gap-24px">
                 <button
-                  class="apply-btn flex items-center gap-10px pl-20px pr-12px py-8px text-white text-14px font-medium"
+                  class="apply-btn flex items-center gap-10px py-8px pl-20px pr-12px text-14px text-white font-medium"
                 >
                   申请资源
                   <span
-                    class="arrow-icon flex items-center justify-center w-24px h-24px bg-white rounded-full"
+                    class="arrow-icon h-24px w-24px flex items-center justify-center rounded-full bg-white"
                   >
                     <Icon icon="ep:arrow-right" class="text-14px text-#1677FF" />
                   </span>
                 </button>
                 <div
-                  class="flex items-center gap-6px cursor-pointer text-#1677FF hover:opacity-80 transition-opacity"
+                  class="flex cursor-pointer items-center gap-6px text-#1677FF transition-opacity hover:opacity-80"
                 >
                   <Icon icon="ep:warning" class="text-16px" />
                   <span class="text-14px">问题反馈</span>
@@ -50,29 +50,29 @@
             </div>
 
             <div
-              class="flex-shrink-0 w-340px h-210px bg-#f0f2f5 rounded-8px flex items-center justify-center"
+              class="h-210px w-340px flex flex-shrink-0 items-center justify-center rounded-8px bg-#f0f2f5"
             >
-              <div class="text-#999 text-14px">资源图示</div>
+              <div class="text-14px text-#999">资源图示</div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- 数据资源信息 -->
-      <section class="max-w-1160px mx-auto bg-white rounded-8px py-60px">
+      <section class="mx-auto max-w-1160px rounded-8px bg-white py-60px">
         <ResourceInfo :basic-info="resourceDetail.basicInfo" :data-info="resourceDetail.dataInfo" />
       </section>
 
       <!-- 评分及评论 -->
-      <section class="max-w-1160px mx-auto pb-60px">
+      <section class="mx-auto max-w-1160px pb-60px">
         <h2
-          class="border-b border-[#0000000f] border-solid border-x-0 border-t-0 font-['PingFang_SC'] font-medium text-[20px] leading-[24px] tracking-0 text-left text-black/85 pb-34px"
+          class="border-x-0 border-b border-t-0 border-[#0000000f] border-solid pb-34px text-left text-[20px] text-black/85 font-medium leading-[24px] tracking-0 font-['PingFang_SC']"
           >评分及评论</h2
         >
 
-        <div class="grid grid-cols-2 pt-32px gap-40px pb-44px">
+        <div class="grid grid-cols-2 gap-40px pb-44px pt-32px">
           <div>
-            <h3 class="text-16px font-600 text-#1a1a1a pb-16px">好评</h3>
+            <h3 class="pb-16px text-16px text-#1a1a1a font-600">好评</h3>
             <div class="flex flex-wrap gap-12px">
               <el-tag
                 v-for="tag in resourceDetail.reviews.positive"
@@ -86,7 +86,7 @@
           </div>
 
           <div>
-            <h3 class="text-16px font-600 text-#1a1a1a pb-16px">差评</h3>
+            <h3 class="pb-16px text-16px text-#1a1a1a font-600">差评</h3>
             <div class="flex flex-wrap gap-12px">
               <el-tag
                 v-for="tag in resourceDetail.reviews.negative"

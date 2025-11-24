@@ -109,7 +109,7 @@
                     </el-form-item>
                   </div>
                   <div
-                    class="cursor-pointer mr-1 flex items-center"
+                    class="mr-1 flex cursor-pointer items-center"
                     v-if="equation.rules.length > 1"
                   >
                     <Icon
@@ -118,7 +118,7 @@
                       @click="deleteConditionRule(equation, rIdx)"
                     />
                   </div>
-                  <div class="cursor-pointer flex items-center">
+                  <div class="flex cursor-pointer items-center">
                     <Icon icon="ep:plus" :size="18" @click="addConditionRule(equation, rIdx)" />
                   </div>
                 </div>

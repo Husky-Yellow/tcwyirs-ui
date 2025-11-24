@@ -4,7 +4,7 @@
     ref="formLogin"
     :model="form"
     :rules="LoginRules"
-    class="space-y-4 w-full"
+    class="w-full space-y-4"
     size="large"
   >
     <LoginFormTitle />
@@ -28,7 +28,7 @@
       />
     </el-form-item>
 
-    <div class="flex justify-between items-center">
+    <div class="flex items-center justify-between">
       <el-checkbox v-model="form.rememberMe"> 记住我 </el-checkbox>
       <el-link type="primary" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
         忘记密码

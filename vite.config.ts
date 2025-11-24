@@ -126,7 +126,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             'form-designer': ['@form-create/designer'],
             editor: ['@wangeditor/editor', '@wangeditor/editor-for-vue'],
             utils: ['axios', 'dayjs', 'crypto-js', 'es-toolkit', 'qs'],
-            bpmn: ['bpmn-js', 'bpmn-js-properties-panel', 'diagram-js', 'camunda-bpmn-moddle']
+            bpmn: ['bpmn-js', 'bpmn-js-properties-panel', 'diagram-js']
           }
         }
       }
