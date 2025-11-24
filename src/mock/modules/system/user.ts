@@ -1,21 +1,18 @@
 import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import type { UserResp } from '@/api/system/user/index'
+import type { UserVO } from '@/api/system/user/index'
 
 // Mock 用户数据
-const mockUsers: UserResp[] = [
+const mockUsers: UserVO[] = [
   {
     id: 1,
     username: 'admin',
     nickname: '芋道源码',
     deptId: 103,
-    deptName: '研发部门',
     email: 'admin@example.com',
     mobile: '15888888888',
     sex: 1,
     status: 0,
     avatar: 'http://test.governance.iocoder.cn/test/avatar.png',
-    createTime: '2021-01-05 17:03:47',
-    loginDate: '2025-01-01 10:00:00',
     loginIp: '127.0.0.1',
     remark: '管理员'
   },
@@ -24,36 +21,30 @@ const mockUsers: UserResp[] = [
     username: 'yudao',
     nickname: '芋道',
     deptId: 104,
-    deptName: '市场部门',
     email: 'yudao@example.com',
     mobile: '15888888889',
     sex: 1,
     status: 0,
-    createTime: '2021-01-05 17:03:47'
   },
   {
     id: 103,
     username: 'yuanma',
     nickname: '源码',
     deptId: 106,
-    deptName: '财务部门',
     email: 'yuanma@example.com',
     mobile: '15888888890',
     sex: 2,
     status: 0,
-    createTime: '2021-01-05 17:03:47'
   },
   {
     id: 104,
     username: 'test',
     nickname: '测试号',
     deptId: 107,
-    deptName: '运维部门',
     email: 'test@example.com',
     mobile: '15888888891',
     sex: 1,
     status: 1,
-    createTime: '2021-01-05 17:03:47'
   }
 ]
 
@@ -62,7 +53,7 @@ const mockConfigs: MockConfig[] = [
   {
     url: '/admin-api/system/user/page',
     type: 'get',
-    response: ({ query }): ApiResponse<PageResponse<UserResp>> => {
+    response: ({ query }): ApiResponse<PageResponse<UserVO>> => {
       const { pageNo = 1, pageSize = 10, showCloseFlag } = query
       const start = (Number(pageNo) - 1) * Number(pageSize)
       const end = start + Number(pageSize)
@@ -88,7 +79,7 @@ const mockConfigs: MockConfig[] = [
   {
     url: '/admin-api/system/user/simple-list',
     type: 'get',
-    response: (): ApiResponse<Partial<UserResp>[]> => ({
+    response: (): ApiResponse<Partial<UserVO>[]> => ({
       code: 0,
       data: mockUsers.map((user) => ({
         id: user.id,

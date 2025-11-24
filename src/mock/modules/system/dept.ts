@@ -29,72 +29,156 @@ const mockDepts: DeptInfo[] = [
   {
     id: 100,
     name: '测试架构1',
-    parentId: 0
+    parentId: 0,
+    sort: 0,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 101,
     name: '深圳总公司',
-    parentId: 100
+    parentId: 100,
+    sort: 1,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 103,
     name: '研发部门',
-    parentId: 101
+    parentId: 101,
+    sort: 3,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 108,
     name: '市场部门',
-    parentId: 102
+    parentId: 102,
+    sort: 8,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
-    id: '1932323299075383298',
+    id: 1932323299075383298,
     name: '111',
-    parentId: '1932306801778843649'
+    parentId: 1932306801778843649,
+    sort: 9,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 102,
     name: '长沙分公司',
-    parentId: 100
+    parentId: 100,
+    sort: 2,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 104,
     name: '市场部门',
-    parentId: 101
+    parentId: 101,
+    sort: 4,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 109,
     name: '财务部门',
-    parentId: 102
+    parentId: 102,
+    sort: 9,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
-    id: '1930550482923290628',
+    id: 1930550482923290628,
     name: '组织B',
-    parentId: 0
+    parentId: 0,
+    sort: 10,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 105,
     name: '测试部门',
-    parentId: 101
+    parentId: 101,
+    sort: 5,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
-    id: '1930550482923290627',
+    id: 1930550482923290627,
     name: '组织A',
-    parentId: 0
+    parentId: 0,
+    sort: 11,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
-    id: '1932306801778843649',
+    id: 1932306801778843649,
     name: 'txwy1',
-    parentId: 0
+    parentId: 0,
+    sort: 12,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 106,
     name: '财务部门',
-    parentId: 101
+    parentId: 101,
+    sort: 6,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   },
   {
     id: 107,
     name: '运维部门',
-    parentId: 101
+    parentId: 101,
+    sort: 7,
+    leaderUserId: null,
+    phone: null,
+    email: null,
+    status: 0,
+    createTime: Date.now()
   }
 ]
 

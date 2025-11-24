@@ -57,11 +57,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     server: {
       port: VITE_PORT,
       host: '0.0.0.0',
-      open: VITE_OPEN,
       strictPort: false,
       cors: true,
       hmr: {
-        overlay: true
+        overlay: true, // 错误覆盖层（保留）
+        protocol: 'ws', // 强制使用 WebSocket 协议（Vite 5 推荐）
+        host: 'localhost', // HMR 连接主机（与前端访问地址一致）
+        port: VITE_PORT + 1, // HMR 独立端口（避免与主服务冲突）
+        clientPort: VITE_PORT + 1, // 客户端连接端口（确保与服务端一致）
       }
     },
 
@@ -88,10 +91,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     resolve: {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
       alias: [
-        {
-          find: 'vue-i18n',
-          replacement: 'vue-i18n/dist/vue-i18n.cjs.js'
-        },
         {
           find: /\@\//,
           replacement: `${pathResolve('src')}/`
@@ -135,7 +134,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     optimizeDeps: {
       include,
       exclude,
-      force: false
+      force: true
     },
 
     define: {

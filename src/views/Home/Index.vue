@@ -1,5 +1,4 @@
 <template>
-  <div class="py-10px">
     <IndexBanner />
 
     <!-- 主内容区域 - 动态渲染 -->
@@ -24,7 +23,6 @@
         />
       </el-col>
     </el-row>
-  </div>
 </template>
 
 <script lang="ts" setup>

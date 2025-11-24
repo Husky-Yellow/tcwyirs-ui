@@ -1,7 +1,6 @@
 import { computedEager } from '@vueuse/core'
 import { useAppStore } from '@/store/modules/app'
 import { CustomMenu } from '@/layout/components/CustomMenu'
-import { Breadcrumb } from '@/layout/components/Breadcrumb'
 import AppHeader from '@/components/AppHeader/src/AppHeader'
 import AppView from './AppView.vue'
 import { ElScrollbar } from 'element-plus'
@@ -19,7 +18,6 @@ const tagsView = computedEager(() => appStore.getTagsView)
 const collapse = computedEager(() => appStore.getCollapse)
 const fixedHeader = computedEager(() => appStore.getFixedHeader)
 const mobile = computedEager(() => appStore.getMobile)
-const breadcrumb = computedEager(() => appStore.getBreadcrumb)
 
 export const useRenderLayout = () => {
   const renderCustom = () => {
@@ -49,18 +47,6 @@ export const useRenderLayout = () => {
       `${prefixCls}-content-scrollbar`,
       {
         '!h-[calc(100%)] mt-[calc(var(0))]': isFixedHeader
-      }
-    ]
-
-    const breadcrumbWrapperClasses = [
-      'h-[var(--tags-view-height)] flex items-center px-4',
-      {
-        'fixed top-[var(--top-tool-height)] z-10': isFixedHeader,
-        'w-[calc(100%-var(--left-menu-min-width))] left-[var(--left-menu-min-width)]':
-          isCollapsed && isFixedHeader && !isMobile,
-        'w-[calc(100%-var(--left-menu-max-width))] left-[var(--left-menu-max-width)]':
-          !isCollapsed && isFixedHeader && !isMobile,
-        '!w-full !left-0': isMobile && isFixedHeader
       }
     ]
 
