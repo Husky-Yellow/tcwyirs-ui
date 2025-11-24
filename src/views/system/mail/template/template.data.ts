@@ -6,6 +6,11 @@ import * as MailAccountApi from '@/api/system/mail/account'
 // 邮箱账号的列表
 const accountList: MailAccountApi.MailAccountVO[] = await MailAccountApi.getSimpleMailAccountList()
 
+// 获取邮箱账号列表 - 用于表单和搜索的api
+const getMailAccountOptions = () => {
+  return MailAccountApi.getSimpleMailAccountList() as any
+}
+
 // 表单校验
 export const rules = reactive({
   name: [required],
@@ -68,7 +73,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     search: {
       show: true,
       component: 'Select',
-      api: () => accountList,
+      api: getMailAccountOptions,
       componentProps: {
         optionsAlias: {
           labelField: 'mail',
@@ -81,7 +86,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     },
     form: {
       component: 'Select',
-      api: () => accountList,
+      api: getMailAccountOptions,
       componentProps: {
         optionsAlias: {
           labelField: 'mail',

@@ -2,8 +2,10 @@ import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
 import { dateFormatter } from '@/utils/formatTime'
 import * as MailAccountApi from '@/api/system/mail/account'
 
-// 邮箱账号的列表
-const accountList = await MailAccountApi.getSimpleMailAccountList()
+// 获取邮箱账号列表 - 用于表单和搜索的api
+const getMailAccountOptions = () => {
+  return MailAccountApi.getSimpleMailAccountList() as any
+}
 
 // CrudSchema：https://doc.iocoder.cn/vue3/crud-schema/
 const crudSchemas = reactive<CrudSchema[]>([
@@ -98,7 +100,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     search: {
       show: true,
       component: 'Select',
-      api: () => accountList,
+      api: getMailAccountOptions,
       componentProps: {
         optionsAlias: {
           labelField: 'mail',
