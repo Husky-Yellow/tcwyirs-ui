@@ -9,12 +9,12 @@ const adminLayout: HomeLayoutConfig = {
     span: { xl: 16, lg: 16, md: 24, sm: 24, xs: 24 },
     components: [
       {
-        type: HomeComponentType.BROWSED_RESOURCES,
+        type: HomeComponentType.BROWSED_RESOURCES, // 我申请的资源+我收藏的资源
         order: 1
       },
       {
-        type: HomeComponentType.Feedback,
-        order: 3
+        type: HomeComponentType.Feedback, // 反馈意见+我发起的审批
+        order: 2
       }
     ]
   },
@@ -22,15 +22,15 @@ const adminLayout: HomeLayoutConfig = {
     span: { xl: 8, lg: 8, md: 24, sm: 24, xs: 24 },
     components: [
       {
-        type: HomeComponentType.RESOURCE_USAGE,
+        type: HomeComponentType.RESOURCE_USAGE, // 资源使用看板
         order: 1
       },
       {
-        type: HomeComponentType.MESSAGES,
+        type: HomeComponentType.MESSAGES, // 消息
         order: 2
       },
       {
-        type: HomeComponentType.HELP_DOCS,
+        type: HomeComponentType.HELP_DOCS, // 帮助文档
         order: 3
       }
     ]
@@ -132,16 +132,84 @@ const dataAdminLayout: HomeLayoutConfig = {
 }
 
 /**
+ * 资源管理员角色配置
+ */
+const resourceAdminLayout: HomeLayoutConfig = {
+  left: {
+    span: { xl: 16, lg: 16, md: 24, sm: 24, xs: 24 },
+    components: [
+      {
+        type: HomeComponentType.MY_UPLOADED_RESOURCES, // 我上架的资源+待我审批的资源
+        order: 1
+      },
+      {
+        type: HomeComponentType.Feedback, // 反馈意见
+        order: 2
+      }
+    ]
+  },
+  right: {
+    span: { xl: 8, lg: 8, md: 24, sm: 24, xs: 24 },
+    components: [
+      {
+        type: HomeComponentType.RESOURCE_USAGE, // 资源使用看板
+        order: 1
+      },
+      {
+        type: HomeComponentType.MESSAGES, // 消息
+        order: 2
+      },
+      {
+        type: HomeComponentType.HELP_DOCS, // 帮助文档
+        order: 3
+      }
+    ]
+  }
+}
+
+/**
+ * 运营管理员角色配置
+ */
+const operationAdminLayout: HomeLayoutConfig = {
+  left: {
+    span: { xl: 16, lg: 16, md: 24, sm: 24, xs: 24 },
+    components: [
+      {
+        type: HomeComponentType.APPROVAL_PENDING, // 资源上架审批
+        order: 1
+      },
+      {
+        type: HomeComponentType.Feedback, // 反馈意见
+        order: 2
+      }
+    ]
+  },
+  right: {
+    span: { xl: 8, lg: 8, md: 24, sm: 24, xs: 24 },
+    components: [
+      {
+        type: HomeComponentType.MESSAGES, // 消息
+        order: 1
+      },
+      {
+        type: HomeComponentType.HELP_DOCS, // 帮助文档
+        order: 2
+      }
+    ]
+  }
+}
+
+/**
  * 角色布局配置映射
  */
 export const ROLE_LAYOUT_CONFIG: RoleLayoutConfigMap = {
-  admin: adminLayout,
-  user: userLayout,
-  guest: guestLayout,
-  dataAdmin: dataAdminLayout,
-
-
-  super_admin: adminLayout
+  admin: adminLayout, // 项目成员、项目经理
+  user: userLayout, // 普通用户
+  guest: guestLayout, // 访客
+  dataAdmin: dataAdminLayout, // 数据管理员
+  resourceAdmin: resourceAdminLayout, // 资源管理员
+  operationAdmin: operationAdminLayout, // 运营管理员
+  super_admin: adminLayout // 超级管理员
 }
 
 /**

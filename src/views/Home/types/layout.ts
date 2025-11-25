@@ -14,6 +14,12 @@ export enum HomeComponentType {
   RESOURCE_USAGE = 'ResourceUsage',
   // 消息列表
   MESSAGES = 'Messages',
+  // 我发起的审批
+  MY_APPROVALS = 'MyApprovals',
+  // 我上架的资源（含待我审批的资源）
+  MY_UPLOADED_RESOURCES = 'MyUploadedResources',
+  // 资源上架审批
+  APPROVAL_PENDING = 'ApprovalPending',
   // 自定义组件（预留）
   CUSTOM = 'Custom'
 }

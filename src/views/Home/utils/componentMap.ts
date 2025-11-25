@@ -5,6 +5,9 @@ import HelpDocsWidget from '../components/widgets/HelpDocsWidget.vue'
 import MessagesWidget from '../components/widgets/MessagesWidget.vue'
 import ResourceUsageWidget from '../components/widgets/ResourceUsageWidget.vue'
 import Feedback from '../components/widgets/Feedback.vue'
+import MyApprovalsWidget from '../components/widgets/MyApprovalsWidget.vue'
+import MyUploadedResourcesWidget from '../components/widgets/MyUploadedResourcesWidget.vue'
+import ApprovalPendingWidget from '../components/widgets/ApprovalPendingWidget.vue'
 
 /**
  * 组件类型与实际组件的映射
@@ -12,10 +15,13 @@ import Feedback from '../components/widgets/Feedback.vue'
  */
 export const COMPONENT_MAP: Record<HomeComponentType, Component> = {
   [HomeComponentType.BROWSED_RESOURCES]: markRaw(BrowsedResourcesWidget), // 项目成员：我申请的资源+我收藏的资源
-  [HomeComponentType.Feedback]: markRaw(Feedback), // 项目成员：我申请的资源+我收藏的资源
+  [HomeComponentType.Feedback]: markRaw(Feedback), // 反馈意见
   [HomeComponentType.HELP_DOCS]: markRaw(HelpDocsWidget), // 帮助文档
   [HomeComponentType.MESSAGES]: markRaw(MessagesWidget), // 消息
-  [HomeComponentType.RESOURCE_USAGE]: markRaw(ResourceUsageWidget),
+  [HomeComponentType.RESOURCE_USAGE]: markRaw(ResourceUsageWidget), // 资源使用看板
+  [HomeComponentType.MY_APPROVALS]: markRaw(MyApprovalsWidget), // 我发起的审批
+  [HomeComponentType.MY_UPLOADED_RESOURCES]: markRaw(MyUploadedResourcesWidget), // 我上架的资源
+  [HomeComponentType.APPROVAL_PENDING]: markRaw(ApprovalPendingWidget), // 资源上架审批
   [HomeComponentType.CUSTOM]: markRaw({} as Component) // 自定义组件预留
 }
 

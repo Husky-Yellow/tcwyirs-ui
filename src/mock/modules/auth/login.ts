@@ -87,6 +87,50 @@ const userConfigs: Record<string, { user: UserVO; roles: string[]; permissions: 
     },
     roles: ['guest'],
     permissions: [] // 无权限
+  },
+  resourceAdmin: {
+    user: {
+      id: 4,
+      nickname: '资源管理员',
+      avatar: '',
+      deptId: 106,
+      username: 'resourceAdmin',
+      email: 'resource@example.com',
+      mobile: '13800138003',
+      sex: 1,
+      loginIp: '127.0.0.1',
+      loginDate: new Date().toISOString()
+    },
+    roles: ['resourceAdmin'],
+    permissions: [
+      'resource:upload:create',
+      'resource:upload:query',
+      'resource:upload:update',
+      'resource:approval:query',
+      'resource:approval:approve',
+      'system:feedback:query'
+    ]
+  },
+  operationAdmin: {
+    user: {
+      id: 5,
+      nickname: '运营管理员',
+      avatar: '',
+      deptId: 107,
+      username: 'operationAdmin',
+      email: 'operation@example.com',
+      mobile: '13800138004',
+      sex: 1,
+      loginIp: '127.0.0.1',
+      loginDate: new Date().toISOString()
+    },
+    roles: ['operationAdmin'],
+    permissions: [
+      'resource:approval:query',
+      'resource:approval:approve',
+      'resource:approval:reject',
+      'system:feedback:query'
+    ]
   }
 }
 

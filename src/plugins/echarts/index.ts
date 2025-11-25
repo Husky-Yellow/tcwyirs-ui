@@ -1,14 +1,7 @@
 import * as echarts from 'echarts/core'
 
 import {
-  BarChart,
-  FunnelChart,
-  GaugeChart,
-  LineChart,
-  MapChart,
-  PictorialBarChart,
   PieChart,
-  RadarChart
 } from 'echarts/charts'
 
 import {
@@ -35,15 +28,8 @@ echarts.use([
   AriaComponent,
   ParallelComponent,
   VisualMapComponent,
-  BarChart,
-  LineChart,
   PieChart,
-  MapChart,
   CanvasRenderer,
-  PictorialBarChart,
-  RadarChart,
-  GaugeChart,
-  FunnelChart
 ])
 
 export default echarts
