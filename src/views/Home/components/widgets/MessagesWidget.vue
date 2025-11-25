@@ -1,26 +1,27 @@
 <template>
   <AppCard class="mt-16px">
     <template #header>
-      <div class="px-20px py-11px">
-        {{ title }}
-        <el-link v-if="showViewAll" type="primary" :underline="false">全部</el-link>
+      <div class="flex items-center justify-between bg-[#ffffff99] px-20px py-11px shadow-[inset_0_-1px_0_0_rgba(0,0,0,0.06)]">
+        <span class="text-16px text-[#303133] font-500">消息</span>
+        <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]">全部</span>
       </div>
     </template>
 
-    <div class="message-list">
-      <div
-        v-for="item in messages"
-        :key="item.id"
-        class="message-item cursor-pointer border-b border-gray-100 py-12px transition-colors last:border-b-0 hover:bg-gray-50"
-        @click="handleClick(item)"
+    <ul class="list-none px-18px pb-18px pt-16px space-y-8px">
+      <li
+        v-for="(item, index) in messages"
+        :key="index"
+        class="cursor-pointer bg-white"
       >
-        <div class="flex items-start justify-between">
-          <div class="flex-1">
-            <div class="text-14px text-gray-600">{{ item.content }}</div>
+        <div class="flex items-center justify-between text-14px text-[#606266] hover:text-[#409eff]">
+          <div>
+            <span>{{ item.type }}</span>
+            <span>{{ item.content }}</span>
           </div>
+          <div class="font-pf-sc text-left text-14px text-[#141414]/26 font-normal leading-22px tracking-0">{{ item.time }}</div>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </AppCard>
 </template>
 
@@ -28,7 +29,6 @@
 import { ref } from 'vue'
 import { AppCard } from '@/components/AppCard'
 import { MESSAGES } from '../../mock/data'
-import { ElMessage } from 'element-plus'
 
 defineOptions({ name: 'MessagesWidget' })
 
@@ -43,8 +43,4 @@ withDefaults(defineProps<Props>(), {
 })
 
 const messages = ref([...MESSAGES])
-
-const handleClick = (item: any) => {
-  ElMessage.info(`查看消息: ${item.type}`)
-}
 </script>

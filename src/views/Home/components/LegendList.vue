@@ -1,11 +1,14 @@
 <template>
-  <div class="legend-list">
-    <div v-for="item in items" :key="item.name" class="legend-item">
-      <div class="legend-item__left">
-        <span class="legend-dot" :style="{ backgroundColor: item.color }"></span>
-        <span class="legend-name">{{ item.name }}</span>
+  <div class="grid grid-cols-2 gap-12px px-48px pt-24px">
+    <div v-for="item in items" :key="item.name" class="flex items-center justify-between">
+      <div class="flex items-center">
+        <span
+          class="mr-2 inline-block h-3 w-3 rounded-full"
+          :style="{ backgroundColor: item.color }"
+        ></span>
+        <span class="text-sm text-[#606266]">{{ item.name }}</span>
       </div>
-      <span class="legend-value">{{ item.value }}</span>
+      <span class="text-sm text-[#303133] font-semibold">{{ item.value }}</span>
     </div>
   </div>
 </template>
@@ -25,42 +28,3 @@ defineOptions({ name: 'LegendList' })
 
 defineProps<Props>()
 </script>
-
-<style lang="scss" scoped>
-.legend-list {
-  border-top: 1px solid #f0f0f0;
-  padding-top: 16px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px 0;
-  margin-bottom: 8px;
-
-  &__left {
-    display: flex;
-    align-items: center;
-  }
-
-  .legend-dot {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 8px;
-  }
-
-  .legend-name {
-    font-size: 14px;
-    color: #606266;
-  }
-
-  .legend-value {
-    font-size: 14px;
-    font-weight: 600;
-    color: #303133;
-  }
-}
-</style>

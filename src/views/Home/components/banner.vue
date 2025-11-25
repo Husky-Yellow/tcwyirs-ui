@@ -1,18 +1,17 @@
 <template>
   <div
-    class="banner relative h-196px w-full overflow-hidden rounded-[3px] bg-cover bg-center bg-no-repeat"
+    class="banner relative h-196px w-full flex flex-col overflow-hidden rounded-[8px] px-32px py-24px"
   >
-    <div class="relative z-2 h-full flex flex-col justify-center py-24px px-32px">
-      <!-- Greeting title -->
-      <div class="mb-22px">
-        <h1 class="font-['PingFang_SC'] font-medium text-22px">
-          <span class="text-black">早上好,欢迎来到12</span>
+    <!-- Greeting title -->
+      <div class="relative z-1 mb-22px">
+        <h1 class="text-22px font-medium font-['PingFang_SC']">
+          <span class="text-black">早上好,欢迎来到</span>
           <span class="text-blue-500">工作台</span>
         </h1>
       </div>
 
       <!-- Statistics cards below title -->
-      <div class="flex items-center gap-72px">
+      <div class="relative z-1 flex items-center gap-72px">
         <div
           v-for="stat in statistics"
           :key="stat.label"
@@ -21,11 +20,15 @@
           <div class="mb-10px h-32px w-32px flex items-center justify-center">
             <img :src="stat.icon" :alt="stat.label" class="h-full w-full object-contain" />
           </div>
-          <div class="text-5 font-bold text-blue-500">{{ stat.value }}</div>
+          <CountTo
+            class="text-5 text-blue-500 font-bold"
+            :start-val="0"
+            :end-val="stat.value"
+            :duration="2600"
+          />
           <div class="text-3 text-gray-600">{{ stat.label }}</div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -93,6 +96,20 @@ const statistics = computed<Statistic[]>(() => {
 
 <style scoped>
 .banner {
+  position: relative;
+  background-color: #fff;
+
+}
+
+.banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background-image: url('@/assets/imgs/home/home_banner.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: inherit;
+  z-index: 0;
 }
 </style>

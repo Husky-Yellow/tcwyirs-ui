@@ -1,22 +1,21 @@
 <template>
   <AppCard class="mt-16px">
     <template #header>
-      <div class="px-20px py-11px">
-        {{ title }}
-        <el-link v-if="showViewAll" type="primary" :underline="false">全部</el-link>
+      <div class="flex items-center justify-between bg-[#ffffff99] px-20px py-11px shadow-[inset_0_-1px_0_0_rgba(0,0,0,0.06)]">
+        <span class="text-16px text-[#303133] font-500">帮助文档</span>
+        <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]">全部</span>
       </div>
     </template>
 
-    <div class="help-doc-list">
-      <div
-        v-for="item in helpDocs"
-        :key="item.id"
-        class="help-doc-item hover:text-primary cursor-pointer border-b border-gray-100 py-10px transition-colors last:border-b-0"
-        @click="handleClick(item)"
+    <ul class="list-none px-20px pb-20px pt-8px space-y-8px">
+      <li
+        v-for="(item, index) in helpDocs"
+        :key="index"
+        class="flex cursor-pointer items-center justify-between pt-9px text-14px text-[#606266] hover:text-[#409eff]"
       >
-        <div class="text-14px">{{ item.title }}</div>
-      </div>
-    </div>
+        {{ item.title }}
+      </li>
+    </ul>
   </AppCard>
 </template>
 

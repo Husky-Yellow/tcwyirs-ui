@@ -2,7 +2,7 @@ import type { RoleLayoutConfigMap, HomeLayoutConfig } from '../types/layout'
 import { HomeComponentType } from '../types/layout'
 
 /**
- * 管理员角色配置
+ * 项目成员、项目经理
  */
 const adminLayout: HomeLayoutConfig = {
   left: {
@@ -10,20 +10,10 @@ const adminLayout: HomeLayoutConfig = {
     components: [
       {
         type: HomeComponentType.BROWSED_RESOURCES,
-        title: '我浏览过的资源',
-        showViewAll: true,
         order: 1
       },
       {
-        type: HomeComponentType.FAVORITE_RESOURCES,
-        title: '我收藏的资源',
-        showViewAll: true,
-        order: 2
-      },
-      {
-        type: HomeComponentType.HELP_DOCS,
-        title: '帮助文档',
-        showViewAll: true,
+        type: HomeComponentType.Feedback,
         order: 3
       }
     ]
@@ -37,9 +27,11 @@ const adminLayout: HomeLayoutConfig = {
       },
       {
         type: HomeComponentType.MESSAGES,
-        title: '消息',
-        showViewAll: true,
         order: 2
+      },
+      {
+        type: HomeComponentType.HELP_DOCS,
+        order: 3
       }
     ]
   }
@@ -146,7 +138,10 @@ export const ROLE_LAYOUT_CONFIG: RoleLayoutConfigMap = {
   admin: adminLayout,
   user: userLayout,
   guest: guestLayout,
-  dataAdmin: dataAdminLayout
+  dataAdmin: dataAdminLayout,
+
+
+  super_admin: adminLayout
 }
 
 /**
@@ -155,5 +150,7 @@ export const ROLE_LAYOUT_CONFIG: RoleLayoutConfigMap = {
  * @returns 布局配置
  */
 export const getRoleLayoutConfig = (role: string): HomeLayoutConfig => {
+  console.log('role', role);
+
   return ROLE_LAYOUT_CONFIG[role] || ROLE_LAYOUT_CONFIG.user
 }

@@ -3,7 +3,7 @@
     <div>
       <slot name="header"> </slot>
     </div>
-    <div class="px-20px py-12px">
+    <div>
       <slot></slot>
     </div>
   </div>

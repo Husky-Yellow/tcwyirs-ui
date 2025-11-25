@@ -4,12 +4,12 @@
 
 // 组件类型枚举
 export enum HomeComponentType {
-  // 浏览资源统计
+  // 项目成员：我申请的资源+我收藏的资源
   BROWSED_RESOURCES = 'BrowsedResources',
-  // 收藏资源
-  FAVORITE_RESOURCES = 'FavoriteResources',
   // 帮助文档
   HELP_DOCS = 'HelpDocs',
+  // 反馈意见
+  Feedback = 'Feedback',
   // 资源使用看板
   RESOURCE_USAGE = 'ResourceUsage',
   // 消息列表

@@ -28,7 +28,6 @@ export const HELP_DOCS = [
   { id: 4, title: '帮助文档是什么又如文档型啊' },
   { id: 5, title: '帮助文档是什么ssaA' },
   { id: 6, title: '帮助文档是什么dsaA' },
-  { id: 7, title: '帮助文档是wqewf么' }
 ]
 
 // 资源图例数据

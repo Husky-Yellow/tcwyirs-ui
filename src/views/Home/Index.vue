@@ -9,7 +9,6 @@
           :is="getComponentByType(comp.type)"
           v-for="comp in getSortedComponents(leftColumn.components)"
           :key="comp.type"
-          v-bind="{ title: comp.title, showViewAll: comp.showViewAll, ...comp.props }"
         />
       </el-col>
 
@@ -19,7 +18,6 @@
           :is="getComponentByType(comp.type)"
           v-for="comp in getSortedComponents(rightColumn.components)"
           :key="comp.type"
-          v-bind="{ title: comp.title, showViewAll: comp.showViewAll, ...comp.props }"
         />
       </el-col>
     </el-row>
