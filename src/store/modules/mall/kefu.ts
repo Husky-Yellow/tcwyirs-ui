@@ -1,31 +1,30 @@
 import { store } from '@/store'
 import { defineStore } from 'pinia'
 import { KeFuConversationApi, KeFuConversationRespVO } from '@/api/mall/promotion/kefu/conversation'
-import { KeFuMessageRespVO } from '@/api/mall/promotion/kefu/message'
 import { isEmpty } from '@/utils/is'
 
 interface MallKefuInfoVO {
   conversationList: KeFuConversationRespVO[] // 会话列表
-  conversationMessageList: Map<number, KeFuMessageRespVO[]> // 会话消息
+  conversationMessageList: Map<number, any[]> // 会话消息
 }
 
 export const useMallKefuStore = defineStore('mall-kefu', {
   state: (): MallKefuInfoVO => ({
     conversationList: [],
-    conversationMessageList: new Map<number, KeFuMessageRespVO[]>() // key 会话，value 会话消息列表
+    conversationMessageList: new Map<number, any[]>() // key 会话，value 会话消息列表
   }),
   getters: {
     getConversationList(): KeFuConversationRespVO[] {
       return this.conversationList
     },
-    getConversationMessageList(): (conversationId: number) => KeFuMessageRespVO[] | undefined {
+    getConversationMessageList(): (conversationId: number) => any[] | undefined {
       return (conversationId: number) => this.conversationMessageList.get(conversationId)
     }
   },
   actions: {
     // ======================= 会话消息相关 =======================
     /** 缓存历史消息 */
-    saveMessageList(conversationId: number, messageList: KeFuMessageRespVO[]) {
+    saveMessageList(conversationId: number, messageList: any[]) {
       this.conversationMessageList.set(conversationId, messageList)
     },
 

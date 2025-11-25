@@ -30,7 +30,7 @@ export default defineComponent({
     const menuItemRef = ref<HTMLElement>()
     const submenuPosition = ref({ top: 0, left: MENU_WIDTH })
     const expandedItems = ref<Set<string>>(new Set())
-    let hoverTimer: NodeJS.Timeout | null = null
+    let hoverTimer: ReturnType<typeof setTimeout> | null = null
 
     const updateSubmenuPosition = () => {
       if (menuItemRef.value) {

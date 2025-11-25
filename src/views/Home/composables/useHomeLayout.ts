@@ -16,7 +16,8 @@ export const useHomeLayout = () => {
   const currentRole = computed(() => {
     // 从用户 store 获取角色，这里假设返回 'admin', 'user', 'guest' 等
     // 根据你的项目实际情况调整
-    return userStore.getUserInfo?.role || 'user'
+    const roles = userStore.getRoles
+    return roles?.[0] || 'user'
   })
 
   /**

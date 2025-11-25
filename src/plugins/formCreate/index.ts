@@ -125,7 +125,9 @@ const components = [
 // 参考 http://www.form-create.com/v3/element-ui/auto-import.html 文档
 export const setupFormCreate = (app: App<Element>) => {
   components.forEach((component) => {
-    app.component(component.name, component)
+    if (component.name) {
+      app.component(component.name, component)
+    }
   })
   formCreate.use(install)
   app.use(formCreate)

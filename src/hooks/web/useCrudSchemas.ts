@@ -303,7 +303,7 @@ const filterDescriptionsSchema = (crudSchema: CrudSchema[]): DescriptionsSchema[
 }
 
 // 给options添加国际化
-const filterOptions = (options: Recordable, labelField?: string) => {
+const filterOptions = (options: Recordable, _labelField?: string) => {
   return options?.map((v: Recordable) => {
     // i18n 已移除，保持原标签
     return v

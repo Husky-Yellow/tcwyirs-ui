@@ -57,14 +57,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     server: {
       port: VITE_PORT,
       host: '0.0.0.0',
+      open: VITE_OPEN,
       strictPort: false,
       cors: true,
       hmr: {
-        overlay: true, // 错误覆盖层（保留）
-        protocol: 'ws', // 强制使用 WebSocket 协议（Vite 5 推荐）
-        host: 'localhost', // HMR 连接主机（与前端访问地址一致）
-        port: VITE_PORT + 1, // HMR 独立端口（避免与主服务冲突）
-        clientPort: VITE_PORT + 1, // 客户端连接端口（确保与服务端一致）
+        overlay: true
       }
     },
 
@@ -126,6 +123,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             editor: ['@wangeditor/editor', '@wangeditor/editor-for-vue'],
             utils: ['axios', 'dayjs', 'crypto-js', 'es-toolkit', 'qs'],
             bpmn: ['bpmn-js', 'bpmn-js-properties-panel', 'diagram-js']
+            // camunda-bpmn-moddle 移除，让 Rollup 自动处理以避免构建错误
           }
         }
       }
@@ -134,7 +132,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     optimizeDeps: {
       include,
       exclude,
-      force: true
+      force: false
     },
 
     define: {

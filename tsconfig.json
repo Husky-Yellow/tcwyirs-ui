@@ -39,5 +39,5 @@
     "src/types/auto-imports.d.ts",
     "src/types/auto-components.d.ts"
   ],
-  "exclude": ["dist", "target", "node_modules"]
+  "exclude": ["dist", "target", "node_modules", "src/mock"]
 }

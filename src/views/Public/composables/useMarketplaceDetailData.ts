@@ -106,7 +106,7 @@ export const useMarketplaceDetailData = (id: string) => {
     try {
       const data = await getMarketplaceDetail(id)
       // 兜底合并，避免后端缺字段导致渲染异常
-      resourceDetail.value = { id, ...DEFAULT_DETAIL, ...data }
+      resourceDetail.value = { ...DEFAULT_DETAIL, ...data, id }
     } catch (e) {
       // 保留默认 mock 数据
       console.warn('[useMarketplaceDetailData] 使用本地 mock 数据:', e)

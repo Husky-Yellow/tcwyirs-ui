@@ -4,7 +4,7 @@ import { findPath } from '@/utils/tree'
 type OnlyOneChildType = AppRouteRecordRaw & { noShowingChildren?: boolean }
 
 interface HasOneShowingChild {
-  oneShowingChild?: boolean
+  oneShowingChild: boolean
   onlyOneChild?: OnlyOneChildType
 }
 

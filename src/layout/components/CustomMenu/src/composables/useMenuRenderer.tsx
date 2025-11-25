@@ -22,9 +22,11 @@ interface SubMenuItem {
   children?: SubMenuItem[]
 }
 
+type OnlyOneChildType = AppRouteRecordRaw & { noShowingChildren?: boolean }
+
 const shouldUseOnlyChild = (
   oneShowingChild: boolean,
-  onlyOneChild: AppRouteRecordRaw | null,
+  onlyOneChild: OnlyOneChildType | undefined,
   meta?: AppRouteRecordRaw['meta']
 ): boolean => {
   return !!(

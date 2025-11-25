@@ -3,7 +3,7 @@ import type { PluginOption } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
 import progress from 'vite-plugin-progress'
-import checker from 'vite-plugin-checker'
+// import EslintPlugin from 'vite-plugin-eslint' // 已禁用，不支持 ESLint 9 扁平配置
 import PurgeIcons from 'vite-plugin-purge-icons'
 import { ViteEjsPlugin } from 'vite-plugin-ejs'
 import ElementPlus from 'unplugin-element-plus/vite'
@@ -102,18 +102,10 @@ export function createVitePlugins(isBuild = false): PluginOption[] {
 
   // 开发环境插件
   if (!isBuild) {
-    plugins.push(
-      // TypeScript 检查 (仅开发环境)
-      // 注意: ESLint 和 vueTsc 检查禁用，因为 vite-plugin-checker 0.6.x 不兼容 ESLint 9 和 vue-tsc 2.x
-      // 请使用 pnpm lint:eslint 手动运行 ESLint
-      checker({
-        typescript: true,
-        overlay: {
-          initialIsOpen: false
-        }
-      })
-      // MSW mock 在 main.ts 中通过 setupMock() 初始化
-    )
+    // ESLint 检查已禁用，因为项目使用新的 ESLint 9 扁平配置格式
+    // vite-plugin-eslint 不支持新格式，请手动运行 pnpm lint:eslint
+
+    // MSW mock 在 main.ts 中通过 setupMock() 初始化，不需要 Vite 插件
   }
 
   // 生产环境插件

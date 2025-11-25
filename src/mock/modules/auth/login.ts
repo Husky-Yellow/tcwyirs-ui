@@ -41,7 +41,11 @@ const userConfigs: Record<string, { user: UserVO; roles: string[]; permissions: 
       avatar: 'http://test.governance.iocoder.cn/test/20250502/avatar_1746154660449.png',
       deptId: 103,
       username: 'admin',
-      email: 'admin@example.com'
+      email: 'admin@example.com',
+      mobile: '13800138000',
+      sex: 1,
+      loginIp: '127.0.0.1',
+      loginDate: new Date().toISOString()
     },
     roles: ['super_admin'],
     permissions: ['*:*:*'] // 超级管理员拥有所有权限
@@ -53,7 +57,11 @@ const userConfigs: Record<string, { user: UserVO; roles: string[]; permissions: 
       avatar: '',
       deptId: 104,
       username: 'test',
-      email: 'test@example.com'
+      email: 'test@example.com',
+      mobile: '13800138001',
+      sex: 1,
+      loginIp: '127.0.0.1',
+      loginDate: new Date().toISOString()
     },
     roles: ['test'],
     permissions: [
@@ -71,7 +79,11 @@ const userConfigs: Record<string, { user: UserVO; roles: string[]; permissions: 
       avatar: '',
       deptId: 105,
       username: 'guest',
-      email: 'guest@example.com'
+      email: 'guest@example.com',
+      mobile: '13800138002',
+      sex: 0,
+      loginIp: '127.0.0.1',
+      loginDate: new Date().toISOString()
     },
     roles: ['guest'],
     permissions: [] // 无权限
