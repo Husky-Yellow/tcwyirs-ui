@@ -1,5 +1,57 @@
 # AGENT PLAYBOOK -- tcwyirs-ui
 
+> 项目技术文档和开发指南 | [English](./README.md)
+
+## 📖 文档导航
+
+- **[快速开始](#install--run)** - 安装和运行
+- **[技术栈](#tech-stack-snapshot)** - 技术选型
+- **[Claude Code 使用](./.claude/USAGE.md)** - AI 辅助开发指南 ⭐
+- **[快速参考](./.claude/QUICK-REFERENCE.md)** - 常用命令速查
+- **[目录结构](#directory-compass)** - 项目结构
+- **[Home 布局系统](#home-layout-system)** - 角色配置系统
+- **[开发规范](#patterns--conventions)** - 编码规范
+
+## 🤖 Claude Code 智能助手
+
+本项目已配置 **Claude Code** 智能开发助手，提供：
+
+- **📝 Commands** - 10+ 快速代码生成命令
+  - `/store` - 创建 Pinia Store
+  - `/mock` - 创建 Mock 数据
+  - `/route` - 添加路由配置
+  - `/api` - 创建 API 接口
+  - `/component` - 创建 Vue 组件
+  - [查看所有 Commands →](./.claude/USAGE.md#commands-使用)
+
+- **📚 Skills** - 9+ 深度知识库（自动激活）
+  - 状态管理、路由权限、Mock 服务
+  - 样式规范、测试策略、性能优化
+  - [查看所有 Skills →](./.claude/USAGE.md#skills-使用)
+
+**快速开始**：
+```bash
+# 安装 Claude Code CLI（首次使用）
+# https://docs.claude.com/claude-code
+
+# 在项目中启动
+claude
+
+# 使用 Commands 快速生成代码
+/store notification --persist
+/api system user
+/route resource --icon=resource
+
+# 向 Claude 提问触发 Skills
+"如何创建 Pinia Store？"
+"v-auth 指令如何使用？"
+"如何优化列表性能？"
+```
+
+详细使用指南：[.claude/USAGE.md](./.claude/USAGE.md)
+
+---
+
 ## Tech Stack Snapshot
 - Vue 3 + TypeScript with Vite 5.1.4 bundling and hot module replacement.
 - Element Plus 2.11.3 UI kit, FormCreate designer, UnoCSS utilities, global SCSS, and SVG icon pipeline.
@@ -146,3 +198,45 @@ const customRoleLayout: HomeLayoutConfig = {
 ## File Organization Notes
 - `AGENTS.md` is a symbolic link to `CLAUDE.md` for cross-platform compatibility
 - Git symlinks enabled via `git config core.symlinks true`
+- `.claude/` directory contains Commands and Skills for AI-assisted development
+
+## 📚 Additional Resources
+
+### Development Guides
+- [Claude Code 使用指南](./.claude/USAGE.md) - 完整使用文档
+- [快速参考卡片](./.claude/QUICK-REFERENCE.md) - 常用命令速查
+
+### Commands Documentation
+- [/store](./.claude/commands/store.md) - 创建 Pinia Store 模块
+- [/mock](./.claude/commands/mock.md) - 创建 MSW Mock 数据
+- [/route](./.claude/commands/route.md) - 添加路由配置
+- [/composable](./.claude/commands/composable.md) - 创建 Composable
+- [/component](./.claude/commands/component.md) - 创建 Vue 组件
+- [/api](./.claude/commands/api.md) - 创建 API 接口
+- [/test](./.claude/commands/test.md) - 创建测试文件
+- [/permission](./.claude/commands/permission.md) - 配置权限
+- [/enum](./.claude/commands/enum.md) - 创建枚举/常量
+- [/role-layout](./.claude/commands/role-layout.md) - 添加角色布局
+
+### Skills Documentation
+- [State Management](./.claude/skills/state-management.md) - Pinia 状态管理
+- [Routing & Permissions](./.claude/skills/routing-permissions.md) - 路由与权限
+- [Mock Service](./.claude/skills/mock-service.md) - MSW Mock 服务
+- [Vue Development](./.claude/skills/vue-development.md) - Vue 3 开发模式
+- [TypeScript Patterns](./.claude/skills/typescript-patterns.md) - TypeScript 模式
+- [Component Architecture](./.claude/skills/component-architecture.md) - 组件架构
+- [Styling](./.claude/skills/styling.md) - 样式开发规范
+- [Testing](./.claude/skills/testing.md) - 测试策略
+- [Performance](./.claude/skills/performance.md) - 性能优化
+
+### External Links
+- [Claude Code Official Docs](https://docs.claude.com/claude-code)
+- [Vue 3 Documentation](https://vuejs.org/)
+- [Element Plus Documentation](https://element-plus.org/)
+- [Pinia Documentation](https://pinia.vuejs.org/)
+- [UnoCSS Documentation](https://unocss.dev/)
+- [Vitest Documentation](https://vitest.dev/)
+
+---
+
+**Happy Coding with Claude! 🚀**
