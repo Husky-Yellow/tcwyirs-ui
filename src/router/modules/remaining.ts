@@ -376,16 +376,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
       }
     ]
   },
-  {
-    path: '/demo',
-    component: () => import('@/views/Demo/index.vue'),
-    name: 'ComponentDemo',
-    meta: {
-      hidden: true,
-      title: '组件展示 Demo',
-      noTagsView: true
-    }
-  }
 ]
 
 export default remainingRouter

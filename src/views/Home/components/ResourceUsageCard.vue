@@ -1,5 +1,5 @@
 <template>
-  <AppCard>
+  <AppCard class="mt-16px">
     <template #header>
       <div class="px-20px pt-25px">
         资源使用看板

@@ -77,8 +77,11 @@
 import { ref } from 'vue'
 import { AppCard } from '@/components/AppCard'
 import StatCard from '../StatCard.vue'
+import { useStatusStyle } from '../../composables/useStatusStyle'
 
 defineOptions({ name: 'MyUploadedResourcesWidget' })
+
+const { getStatusDotClass, getStatusTextClass } = useStatusStyle()
 
 // 我上架的资源列表
 const uploadedResources = ref([
@@ -93,24 +96,4 @@ const pendingApprovalResources = ref([
   { name: '产品使用统计', submitter: '李四' },
   { name: '财务报表数据', submitter: '王五' }
 ])
-
-// 获取状态圆点的样式类
-const getStatusDotClass = (status: string) => {
-  const statusMap: Record<string, string> = {
-    online: 'bg-[#67C23A]', // 绿色 - 已上架
-    reviewing: 'bg-[#409EFF]', // 蓝色 - 审核中
-    offline: 'bg-[#909399]' // 灰色 - 已下架
-  }
-  return statusMap[status] || 'bg-[#909399]'
-}
-
-// 获取状态文字的样式类
-const getStatusTextClass = (status: string) => {
-  const statusMap: Record<string, string> = {
-    online: 'text-[#67C23A]', // 绿色
-    reviewing: 'text-[#409EFF]', // 蓝色
-    offline: 'text-[#909399]' // 灰色
-  }
-  return statusMap[status] || 'text-[#909399]'
-}
 </script>

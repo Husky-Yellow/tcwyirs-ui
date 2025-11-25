@@ -41,8 +41,11 @@
 import { ref } from 'vue'
 import { AppCard } from '@/components/AppCard'
 import StatCard from '../StatCard.vue'
+import { useStatusStyle } from '../../composables/useStatusStyle'
 
 defineOptions({ name: 'MyApprovalsWidget' })
+
+const { getStatusDotClass, getStatusTextClass } = useStatusStyle()
 
 // 审批列表数据
 const approvalList = ref([
@@ -50,24 +53,4 @@ const approvalList = ref([
   { name: '权限变更审批', status: 'approved', statusText: '已通过' },
   { name: '数据访问审批', status: 'rejected', statusText: '已驳回' }
 ])
-
-// 获取状态圆点的样式类
-const getStatusDotClass = (status: string) => {
-  const statusMap: Record<string, string> = {
-    pending: 'bg-[#409EFF]', // 蓝色 - 审批中
-    approved: 'bg-[#67C23A]', // 绿色 - 已通过
-    rejected: 'bg-[#F56C6C]' // 红色 - 已驳回
-  }
-  return statusMap[status] || 'bg-[#909399]'
-}
-
-// 获取状态文字的样式类
-const getStatusTextClass = (status: string) => {
-  const statusMap: Record<string, string> = {
-    pending: 'text-[#409EFF]', // 蓝色
-    approved: 'text-[#67C23A]', // 绿色
-    rejected: 'text-[#F56C6C]' // 红色
-  }
-  return statusMap[status] || 'text-[#909399]'
-}
 </script>

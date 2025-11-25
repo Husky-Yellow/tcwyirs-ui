@@ -45,8 +45,17 @@
 import { ref } from 'vue'
 import { AppCard } from '@/components/AppCard'
 import StatCard from '../StatCard.vue'
+import { useStatusStyle, STATUS_COLORS } from '../../composables/useStatusStyle'
 
 defineOptions({ name: 'ApprovalPendingWidget' })
+
+// 自定义状态颜色（pending 使用橙色）
+const customColors = {
+  ...STATUS_COLORS,
+  pending: { dot: 'bg-[#E6A23C]', text: 'text-[#E6A23C]' } // 橙色 - 待审批
+}
+
+const { getStatusDotClass, getStatusTextClass } = useStatusStyle(customColors)
 
 // 审批列表数据
 const approvalList = ref([
@@ -55,24 +64,4 @@ const approvalList = ref([
   { name: '用户反馈数据', applicant: '王五', status: 'approved', statusText: '已通过' },
   { name: '营销活动数据', applicant: '赵六', status: 'rejected', statusText: '已驳回' }
 ])
-
-// 获取状态圆点的样式类
-const getStatusDotClass = (status: string) => {
-  const statusMap: Record<string, string> = {
-    pending: 'bg-[#E6A23C]', // 橙色 - 待审批
-    approved: 'bg-[#67C23A]', // 绿色 - 已通过
-    rejected: 'bg-[#F56C6C]' // 红色 - 已驳回
-  }
-  return statusMap[status] || 'bg-[#909399]'
-}
-
-// 获取状态文字的样式类
-const getStatusTextClass = (status: string) => {
-  const statusMap: Record<string, string> = {
-    pending: 'text-[#E6A23C]', // 橙色
-    approved: 'text-[#67C23A]', // 绿色
-    rejected: 'text-[#F56C6C]' // 红色
-  }
-  return statusMap[status] || 'text-[#909399]'
-}
 </script>
