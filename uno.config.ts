@@ -28,23 +28,6 @@ ${selector}:hover {
       }
     ],
     [
-      /^layout-border__left$/,
-      ([], { rawSelector }) => {
-        const selector = e(rawSelector)
-        return `
-${selector}:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: var(--el-border-color);
-  z-index: 3;
-}
-`
-      }
-    ],
-    [
       /^layout-border__right$/,
       ([], { rawSelector }) => {
         const selector = e(rawSelector)
@@ -56,24 +39,6 @@ ${selector}:after {
   right: 0;
   width: 1px;
   height: 100%;
-  background-color: var(--el-border-color);
-  z-index: 3;
-}
-`
-      }
-    ],
-    [
-      /^layout-border__top$/,
-      ([], { rawSelector }) => {
-        const selector = e(rawSelector)
-        return `
-${selector}:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
   background-color: var(--el-border-color);
   z-index: 3;
 }

@@ -116,6 +116,7 @@ export default defineComponent({
             {item.icon && (
               <Icon
                 icon={item.icon}
+                size={12}
                 class={[
                   'mr-8px text-16px flex-shrink-0',
                   item.isActive ? 'text-#409eff' : 'text-#909399'
@@ -128,6 +129,7 @@ export default defineComponent({
             {hasChildren && (
               <Icon
                 icon={isExpanded ? 'ep:arrow-down' : 'ep:arrow-right'}
+                size={12}
                 class="ml-8px flex-shrink-0 text-12px text-#909399"
               />
             )}
@@ -160,7 +162,7 @@ export default defineComponent({
           )}
           {props.hasChildren && (
             <div class="absolute right-2px top-50% transform -translate-y-50%">
-              <Icon icon="ep:arrow-right" class="text-10px text-#909399" />
+              <Icon size={12} icon="ep:arrow-right" class="text-10px text-#909399" />
             </div>
           )}
         </div>

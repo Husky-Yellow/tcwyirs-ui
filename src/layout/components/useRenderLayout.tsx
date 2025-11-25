@@ -64,9 +64,6 @@ export const useRenderLayout = () => {
 
         <div class={contentClasses} style={TRANSITION_STYLE}>
           <ElScrollbar v-loading={pageLoading.value} class={scrollbarClasses}>
-            {/* <div class={breadcrumbWrapperClasses} style={TRANSITION_STYLE}>
-              {breadcrumb.value ? <Breadcrumb /> : undefined}
-            </div> */}
             <AppView />
           </ElScrollbar>
         </div>

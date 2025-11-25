@@ -103,6 +103,7 @@ export default defineComponent({
           {props.level >= 2 && props.hasChildren && (
             <Icon
               icon={props.isExpanded ? 'ep:arrow-down' : 'ep:arrow-right'}
+              size={12}
               class={[
                 'text-12px transition-transform duration-200',
                 props.isActive ? 'text-#409eff' : 'text-#909399'
