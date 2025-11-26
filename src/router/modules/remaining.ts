@@ -86,7 +86,8 @@ const remainingRouter: AppRouteRecordRaw[] = [
     component: Layout,
     name: 'UserInfo',
     meta: {
-      hidden: true
+      hidden: true,
+      name: '工作台',
     },
     children: [
       {
@@ -106,11 +107,13 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/system/notify/my/index.vue'),
         name: 'MyNotifyMessage',
         meta: {
-          canTo: true,
           hidden: true,
           noTagsView: false,
           icon: 'ep:message',
-          title: '我的站内信'
+          title: '我的站内信',
+          canTo: true,
+          showBack: true,
+          showBreadcrumb: true,
         }
       }
     ]
@@ -376,6 +379,67 @@ const remainingRouter: AppRouteRecordRaw[] = [
       }
     ]
   },
+  {
+    path: '/demo',
+    component: Layout,
+    name: 'DemoLayout',
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/Demo/index.vue'),
+        name: 'DemoPage',
+        meta: {
+          canTo: true,
+          hidden: true,
+          noTagsView: false,
+          icon: 'ep:box',
+          title: '组件展示'
+        }
+      }
+    ]
+  },
+  {
+    path: '/workbench',
+    component: Layout,
+    name: 'Workbench',
+    meta: {
+      hidden: true,
+      title: '工作台',
+      canTo: true,
+      alwaysShow: true
+    },
+    children: [
+      {
+        path: 'message-center',
+        component: () => import('@/views/system/messageCenter/index.vue'),
+        name: 'MessageCenter',
+        meta: {
+          hidden: true,
+          noTagsView: false,
+          icon: 'ep:message',
+          title: '消息中心',
+          canTo: true,
+          showBack: true
+        }
+      },
+      {
+        path: 'help-doc',
+        component: () => import('@/views/system/helpDoc/index.vue'),
+        name: 'HelpDoc',
+        meta: {
+          hidden: true,
+          noTagsView: false,
+          icon: 'ep:document',
+          title: '帮助文档',
+          canTo: true,
+          showBack: true
+        }
+      }
+    ]
+  }
 ]
 
 export default remainingRouter
