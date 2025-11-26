@@ -44,7 +44,7 @@ export default defineComponent({
         const disabled = !v.redirect || v.redirect === 'noredirect'
         const meta = v.meta as RouteMeta
         return (
-          <ElBreadcrumbItem to={{ path: disabled ? '' : v.path }} key={v.name}>
+          <ElBreadcrumbItem to={{ path: disabled ? '' : v.path }} key={v.name} class={`mb-12px`}>
             {meta?.title}
           </ElBreadcrumbItem>
         )

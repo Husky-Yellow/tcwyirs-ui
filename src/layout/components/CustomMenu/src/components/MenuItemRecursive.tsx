@@ -62,22 +62,6 @@ export default defineComponent({
       )
     }
 
-    const itemClasses = [
-      'flex items-center cursor-pointer transition-all duration-200 ease rd-6px',
-      props.isActive ? 'bg-#e8f4ff text-#409eff' : 'text-#606266 hover:bg-#f0f2f5'
-    ]
-
-    // 动态添加 padding
-    const paddingLeft = getPaddingLeft()
-    if (props.level === 1) {
-      itemClasses.push('py-10px my-4px ml-8px mr-8px pl-8px pr-8px')
-    } else {
-      itemClasses.push('py-8px my-2px ml-8px mr-8px pr-8px')
-    }
-
-    // 使用内联样式设置动态 padding-left
-    const itemStyle = props.level >= 2 ? { paddingLeft: `${paddingLeft}px` } : {}
-
     const handleClick = () => {
       if (props.hasChildren && props.onToggle && props.level >= 2) {
         props.onToggle(props.path)
@@ -86,36 +70,57 @@ export default defineComponent({
       }
     }
 
-    return () => (
-      <div key={props.path} class="mb-0">
-        <div class={itemClasses} style={itemStyle} onClick={handleClick}>
-          {/* 二级及以上菜单显示图标 */}
-          {props.level >= 2 && props.icon && (
-            <Icon
-              icon={props.icon}
-              class={['mr-8px text-18px', props.isActive ? 'text-#409eff' : 'text-#909399']}
-            ></Icon>
-          )}
-          <span class={['text-14px font-normal', props.hasChildren ? 'flex-1' : '']}>
-            {props.title}
-          </span>
-          {/* 二级及以上可展开菜单显示展开图标 */}
-          {props.level >= 2 && props.hasChildren && (
-            <Icon
-              icon={props.isExpanded ? 'ep:arrow-down' : 'ep:arrow-right'}
-              size={12}
-              class={[
-                'text-12px transition-transform duration-200',
-                props.isActive ? 'text-#409eff' : 'text-#909399'
-              ]}
-            />
+    // 使用内联样式设置动态 padding-left
+    const paddingLeft = getPaddingLeft()
+    const itemStyle = props.level >= 2 ? { paddingLeft: `${paddingLeft}px` } : {}
+
+    return () => {
+      // 在渲染函数内动态计算 itemClasses，确保响应 props 变化
+      const itemClasses = [
+        'flex items-center cursor-pointer transition-all duration-200 ease rd-6px',
+        props.isActive
+          ? (props.level === 2 ? 'bg-white text-#409eff' : 'bg-#f5f7fa text-#303133')
+          : (props.level === 2 ? 'text-#606266 hover:bg-#ecf5ff' : 'text-#606266 hover:bg-#f5f7fa')
+      ]
+
+      // 动态添加 padding
+      if (props.level === 1) {
+        itemClasses.push('py-10px my-4px ml-8px mr-8px pl-8px pr-8px')
+      } else {
+        itemClasses.push('py-8px my-2px ml-8px mr-8px pr-8px')
+      }
+
+      return (
+        <div key={props.path} class="mb-0">
+          <div class={itemClasses} style={itemStyle} onClick={handleClick}>
+            {/* 显示图标 */}
+            {props.icon && (
+              <Icon
+                icon={props.icon}
+                class={[
+                  'mr-8px text-18px',
+                  props.isActive && props.level === 2 ? 'text-#409eff' : 'text-#909399'
+                ]}
+              ></Icon>
+            )}
+            <span class={['text-14px font-normal', props.hasChildren ? 'flex-1' : '']}>
+              {props.title}
+            </span>
+            {/* 二级及以上可展开菜单显示展开图标 */}
+            {props.level >= 2 && props.hasChildren && (
+              <Icon
+                icon={props.isExpanded ? 'ep:arrow-down' : 'ep:arrow-right'}
+                size={12}
+                class={['text-12px transition-transform duration-200', 'text-#909399']}
+              />
+            )}
+          </div>
+          {/* 渲染子菜单 */}
+          {props.hasChildren && (props.level === 1 || props.isExpanded) && (
+            <div class="pl-0">{slots.default?.()}</div>
           )}
         </div>
-        {/* 渲染子菜单 */}
-        {props.hasChildren && (props.level === 1 || props.isExpanded) && (
-          <div class="pl-0">{slots.default?.()}</div>
-        )}
-      </div>
-    )
+      )
+    }
   }
 })
