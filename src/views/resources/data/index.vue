@@ -54,6 +54,7 @@ const searchSchema = computed<FormSchema[]>(() => [
     componentProps: {
       placeholder: '全部',
       clearable: true,
+      class: 'w-240px!',
       options: [
         { label: '全部', value: '' },
         { label: '数据库', value: 'database' },

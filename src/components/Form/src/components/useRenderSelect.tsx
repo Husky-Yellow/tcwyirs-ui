@@ -1,4 +1,4 @@
-import { FormSchema } from '@/types/data'
+﻿import { FormSchema } from '@/types/data'
 import { ComponentOptions } from '@/types/component'
 import { ElOption, ElOptionGroup } from 'element-plus'
 import { getSlot } from '@/utils/tsxHelper'
@@ -13,11 +13,7 @@ export const useRenderSelect = (slots: Slots) => {
       if (option?.options?.length) {
         return (
           <ElOptionGroup label={option[labelAlias || 'label']}>
-            {() => {
-              return option?.options?.map((v) => {
-                return renderSelectOptionItem(item, v)
-              })
-            }}
+            {option?.options?.map((v) => renderSelectOptionItem(item, v))}
           </ElOptionGroup>
         )
       } else {
@@ -38,15 +34,10 @@ export const useRenderSelect = (slots: Slots) => {
       <ElOption
         {...other}
         label={labelAlias ? option[labelAlias] : label}
-        value={valueAlias ? option[valueAlias] : value}
-      >
-        {{
-          default: () =>
-            // option 插槽名规则，{field}-option
-            item?.componentProps?.optionsSlot
-              ? getSlot(slots, `${item.field}-option`, { item: option })
-              : undefined
-        }}
+        value={valueAlias ? option[valueAlias] : value}>
+        {item?.componentProps?.optionsSlot
+          ? getSlot(slots, `${item.field}-option`, { item: option })
+          : undefined}
       </ElOption>
     )
   }
@@ -55,3 +46,8 @@ export const useRenderSelect = (slots: Slots) => {
     renderSelectOptions
   }
 }
+
+
+
+
+

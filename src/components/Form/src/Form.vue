@@ -1,4 +1,4 @@
-<script lang="tsx">
+﻿<script lang="tsx">
 import { computed, defineComponent, onMounted, PropType, ref, unref, watch } from 'vue'
 import { ElCol, ElForm, ElFormItem, ElRow, ElTooltip } from 'element-plus'
 import { componentMap } from './componentMap'
@@ -27,7 +27,7 @@ const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('form')
 
 export default defineComponent({
-   
+
   name: 'Form',
   props: {
     // 生成Form的布局结构数组
@@ -36,7 +36,6 @@ export default defineComponent({
       default: () => []
     },
     // 是否需要栅格布局
-    // update by 芋艿：将 true 改成 false，因为项目更常用这种方式
     isCol: propTypes.bool.def(false),
     // 表单数据对象
     model: {
@@ -185,7 +184,8 @@ export default defineComponent({
         item?.component !== 'Cascader' &&
         item?.componentProps?.options
       ) {
-        slotsMap.default = () => renderOptions(item)
+        const optionsVNodes = renderOptions(item)
+      slotsMap.default = () => optionsVNodes
       }
 
       const formItemSlots: Recordable = setFormItemSlots(slots, item.field)
@@ -305,3 +305,4 @@ export default defineComponent({
   margin-left: 0 !important;
 }
 </style>
+

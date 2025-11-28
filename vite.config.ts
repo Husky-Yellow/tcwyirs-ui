@@ -117,7 +117,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           manualChunks: {
             vue: ['vue', 'vue-router', 'pinia'],
             'element-plus': ['element-plus', '@element-plus/icons-vue'],
-            echarts: ['echarts', 'echarts-wordcloud'],
+            echarts: ['echarts'],
             'form-create': ['@form-create/element-ui'],
             'form-designer': ['@form-create/designer'],
             editor: ['@wangeditor/editor', '@wangeditor/editor-for-vue'],
