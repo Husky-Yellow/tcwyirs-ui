@@ -1,5 +1,5 @@
 <template>
-  <Drawer v-model="visible" title="配置仪表盘" size="280px" @close="handleClose">
+  <Drawer v-model="visible" title="配置仪表盘" size="524px" @close="handleClose">
     <el-form label-position="top" class="!p-0">
       <!-- 标签分类 -->
       <el-form-item label="标签分类">

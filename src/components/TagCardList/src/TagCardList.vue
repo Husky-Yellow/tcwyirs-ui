@@ -5,21 +5,8 @@ import type { TagCardItem } from './types'
 defineOptions({ name: 'TagCardList' })
 
 const props = defineProps({
-  // 卡片数据
-  data: {
-    type: Array as PropType<TagCardItem[]>,
-    default: () => []
-  },
-  // 是否显示单选按钮
-  showRadio: propTypes.bool.def(true),
-  // 当前选中的卡片ID
-  modelValue: propTypes.oneOfType([String, Number]),
-  // 每行显示的卡片数量
-  colsPerRow: propTypes.number.def(4),
-  // 是否显示操作按钮
-  showActions: propTypes.bool.def(true),
-  // 是否显示状态开关
-  showStatusSwitch: propTypes.bool.def(true)
+  data: { type: Array as PropType<TagCardItem[]>, default: () => [] },
+  modelValue: propTypes.oneOfType([String, Number])
 })
 
 const emit = defineEmits<{
@@ -29,263 +16,90 @@ const emit = defineEmits<{
   statusChange: [item: TagCardItem, status: boolean]
 }>()
 
-// 选中的卡片
 const selectedId = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: (val: string | number | undefined) => val && emit('update:modelValue', val)
 })
 
-// 处理卡片选中
-const handleSelectCard = (item: TagCardItem) => {
-  if (props.showRadio) {
-    selectedId.value = item.id
+const handleAction = (type: 'edit' | 'delete', item: TagCardItem, e: MouseEvent) => {
+  e.stopPropagation()
+  if (type === 'edit') {
+    emit('edit', item)
+  } else {
+    emit('delete', item)
   }
 }
 
-// 处理状态切换
-const handleStatusChange = (item: TagCardItem, value: boolean, e: Event) => {
-  e.stopPropagation()
-  emit('statusChange', item, value)
+const weightClasses: Record<string, string> = {
+  高权重: 'bg-[#E8F4FF] text-[#1890FF]',
+  中权重: 'bg-[#EAFDFF] text-[#25C8DA]',
+  低权重: 'bg-[#F7F9FB] text-[#858F98]'
 }
 
-// 编辑
-const handleEdit = (item: TagCardItem, e: Event) => {
-  e.stopPropagation()
-  emit('edit', item)
-}
-
-// 删除
-const handleDelete = (item: TagCardItem, e: Event) => {
-  e.stopPropagation()
-  emit('delete', item)
-}
-
-// 获取权重颜色类
-const getWeightClass = (weight: string) => {
-  const weightMap: Record<string, string> = {
-    高权重: 'high',
-    中权重: 'medium',
-    低权重: 'low'
-  }
-  return weightMap[weight] || 'medium'
-}
-
-// 判断是否启用状态
-const isActive = (status: string) => {
-  return status === '启用中'
-}
+const isActive = (status: string) => status === '启用中'
 </script>
 
 <template>
-  <div class="tag-card-list">
-    <div
-      class="tag-card-list-grid"
-      :style="{
-        gridTemplateColumns: `repeat(${colsPerRow}, 1fr)`
-      }"
-    >
-      <el-card
+  <div class="w-full">
+    <div class="grid grid-cols-4 gap-x-14px gap-y-12px">
+      <div
         v-for="item in data"
         :key="item.id"
-        shadow="hover"
-        class="tag-card"
-        :class="{ 'is-selected': showRadio && selectedId === item.id }"
-        @click="handleSelectCard(item)"
+        class="cursor-pointer border border-[#dcdfe6] rounded-12px bg-white transition-all duration-300"
+        :class="selectedId === item.id
+          ? 'border-[#409eff]! shadow-[0_0_0_1px_rgba(64,158,255,0.2)]'
+          : 'hover:shadow-[0_1px_6px_0_rgba(0,0,0,0.08)]'"
+        @click="selectedId = item.id"
       >
-        <!-- 卡片头部 -->
-        <template #header>
-          <div class="tag-card-header">
-            <div class="tag-card-header-title">
-              <Icon v-if="item.icon" :icon="item.icon" :size="20" color="#409EFF" />
-              <span class="tag-card-title">{{ item.title }}</span>
-            </div>
+        <div class="flex items-center justify-between border-b border-[#ebeef5] px-24px py-13px">
+          <span class="min-w-0 flex-1 truncate text-14px text-[#303133] font-500">
+            {{ item.title }}
+          </span>
+          <el-switch
+            :model-value="isActive(item.status)"
+            @change="(val: boolean) => emit('statusChange', item, val)"
+            @click.stop
+          />
+        </div>
 
-            <!-- 状态开关 (右上角) -->
-            <el-switch
-              v-if="showStatusSwitch"
-              :model-value="isActive(item.status)"
-              @change="(val) => handleStatusChange(item, val, $event)"
-              @click.stop
-            />
-
-            <!-- 单选按钮 (右上角) - 备用 -->
-            <el-radio
-              v-else-if="showRadio"
-              :model-value="selectedId"
-              :value="item.id"
-              @change="handleSelectCard(item)"
-            >
-              <span></span>
-            </el-radio>
-          </div>
-        </template>
-
-        <!-- 卡片内容 -->
-        <div class="tag-card-content">
-          <div class="tag-card-row">
-            <span class="tag-card-label">状态:</span>
-            <el-tag :type="isActive(item.status) ? 'success' : 'info'" size="small">
+        <div class="flex flex-col border-b border-[#ebeef5] px-24px py-16px">
+          <div class="mb-12px flex items-center text-13px">
+            <span class="mr-6px flex-shrink-0 text-[#909399]">状态:</span>
+            <span class="flex items-center gap-1.5" :class="isActive(item.status) ? 'text-[#409eff]' : 'text-[#909399]'">
+              <span class="h-5px w-5px rounded-full" :class="isActive(item.status) ? 'bg-[#409eff]' : 'bg-[#909399]'" />
               {{ item.status }}
-            </el-tag>
+            </span>
           </div>
-
-          <div class="tag-card-row">
-            <span class="tag-card-label">分数类型:</span>
-            <span class="tag-card-value">{{ item.scoreType }}</span>
+          <div class="mb-12px flex items-center text-13px">
+            <span class="min-w-68px flex-shrink-0 text-[#909399]">分数类型:</span>
+            <span class="text-[#606266]">{{ item.scoreType }}</span>
           </div>
-
-          <div class="tag-card-row">
-            <span class="tag-card-label">分数权重:</span>
-            <span
-              class="tag-card-weight"
-              :class="`tag-card-weight--${getWeightClass(item.weight)}`"
-            >
+          <div class="mb-12px flex items-center text-13px">
+            <span class="min-w-68px flex-shrink-0 text-[#909399]">分数权重:</span>
+            <span class="inline-block rounded-2px px-2 py-0.5 text-12px" :class="weightClasses[item.weight]">
               {{ item.weight }}
             </span>
           </div>
         </div>
 
-        <!-- 卡片底部操作 -->
-        <template v-if="showActions" #footer>
-          <div class="tag-card-footer">
-            <el-button text @click="handleEdit(item, $event)">
-              <Icon icon="ep:edit" :size="16" class="mr-4px" />
-            </el-button>
-            <el-button text @click="handleDelete(item, $event)">
-              <Icon icon="ep:delete" :size="16" class="mr-4px" />
-            </el-button>
-          </div>
-        </template>
-      </el-card>
+        <div class="flex items-center justify-around py-10px">
+          <Icon
+            icon="ep:edit"
+            :size="16"
+            class="cursor-pointer text-[#909399] transition-colors duration-300 hover:text-[#409eff]"
+            @click="handleAction('edit', item, $event)"
+          />
+          <Icon
+            icon="ep:delete"
+            :size="16"
+            class="cursor-pointer text-[#909399] transition-colors duration-300 hover:text-[#409eff]"
+            @click="handleAction('delete', item, $event)"
+          />
+        </div>
+      </div>
     </div>
 
-    <!-- 空状态 -->
-    <el-empty v-if="!data || data.length === 0" description="暂无数据" />
+    <el-empty v-if="!data?.length" description="暂无数据" />
   </div>
 </template>
 
-<style lang="scss" scoped>
-.tag-card-list {
-  width: 100%;
-
-  &-grid {
-    display: grid;
-    gap: 16px;
-  }
-}
-
-.tag-card {
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    :deep(.el-card__header) {
-      border-bottom-color: var(--el-color-primary);
-    }
-  }
-
-  &.is-selected {
-    :deep(.el-card) {
-      border-color: var(--el-color-primary);
-      background: var(--el-color-primary-light-9);
-    }
-  }
-
-  :deep(.el-card__header) {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--el-border-color-lighter);
-  }
-
-  :deep(.el-card__body) {
-    padding: 16px;
-  }
-
-  :deep(.el-card__footer) {
-    padding: 8px 16px;
-    border-top: 1px solid var(--el-border-color-lighter);
-  }
-
-  &-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-
-    &-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-      min-width: 0;
-    }
-  }
-
-  &-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &-content {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  &-row {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-  }
-
-  &-label {
-    color: var(--el-text-color-secondary);
-    margin-right: 8px;
-    min-width: 70px;
-  }
-
-  &-value {
-    color: var(--el-text-color-primary);
-  }
-
-  &-weight {
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-
-    &--high {
-      background: #fef0f0;
-      color: #f56c6c;
-    }
-
-    &--medium {
-      background: #ecf5ff;
-      color: #409eff;
-    }
-
-    &--low {
-      background: #f0f9ff;
-      color: #67c23a;
-    }
-  }
-
-  &-footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-
-    :deep(.el-button) {
-      padding: 4px 8px;
-
-      &:hover {
-        color: var(--el-color-primary);
-      }
-    }
-  }
-}
-</style>

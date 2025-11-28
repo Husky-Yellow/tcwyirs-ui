@@ -2,7 +2,7 @@
   <Drawer
     v-model="visible"
     :title="isEdit ? '编辑评分标签' : '新增评分标签'"
-    size="280px"
+    size="524px"
     @close="handleClose"
   >
     <el-form ref="formRef" :model="formData" :rules="rules" label-position="top" class="!p-0">

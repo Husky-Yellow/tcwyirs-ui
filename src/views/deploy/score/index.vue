@@ -1,9 +1,11 @@
 <template>
-  <div class="py-8px">
-    <!-- 操作按钮区域 -->
-    <div class="mb-16px flex items-center gap-12px">
-      <el-button type="primary" @click="handleAdd">新增标签</el-button>
-      <el-button @click="handleOpenConfig">配置分数</el-button>
+    <div class="flex items-center justify-between">
+      <div>评分管理</div>
+      <!-- 操作按钮区域 -->
+      <div class="mb-16px flex items-center gap-12px">
+        <el-button type="primary" @click="handleAdd">新增标签</el-button>
+        <el-button @click="handleOpenConfig">配置权重分数</el-button>
+      </div>
     </div>
 
     <!-- 搜索区域 -->
@@ -24,7 +26,6 @@
       <TagCardList
         v-model="selectedTagId"
         :data="tagCardData"
-        :cols-per-row="4"
         @edit="handleTagEdit"
         @delete="handleTagDelete"
         @status-change="handleTagStatusChange"
@@ -44,7 +45,6 @@
       @confirm="handleTagFormConfirm"
       @cancel="handleTagFormCancel"
     />
-  </div>
 </template>
 
 <script setup lang="ts">
