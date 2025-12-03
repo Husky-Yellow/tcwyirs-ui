@@ -19,7 +19,7 @@ function wrapperEnv(envConf: Record<string, string>) {
   const ret: Record<string, any> = {}
 
   for (const envName of Object.keys(envConf)) {
-    let realName = envConf[envName].replace(/\\n/g, '\n')
+    let realName: string | boolean | number = envConf[envName].replace(/\\n/g, '\n')
     realName = realName === 'true' ? true : realName === 'false' ? false : realName
 
     // 转换端口号为数字
@@ -103,12 +103,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       sourcemap: VITE_SOURCEMAP,
       chunkSizeWarningLimit: 2000,
       cssCodeSplit: true,
-      esbuildOptions: {
-        drop: [
-          ...(VITE_DROP_CONSOLE ? ['console'] : []),
-          ...(VITE_DROP_DEBUGGER ? ['debugger'] : [])
-        ]
-      },
       rollupOptions: {
         output: {
           chunkFileNames: 'js/[name]-[hash].js',

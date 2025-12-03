@@ -308,7 +308,7 @@
                 <!-- 基础示例 -->
                 <div class="demo-example-card">
                   <div class="mb-12px flex items-center justify-between">
-                    <span class="text-14px font-600 text-[var(--el-text-color-primary)]">
+                    <span class="text-14px text-[var(--el-text-color-primary)] font-600">
                       基础示例
                     </span>
                     <el-tag size="small" type="info">所有选项可删除</el-tag>
@@ -336,7 +336,7 @@
                 <!-- 固定选项示例 -->
                 <div class="demo-example-card">
                   <div class="mb-12px flex items-center justify-between">
-                    <span class="text-14px font-600 text-[var(--el-text-color-primary)]">
+                    <span class="text-14px text-[var(--el-text-color-primary)] font-600">
                       固定选项示例
                     </span>
                     <el-tag size="small" type="warning">部分选项受保护</el-tag>
@@ -378,13 +378,117 @@
             </div>
           </div>
         </el-card>
+
+        <!-- 6. ExtensionApplicationForm - 延期申请表单 -->
+        <el-card shadow="hover" class="demo-card">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-12px">
+                <Icon icon="ep:document" :size="24" color="#FF6B9D" />
+                <div>
+                  <h2 class="text-18px font-600">ExtensionApplicationForm - 延期申请表单</h2>
+                  <p class="mt-4px text-12px text-[var(--el-text-color-secondary)]">
+                    抽屉形式的表单，支持项目选择、时间范围、申请说明，中间记录区域可展开/收起
+                  </p>
+                </div>
+              </div>
+              <el-tag type="success">已完成</el-tag>
+            </div>
+          </template>
+
+          <div class="demo-content">
+            <div class="mb-16px">
+              <el-button type="primary" @click="openExtensionForm">
+                <Icon icon="ep:calendar" class="mr-6px" />
+                打开延期申请表单
+              </el-button>
+            </div>
+
+            <div class="demo-info">
+              <div class="demo-info-item">
+                <span class="label">功能:</span>
+                <span>项目关联、日期范围选择、申请说明输入、历史记录展开/收起</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">特性:</span>
+                <span>抽屉形式、表单验证、可展开区域、平滑过渡动画、响应式布局</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">组件:</span>
+                <span>Drawer + Form + DatePicker + Textarea + 可展开面板</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">调用:</span>
+                <span>通过 ref 调用 open() 方法打开抽屉</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">位置:</span>
+                <span class="code">src/components/ExtensionApplicationForm/</span>
+              </div>
+            </div>
+          </div>
+        </el-card>
+
+        <!-- 7. FeedbackDetail - 反馈详情组件 -->
+        <el-card shadow="hover" class="demo-card">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-12px">
+                <Icon icon="ep:chat-dot-round" :size="24" color="#17a2b8" />
+                <div>
+                  <h2 class="text-18px font-600">FeedbackDetail - 反馈详情组件</h2>
+                  <p class="mt-4px text-12px text-[var(--el-text-color-secondary)]">
+                    支持三种状态展示：待处理、已解决、未解决
+                  </p>
+                </div>
+              </div>
+              <el-tag type="success">已完成</el-tag>
+            </div>
+          </template>
+
+          <div class="demo-content">
+            <div class="mb-16px flex flex-wrap gap-12px">
+              <el-button type="info" @click="pendingVisible = true">
+                <Icon icon="ep:clock" class="mr-6px" />
+                待处理状态
+              </el-button>
+              <el-button type="success" @click="resolvedVisible = true">
+                <Icon icon="ep:check" class="mr-6px" />
+                已解决状态
+              </el-button>
+              <el-button type="danger" @click="unresolvedVisible = true">
+                <Icon icon="ep:close" class="mr-6px" />
+                未解决状态
+              </el-button>
+            </div>
+
+            <div class="demo-info">
+              <div class="demo-info-item">
+                <span class="label">功能:</span>
+                <span>反馈信息展示、回复列表、状态驱动交互、自定义反馈方式选项</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">特性:</span>
+                <span>三种状态切换、可回复/已结束状态、状态点颜色自动适配、回复输入</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">状态:</span>
+                <span>待处理(可回复)、已解决(已结束)、未解决(可回复)</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">位置:</span>
+                <span class="code">src/components/FeedbackDetail/</span>
+              </div>
+            </div>
+          </div>
+        </el-card>
       </div>
 
       <!-- 底部信息 -->
       <div class="mt-32px text-center">
         <el-divider />
         <p class="text-14px text-[var(--el-text-color-secondary)]">
-          共 5 个组件 | 创建时间: 2025-10-19 |
+          共 7 个组件 | 创建时间: 2025-10-19 |
           <span class="cursor-pointer text-[var(--el-color-primary)]" @click="showInfo"
             >查看详细信息</span
           >
@@ -394,6 +498,31 @@
 
     <!-- 评分弹窗 -->
     <RatingReviewModal v-model="showReviewModal" title="组件评价" @submit="handleReviewSubmit" />
+
+    <!-- 延期申请表单 -->
+    <ExtensionApplicationForm ref="extensionFormRef" @submit="handleExtensionSubmit" />
+
+    <!-- 反馈详情组件 -->
+    <FeedbackDetail
+      v-model="pendingVisible"
+      :data="pendingFeedback"
+      @confirm="(way, reply) => handleFeedbackConfirm('待处理', way, reply)"
+      @cancel="() => handleFeedbackCancel('待处理')"
+    />
+
+    <FeedbackDetail
+      v-model="resolvedVisible"
+      :data="resolvedFeedback"
+      @confirm="() => handleFeedbackConfirm('已解决')"
+      @cancel="() => handleFeedbackCancel('已解决')"
+    />
+
+    <FeedbackDetail
+      v-model="unresolvedVisible"
+      :data="unresolvedFeedback"
+      @confirm="(way, reply) => handleFeedbackConfirm('未解决', way, reply)"
+      @cancel="() => handleFeedbackCancel('未解决')"
+    />
 
     <!-- 抽屉组件演示 -->
     <Drawer v-model="showDrawerRight" title="从右侧打开的抽屉" size="500px" direction="rtl">
@@ -498,6 +627,10 @@ import { DynamicSelect } from '@/components/DynamicSelect'
 import type { DynamicSelectOption } from '@/components/DynamicSelect'
 import { DynamicDataTable } from '@/components/DynamicDataTable'
 import type { TableColumn, TableRow } from '@/components/DynamicDataTable'
+import { ExtensionApplicationForm } from '@/components/ExtensionApplicationForm'
+import type { ExtensionFormData } from '@/components/ExtensionApplicationForm'
+import { FeedbackDetail, FeedbackStatus } from '@/components/FeedbackDetail'
+import type { FeedbackDetail as FeedbackDetailType } from '@/components/FeedbackDetail'
 
 defineOptions({ name: 'DemoPage' })
 
@@ -719,6 +852,90 @@ const getOptionLabel = (options: DynamicSelectOption[], value: string | number |
   return option?.label || ''
 }
 
+// ExtensionApplicationForm 延期申请表单演示
+const extensionFormRef = ref()
+
+const openExtensionForm = () => {
+  extensionFormRef.value?.open()
+}
+
+const handleExtensionSubmit = (data: ExtensionFormData) => {
+  console.log('延期申请数据:', data)
+  ElMessage.success('延期申请提交成功!')
+}
+
+// FeedbackDetail 反馈详情演示
+const pendingVisible = ref(false)
+const resolvedVisible = ref(false)
+const unresolvedVisible = ref(false)
+
+// 待处理状态数据
+const pendingFeedback = ref<FeedbackDetailType>({
+  id: 1,
+  status: FeedbackStatus.PENDING,
+  type: '待处理',
+  resource: '生物资源系统',
+  time: '2025-03-04 12:36:12',
+  description: '这是一个问题描述的文本。这是一个问题描述的文本。',
+  screenshot: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+  replies: []
+})
+
+// 已解决状态数据
+const resolvedFeedback = ref<FeedbackDetailType>({
+  id: 2,
+  status: FeedbackStatus.RESOLVED,
+  type: '其他问题',
+  resource: '生物资源系统',
+  time: '2025-03-04 12:36:12',
+  description: '这是一个问题描述的文本。这是一个问题描述的文本。',
+  screenshot: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+  replies: [
+    {
+      id: 1,
+      content:
+        '实时报聚 Pulsar 指标将多支持 Apache Pulsar 分布式消息系统，能实现数据的实时处理。感谢反馈，这个问题已经解决了。',
+      time: '9月11日 12:36',
+      isSelf: false
+    }
+  ]
+})
+
+// 未解决状态数据
+const unresolvedFeedback = ref<FeedbackDetailType>({
+  id: 3,
+  status: FeedbackStatus.UNRESOLVED,
+  type: '其他问题',
+  resource: '生物资源系统',
+  time: '2025-03-04 12:36:12',
+  description: '这是一个问题描述的文本。这是一个问题描述的文本。',
+  screenshot: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+  replies: [
+    {
+      id: 1,
+      content:
+        '实时报聚 Pulsar 指标将多支持 Apache Pulsar 分布式消息系统，能实现数据的实时处理，感谢您的反馈。',
+      time: '10月11日 12:36',
+      isSelf: false
+    },
+    {
+      id: 2,
+      content: '本计报聚 Pulsar 指标将多支持 Apache Pulsar 分布式消息系统，能实现数据。',
+      time: '10月12日 12:36',
+      isSelf: true
+    }
+  ]
+})
+
+const handleFeedbackConfirm = (type: string, feedbackWay?: string, reply?: string) => {
+  console.log(`${type} - 确认`, { feedbackWay, reply })
+  ElMessage.success('操作成功')
+}
+
+const handleFeedbackCancel = (type: string) => {
+  console.log(`${type} - 取消`)
+}
+
 // 导航
 const navigateToHome = () => {
   router.push('/')
@@ -729,10 +946,10 @@ const showInfo = () => {
   ElMessageBox.alert(
     `
       <div style="line-height: 1.8;">
-        <p><strong>组件总数:</strong> 5 个</p>
+        <p><strong>组件总数:</strong> 7 个</p>
         <p><strong>创建时间:</strong> 2025-10-19</p>
         <p><strong>技术栈:</strong> Vue 3 + TypeScript + Element Plus + UnoCSS</p>
-        <p><strong>组件列表:</strong> RatingReviewModal, Drawer, SearchForm, DynamicDataTable, DynamicSelect</p>
+        <p><strong>组件列表:</strong> RatingReviewModal, Drawer, SearchForm, DynamicDataTable, DynamicSelect, ExtensionApplicationForm, FeedbackDetail</p>
       </div>
     `,
     '组件信息',
