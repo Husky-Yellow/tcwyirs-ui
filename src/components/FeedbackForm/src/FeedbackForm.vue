@@ -188,12 +188,4 @@ watch(
 </template>
 
 <style lang="scss" scoped>
-:deep(.el-form-item__label) {
-  font-weight: 500;
-  color: var(--el-text-color-primary);
-}
-
-:deep(.el-textarea__inner) {
-  font-family: inherit;
-}
 </style>

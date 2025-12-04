@@ -60,8 +60,13 @@
       </section>
 
       <!-- 数据资源信息 -->
-      <section class="mx-auto max-w-1160px rounded-8px bg-white py-60px">
+      <section class="mx-auto max-w-1160px rounded-8px bg-white pb-30px pt-60px">
         <ResourceInfo :basic-info="resourceDetail.basicInfo" :data-info="resourceDetail.dataInfo" />
+      </section>
+
+      <!-- 资源图片展示 -->
+      <section class="mx-auto max-w-1160px pb-60px pt-20px">
+        <ImageCarousel :cards="resourceCards" title="资源介绍场景" />
       </section>
 
       <!-- 评分及评论 -->
@@ -120,19 +125,30 @@
       :resource-name="resourceDetail.title"
       @success="handleFeedbackSuccess"
     />
+
+    <!-- 评分评论模态框 -->
+    <RatingReviewModal
+      v-model="ratingModalVisible"
+      title="发布评论"
+      @submit="handleRatingSubmit"
+      @cancel="handleRatingCancel"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import CommentList from '@/components/CommentList/src/CommentList.vue'
 import { ResourceInfo } from '@/components/ResourceInfo'
 import { FeedbackForm } from '@/components/FeedbackForm'
+import { RatingReviewModal } from '@/components/BusinessModal'
+import type { RatingReviewResult } from '@/components/BusinessModal'
 import { usePublic } from './composables/usePublic'
 import { useMarketplaceDetailData } from './composables/useMarketplaceDetailData'
 import { getAccessToken } from '@/utils/auth'
+import { ImageCarousel, type CardItem } from '@/components/ImageCarousel'
 
 defineOptions({ name: 'MarketplaceDetail' })
 
@@ -140,8 +156,35 @@ const route = useRoute()
 const { isScrolled, navigateTo } = usePublic()
 const { resourceDetail } = useMarketplaceDetailData(route.params.id as string)
 
+// 资源介绍卡片列表
+const resourceCards = ref<CardItem[]>([
+  {
+    image: 'https://ts1.tc.mm.bing.net/th?id=ORMS.b21be94da0043f77f32324205c621feb&pid=Wdp&w=268&h=140&qlt=90&c=1&rs=1&dpr=1&p=0',
+    description: '这是一段关于应用资源的介绍——检索关于应用相关资源的介绍——检索关于应用相关资源的介绍'
+  },
+  {
+    image: 'https://ts1.tc.mm.bing.net/th?id=ORMS.b21be94da0043f77f32324205c621feb&pid=Wdp&w=268&h=140&qlt=90&c=1&rs=1&dpr=1&p=0',
+    description: '这是一段关于应用资源的介绍——检索关于应用相关资源的介绍——检索关于应用相关资源的介绍'
+  },
+  {
+    image: 'https://ts1.tc.mm.bing.net/th?id=ORMS.b21be94da0043f77f32324205c621feb&pid=Wdp&w=268&h=140&qlt=90&c=1&rs=1&dpr=1&p=0',
+    description: '这是一段关于应用资源的介绍——检索关于应用相关资源的介绍——检索关于应用相关资源的介绍'
+  },
+  {
+    image: 'https://ts1.tc.mm.bing.net/th?id=ORMS.b21be94da0043f77f32324205c621feb&pid=Wdp&w=268&h=140&qlt=90&c=1&rs=1&dpr=1&p=0',
+    description: '这是一段关于应用资源的介绍——检索关于应用相关资源的介绍——检索关于应用相关资源的介绍'
+  },
+  {
+    image: 'https://ts1.tc.mm.bing.net/th?id=ORMS.b21be94da0043f77f32324205c621feb&pid=Wdp&w=268&h=140&qlt=90&c=1&rs=1&dpr=1&p=0',
+    description: '这是一段关于应用资源的介绍——检索关于应用相关资源的介绍——检索关于应用相关资源的介绍'
+  }
+])
+
 // 反馈抽屉显示状态
 const feedbackVisible = ref(false)
+
+// 评分评论模态框显示状态
+const ratingModalVisible = ref(false)
 
 // 点击问题反馈
 const handleFeedbackClick = async () => {
@@ -177,9 +220,40 @@ const handlePublishComment = (content: string) => {
   // TODO: 调用 API 发布评论
 }
 
-const handleReplyComment = (comment: any) => {
+const handleReplyComment = async (comment: any) => {
   console.log('回复评论:', comment)
-  // TODO: 显示回复框或调用 API
+
+  // 检查是否已登录
+  const hasToken = getAccessToken()
+  if (!hasToken) {
+    try {
+      await ElMessageBox.confirm('请先登录后再发布评论', '提示', {
+        confirmButtonText: '去登录',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+      // 点击确认，跳转到登录页
+      navigateTo('/login')
+    } catch {
+      // 点击取消，不做任何操作
+    }
+    return
+  }
+
+  // 已登录，打开评分评论模态框
+  ratingModalVisible.value = true
+}
+
+// 提交评分评论
+const handleRatingSubmit = (data: RatingReviewResult) => {
+  console.log('提交评分评论:', data)
+  // TODO: 调用 API 提交评分评论
+  ElMessage.success('评论发布成功')
+}
+
+// 取消评分评论
+const handleRatingCancel = () => {
+  console.log('取消评分评论')
 }
 </script>
 

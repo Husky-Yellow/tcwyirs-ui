@@ -1,11 +1,11 @@
 <template>
   <div class="bg-white">
-    <h2 class="border-x-0 border-b border-t-0 border-[#0000000f] border-solid pb-22px text-20px text-black/85 font-medium leading-24px font-['PingFang_SC']">
+    <h2 class="pb-22px text-20px text-black/85 font-medium leading-24px font-['PingFang_SC']">
       数据资源信息
     </h2>
 
     <!-- 基本信息 -->
-    <div class="mb-40px mt-24px">
+    <div class="mb-40px border-x-0 border-b-0 border-t border-[#0000000f] border-solid pt-24px">
       <h3 class="mb-24px text-14px text-black/85 font-medium leading-24px font-['PingFang_SC']">基本信息</h3>
       <div class="grid grid-cols-4 gap-x-40px gap-y-20px">
         <div
@@ -25,7 +25,7 @@
     </div>
 
     <!-- 数据信息 -->
-    <div class="mt-28px">
+    <div class="mt-28px border-x-0 border-b border-t-0 border-[#0000000f] border-solid pb-30px">
       <h3 class="mb-24px text-14px text-black/85 font-medium leading-24px font-['PingFang_SC']">数据信息</h3>
       <div class="grid grid-cols-3 gap-x-40px gap-y-20px">
         <div v-for="item in dataInfoItems" :key="item.label" class="flex items-baseline gap-8px">
