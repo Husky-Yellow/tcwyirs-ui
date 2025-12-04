@@ -80,7 +80,8 @@ export function createVitePlugins(isBuild = false): PluginOption[] {
       globs: [
         'src/components/**/**.{vue,tsx}',
         '!src/components/**/README.md',
-        '!src/components/DiyEditor/components/mobile/**'
+        '!src/components/DiyEditor/components/mobile/**',
+        '!src/mock/**'
       ]
     }),
 

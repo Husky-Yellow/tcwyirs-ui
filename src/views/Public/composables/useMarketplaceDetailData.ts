@@ -1,6 +1,60 @@
 import { ref, onMounted } from 'vue'
-import { getMarketplaceDetail } from '@/api/marketplace'
-import type { ResourceDetail } from '@/api/marketplace'
+import { getResourceInfo } from '@/api/resource/info'
+import { getResourceEvaluateList } from '@/api/resource/evaluate'
+import type { ResourceInfoVO } from '@/api/resource/info'
+import type { ResourceEvaluateVO } from '@/api/resource/evaluate'
+
+// 前端展示类型定义
+interface BasicInfo {
+  resourceName: string
+  resourceTag: string
+  owner: string
+  creator: string
+  application: string
+  contact: string
+  descriptionText: string
+  publishTime: string
+  contactPhone: string
+}
+
+interface DataInfo {
+  applications: string
+  visits: string
+  monthlyHits: string
+}
+
+interface Reviews {
+  positive: string[]
+  negative: string[]
+  score: number
+}
+
+interface ReplyItem {
+  id: string
+  userName: string
+  time: string
+  content: string
+}
+
+interface CommentItem {
+  id: string
+  userName: string
+  time: string
+  content: string
+  score: number
+  showReplies: boolean
+  replies: ReplyItem[]
+}
+
+interface ResourceDetail {
+  id: string
+  title: string
+  description: string
+  basicInfo: BasicInfo
+  dataInfo: DataInfo
+  reviews: Reviews
+  comments: CommentItem[]
+}
 
 // 默认的资源详情（mock 数据，不含 id）
 const DEFAULT_DETAIL: Omit<ResourceDetail, 'id'> = {
@@ -104,12 +158,74 @@ export const useMarketplaceDetailData = (id: string) => {
 
   const load = async () => {
     try {
-      const data = await getMarketplaceDetail(id)
+      const resourceId = Number(id)
+
+      // 并行获取资源信息和评论列表
+      const [resource, evaluates] = await Promise.all([
+        getResourceInfo(resourceId),
+        getResourceEvaluateList(resourceId)
+      ])
+
+      // 转换数据格式
+      const transformed = transformToResourceDetail(resource, evaluates)
+
       // 兜底合并，避免后端缺字段导致渲染异常
-      resourceDetail.value = { ...DEFAULT_DETAIL, ...data, id }
+      resourceDetail.value = { ...DEFAULT_DETAIL, ...transformed, id }
     } catch (e) {
       // 保留默认 mock 数据
       console.warn('[useMarketplaceDetailData] 使用本地 mock 数据:', e)
+    }
+  }
+
+  // 数据转换函数
+  const transformToResourceDetail = (
+    resource: ResourceInfoVO,
+    evaluates: ResourceEvaluateVO[]
+  ): Partial<ResourceDetail> => {
+    // 计算评分统计
+    const ratings = evaluates.filter(e => e.rating).map(e => e.rating!)
+    const avgScore = ratings.length > 0
+      ? Math.round(ratings.reduce((a, b) => a + b, 0) / ratings.length * 20) // 转换为100分制
+      : 0
+
+    return {
+      title: resource.name,
+      description: resource.description || '',
+      basicInfo: {
+        resourceName: resource.name,
+        resourceTag: resource.tags?.[0]?.toString() || '',
+        owner: resource.creator || '',
+        creator: resource.creator || '',
+        application: '',
+        contact: '',
+        descriptionText: resource.description || '',
+        publishTime: resource.createTime ? new Date(resource.createTime).toLocaleString() : '',
+        contactPhone: ''
+      },
+      dataInfo: {
+        applications: '0',
+        visits: '0',
+        monthlyHits: '0'
+      },
+      reviews: {
+        positive: [],
+        negative: [],
+        score: avgScore
+      },
+      comments: evaluates.map((e, idx) => ({
+        id: String(e.id || idx),
+        userName: e.evaluator || '匿名',
+        time: e.createTime ? new Date(e.createTime).toLocaleString() : '',
+        content: e.comment || '',
+        score: e.rating ? e.rating * 20 : 0, // 转换为100分制
+        showReplies: false,
+        replies: (e.replies || []).map((r, ridx) => ({
+          id: String(r.id || `${idx}-${ridx}`),
+          userName: r.replier || '匿名',
+          time: r.createTime ? new Date(r.createTime).toLocaleString() : '',
+          content: r.content
+        }))
+      }))
     }
   }
 

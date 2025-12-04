@@ -1,7 +1,14 @@
 import { shallowReactive, ref, computed, onMounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
-import type { MarketplaceProduct } from '@/api/marketplace'
-import { getMarketplaceProducts } from '@/api/marketplace'
+import { getResourceInfoPage } from '@/api/resource/info'
+
+/** 市场资源产品 */
+interface MarketplaceProduct {
+  id: string
+  title: string
+  description: string
+  category: string
+}
 
 /**
  * Marketplace 组合 Hook：数据获取 + 搜索过滤
@@ -17,7 +24,19 @@ export const useMarketplace = () => {
 
     isLoading.value = true
     try {
-      const prods = await getMarketplaceProducts()
+      const result = await getResourceInfoPage({
+        pageNo: 1,
+        pageSize: 100,
+        status: 2 // 只获取已发布的资源
+      })
+
+      const prods = (result.list || []).map(item => ({
+        id: String(item.id),
+        title: item.name,
+        description: item.description || '',
+        category: item.tags?.[0]?.toString() || ''
+      }))
+
       products.splice(0, products.length, ...prods)
     } catch (e) {
       console.warn('[useMarketplace] 加载数据失败:', e)

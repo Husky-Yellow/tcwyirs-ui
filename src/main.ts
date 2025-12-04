@@ -1,31 +1,31 @@
-// 引入unocss css
+﻿// 寮曞叆unocss css
 import '@/plugins/unocss'
 
-// 导入全局的svg图标
+// 瀵煎叆鍏ㄥ眬鐨剆vg鍥炬爣
 import '@/plugins/svgIcon'
 
-// 引入状态管理
+// 寮曞叆鐘舵€佺鐞?
 import { setupStore } from '@/store'
 
-// 全局组件
+// 鍏ㄥ眬缁勪欢
 import { setupGlobCom } from '@/components'
 
-// 引入 element-plus
+// 寮曞叆 element-plus
 import { setupElementPlus } from '@/plugins/elementPlus'
 
-// 引入 form-create
+// 寮曞叆 form-create
 import { setupFormCreate } from '@/plugins/formCreate'
 
-// 引入全局样式
+// 寮曞叆鍏ㄥ眬鏍峰紡
 import '@/styles/index.scss'
 
-// 引入动画
+// 寮曞叆鍔ㄧ敾
 import '@/plugins/animate.css'
 
-// 路由
+// 璺敱
 import router, { setupRouter } from '@/router'
 
-// 指令
+// 鎸囦护
 import { setupAuth, setupMountedFocus } from '@/directives'
 
 import { createApp } from 'vue'
@@ -34,15 +34,15 @@ import App from './App.vue'
 
 import './permission'
 
-import VueDOMPurifyHTML from 'vue-dompurify-html' // 解决v-html 的安全隐患
+import VueDOMPurifyHTML from 'vue-dompurify-html' // 瑙ｅ喅v-html 鐨勫畨鍏ㄩ殣鎮?
 
-// 创建实例
+// 鍒涘缓瀹炰緥
 const setupAll = async () => {
-  // 开发环境启动 MSW Mock 服务
-  // if (import.meta.env.DEV) {
-  //   const { setupMock } = await import('./mock')
-  //   await setupMock()
-  // }
+  // 寮€鍙戠幆澧冨惎鍔?MSW Mock 鏈嶅姟
+  if (import.meta.env.DEV) {
+    const { setupMock } = await import('./mock')
+    await setupMock()
+  }
 
   const app = createApp(App)
 
@@ -56,7 +56,7 @@ const setupAll = async () => {
 
   setupRouter(app)
 
-  // directives 指令
+  // directives 鎸囦护
   setupAuth(app)
   setupMountedFocus(app)
 
@@ -68,4 +68,5 @@ const setupAll = async () => {
 }
 
 setupAll()
+
 
