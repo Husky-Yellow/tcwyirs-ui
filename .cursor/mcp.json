@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "chrome-devtools-mcp",
+      "args": ["--headless"]
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-55e5712f-68e7-4e06-a9d6-b42903fa1ce4"
+      }
+    },
+    "API 文档": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "apifox-mcp-server@latest",
+        "--project=6505154"
+      ],
+      "env": {
+        "APIFOX_ACCESS_TOKEN": "APS-MRktmQnjvIIdiweIMJ7OoNcXr2yTY5uu"
+      }
+    }
+  }
+}

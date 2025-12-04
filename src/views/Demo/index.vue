@@ -630,7 +630,6 @@ import type { TableColumn, TableRow } from '@/components/DynamicDataTable'
 import { ExtensionApplicationForm } from '@/components/ExtensionApplicationForm'
 import type { ExtensionFormData } from '@/components/ExtensionApplicationForm'
 import { FeedbackDetail, FeedbackStatus } from '@/components/FeedbackDetail'
-import type { FeedbackDetail as FeedbackDetailType } from '@/components/FeedbackDetail'
 
 defineOptions({ name: 'DemoPage' })
 
@@ -870,7 +869,7 @@ const resolvedVisible = ref(false)
 const unresolvedVisible = ref(false)
 
 // 待处理状态数据
-const pendingFeedback = ref<FeedbackDetailType>({
+const pendingFeedback = ref<any>({
   id: 1,
   status: FeedbackStatus.PENDING,
   type: '待处理',
@@ -882,7 +881,7 @@ const pendingFeedback = ref<FeedbackDetailType>({
 })
 
 // 已解决状态数据
-const resolvedFeedback = ref<FeedbackDetailType>({
+const resolvedFeedback = ref<any>({
   id: 2,
   status: FeedbackStatus.RESOLVED,
   type: '其他问题',
@@ -902,7 +901,7 @@ const resolvedFeedback = ref<FeedbackDetailType>({
 })
 
 // 未解决状态数据
-const unresolvedFeedback = ref<FeedbackDetailType>({
+const unresolvedFeedback = ref<any>({
   id: 3,
   status: FeedbackStatus.UNRESOLVED,
   type: '其他问题',
@@ -945,7 +944,7 @@ const navigateToHome = () => {
 const showInfo = () => {
   ElMessageBox.alert(
     `
-      <div style="line-height: 1.8;">
+      <div>
         <p><strong>组件总数:</strong> 7 个</p>
         <p><strong>创建时间:</strong> 2025-10-19</p>
         <p><strong>技术栈:</strong> Vue 3 + TypeScript + Element Plus + UnoCSS</p>

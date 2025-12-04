@@ -108,7 +108,7 @@ watch(drawerVisible, (val) => {
 
       <!-- 第一行：反馈状态、反馈资源、反馈时间 -->
       <div class="mb-12px flex flex-wrap">
-        <div class="mb-8px flex-33.333% text-12px text-[#606266]">
+        <div class="flex-33.333% mb-8px text-12px text-[#606266]">
           <span class="text-[#909399]">反馈状态：</span>
           <span class="inline-flex items-center gap-4px text-[#606266]">
             <span
@@ -118,11 +118,11 @@ watch(drawerVisible, (val) => {
             {{ getStatusStyle(data.status).text }}
           </span>
         </div>
-        <div class="mb-8px flex-33.333% text-12px text-[#606266]">
+        <div class="flex-33.333% mb-8px text-12px text-[#606266]">
           <span class="text-[#909399]">反馈资源：</span>
           <span class="text-[#606266]">{{ data.resource }}</span>
         </div>
-        <div class="mb-8px flex-33.333% text-12px text-[#606266]">
+        <div class="flex-33.333% mb-8px text-12px text-[#606266]">
           <span class="text-[#909399]">反馈时间：</span>
           <span class="text-[#606266]">{{ data.time }}</span>
         </div>
@@ -142,7 +142,7 @@ watch(drawerVisible, (val) => {
 
       <!-- 问题描述 -->
       <div class="mb-12px flex flex-wrap">
-        <div class="mb-8px flex-100% text-12px text-[#606266]">
+        <div class="flex-100% mb-8px text-12px text-[#606266]">
           <span class="text-[#909399]">问题描述：</span>
           <span class="text-[#606266]">{{ data.description || data.content }}</span>
         </div>
@@ -150,10 +150,10 @@ watch(drawerVisible, (val) => {
 
       <!-- 问题截图 -->
       <div v-if="data.screenshot" class="flex flex-wrap">
-        <div class="mb-8px flex-100% text-12px text-[#606266]">
+        <div class="flex-100% mb-8px text-12px text-[#606266]">
           <span class="text-[#909399]">问题截图：</span>
         </div>
-        <div class="mt-8px h-80px w-80px overflow-hidden rd-4px border border-[#e4e7ed]">
+        <div class="mt-8px h-80px w-80px overflow-hidden border border-[#e4e7ed] rd-4px">
           <el-image
             :src="data.screenshot"
             fit="cover"
@@ -163,7 +163,7 @@ watch(drawerVisible, (val) => {
           >
             <template #error>
               <div
-                class="flex h-full w-full items-center justify-center bg-[#f5f7fa] text-[#909399]"
+                class="h-full w-full flex items-center justify-center bg-[#f5f7fa] text-[#909399]"
               >
                 <Icon icon="ep:picture" :size="24" />
               </div>

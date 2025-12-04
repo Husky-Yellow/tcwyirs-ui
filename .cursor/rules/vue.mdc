@@ -1,0 +1,594 @@
+---
+description: Vue 3 企业级组件开发指南
+glob: "**/*.vue"
+alwaysApply: true
+---
+
+# 🚀 Vue 3 企业级组件开发指南
+
+## 🎯 Vue 3 现代化开发原则
+
+### 📋 核心技术要求
+- **🎨 `<script setup>` 语法糖** - 所有组件必须使用现代化语法
+- **⚡ Composition API 优先** - 响应式数据管理 + 业务逻辑封装
+- **🔧 TypeScript 严格模式** - `defineProps<T>()` + `defineEmits<T>()`
+- **🎛️ Element Plus 深度集成** - 企业级 UI 组件库最佳实践
+- **🔍 UnoCSS 原子化样式** - 高性能 CSS 引擎 + 响应式设计
+- **🔐 RBAC 权限系统** - 细粒度权限控制 + 指令式权限检查
+
+### 🏗️ 企业级架构模式
+- **📦 业务域组件设计** - 设备管理、工作流引擎、系统管理
+- **🔄 Composables 业务逻辑复用** - `useTable`、`useForm`、`useCrudSchemas`
+- **🎭 组件分层架构** - 页面组件 → 业务组件 → 基础组件
+- **🛡️ 错误边界与加载状态** - 统一错误处理 + 优雅的用户反馈
+- **⚡ 性能优化策略** - 懒加载、虚拟滚动、内存管理
+
+## 🏗️ 企业级组件架构设计
+
+### 🎨 组件分层架构
+```
+┌─────────────────────────────────────────────────────────┐
+│  🖥️  Page Components (页面组件)                           │
+│  ├── DeviceManagement.vue    # 设备管理主页               │
+│  ├── ProcessDesigner.vue     # 流程设计器页面             │
+│  └── UserSettings.vue        # 用户设置页面               │
+├─────────────────────────────────────────────────────────┤
+│  🧩  Business Components (业务组件)                      │
+│  ├── DeviceTable.vue         # 设备数据表格               │
+│  ├── ProcessForm.vue         # 流程表单组件               │
+│  └── PermissionTree.vue      # 权限树组件                 │
+├─────────────────────────────────────────────────────────┤
+│  🔧  Base Components (基础组件)                          │
+│  ├── SmartSearch.vue         # 智能搜索组件               │
+│  ├── DataTable.vue           # 通用数据表格               │
+│  └── FormBuilder.vue         # 动态表单构建器             │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 🚀 现代化页面组件模板
+```vue
+<template>
+  <div class="enterprise-layout">
+    <!-- 🏷️ 页面头部导航 -->
+    <PageHeader 
+      :breadcrumb="breadcrumbConfig"
+      :title="pageConfig.title"
+      :subtitle="pageConfig.subtitle"
+    >
+      <template #extra>
+        <!-- 🔐 权限控制的操作按钮 -->
+        <el-space>
+          <el-button
+            v-hasPermi="['device:export']"
+            type="primary"
+            :loading="exportLoading"
+            @click="handleBatchExport"
+          >
+            <Icon icon="ep:download" />
+            批量导出
+          </el-button>
+          
+          <el-button
+            v-hasPermi="['device:create']"
+            type="primary"
+            @click="handleCreate"
+          >
+            <Icon icon="ep:plus" />
+            新增设备
+          </el-button>
+        </el-space>
+      </template>
+    </PageHeader>
+
+    <!-- 📊 数据概览卡片 -->
+    <div class="overview-cards mb-20px">
+      <el-row :gutter="16">
+        <el-col 
+          v-for="stat in deviceStats" 
+          :key="stat.key"
+          :span="6"
+        >
+          <StatCard
+            :title="stat.title"
+            :value="stat.value"
+            :trend="stat.trend"
+            :color="stat.color"
+            :icon="stat.icon"
+            @click="handleStatFilter(stat.key)"
+          />
+        </el-col>
+      </el-row>
+    </div>
+
+    <!-- 🎯 主要内容区域 -->
+    <ContentWrap>
+      <!-- 🔍 智能搜索与筛选 -->
+      <SmartSearch
+        v-model="searchFormData"
+        :schema="searchSchema"
+        :loading="searchLoading"
+        @search="handleAdvancedSearch"
+        @reset="handleSearchReset"
+        @export="handleSearchExport"
+      />
+
+      <!-- 📋 批量操作工具栏 -->
+      <div 
+        v-show="hasSelectedRows"
+        class="batch-actions-bar"
+      >
+        <el-alert
+          :title="`已选择 ${selectedRows.length} 项`"
+          type="info"
+          show-icon
+          :closable="false"
+        >
+          <template #default>
+            <el-space>
+              <el-button
+                size="small"
+                @click="handleBatchEdit"
+              >
+                批量编辑
+              </el-button>
+              <el-button
+                size="small"
+                type="danger"
+                @click="handleBatchDelete"
+              >
+                批量删除
+              </el-button>
+            </el-space>
+          </template>
+        </el-alert>
+      </div>
+
+      <!-- 📊 高性能数据表格 -->
+      <EnterpriseTable
+        ref="tableRef"
+        v-model:selection="selectedRows"
+        :data="tableData"
+        :columns="tableColumns"
+        :loading="tableLoading"
+        :pagination="paginationConfig"
+        :row-key="'id'"
+        :default-sort="{ prop: 'createTime', order: 'descending' }"
+        @refresh="refreshTableData"
+        @sort-change="handleSortChange"
+        @filter-change="handleFilterChange"
+        @row-click="handleRowClick"
+        @row-dblclick="handleRowDoubleClick"
+      >
+        <!-- 🏷️ 设备状态列 -->
+        <template #deviceStatus="{ row }">
+          <DeviceStatusBadge
+            :status="row.deviceStatus"
+            :last-online="row.lastOnlineTime"
+            :show-tooltip="true"
+          />
+        </template>
+
+        <!-- 🗺️ 位置信息列 -->
+        <template #location="{ row }">
+          <LocationDisplay
+            :latitude="row.latitude"
+            :longitude="row.longitude"
+            :address="row.address"
+            @view-map="handleViewLocation(row)"
+          />
+        </template>
+
+        <!-- ⚙️ 操作列 -->
+        <template #actions="{ row }">
+          <ActionDropdown
+            :actions="getRowActions(row)"
+            @action="handleRowAction"
+          />
+        </template>
+      </EnterpriseTable>
+    </ContentWrap>
+
+    <!-- 📝 业务表单对话框 -->
+    <DeviceFormDialog
+      v-model="formDialog.visible"
+      :device-data="formDialog.data"
+      :form-mode="formDialog.mode"
+      :form-schema="deviceFormSchema"
+      @success="handleFormSuccess"
+      @cancel="handleFormCancel"
+    />
+
+    <!-- 🗺️ 设备位置查看器 -->
+    <LocationViewerDialog
+      v-model="locationDialog.visible"
+      :device="locationDialog.device"
+      :readonly="true"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+// 🎯 核心 Composition API 导入
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+// 🔧 业务 Hooks 导入
+import { useDeviceManagement } from '@/hooks/business/useDeviceManagement'
+import { usePermission } from '@/hooks/system/usePermission'
+import { useExport } from '@/hooks/common/useExport'
+import { useWebSocket } from '@/hooks/common/useWebSocket'
+
+// 📋 类型定义导入
+import type { 
+  DeviceVO, 
+  DeviceSearchParams,
+  DeviceStatistics,
+  DeviceFormData 
+} from '@/api/EquipmentManagement/types'
+
+import type { 
+  TableColumnConfig,
+  PaginationConfig,
+  FormDialogState 
+} from '@/types/common'
+
+// 🏷️ 组件选项定义
+defineOptions({
+  name: 'DeviceManagement',
+  inheritAttrs: false
+})
+
+// 🎯 路由与权限
+const router = useRouter()
+const route = useRoute()
+const { hasPermission, hasRole } = usePermission()
+
+// 📊 业务数据管理
+const {
+  // 🗂️ 表格数据状态
+  tableData,
+  tableLoading,
+  selectedRows,
+  paginationConfig,
+  
+  // 📈 统计数据
+  deviceStats,
+  
+  // 🔍 搜索配置
+  searchFormData,
+  searchSchema,
+  searchLoading,
+  
+  // 📋 表格配置
+  tableColumns,
+  deviceFormSchema,
+  
+  // 🔧 业务方法
+  methods: {
+    refreshTableData,
+    handleAdvancedSearch,
+    handleSearchReset,
+    getRowActions,
+    createDevice,
+    updateDevice,
+    deleteDevice
+  }
+} = useDeviceManagement()
+
+// 🔄 实时数据同步
+const { 
+  connect: connectWebSocket,
+  disconnect: disconnectWebSocket
+} = useWebSocket({
+  url: '/ws/device-status',
+  onMessage: handleDeviceStatusUpdate
+})
+
+// 📊 数据导出功能
+const { 
+  handleExport: handleBatchExport,
+  exportLoading
+} = useExport({
+  exportApi: exportDeviceListApi,
+  filename: '设备管理数据'
+})
+
+// 🎨 UI 状态管理
+const formDialog = reactive<FormDialogState<DeviceFormData>>({
+  visible: false,
+  mode: 'create',
+  data: null
+})
+
+const locationDialog = reactive({
+  visible: false,
+  device: null as DeviceVO | null
+})
+
+// 💡 计算属性
+const hasSelectedRows = computed(() => selectedRows.value.length > 0)
+
+const breadcrumbConfig = computed(() => [
+  { label: '首页', to: '/' },
+  { label: '设备管理', to: '/equipment' },
+  { label: '设备列表' }
+])
+
+const pageConfig = computed(() => ({
+  title: '设备管理',
+  subtitle: `共 ${paginationConfig.total} 台设备`
+}))
+
+// 🎯 业务交互处理
+const handleCreate = () => {
+  formDialog.mode = 'create'
+  formDialog.data = null
+  formDialog.visible = true
+}
+
+const handleRowClick = (row: DeviceVO) => {
+  // 单击查看详情
+  router.push(`/equipment/device/${row.id}`)
+}
+
+const handleRowDoubleClick = (row: DeviceVO) => {
+  // 双击编辑
+  if (hasPermission('device:edit')) {
+    formDialog.mode = 'edit'
+    formDialog.data = { ...row }
+    formDialog.visible = true
+  }
+}
+
+const handleRowAction = (action: string, row: DeviceVO) => {
+  switch (action) {
+    case 'edit':
+      handleEdit(row)
+      break
+    case 'delete':
+      handleDelete(row)
+      break
+    case 'control':
+      handleDeviceControl(row)
+      break
+    case 'view-location':
+      handleViewLocation(row)
+      break
+  }
+}
+
+const handleDeviceStatusUpdate = (message: any) => {
+  // 实时更新设备状态
+  const { deviceId, status, lastOnlineTime } = message
+  const device = tableData.value.find(d => d.id === deviceId)
+  if (device) {
+    device.deviceStatus = status
+    device.lastOnlineTime = lastOnlineTime
+  }
+}
+
+// 🔄 生命周期管理
+onMounted(() => {
+  refreshTableData()
+  connectWebSocket()
+})
+
+onUnmounted(() => {
+  disconnectWebSocket()
+})
+</script>
+
+<style scoped lang="scss">
+.enterprise-layout {
+  @apply flex flex-col h-full bg-gray-50;
+  
+  .overview-cards {
+    @apply px-20px;
+  }
+  
+  .batch-actions-bar {
+    @apply mb-16px;
+  }
+}
+</style>
+```
+
+## 🔄 响应式数据管理
+
+```typescript
+// ✅ 基本数据类型使用 ref
+const loading = ref(false)
+const deviceCount = ref(0)
+const selectedDevice = ref<DeviceVO | null>(null)
+
+// ✅ 对象数据使用 reactive  
+const formData = reactive({
+  deviceName: '',
+  deviceType: '',
+  location: ''
+})
+
+// ✅ 计算属性用于派生状态
+const deviceStatusText = computed(() => {
+  return DICT_TYPE.DEVICE_STATUS.find(item => 
+    item.value === formData.deviceStatus
+  )?.label || '未知'
+})
+
+// ✅ 监听器处理副作用
+watch(() => formData.deviceType, (newType) => {
+  // 设备类型变更时重置相关字段
+  formData.location = ''
+  fetchLocationsByType(newType)
+}, { immediate: true })
+```
+
+## 🎯 业务组件开发模式
+
+### 1. 表格页面组件
+```typescript
+// 使用 useTable hook 管理表格状态
+const { tableObject, methods } = useTable({
+  getListApi: getDeviceListApi,
+  deleteApi: deleteDeviceApi,
+  exportApi: exportDeviceApi
+})
+
+// 解构常用方法
+const { getList, delList, exportList } = methods
+```
+
+### 2. 表单页面组件
+```typescript
+// 使用 useForm hook 管理表单
+const { formRef, rules, formMethods } = useForm()
+const { validate, resetFields } = formMethods
+
+// 表单提交处理
+const handleSubmit = async () => {
+  const valid = await validate()
+  if (!valid) return
+  
+  try {
+    loading.value = true
+    await createDeviceApi(formData)
+    ElMessage.success('创建成功')
+    back()
+  } catch (error) {
+    ElMessage.error('创建失败')
+  } finally {
+    loading.value = false
+  }
+}
+```
+
+### 3. 对话框组件
+```typescript
+// 对话框显示控制
+const dialogVisible = ref(false)
+const dialogTitle = ref('添加设备')
+
+// 打开对话框
+const openDialog = (type: 'create' | 'edit', row?: DeviceVO) => {
+  dialogTitle.value = type === 'create' ? '添加设备' : '编辑设备'
+  if (type === 'edit' && row) {
+    Object.assign(formData, row)
+  } else {
+    resetFields()
+  }
+  dialogVisible.value = true
+}
+
+// 关闭对话框
+const closeDialog = () => {
+  dialogVisible.value = false
+  resetFields()
+}
+```
+
+## 🚀 性能优化技巧
+
+### 1. 组件懒加载
+```typescript
+// 使用 defineAsyncComponent 进行组件懒加载
+const ProcessDesigner = defineAsyncComponent(() => 
+  import('@/components/bpmnProcessDesigner')
+)
+```
+
+### 2. 大数据列表优化
+```vue
+<template>
+  <!-- 使用虚拟滚动处理大量数据 -->
+  <ElVirtualList
+    :data="deviceList"
+    :item-size="60"
+    :height="400"
+  >
+    <template #default="{ item }">
+      <DeviceItem :device="item" />
+    </template>
+  </ElVirtualList>
+</template>
+```
+
+### 3. 条件渲染优化
+```vue
+<template>
+  <!-- 使用 v-show 而不是 v-if 进行频繁切换 -->
+  <div v-show="showAdvancedOptions" class="advanced-options">
+    <!-- 高级选项内容 -->
+  </div>
+  
+  <!-- 使用 v-memo 缓存复杂计算结果 -->
+  <DeviceChart 
+    v-memo="[deviceData.length, selectedTimeRange]"
+    :data="deviceData"
+    :time-range="selectedTimeRange"
+  />
+</template>
+```
+
+## 🎯 最佳实践
+
+### Props 和 Emits 定义
+```typescript
+// Props 接口定义
+interface Props {
+  deviceId?: string
+  readonly?: boolean
+  showActions?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  readonly: false,
+  showActions: true
+})
+
+// Emits 事件定义
+interface Emits {
+  (e: 'update', device: DeviceVO): void
+  (e: 'delete', deviceId: string): void
+}
+
+const emit = defineEmits<Emits>()
+```
+
+### 权限控制集成
+```vue
+<template>
+  <!-- 按钮权限控制 -->
+  <el-button 
+    v-hasPermi="['device:create']"
+    type="primary"
+    @click="handleCreate"
+  >
+    新增设备
+  </el-button>
+  
+  <!-- 角色权限控制 -->
+  <div v-hasRole="['admin', 'operator']">
+    管理员操作区域
+  </div>
+</template>
+```
+
+### 错误处理和用户反馈
+```typescript
+// 统一错误处理
+const handleApiCall = async (apiCall: Promise<any>, successMessage = '操作成功') => {
+  try {
+    loading.value = true
+    const result = await apiCall
+    ElMessage.success(successMessage)
+    return result
+  } catch (error) {
+    console.error('API调用失败:', error)
+    ElMessage.error('操作失败，请稍后重试')
+    throw error
+  } finally {
+    loading.value = false
+  }
+}
+```
+

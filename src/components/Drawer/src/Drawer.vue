@@ -1,22 +1,36 @@
 <script lang="ts" setup>
-import { propTypes } from '@/utils/propTypes'
-
 defineOptions({ name: 'Drawer' })
+
+type DrawerDirection = 'ltr' | 'rtl' | 'ttb' | 'btt'
+
+interface DrawerProps {
+  modelValue?: boolean
+  title?: string
+  size?: string | number
+  direction?: DrawerDirection
+  showClose?: boolean
+  modal?: boolean
+  closeOnClickModal?: boolean
+  closeOnPressEscape?: boolean
+  destroyOnClose?: boolean
+  withHeader?: boolean
+  zIndex?: number
+}
 
 const slots = useSlots()
 
-const props = defineProps({
-  modelValue: propTypes.bool.def(false),
-  title: propTypes.string.def(''),
-  size: propTypes.oneOfType([String, Number]).def('30%'),
-  direction: propTypes.oneOf(['ltr', 'rtl', 'ttb', 'btt']).def('rtl'),
-  showClose: propTypes.bool.def(true),
-  modal: propTypes.bool.def(true),
-  closeOnClickModal: propTypes.bool.def(true),
-  closeOnPressEscape: propTypes.bool.def(true),
-  destroyOnClose: propTypes.bool.def(true),
-  withHeader: propTypes.bool.def(true),
-  zIndex: propTypes.number.def(2000)
+const props = withDefaults(defineProps<DrawerProps>(), {
+  modelValue: false,
+  title: '',
+  size: '30%',
+  direction: 'rtl',
+  showClose: true,
+  modal: true,
+  closeOnClickModal: true,
+  closeOnPressEscape: true,
+  destroyOnClose: true,
+  withHeader: true,
+  zIndex: 2000
 })
 
 const emit = defineEmits<{
@@ -31,19 +45,6 @@ const emit = defineEmits<{
 const drawerVisible = computed({
   get: () => props.modelValue,
   set: (val) => emit('update:modelValue', val)
-})
-
-// 合并属性,排除自定义处理的属性
-const getBindValue = computed(() => {
-  const delArr: string[] = ['modelValue', 'title', 'withHeader']
-  const attrs = useAttrs()
-  const obj = { ...attrs, ...props }
-  for (const key in obj) {
-    if (delArr.indexOf(key) !== -1) {
-      delete obj[key]
-    }
-  }
-  return obj
 })
 
 // 事件处理
@@ -67,7 +68,14 @@ const handleClosed = () => {
 <template>
   <ElDrawer
     v-model="drawerVisible"
-    v-bind="getBindValue"
+    :size="size"
+    :direction="direction"
+    :show-close="showClose"
+    :modal="modal"
+    :close-on-click-modal="closeOnClickModal"
+    :close-on-press-escape="closeOnPressEscape"
+    :destroy-on-close="destroyOnClose"
+    :z-index="zIndex"
     class="custom-drawer"
     @open="handleOpen"
     @opened="handleOpened"
