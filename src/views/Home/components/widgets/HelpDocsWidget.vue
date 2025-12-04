@@ -22,7 +22,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { AppCard } from '@/components/AppCard'
-import { HELP_DOCS } from '../../mock/data'
 import { ElMessage } from 'element-plus'
 
 defineOptions({ name: 'HelpDocsWidget' })
@@ -37,7 +36,8 @@ withDefaults(defineProps<Props>(), {
   showViewAll: true
 })
 
-const helpDocs = ref([...HELP_DOCS])
+// TODO: 从 API 获取帮助文档数据
+const helpDocs = ref<Array<{ id: number; title: string }>>([])
 
 const handleClick = (item: any) => {
   ElMessage.info(`打开文档: ${item.title}`)

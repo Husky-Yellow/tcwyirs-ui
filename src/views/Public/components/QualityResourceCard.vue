@@ -13,7 +13,7 @@
 
     <div class="px-16px py-18px">
       <div class="mb-8px flex items-center gap-8px">
-        <span class="h-[22px] w-[62px] flex items-center rounded-[2px] bg-[#F0F7FF] px-4px text-[12px] text-gray-600 font-normal">
+        <span class="h-[22px] w-[62px] flex items-center justify-center rounded-[2px] bg-[#F0F7FF] text-[12px] text-gray-600 font-normal">
           {{ resource.category }}
         </span>
       </div>

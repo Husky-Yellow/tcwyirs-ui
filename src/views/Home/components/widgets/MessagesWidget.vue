@@ -28,7 +28,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { AppCard } from '@/components/AppCard'
-import { MESSAGES } from '../../mock/data'
 
 defineOptions({ name: 'MessagesWidget' })
 
@@ -42,5 +41,6 @@ withDefaults(defineProps<Props>(), {
   showViewAll: true
 })
 
-const messages = ref([...MESSAGES])
+// TODO: 从 API 获取消息数据
+const messages = ref<Array<{ id: number; type: string; content: string; time: string }>>([])
 </script>
