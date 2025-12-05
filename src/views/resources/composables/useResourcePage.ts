@@ -1,33 +1,31 @@
 import { ref, reactive } from 'vue'
 import type { ResourceItem, TableDataItem, PaginationData, TableAction } from '../types'
+import type { SearchFormData, ListQueryParams, ListResponse } from '../types'
 
 interface UseResourcePageOptions {
   actions?: TableAction[]
-  loadDataFn?: (params: any) => Promise<{ list: TableDataItem[]; total: number }>
+  /** 加载表格数据的函数 */
+  loadDataFn?: (params: ListQueryParams) => Promise<ListResponse>
+  /** 加载左侧资源列表的函数（可选，如果不提供则不显示左侧列表） */
+  loadResourceListFn?: () => Promise<ResourceItem[]>
 }
 
 /**
  * 资源页面通用逻辑 Hook
  */
 export const useResourcePage = (options: UseResourcePageOptions = {}) => {
-  const { actions = [], loadDataFn } = options
+  const { actions = [], loadDataFn, loadResourceListFn } = options
 
   // 搜索表单
-  const searchForm = ref({
+  const searchForm = ref<SearchFormData>({
     name: '',
     type: ''
   })
 
   // 左侧资源列表
   const selectedResourceId = ref<string | number>('')
-  const resourceListItems = ref<ResourceItem[]>([
-    { id: 1, name: '订一号车吉林分管理公司' },
-    { id: 2, name: '订一号车哈尔滨管理公司' },
-    { id: 3, name: '订一号车长春管理公司' },
-    { id: 4, name: '订一号车沈阳管理公司' },
-    { id: 5, name: '订一号车大连管理公司' },
-    { id: 6, name: '订一号车辽宁管理公司' }
-  ])
+  const resourceListItems = ref<ResourceItem[]>([])
+  const resourceListLoading = ref(false)
 
   // 表格数据
   const loading = ref(false)
@@ -40,32 +38,47 @@ export const useResourcePage = (options: UseResourcePageOptions = {}) => {
     total: 0
   })
 
-  // 加载表格数据
-  const loadTableData = async () => {
-    loading.value = true
+  // 加载左侧资源列表
+  const loadResourceList = async () => {
+    if (!loadResourceListFn) return
+
+    resourceListLoading.value = true
     try {
-      if (loadDataFn) {
-        const res = await loadDataFn({
-          ...searchForm.value,
-          resourceId: selectedResourceId.value,
-          page: pagination.page,
-          pageSize: pagination.pageSize
-        })
-        tableData.value = res.list
-        pagination.total = res.total
-      } else {
-        // 默认模拟数据
-        tableData.value = Array.from({ length: 10 }, (_, i) => ({
-          id: i + 1,
-          name: `订一号车吉林分管理公司${i + 1}`,
-          address: '线路一默认版',
-          description: '线路一默认版',
-          createTime: '2017-10-31 23:12:00'
-        }))
-        pagination.total = 100
+      resourceListItems.value = await loadResourceListFn()
+      // 默认选中第一项
+      if (resourceListItems.value.length > 0) {
+        selectedResourceId.value = resourceListItems.value[0].id
       }
     } catch (error) {
+      console.error('加载资源列表失败:', error)
+    } finally {
+      resourceListLoading.value = false
+    }
+  }
+
+  // 加载表格数据
+  const loadTableData = async () => {
+    if (!loadDataFn) {
+      console.warn('未提供 loadDataFn，无法加载数据')
+      return
+    }
+
+    loading.value = true
+    try {
+      const params: ListQueryParams = {
+        ...searchForm.value,
+        resourceId: selectedResourceId.value,
+        page: pagination.page,
+        pageSize: pagination.pageSize
+      }
+
+      const res = await loadDataFn(params)
+      tableData.value = res.list
+      pagination.total = res.total
+    } catch (error) {
       console.error('加载数据失败:', error)
+      tableData.value = []
+      pagination.total = 0
     } finally {
       loading.value = false
     }
@@ -98,11 +111,9 @@ export const useResourcePage = (options: UseResourcePageOptions = {}) => {
   }
 
   // 初始化
-  const init = () => {
-    if (resourceListItems.value.length > 0) {
-      selectedResourceId.value = resourceListItems.value[0].id
-    }
-    loadTableData()
+  const init = async () => {
+    await loadResourceList()
+    await loadTableData()
   }
 
   return {
@@ -113,11 +124,13 @@ export const useResourcePage = (options: UseResourcePageOptions = {}) => {
     searchForm,
     selectedResourceId,
     resourceListItems,
+    resourceListLoading,
     loading,
     tableData,
     pagination,
 
     // 方法
+    loadResourceList,
     loadTableData,
     handleSearch,
     handleReset,

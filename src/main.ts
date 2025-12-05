@@ -39,10 +39,10 @@ import VueDOMPurifyHTML from 'vue-dompurify-html' // 解决v-html 的安全隐�
 // 创建实例
 const setupAll = async () => {
   // 开发环境启动 MSW Mock 服务
-  // if (import.meta.env.DEV) {
-  //   const { setupMock } = await import('./mock')
-  //   await setupMock()
-  // }
+  if (import.meta.env.DEV) {
+    const { setupMock } = await import('./mock')
+    await setupMock()
+  }
 
   const app = createApp(App)
 

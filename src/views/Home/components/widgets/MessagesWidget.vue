@@ -3,7 +3,7 @@
     <template #header>
       <div class="flex items-center justify-between bg-[#ffffff99] px-20px py-11px shadow-[inset_0_-1px_0_0_rgba(0,0,0,0.06)]">
         <span class="text-16px text-[#303133] font-500">消息</span>
-        <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]">全部</span>
+        <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]" @click="handleViewAll">全部</span>
       </div>
     </template>
 
@@ -27,6 +27,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { AppCard } from '@/components/AppCard'
 
 defineOptions({ name: 'MessagesWidget' })
@@ -41,6 +42,13 @@ withDefaults(defineProps<Props>(), {
   showViewAll: true
 })
 
+const router = useRouter()
+
 // TODO: 从 API 获取消息数据
 const messages = ref<Array<{ id: number; type: string; content: string; time: string }>>([])
+
+// 跳转到消息中心页面
+const handleViewAll = () => {
+  router.push({ name: 'MessageCenter' })
+}
 </script>

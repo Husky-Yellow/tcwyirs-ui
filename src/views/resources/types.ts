@@ -11,15 +11,7 @@ export interface SearchFormData {
 }
 
 /**
- * 资源类型选项
- */
-export interface TypeOption {
-  label: string
-  value: string
-}
-
-/**
- * 资源列表项
+ * 资源列表项（用于左侧列表）
  */
 export interface ResourceItem {
   id: string | number
@@ -71,14 +63,14 @@ export interface ListResponse<T = TableDataItem> {
 export interface TableAction {
   /** 操作文字 */
   label: string
-  /** 操作类型（用于权限控制等） */
+  /** 操作类型 */
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
   /** 是否链接样式 */
   link?: boolean
   /** 点击回调 */
   onClick: (row: TableDataItem) => void
-  /** 是否显示（可选，动态控制） */
+  /** 是否显示（动态控制） */
   show?: (row: TableDataItem) => boolean
-  /** 权限标识（可选） */
+  /** 权限标识 */
   permission?: string
 }

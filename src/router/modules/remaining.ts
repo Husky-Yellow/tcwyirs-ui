@@ -437,6 +437,19 @@ const remainingRouter: AppRouteRecordRaw[] = [
           canTo: true,
           showBack: true
         }
+      },
+      {
+        path: 'project-detail/:id',
+        component: () => import('@/views/Home/projects/detail.vue'),
+        name: 'ProjectDetail',
+        meta: {
+          hidden: true,
+          noTagsView: false,
+          icon: 'ep:document',
+          title: '项目详情',
+          canTo: true,
+          showBack: true
+        }
       }
     ]
   }

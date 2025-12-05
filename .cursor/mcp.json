@@ -1,14 +1,13 @@
 {
   "mcpServers": {
-    "chrome-devtools": {
-      "command": "chrome-devtools-mcp",
-      "args": ["--headless"]
-    },
     "context7": {
       "url": "https://mcp.context7.com/mcp",
       "headers": {
         "CONTEXT7_API_KEY": "ctx7sk-55e5712f-68e7-4e06-a9d6-b42903fa1ce4"
       }
+    },
+    "chrome-devtools": {
+      "command": "npx -y chrome-devtools-mcp@latest"
     },
     "API 文档": {
       "command": "cmd",
