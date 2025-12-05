@@ -51,7 +51,7 @@ export const useRenderLayout = () => {
     ]
 
     return (
-      <div class="layout-bg h-full w-full">
+      <div class="layout-bg h-full w-full from-[#E7F3FE] to-transparent bg-gradient-to-b">
         <div
           class={['fixed top-0 left-0 w-full z-20', { 'layout-border__bottom': !tagsView.value }]}
         >

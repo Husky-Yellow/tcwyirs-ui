@@ -110,6 +110,20 @@ const handleExtensionSubmit = async (data: ExtensionFormData) => {
     console.log('延期申请数据:', data)
     ElMessage.success('延期申请提交成功')
     emit('refresh')
+
+    // 跳转到申请成功页面（左侧菜单会高亮"我发起的"）
+    router.push({
+      name: 'ApprovalSuccess',
+      query: {
+        applicationData: JSON.stringify({
+          resourceType: '数据资源',
+          projectName: data.projectId,
+          days: '14天',
+          period: `${data.dateRange[0]}~${data.dateRange[1]}`,
+          reason: data.description || '延期申请'
+        })
+      }
+    })
   } catch (error) {
     console.error('延期申请失败:', error)
     ElMessage.error('延期申请提交失败')

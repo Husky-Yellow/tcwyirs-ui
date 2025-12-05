@@ -91,9 +91,12 @@
 </template>
 
 <script lang="ts" setup>
+import { useRouter } from 'vue-router'
+
 defineOptions({ name: 'ApprovalInitiated' })
 
 const message = useMessage()
+const router = useRouter()
 
 const loading = ref(false)
 const total = ref(0)
@@ -267,7 +270,13 @@ const getStatusText = (status: string) => {
 
 /** 详情操作 */
 const handleDetail = (row: any) => {
-  message.info(`查看详情: ${row.resourceName}`)
+  router.push({
+    name: 'ApprovalDetail',
+    query: {
+      status: row.status,
+      id: row.id
+    }
+  })
 }
 
 /** 反馈操作 */

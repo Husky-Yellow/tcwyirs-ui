@@ -452,6 +452,40 @@ const remainingRouter: AppRouteRecordRaw[] = [
         }
       }
     ]
+  },
+  {
+    path: '/other',
+    component: Layout,
+    name: 'OtherLayout',
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: 'approval-success',
+        component: () => import('@/views/other/approval/success/index.vue'),
+        name: 'ApprovalSuccess',
+        meta: {
+          hidden: true,
+          canTo: true,
+          noTagsView: false,
+          title: '我发起的',
+          activeMenu: '/other/approval-center/initiated'
+        }
+      },
+      {
+        path: 'approval-detail',
+        component: () => import('@/views/other/approval/detail/index.vue'),
+        name: 'ApprovalDetail',
+        meta: {
+          hidden: true,
+          canTo: true,
+          noTagsView: false,
+          title: '申请详情',
+          activeMenu: '/other/approval-center/initiated'
+        }
+      }
+    ]
   }
 ]
 
