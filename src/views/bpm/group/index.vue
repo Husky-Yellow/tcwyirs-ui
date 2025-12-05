@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="工作流手册" url="https://doc.iocoder.cn/bpm/" />
+
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -122,7 +124,6 @@ import { UserVO } from '@/api/system/user'
 defineOptions({ name: 'BpmUserGroup' })
 
 const message = useMessage() // 消息弹窗
-// 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

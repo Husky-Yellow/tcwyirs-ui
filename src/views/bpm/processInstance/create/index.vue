@@ -3,7 +3,7 @@
   <template v-if="!selectProcessDefinition">
     <el-input
       v-model="searchName"
-      class="mb-15px !w-50%"
+      class="!w-50% mb-15px"
       placeholder="请输入流程名称"
       clearable
       @input="handleQuery"
@@ -15,7 +15,7 @@
     </el-input>
     <ContentWrap
       :class="{ 'process-definition-container': filteredProcessDefinitionList?.length }"
-      class="position-relative h-700px pb-20px"
+      class="position-relative pb-20px h-700px"
       v-loading="loading"
     >
       <el-row v-if="filteredProcessDefinitionList?.length" :gutter="20" class="!flex-nowrap">
@@ -24,7 +24,7 @@
             <div
               v-for="category in availableCategories"
               :key="category.code"
-              class="flex cursor-pointer items-center rounded-md p-10px text-14px"
+              class="flex items-center p-10px cursor-pointer text-14px rounded-md"
               :class="categoryActive.code === category.code ? 'text-#3e7bff bg-#e8eeff' : ''"
               @click="handleCategoryClick(category)"
             >
@@ -40,7 +40,7 @@
               :key="categoryCode"
               :ref="`category-${categoryCode}`"
             >
-              <h3 class="mb-10px mt-5px text-18px font-bold">
+              <h3 class="text-18px font-bold mb-10px mt-5px">
                 {{ getCategoryName(categoryCode as any) }}
               </h3>
               <div class="grid grid-cols-3 gap3">
@@ -53,7 +53,7 @@
                 >
                   <el-card
                     shadow="hover"
-                    class="definition-item-card cursor-pointer"
+                    class="cursor-pointer definition-item-card"
                     @click="handleSelect(definition)"
                   >
                     <template #default>
@@ -61,7 +61,7 @@
                         <el-image
                           v-if="definition.icon"
                           :src="definition.icon"
-                          class="h-32px w-32px"
+                          class="w-32px h-32px"
                         />
                         <div v-else class="flow-icon">
                           <span style="font-size: 12px; color: #fff">
@@ -96,7 +96,7 @@ import * as DefinitionApi from '@/api/bpm/definition'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'
 import { CategoryApi, CategoryVO } from '@/api/bpm/category'
 import ProcessDefinitionDetail from './ProcessDefinitionDetail.vue'
-import { groupBy } from 'es-toolkit'
+import { groupBy } from 'lodash-es'
 import { subString } from '@/utils/index'
 
 defineOptions({ name: 'BpmProcessInstanceCreate' })
@@ -189,10 +189,7 @@ const processDefinitionGroup: any = computed(() => {
     return {}
   }
 
-  // const grouped = groupBy(filteredProcessDefinitionList.value, 'category')
-  const grouped =
-  groupBy(filteredProcessDefinitionList.value, (it:
-  any) => it.category)
+  const grouped = groupBy(filteredProcessDefinitionList.value, 'category')
   // 按照 categoryList 的顺序重新组织数据
   const orderedGroup = {}
   categoryList.value.forEach((category: any) => {

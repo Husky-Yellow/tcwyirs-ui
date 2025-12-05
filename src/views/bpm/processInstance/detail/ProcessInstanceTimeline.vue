@@ -11,12 +11,12 @@
     >
       <template #dot>
         <div
-          class="position-absolute left--10px top--6px h-30px w-30px flex items-center justify-center border border-#dedede rounded-full border-solid bg-#3f73f7 p-5px"
+          class="position-absolute left--10px top--6px rounded-full border border-solid border-#dedede w-30px h-30px flex justify-center items-center bg-#3f73f7 p-5px"
         >
-          <img class="h-full w-full" :src="getApprovalNodeImg(activity.nodeType)" alt="" />
+          <img class="w-full h-full" :src="getApprovalNodeImg(activity.nodeType)" alt="" />
           <div
             v-if="showStatusIcon"
-            class="position-absolute left-17px top-17px flex items-center border-2 border-white rounded-full border-solid p-1px"
+            class="position-absolute top-17px left-17px rounded-full flex items-center p-1px border-2 border-white border-solid"
             :style="{ backgroundColor: getApprovalNodeColor(activity.status) }"
           >
             <el-icon :size="11" color="#fff">
@@ -27,12 +27,12 @@
       </template>
       <div class="flex flex-col items-start gap2" :id="`activity-task-${activity.id}-${index}`">
         <!-- 第一行：节点名称、时间 -->
-        <div class="w-full flex">
+        <div class="flex w-full">
           <div class="font-bold"> {{ activity.name }}</div>
           <!-- 信息：时间 -->
           <div
             v-if="activity.status !== TaskStatusEnum.NOT_START"
-            class="ml-auto mt-1 text-13px text-#a5a5a5"
+            class="text-#a5a5a5 text-13px mt-1 ml-auto"
           >
             {{ getApprovalNodeTime(activity) }}
           </div>
@@ -44,7 +44,7 @@
         </div>
         <!-- 需要自定义选择审批人 -->
         <div
-          class="flex flex-wrap items-center gap2"
+          class="flex flex-wrap gap2 items-center"
           v-if="
             isEmpty(activity.tasks) &&
             isEmpty(activity.candidateUsers) &&
@@ -65,7 +65,7 @@
           <div
             v-for="(user, idx1) in customApproveUsers[activity.id]"
             :key="idx1"
-            class="position-relative h-35px flex items-center rounded-3xl bg-gray-100 pr-8px dark:color-gray-600"
+            class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
           >
             <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="user.avatar" />
             <el-avatar class="!m-5px" :size="28" v-else>
@@ -74,16 +74,16 @@
             {{ user.nickname }}
           </div>
         </div>
-        <div v-else class="mt-1 flex flex-wrap items-center gap2">
+        <div v-else class="flex items-center flex-wrap mt-1 gap2">
           <!-- 情况一：遍历每个审批节点下的【进行中】task 任务 -->
-          <div v-for="(task, idx) in activity.tasks" :key="idx" class="flex flex-col gap2 pr-2">
+          <div v-for="(task, idx) in activity.tasks" :key="idx" class="flex flex-col pr-2 gap2">
             <div
               class="position-relative flex flex-wrap gap2"
               v-if="task.assigneeUser || task.ownerUser"
             >
               <!-- 信息：头像昵称 -->
               <div
-                class="position-relative h-35px flex items-center rounded-3xl bg-gray-100 pr-8px dark:color-gray-600"
+                class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
               >
                 <template v-if="task.assigneeUser?.avatar || task.assigneeUser?.nickname">
                   <el-avatar
@@ -112,7 +112,7 @@
                 <!-- 信息：任务 ICON -->
                 <div
                   v-if="showStatusIcon && onlyStatusIconShow.includes(task.status)"
-                  class="position-absolute left-23px top-19px flex items-center border-2 border-white rounded-full border-solid p-1px"
+                  class="position-absolute top-19px left-23px rounded-full flex items-center p-1px border-2 border-white border-solid"
                   :style="{ backgroundColor: statusIconMap2[task.status]?.color }"
                 >
                   <Icon :size="11" :icon="statusIconMap2[task.status]?.icon" color="#FFFFFF" />
@@ -125,18 +125,18 @@
                   task.reason &&
                   [NodeType.USER_TASK_NODE, NodeType.END_EVENT_NODE].includes(activity.nodeType)
                 "
-                class="mt-1 w-full rounded-md bg-#f8f8fa p2 text-13px text-#a5a5a5"
+                class="text-#a5a5a5 text-13px mt-1 w-full bg-#f8f8fa p2 rounded-md"
               >
                 <!-- TODO lesan：这里如果是办理，需要是办理意见 -->
                 审批意见：{{ task.reason }}
               </div>
               <div
                 v-if="task.signPicUrl && activity.nodeType === NodeType.USER_TASK_NODE"
-                class="mt-1 w-full rounded-md bg-#f8f8fa p2 text-13px text-#a5a5a5"
+                class="text-#a5a5a5 text-13px mt-1 w-full bg-#f8f8fa p2 rounded-md"
               >
                 签名：
                 <el-image
-                  class="ml-5px h-40px w-90px"
+                  class="w-90px h-40px ml-5px"
                   :src="task.signPicUrl"
                   :preview-src-list="[task.signPicUrl]"
                 />
@@ -147,7 +147,7 @@
           <div
             v-for="(user, idx1) in activity.candidateUsers"
             :key="idx1"
-            class="position-relative h-35px flex items-center rounded-3xl bg-gray-100 pr-8px dark:color-gray-600"
+            class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
           >
             <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="user.avatar" />
             <el-avatar class="!m-5px" :size="28" v-else>
@@ -158,7 +158,7 @@
             <!-- 信息：任务 ICON -->
             <div
               v-if="showStatusIcon"
-              class="position-absolute left-24px top-20px flex items-center border-2 border-white rounded-full border-solid p-1px"
+              class="position-absolute top-20px left-24px rounded-full flex items-center p-1px border-2 border-white border-solid"
               :style="{ backgroundColor: statusIconMap2['-1']?.color }"
             >
               <Icon :size="11" :icon="statusIconMap2['-1']?.icon" color="#FFFFFF" />

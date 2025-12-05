@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="工作流手册" url="https://doc.iocoder.cn/bpm/" />
+
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -168,7 +170,6 @@ defineOptions({ name: 'BpmProcessInstanceReport' })
 const router = useRouter() // 路由
 const { query } = useRoute()
 const message = useMessage() // 消息弹窗
-// 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -248,8 +249,8 @@ const handleDetail = (row) => {
 const handleCancel = async (row) => {
   // 二次确认
   const { value } = await ElMessageBox.prompt('请输入取消原因', '取消流程', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+    confirmButtonText: '确认',
+    cancelButtonText: '关闭',
     inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
     inputErrorMessage: '取消原因不能为空'
   })

@@ -98,7 +98,7 @@ import draggable from 'vuedraggable'
 import { CategoryApi } from '@/api/bpm/category'
 import * as ModelApi from '@/api/bpm/model'
 import CategoryForm from '../category/CategoryForm.vue'
-import { cloneDeep } from 'es-toolkit'
+import { cloneDeep } from 'lodash-es'
 import CategoryDraggableModel from './CategoryDraggableModel.vue'
 
 defineOptions({ name: 'BpmModel' })
@@ -186,6 +186,7 @@ const handleCategorySortSubmit = async () => {
 /** 加载数据 */
 const getList = async () => {
   loading.value = true
+  
   try {
     // 查询模型 + 分裂的列表
     const modelList = await ModelApi.getModelList(queryParams.name)
@@ -202,7 +203,7 @@ const getList = async () => {
 }
 
 /** 初始化 **/
-onActivated(() => {
+onMounted(() => {
   getList()
 })
 </script>

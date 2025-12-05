@@ -98,7 +98,7 @@ export const getNextApprovalNodes = async (params: any) => {
   return await request.get({ url: '/bpm/process-instance/get-next-approval-nodes', params })
 }
 
-/** @deprecated 该接口已废弃，请勿再使用 */
+// 获取表单字段权限
 export const getFormFieldsPermission = async (params: any) => {
   return await request.get({ url: '/bpm/process-instance/get-form-fields-permission', params })
 }

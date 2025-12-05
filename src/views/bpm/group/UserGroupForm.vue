@@ -43,19 +43,16 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { CommonStatusEnum, ActionTitleMap } from '@/utils/constants'
+import { CommonStatusEnum } from '@/utils/constants'
 import * as UserGroupApi from '@/api/bpm/userGroup'
 import * as UserApi from '@/api/system/user'
 
 defineOptions({ name: 'UserGroupForm' })
 
-// 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
-const dialogTitle = ref('')
-
-// 弹窗的标题
+const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
@@ -77,7 +74,7 @@ const userList = ref<any[]>([]) // 用户列表
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
   dialogVisible.value = true
-  dialogTitle.value = ActionTitleMap[type] || '操作'
+  dialogTitle.value = type === 'create' ? '添加' : '编辑'
   formType.value = type
   resetForm()
   // 修改时，设置数据
@@ -107,10 +104,10 @@ const submitForm = async () => {
     const data = formData.value as unknown as UserGroupApi.UserGroupVO
     if (formType.value === 'create') {
       await UserGroupApi.createUserGroup(data)
-      message.success('新增成功')
+      message.success('创建成功')
     } else {
       await UserGroupApi.updateUserGroup(data)
-      message.success('修改成功')
+      message.success('更新成功')
     }
     dialogVisible.value = false
     // 发送操作成功的事件

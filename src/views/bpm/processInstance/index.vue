@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="流程发起、取消、重新发起" url="https://doc.iocoder.cn/bpm/process-instance/" />
+
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -228,7 +230,6 @@ defineOptions({ name: 'BpmProcessInstanceMy' })
 
 const router = useRouter() // 路由
 const message = useMessage() // 消息弹窗
-// 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -304,8 +305,8 @@ const handleDetail = (row: ProcessInstanceVO) => {
 const handleCancel = async (row: ProcessInstanceVO) => {
   // 二次确认
   const { value } = await ElMessageBox.prompt('请输入取消原因', '取消流程', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+    confirmButtonText: '好的',
+    cancelButtonText: '关闭',
     inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
     inputErrorMessage: '取消原因不能为空'
   })

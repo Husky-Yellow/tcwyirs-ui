@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="流程表达式" url="https://doc.iocoder.cn/bpm/expression/" />
+
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -115,7 +117,6 @@ import ProcessExpressionForm from './ProcessExpressionForm.vue'
 defineOptions({ name: 'BpmProcessExpression' })
 
 const message = useMessage() // 消息弹窗
-// 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProcessExpressionVO[]>([]) // 列表的数据

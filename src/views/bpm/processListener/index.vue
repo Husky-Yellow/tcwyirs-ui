@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="执行监听器、任务监听器" url="https://doc.iocoder.cn/bpm/listener/" />
+
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -118,7 +120,6 @@ import ProcessListenerForm from './ProcessListenerForm.vue'
 defineOptions({ name: 'BpmProcessListener' })
 
 const message = useMessage() // 消息弹窗
-// 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProcessListenerVO[]>([]) // 列表的数据

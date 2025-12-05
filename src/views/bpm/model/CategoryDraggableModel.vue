@@ -289,7 +289,7 @@ import { BpmModelFormType } from '@/utils/constants'
 import { checkPermi } from '@/utils/permission'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { useAppStore } from '@/store/modules/app'
-import { cloneDeep, isEqual } from 'es-toolkit'
+import { cloneDeep, isEqual } from 'lodash-es'
 import { useDebounceFn } from '@vueuse/core'
 import { subString } from '@/utils/index'
 
@@ -334,7 +334,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['success'])
 const message = useMessage() // 消息弹窗
-// 国际化
 const { push } = useRouter() // 路由
 const userStore = useUserStoreWithOut() // 用户信息缓存
 const isDark = computed(() => useAppStore().getIsDark) // 是否黑暗模式
@@ -466,7 +465,7 @@ const handleDeploy = async (row: any) => {
     await message.confirm('是否确认发布该流程？')
     // 发起部署
     await ModelApi.deployModel(row.id)
-    message.success(t('发布成功'))
+    message.success('发布成功')
     // 刷新列表
     emit('success')
   } catch {}
