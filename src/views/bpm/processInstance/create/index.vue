@@ -189,7 +189,10 @@ const processDefinitionGroup: any = computed(() => {
     return {}
   }
 
-  const grouped = groupBy(filteredProcessDefinitionList.value, 'category')
+  // const grouped = groupBy(filteredProcessDefinitionList.value, 'category')
+  const grouped =
+  groupBy(filteredProcessDefinitionList.value, (it:
+  any) => it.category)
   // 按照 categoryList 的顺序重新组织数据
   const orderedGroup = {}
   categoryList.value.forEach((category: any) => {
