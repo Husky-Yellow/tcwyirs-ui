@@ -464,10 +464,10 @@ export const publishResourceInfo = (id: number) => request.post<void>({ url: '/r
 export const unpublishResourceInfo = (id: number) => request.post<void>({ url: '/resource/info/unpublish', data: { id } })
 
 // 获取我上架的资源统计
-export const fetchResourceStats = () => request.post<ResourceStatsRespVO>({ url: '/resource/info/statistics' })
+export const fetchResourceStats = () => request.get<ResourceStatsRespVO>({ url: '/resource/info/statistics' })
 
 //  获得资源上架申请分页
-export const getPublishApplicationPage  = (data: PublishApplicationPageParamVO) => request.post<PageResult<ResourcePublishApplyRespVO[]>>({ url: '/resource/publish-apply/page' })
+export const getPublishApplicationPage  = (params: PublishApplicationPageParamVO) => request.get<PageResult<ResourcePublishApplyRespVO[]>>({ url: '/resource/publish-apply/page', params })
 
 // 待我审批的资源
 export const getApplyTodoPage  = (params: PageResultResourceApplyTodoRespVO) => request.get<PageResult<ResourceApplyTodoRespVO[]>>({ url: '/resource/apply/todo-page', params })

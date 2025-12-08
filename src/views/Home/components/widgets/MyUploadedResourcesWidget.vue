@@ -32,7 +32,6 @@
           <span class="text-16px text-[#303133] font-500">待我审批的资源</span>
           <span class="text-14px text-[#909399]">{{ pendingApprovalTotal }}</span>
         </div>
-        <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]">全部</span>
       </div>
       <!-- 待审批资源列表 -->
       <ul class="space-y-8px">
@@ -56,7 +55,6 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { AppCard } from '@/components/AppCard'
 import StatCard from '../StatCard.vue'
-import { useStatusStyle } from '../../composables/useStatusStyle'
 import {
   fetchResourceStats,
   getPublishApplicationPage,
@@ -68,14 +66,13 @@ import {
 defineOptions({ name: 'MyUploadedResourcesWidget' })
 
 const router = useRouter()
-const { getStatusDotClass, getStatusTextClass } = useStatusStyle()
 
 // 资源统计数据
 const resourceStats = ref<ResourceStatsRespVO>({})
-const totalCount = ref(24)
-const publishedCount = ref(18)
-const reviewingCount = ref(4)
-const offlineCount = ref(2)
+const totalCount = ref(0)
+const publishedCount = ref(0)
+const reviewingCount = ref(0)
+const offlineCount = ref(0)
 
 // 待我审批的资源数据
 const pendingApprovalTotal = ref(0)

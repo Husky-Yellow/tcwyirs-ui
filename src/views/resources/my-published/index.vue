@@ -1,51 +1,5 @@
 <template>
-  <div class="p-24px">
-    <!-- 头部标题 -->
-    <div class="mb-24px">
-      <h2 class="text-20px text-[#303133] font-600">我上架的资源</h2>
-      <p class="mt-8px text-14px text-[#909399]">管理我上架的所有资源</p>
-    </div>
-
-    <!-- 统计卡片 -->
-    <div class="mb-24px grid grid-cols-4 gap-16px">
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">总资源数</div>
-            <div class="mt-8px text-24px text-[#303133] font-600">{{ statistics.total }}</div>
-          </div>
-          <Icon icon="ep:folder" :size="40" class="text-[#409eff]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">已上架</div>
-            <div class="mt-8px text-24px text-[#67c23a] font-600">{{ statistics.published }}</div>
-          </div>
-          <Icon icon="ep:circle-check" :size="40" class="text-[#67c23a]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">审核中</div>
-            <div class="mt-8px text-24px text-[#e6a23c] font-600">{{ statistics.reviewing }}</div>
-          </div>
-          <Icon icon="ep:clock" :size="40" class="text-[#e6a23c]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">已下架</div>
-            <div class="mt-8px text-24px text-[#909399] font-600">{{ statistics.offline }}</div>
-          </div>
-          <Icon icon="ep:circle-close" :size="40" class="text-[#909399]/20" />
-        </div>
-      </el-card>
-    </div>
-
+  <div>
     <!-- 搜索表单 -->
     <ContentWrap shadow="always" class="mb-16px">
       <el-form :model="queryParams" :inline="true" label-width="80px">
@@ -53,14 +7,14 @@
           <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" clearable />
         </el-form-item>
         <el-form-item label="资源类型">
-          <el-select v-model="queryParams.resourceType" placeholder="全部" clearable>
+          <el-select v-model="queryParams.resourceType" placeholder="全部" clearable class="!w-240px">
             <el-option label="数据资源" :value="1" />
             <el-option label="应用资源" :value="2" />
             <el-option label="组件资源" :value="3" />
           </el-select>
         </el-form-item>
         <el-form-item label="资源状态">
-          <el-select v-model="queryParams.status" placeholder="全部" clearable>
+          <el-select v-model="queryParams.status" placeholder="全部" clearable class="!w-240px">
             <el-option label="草稿" :value="0" />
             <el-option label="待审批" :value="1" />
             <el-option label="已发布" :value="2" />
@@ -69,30 +23,30 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleQuery">
-            <Icon icon="ep:search" class="mr-6px" />
-            搜索
-          </el-button>
+
           <el-button @click="handleReset">
             <Icon icon="ep:refresh" class="mr-6px" />
             重置
+          </el-button>
+          <el-button type="primary" @click="handleQuery">
+            <Icon icon="ep:search" class="mr-6px" />
+            查询
           </el-button>
         </el-form-item>
       </el-form>
     </ContentWrap>
 
     <!-- 操作栏 -->
-    <div class="mb-16px flex items-center justify-between">
+    <!-- <div class="mb-16px flex items-center justify-between">
       <el-button type="primary" @click="handleCreate">
         <Icon icon="ep:plus" class="mr-6px" />
         新增资源
       </el-button>
-    </div>
+    </div> -->
 
     <!-- 资源列表 -->
     <ContentWrap shadow="always">
-      <el-table v-loading="loading" :data="resourceList" border stripe>
-        <el-table-column prop="name" label="资源名称" min-width="180" />
+      <el-table v-loading="loading" :data="resourceList"   stripe border >
         <el-table-column prop="type" label="资源类型" width="120">
           <template #default="{ row }">
             <el-tag :type="getTypeTagType(row.type)">
@@ -100,16 +54,18 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="description" label="资源描述" min-width="200" show-overflow-tooltip />
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="name" label="资源名称" min-width="180" />
+
+        <el-table-column prop="description" label="描述" min-width="200" show-overflow-tooltip />
+        <el-table-column prop="status" label="上架状态" width="100">
           <template #default="{ row }">
             <el-tag :type="getStatusTagType(row.status)">
               {{ getStatusName(row.status) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="creator" label="创建人" width="120" />
-        <el-table-column prop="createTime" label="创建时间" width="180">
+        <el-table-column prop="creator" label="审批人" width="120" />
+        <el-table-column prop="createTime" label="上架时间" width="180">
           <template #default="{ row }">
             {{ formatDate(row.createTime) }}
           </template>
@@ -156,7 +112,8 @@ import {
   getPublishApplicationPage,
   deleteResourceInfo,
   type ResourceInfoVO,
-  type PublishApplicationPageParamVO
+  type PublishApplicationPageParamVO,
+  type ResourcePublishApplyRespVO
 } from '@/api/resource/info'
 import { formatDate } from '@/utils/formatTime'
 import { useUserStore } from '@/store/modules/user'
@@ -167,14 +124,6 @@ const userStore = useUserStore()
 
 // 加载状态
 const loading = ref(false)
-
-// 统计数据
-const statistics = ref({
-  total: 0,
-  published: 0,
-  reviewing: 0,
-  offline: 0
-})
 
 // 查询参数
 const queryParams = ref<PublishApplicationPageParamVO>({
@@ -187,7 +136,7 @@ const queryParams = ref<PublishApplicationPageParamVO>({
 })
 
 // 资源列表
-const resourceList = ref<ResourceInfoVO[]>([])
+const resourceList = ref<ResourcePublishApplyRespVO[]>([])
 const total = ref(0)
 
 // 获取资源类型名称
@@ -221,14 +170,6 @@ const loadData = async () => {
     const res = await getPublishApplicationPage(queryParams.value)
     resourceList.value = res.list || []
     total.value = res.total || 0
-
-    // 计算统计数据
-    statistics.value = {
-      total: res.total || 0,
-      published: (res.list || []).filter((item) => item.status === 2).length,
-      reviewing: (res.list || []).filter((item) => item.status === 1).length,
-      offline: (res.list || []).filter((item) => item.status === 3).length
-    }
   } catch (error) {
     console.error('加载数据失败:', error)
     ElMessage.error('加载数据失败')
