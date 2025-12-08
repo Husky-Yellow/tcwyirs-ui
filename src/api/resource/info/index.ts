@@ -1,5 +1,5 @@
 import request from '@/config/axios'
-import type { ResourceType } from '../types'
+import type { ResourceType, ResourceStatus } from '../types'
 
 /** 资源信息 VO */
 export interface ResourceInfoVO {
@@ -13,7 +13,7 @@ export interface ResourceInfoVO {
   /** 资源图标/封面 */
   icon?: string
   /** 资源状态：0-草稿 1-待审批 2-已发布 3-已下架 4-已驳回 */
-  status?: number
+  status?: ResourceStatus
   /** 标签 */
   tags?: number[]
   /** 扩展信息（JSON字符串） */
@@ -52,6 +52,18 @@ export interface PublishApplicationPageParamVO extends PageParam {
   status?: number
   /** 申请时间 */
   applyTime?: string[]
+}
+
+/** 资源分页查询参数 */
+export interface PageResultResourceApplyTodoRespVO extends PageParam {
+   /**
+     * 资源名称
+     */
+   resourceName?: string;
+   /**
+    * 资源类型
+    */
+   resourceType?: number;
 }
 
 
@@ -328,64 +340,134 @@ export interface ProcessInstance {
   [property: string]: any;
 }
 
-// 创建资源
-export const createResourceInfo = (data: ResourceInfoVO) => {
-  return request.post<number>({ url: '/resource/info/create', data })
-}
-
-// 更新资源
-export const updateResourceInfo = (data: ResourceInfoVO) => {
-  return request.put<void>({ url: '/resource/info/update', data })
-}
-
-// 删除资源
-export const deleteResourceInfo = (id: number) => {
-  return request.delete<void>({ url: '/resource/info/delete?id=' + id })
-}
-
-// 获取资源详情
-export const getResourceInfo = (id: number) => {
-  return request.get<ResourceInfoVO>({ url: '/resource/info/get?id=' + id })
-}
-
-// 获取资源分页列表
-export const getResourceInfoPage = (params: ResourceInfoPageReqVO) => {
-  return request.get<PageResult<ResourceInfoVO[]>>({ url: '/resource/info/page', params })
-}
-
-// 发起上架申请
-export const publishResourceInfo = (id: number) => {
-  return request.post<void>({ url: '/resource/info/publish', data: { id } })
-}
-
-// 下架资源
-export const unpublishResourceInfo = (id: number) => {
-  return request.post<void>({ url: '/resource/info/unpublish', data: { id } })
-}
-
 
 /**
  * 获取我上架的资源统计
  */
 export interface ResourceStatsRespVO {
-   /**
-     * 应用资源数
-     */
-   appResourceCount?: number;
-   /**
-    * 组件资源数
+  /**
+    * 应用资源数
     */
-   componentResourceCount?: number;
-   /**
-    * 数据资源数
-    */
-   dataResourceCount?: number;
-  [property: string]: any
+  appResourceCount?: number;
+  /**
+   * 组件资源数
+   */
+  componentResourceCount?: number;
+  /**
+   * 数据资源数
+   */
+  dataResourceCount?: number;
+ [property: string]: any
 }
+
+
+/**
+ * 管理后台 - 待审批资源申请 Response VO
+ *
+ * ResourceApplyTodoRespVO
+ */
+export interface ResourceApplyTodoRespVO {
+  /**
+   * 申请ID
+   */
+  applyId?: number;
+  /**
+   * 申请说明
+   */
+  applyReason?: string;
+  /**
+   * 申请时间
+   */
+  applyTime?: string;
+  /**
+   * 申请人ID
+   */
+  applyUserId?: number;
+  /**
+   * 申请人姓名
+   */
+  applyUserName?: string;
+  /**
+   * 使用结束时间
+   */
+  endTime?: string;
+  /**
+   * 流程实例编号
+   */
+  processInstanceId?: string;
+  /**
+   * 项目ID
+   */
+  projectId?: number;
+  /**
+   * 项目名称
+   */
+  projectName?: string;
+  /**
+   * 资源描述
+   */
+  resourceDescription?: string;
+  /**
+   * 资源ID
+   */
+  resourceId?: number;
+  /**
+   * 资源名称
+   */
+  resourceName?: string;
+  /**
+   * 资源类型
+   */
+  resourceType?: number;
+  /**
+   * 使用开始时间
+   */
+  startTime?: string;
+  /**
+   * 审批状态
+   */
+  status?: number;
+  /**
+   * 任务创建时间
+   */
+  taskCreateTime?: string;
+  /**
+   * 任务编号
+   */
+  taskId?: string;
+  /**
+   * 任务名字
+   */
+  taskName?: string;
+  [property: string]: any;
+}
+
+// 创建资源
+export const createResourceInfo = (data: ResourceInfoVO) => request.post<number>({ url: '/resource/info/create', data })
+
+// 更新资源
+export const updateResourceInfo = (data: ResourceInfoVO) => request.put<void>({ url: '/resource/info/update', data })
+
+// 删除资源
+export const deleteResourceInfo = (id: number) => request.delete<void>({ url: '/resource/info/delete?id=' + id })
+
+// 获取资源详情
+export const getResourceInfo = (id: number) => request.get<ResourceInfoVO>({ url: '/resource/info/get?id=' + id })
+
+// 获取资源分页列表
+export const getResourceInfoPage = (params: ResourceInfoPageReqVO) => request.get<PageResult<ResourceInfoVO[]>>({ url: '/resource/info/page', params })
+
+// 发起上架申请
+export const publishResourceInfo = (id: number) => request.post<void>({ url: '/resource/info/publish', data: { id } })
+
+// 下架资源
+export const unpublishResourceInfo = (id: number) => request.post<void>({ url: '/resource/info/unpublish', data: { id } })
 
 // 获取我上架的资源统计
 export const fetchResourceStats = () => request.post<ResourceStatsRespVO>({ url: '/resource/info/statistics' })
 
-
 //  获得资源上架申请分页
 export const getPublishApplicationPage  = (data: PublishApplicationPageParamVO) => request.post<PageResult<ResourcePublishApplyRespVO[]>>({ url: '/resource/publish-apply/page' })
+
+// 待我审批的资源
+export const getApplyTodoPage  = (params: PageResultResourceApplyTodoRespVO) => request.get<PageResult<ResourceApplyTodoRespVO[]>>({ url: '/resource/apply/todo-page', params })

@@ -207,7 +207,7 @@ export const ROLE_LAYOUT_CONFIG: RoleLayoutConfigMap = {
   user: userLayout, // 普通用户
   guest: guestLayout, // 访客
   dataAdmin: dataAdminLayout, // 数据管理员
-  resourceAdmin: resourceAdminLayout, // 资源管理员
+  resource_admin: resourceAdminLayout, // 资源管理员
   operationAdmin: operationAdminLayout, // 运营管理员
   super_admin: adminLayout // 超级管理员
 }
