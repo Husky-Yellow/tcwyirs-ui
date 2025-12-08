@@ -1,23 +1,40 @@
 import request from '@/config/axios'
 
-/** 评分配置 VO */
+/**
+ * ResourceScoreConfigSaveReqVO
+ */
 export interface ScoreConfigVO {
-  id?: number
-  /** 配置名称 */
-  name: string
-  /** 配置项（如：及时性、准确性等） */
-  item: string
-  /** 权重（百分比） */
-  weight: number
-  /** 最高分 */
-  maxScore?: number
-  /** 排序 */
-  sort?: number
-  /** 状态：0-停用 1-启用 */
-  status?: number
-  /** 创建时间 */
-  createTime?: Date
+  /**
+   * 配置名称
+   */
+  configName: string;
+  /**
+   * 高权重分值
+   */
+  highWeightScore?: number;
+  /**
+   * 配置ID
+   */
+  id?: number;
+  /**
+   * 初始分数
+   */
+  initScore?: number;
+  /**
+   * 低权重分值
+   */
+  lowWeightScore?: number;
+  /**
+   * 中权重分值
+   */
+  mediumWeightScore?: number;
+  /**
+   * 分数类型
+   */
+  scoreType: number;
+  [property: string]: any;
 }
+
 
 // 创建评分配置
 export const createScoreConfig = (data: ScoreConfigVO) => {

@@ -21,7 +21,7 @@
             <img :src="stat.icon" :alt="stat.label" class="h-full w-full object-contain" />
           </div>
           <CountTo
-            class="text-5 text-blue-500 font-bold"
+            class="text-5 font-bold"
             :start-val="0"
             :end-val="stat.value"
             :duration="2600"

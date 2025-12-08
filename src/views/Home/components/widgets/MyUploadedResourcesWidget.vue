@@ -18,9 +18,9 @@
 
       <!-- 统计卡片 -->
       <div class="grid grid-cols-3 mb-14px gap-12px">
-        <StatCard label="已上架" :value="publishedCount" />
-        <StatCard label="审核中" :value="reviewingCount" />
-        <StatCard label="已下架" :value="offlineCount" />
+        <StatCard label="数据资源" :value="resourceStats.dataResourceCount" />
+        <StatCard label="组件资源" :value="resourceStats.componentResourceCount" />
+        <StatCard label="应用资源" :value="resourceStats.appResourceCount" />
       </div>
     </div>
 
@@ -57,7 +57,6 @@ import { AppCard } from '@/components/AppCard'
 import StatCard from '../StatCard.vue'
 import {
   fetchResourceStats,
-  getPublishApplicationPage,
   getApplyTodoPage,
   type ResourceStatsRespVO,
   type ResourceApplyTodoRespVO
@@ -70,9 +69,6 @@ const router = useRouter()
 // 资源统计数据
 const resourceStats = ref<ResourceStatsRespVO>({})
 const totalCount = ref(0)
-const publishedCount = ref(0)
-const reviewingCount = ref(0)
-const offlineCount = ref(0)
 
 // 待我审批的资源数据
 const pendingApprovalTotal = ref(0)
@@ -82,6 +78,7 @@ const pendingApprovalResources = ref<ResourceApplyTodoRespVO[]>([])
 const loadResourceStats = async () => {
   try {
     const stats = await fetchResourceStats()
+
     resourceStats.value = stats
     // 计算总数
     const total =
@@ -93,22 +90,6 @@ const loadResourceStats = async () => {
     }
   } catch (error) {
     console.error('加载资源统计失败:', error)
-  }
-}
-
-// 加载我上架的资源列表
-const loadPublishedResources = async () => {
-  try {
-    // TODO: 需要传入当前用户ID
-    const response = await getPublishApplicationPage({
-      publishUserId: '', // 需要从用户store获取
-      pageNo: 1,
-      pageSize: 10
-    })
-    // TODO: 根据实际返回的数据结构更新列表
-    console.log('上架资源列表:', response)
-  } catch (error) {
-    console.error('加载上架资源列表失败:', error)
   }
 }
 
@@ -134,7 +115,6 @@ const handleGoToPublished = () => {
 // 组件挂载时加载数据
 onMounted(() => {
   loadResourceStats()
-  loadPublishedResources()
   loadPendingApprovalResources()
 })
 </script>

@@ -3,7 +3,7 @@
       <div>评分管理</div>
       <!-- 操作按钮区域 -->
       <div class="mb-16px flex items-center gap-12px">
-        <el-button type="primary" @click="handleAdd">新增标签</el-button>
+        <el-button type="primary" @click="handleAdd">新增评分标签</el-button>
         <el-button @click="handleOpenConfig">配置权重分数</el-button>
       </div>
     </div>
@@ -68,8 +68,7 @@
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { SearchForm } from '@/components/SearchForm'
-import { TagCardList } from '@/components/TagCardList'
-import type { TagCardItem } from '@/components/TagCardList'
+import TagCardList from './components/TagCardList.vue'
 import ScoreConfigDrawer from './components/ScoreConfigDrawer.vue'
 import type { ScoreConfig } from './components/ScoreConfigDrawer.vue'
 import TagFormDrawer from './components/TagFormDrawer.vue'
@@ -79,35 +78,56 @@ import {
   createScoreTag,
   updateScoreTag,
   deleteScoreTag,
-  toggleScoreTag,
   type ScoreTagVO
 } from '@/api/resource/scoreTag'
 
 defineOptions({ name: 'ScorePage' })
 
-// Type definitions
+// 常量定义
+const SCORE_TYPE_MAP = { 1: '上升', 2: '下降' } as const
+const WEIGHT_MAP = { 1: '高权重', 2: '中权重', 3: '低权重' } as const
+const SCORE_TYPE_REVERSE_MAP = { 上升: '1', 下降: '2' } as const
+const WEIGHT_REVERSE_MAP = { 高权重: '1', 中权重: '2', 低权重: '3' } as const
+
 type Recordable = Record<string, any>
+interface TagCardItem {
+  // 唯一标识
+  id: string | number
+  // 标题
+  title: string
+  // 图标
+  icon?: string
+  // 状态
+  status: '启用中' | '停用'
+  // 分数类型
+  scoreType: string
+  // 分数权重
+  weight: string
+  // 其他自定义字段
+  [key: string]: any
+}
 
 // 抽屉 ref
 const scoreConfigDrawerRef = ref<InstanceType<typeof ScoreConfigDrawer>>()
 const tagFormDrawerRef = ref<InstanceType<typeof TagFormDrawer>>()
 
-// Loading 状态
+// 状态
 const loading = ref(false)
+const selectedTagId = ref<number>()
 
-// 分数配置数据
+// 分数配置
 const scoreConfig = ref<ScoreConfig>({
-  category: '标签分类',
-  scoreDirection: 'up',
-  highWeight: 10,
-  mediumWeight: 5,
-  lowWeight: 2
+  initScore: '60',
+  scoreType: '1',
+  highWeightScore: 10,
+  mediumWeightScore: 5,
+  lowWeightScore: 2
 })
 
-// TagCardList 标签卡片列表
-const selectedTagId = ref<number>()
+// 标签数据
 const tagCardData = ref<TagCardItem[]>([])
-const allTagCardData = ref<TagCardItem[]>([]) // 存储所有数据用于搜索
+const allTagCardData = ref<TagCardItem[]>([])
+const allScoreTagData = ref<ScoreTagVO[]>([]) // 存储原始API数据
 
 // 搜索
 const tagSearchModel = ref({
@@ -117,26 +137,21 @@ const tagSearchModel = ref({
 })
 
 // 数据转换：ScoreTagVO -> TagCardItem
-const convertToTagCardItem = (tag: ScoreTagVO): TagCardItem => {
-  const scoreTypeMap = { 1: '上升', 2: '下降' }
-  const weightMap = { high: '高权重', medium: '中权重', low: '低权重' }
-
-  return {
-    id: tag.id!,
-    title: tag.name,
-    icon: 'ep:document',
-    status: tag.showFlag ? '启用中' : '停用',
-    scoreType: scoreTypeMap[tag.type] || '上升',
-    weight: tag.weight ? weightMap[tag.weight] : '低权重'
-  }
-}
-
+const convertToTagCardItem = (tag: ScoreTagVO): TagCardItem => ({
+  id: tag.id!,
+  title: tag.name,
+  icon: 'ep:document',
+  status: tag.showFlag ? '启用中' : '停用',
+  scoreType: SCORE_TYPE_MAP[tag.type] || '上升',
+  weight: tag.weight ? WEIGHT_MAP[tag.weight] : '低权重'
+})
 
 // 加载数据
 const loadData = async () => {
   try {
     loading.value = true
     const data = await getScoreTagList()
+    allScoreTagData.value = data
     allTagCardData.value = data.map(convertToTagCardItem)
     tagCardData.value = [...allTagCardData.value]
   } catch (error) {
@@ -155,12 +170,10 @@ const handleTagSearch = (values: Recordable) => {
     filtered = filtered.filter((item) => item.title.includes(values.name))
   }
   if (values.scoreType) {
-    const typeMap = { '1': '上升', '2': '下降' }
-    filtered = filtered.filter((item) => item.scoreType === typeMap[values.scoreType])
+    filtered = filtered.filter((item) => item.scoreType === SCORE_TYPE_MAP[values.scoreType])
   }
   if (values.weight) {
-    const weightMap = { '1': '高权重', '2': '中权重', '3': '低权重' }
-    filtered = filtered.filter((item) => item.weight === weightMap[values.weight])
+    filtered = filtered.filter((item) => item.weight === WEIGHT_MAP[values.weight])
   }
 
   tagCardData.value = filtered
@@ -184,15 +197,12 @@ const handleAdd = () => {
 
 // 编辑标签
 const handleTagEdit = (item: TagCardItem) => {
-  const scoreTypeMap = { 上升: '1', 下降: '2' } as const
-  const weightMap = { 高权重: '1', 中权重: '2', 低权重: '3' } as const
-
   const formData: TagFormData = {
-    id: item.id as number,
+    id: item.id,
     name: item.title,
     confId: '1',
-    type: scoreTypeMap[item.scoreType as keyof typeof scoreTypeMap] || '1',
-    weight: weightMap[item.weight as keyof typeof weightMap] || '1',
+    type: SCORE_TYPE_REVERSE_MAP[item.scoreType as keyof typeof SCORE_TYPE_REVERSE_MAP] || '1',
+    weight: WEIGHT_REVERSE_MAP[item.weight as keyof typeof WEIGHT_REVERSE_MAP] || '1',
     showFlag: item.status === '启用中'
   }
   tagFormDrawerRef.value?.open(formData)
@@ -218,10 +228,22 @@ const handleTagDelete = async (item: TagCardItem) => {
   }
 }
 
-// 启用/停用标签
+// 启用/停用标签 - 使用 updateScoreTag
 const handleTagStatusChange = async (item: TagCardItem, status: boolean) => {
   try {
-    await toggleScoreTag(item.id, status ? 1 : 0)
+    // 从原始数据中找到对应的标签
+    const originalTag = allScoreTagData.value.find((tag) => tag.id === item.id)
+    if (!originalTag) {
+      ElMessage.error('标签数据未找到')
+      return
+    }
+
+    // 更新标签状态
+    await updateScoreTag({
+      ...originalTag,
+      showFlag: status
+    })
+
     ElMessage.success(`${item.title}: 已${status ? '启用' : '停用'}`)
     await loadData()
   } catch (error) {
@@ -230,10 +252,9 @@ const handleTagStatusChange = async (item: TagCardItem, status: boolean) => {
   }
 }
 
-// 配置分数相关
+// 配置分数
 const handleConfigConfirm = (data: ScoreConfig) => {
   scoreConfig.value = { ...data }
-  console.log('配置分数:', data)
   ElMessage.success('配置保存成功!')
 }
 
@@ -241,21 +262,16 @@ const handleConfigCancel = () => {
   console.log('取消配置')
 }
 
-// 标签表单相关
+// 标签表单
 const handleTagFormConfirm = async (data: TagFormData) => {
   try {
-    const scoreTagData = data
-
     if (data.id) {
-      // 编辑
-      await updateScoreTag(scoreTagData)
+      await updateScoreTag(data)
       ElMessage.success('编辑成功!')
     } else {
-      // 新增
-      await createScoreTag(scoreTagData)
+      await createScoreTag(data)
       ElMessage.success('新增成功!')
     }
-
     await loadData()
   } catch (error) {
     console.error('保存失败:', error)
@@ -267,7 +283,7 @@ const handleTagFormCancel = () => {
   console.log('取消保存')
 }
 
-// 页面加载时获取数据
+// 页面加载
 onMounted(() => {
   loadData()
 })
