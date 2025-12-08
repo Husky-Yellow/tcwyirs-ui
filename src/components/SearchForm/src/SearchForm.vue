@@ -57,7 +57,7 @@ defineExpose({
 </script>
 
 <template>
-  <ContentWrap shadow="always">
+  <ContentWrap>
     <el-form ref="formRef" :model="formData" :label-width="labelWidth">
       <div
         class="search-form-grid"

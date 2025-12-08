@@ -17,9 +17,9 @@ export interface ScoreTagVO {
   /** 标签描述 */
   remark?: string
 
-  
 
-  
+
+
   /** 分数 */
   score: number
   /** 排序 */
@@ -44,8 +44,8 @@ export const deleteScoreTag = (id: number) => {
 }
 
 // 获取评分标签列表
-export const getScoreTagList = () => {
-  return request.get<ScoreTagVO[]>({ url: '/resource/score-tag/list' })
+export const getScoreTagList = (params) => {
+  return request.get<ScoreTagVO[]>({ url: '/resource/score-tag/list', params })
 }
 
 // 启用/停用标签

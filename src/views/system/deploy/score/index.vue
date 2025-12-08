@@ -127,7 +127,6 @@ const scoreConfig = ref<ScoreConfig>({
 // 标签数据
 const tagCardData = ref<TagCardItem[]>([])
 const allTagCardData = ref<TagCardItem[]>([])
-const allScoreTagData = ref<ScoreTagVO[]>([]) // 存储原始API数据
 
 // 搜索
 const tagSearchModel = ref({
@@ -150,10 +149,8 @@ const convertToTagCardItem = (tag: ScoreTagVO): TagCardItem => ({
 const loadData = async () => {
   try {
     loading.value = true
-    const data = await getScoreTagList()
-    allScoreTagData.value = data
-    allTagCardData.value = data.map(convertToTagCardItem)
-    tagCardData.value = [...allTagCardData.value]
+    const data = await getScoreTagList(tagSearchModel.value)
+    tagCardData.value = data.map(convertToTagCardItem)
   } catch (error) {
     console.error('加载数据失败:', error)
     ElMessage.error('加载数据失败')
@@ -164,25 +161,18 @@ const loadData = async () => {
 
 // 搜索
 const handleTagSearch = (values: Recordable) => {
-  let filtered = [...allTagCardData.value]
-
-  if (values.name) {
-    filtered = filtered.filter((item) => item.title.includes(values.name))
-  }
-  if (values.scoreType) {
-    filtered = filtered.filter((item) => item.scoreType === SCORE_TYPE_MAP[values.scoreType])
-  }
-  if (values.weight) {
-    filtered = filtered.filter((item) => item.weight === WEIGHT_MAP[values.weight])
-  }
-
-  tagCardData.value = filtered
+  tagSearchModel.value.name = values.name
+  tagSearchModel.value.scoreType = values.scoreType
+  tagSearchModel.value.weight = values.weight
+  loadData()
   ElMessage.success('搜索成功!')
 }
 
 const handleTagSearchReset = () => {
-  tagSearchModel.value = { name: '', scoreType: '', weight: '' }
-  tagCardData.value = [...allTagCardData.value]
+  tagSearchModel.value.name = ''
+  tagSearchModel.value.scoreType = ''
+  tagSearchModel.value.weight = ''
+  loadData()
 }
 
 // 打开配置分数抽屉
@@ -232,7 +222,7 @@ const handleTagDelete = async (item: TagCardItem) => {
 const handleTagStatusChange = async (item: TagCardItem, status: boolean) => {
   try {
     // 从原始数据中找到对应的标签
-    const originalTag = allScoreTagData.value.find((tag) => tag.id === item.id)
+    const originalTag = tagCardData.value.find((tag) => tag.id === item.id)
     if (!originalTag) {
       ElMessage.error('标签数据未找到')
       return

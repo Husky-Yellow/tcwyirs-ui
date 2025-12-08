@@ -1,5 +1,18 @@
 <template>
   <ContentWrap shadow="always">
+    <!-- 顶部操作栏 -->
+    <div v-if="showCreateButton" class="mb-16px">
+      <el-button
+        v-auth="createPermission"
+        type="primary"
+        @click="handleCreate"
+      >
+        <Icon icon="ep:plus" class="mr-6px" />
+        {{ createButtonText }}
+      </el-button>
+    </div>
+
+    <!-- 表格 -->
     <el-table v-loading="loading" :data="tableData">
       <el-table-column align="center" label="资源名称" prop="name" show-overflow-tooltip />
       <el-table-column align="center" label="资源标签" prop="address" show-overflow-tooltip>
@@ -50,7 +63,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { ContentWrap } from '@/components/ContentWrap'
 import { formatDate } from '@/utils/formatTime'
 import type { TableAction } from '../types'
@@ -78,6 +91,11 @@ interface Props {
   actions?: TableAction[]
   paginationData?: PaginationData
   actionColumnWidth?: number | string
+  // 新增按钮相关
+  resourceType?: 1 | 2 | 3 // 1-数据资源 2-应用资源 3-组件资源
+  showCreateButton?: boolean // 是否显示新增按钮
+  createPermission?: string // 新增按钮权限标识
+  onCreateClick?: () => void // 新增按钮点击回调
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -85,14 +103,39 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   actions: () => [],
   paginationData: () => ({ page: 1, pageSize: 10, total: 0 }),
-  actionColumnWidth: 150
+  actionColumnWidth: 150,
+  showCreateButton: false,
+  createPermission: ''
 })
 
 const emit = defineEmits<{
   (e: 'page-change', page: number, pageSize: number): void
+  (e: 'create-click'): void
 }>()
 
 const pagination = ref<PaginationData>({ ...props.paginationData })
+
+// 资源类型映射
+const RESOURCE_TYPE_MAP = {
+  1: '数据资源',
+  2: '应用资源',
+  3: '组件资源'
+} as const
+
+// 根据资源类型计算按钮文案
+const createButtonText = computed(() => {
+  const typeName = props.resourceType ? RESOURCE_TYPE_MAP[props.resourceType] : '资源'
+  return `新增${typeName}`
+})
+
+// 新增按钮点击处理
+const handleCreate = () => {
+  if (props.onCreateClick) {
+    props.onCreateClick()
+  } else {
+    emit('create-click')
+  }
+}
 
 watch(
   () => props.paginationData,
