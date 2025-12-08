@@ -33,8 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '@/store/modules/user'
+import { getWorkbenchStatistics, type WorkbenchStatisticsRespVO } from '@/api/resource/workbench'
 
 // 图标导入
 import pendingFeedbackIcon from '@/assets/imgs/home/banner/pending_feedback.png'
@@ -51,47 +52,58 @@ interface Statistic {
 }
 
 const userStore = useUserStore()
+const statisticsData = ref<WorkbenchStatisticsRespVO>({})
+
+// 角色统计配置
+const ROLE_STATISTICS_MAP: Record<string, (data: WorkbenchStatisticsRespVO) => Statistic[]> = {
+  resource_admin: (data) => [
+    { label: '上架资源次数', value: data.publishCount || 0, icon: resourceStatsIcon },
+    { label: '资源被申请次数', value: data.applyCount || 0, icon: resourceStatsIcon },
+    { label: '待处理反馈', value: data.pendingFeedbackCount || 0, icon: pendingFeedbackIcon },
+    { label: '待审批的资源', value: data.pendingApprovalCount || 0, icon: pendingResourcesIcon }
+  ],
+  operation_admin: (data) => [
+    { label: '已上架资源总数', value: data.publishCount || 0, icon: resourceStatsIcon },
+    { label: '成员总数', value: 1521, icon: projectStatsIcon }, // TODO: 需要从其他接口获取
+    { label: '待处理反馈', value: data.pendingFeedbackCount || 0, icon: pendingFeedbackIcon }
+  ],
+  project_manager: (data) => [
+    { label: '申请资源次数', value: data.applyCount || 0, icon: resourceStatsIcon },
+    { label: '已创建项目组', value: 3, icon: projectStatsIcon } // TODO: 需要从其他接口获取
+  ]
+}
+
+// 默认统计（项目成员）
+const getDefaultStatistics = (data: WorkbenchStatisticsRespVO): Statistic[] => [
+  { label: '申请资源次数', value: data.applyCount || 0, icon: resourceStatsIcon },
+  { label: '已加入项目组', value: 5, icon: projectStatsIcon } // TODO: 需要从其他接口获取
+]
 
 // 根据角色获取统计数据
 const statistics = computed<Statistic[]>(() => {
   const roles = userStore.getRoles
+  const data = statisticsData.value
 
-  // TODO: 这里应该从API获取实际数据，目前使用模拟数据
-  // 可以调用 API 根据角色获取不同的统计信息
-
-  // 资源管理员：4个图标
-  if (roles.includes('resource_admin')) {
-    return [
-      { label: '上架资源次数', value: 226, icon: resourceStatsIcon },
-      { label: '资源被申请次数', value: 1521, icon: resourceStatsIcon },
-      { label: '待处理反馈', value: 12, icon: pendingFeedbackIcon },
-      { label: '待审批的资源', value: 12, icon: pendingResourcesIcon }
-    ]
+  // 查找匹配的角色配置
+  for (const role of roles) {
+    if (ROLE_STATISTICS_MAP[role]) {
+      return ROLE_STATISTICS_MAP[role](data)
+    }
   }
 
-  // 运营管理员：3个图标
-  if (roles.includes('operation_admin')) {
-    return [
-      { label: '已上架资源总数', value: 226, icon: resourceStatsIcon },
-      { label: '成员总数', value: 1521, icon: projectStatsIcon },
-      { label: '待处理反馈', value: 12, icon: pendingFeedbackIcon }
-    ]
-  }
-
-  // 项目经理：2个图标
-  if (roles.includes('project_manager')) {
-    return [
-      { label: '申请资源次数', value: 15, icon: resourceStatsIcon },
-      { label: '已创建项目组', value: 3, icon: projectStatsIcon }
-    ]
-  }
-
-  // 项目成员：2个图标（默认）
-  return [
-    { label: '申请资源次数', value: 15, icon: resourceStatsIcon },
-    { label: '已加入项目组', value: 5, icon: projectStatsIcon }
-  ]
+  return getDefaultStatistics(data)
 })
+
+// 加载统计数据
+const loadStatistics = async () => {
+  try {
+    statisticsData.value = await getWorkbenchStatistics()
+  } catch (error) {
+    console.error('加载工作台统计数据失败:', error)
+  }
+}
+
+onMounted(loadStatistics)
 </script>
 
 <style scoped>

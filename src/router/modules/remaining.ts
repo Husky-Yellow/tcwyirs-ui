@@ -450,6 +450,32 @@ const remainingRouter: AppRouteRecordRaw[] = [
           canTo: true,
           showBack: true
         }
+      },
+      {
+        path: 'my-published-resources',
+        component: () => import('@/views/resources/my-published/index.vue'),
+        name: 'MyPublishedResources',
+        meta: {
+          hidden: true,
+          noTagsView: false,
+          icon: 'ep:upload-filled',
+          title: '我上架的资源',
+          canTo: true,
+          showBack: true
+        }
+      },
+      {
+        path: 'my-apply-resources',
+        component: () => import('@/views/resources/my-apply/index.vue'),
+        name: 'MyApplyResources',
+        meta: {
+          hidden: true,
+          noTagsView: false,
+          icon: 'ep:document-checked',
+          title: '我申请的资源',
+          canTo: true,
+          showBack: true
+        }
       }
     ]
   },

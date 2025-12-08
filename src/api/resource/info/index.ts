@@ -40,6 +40,294 @@ export interface ResourceInfoPageReqVO extends PageParam {
   createTime?: string[]
 }
 
+/** 资源分页查询参数 */
+export interface PublishApplicationPageParamVO extends PageParam {
+  /** 资源名称 */
+  resourceName?: string
+  /** 资源类型 */
+  resourceType?: ResourceType
+  /** 上架人 id */
+  publishUserId: string
+  /** 审批状态 */
+  status?: number
+  /** 申请时间 */
+  applyTime?: string[]
+}
+
+
+/**
+ * 管理后台 - 资源上架申请 Response VO
+ *
+ * ResourcePublishApplyRespVO
+ */
+export interface ResourcePublishApplyRespVO {
+  /**
+   * 申请时间
+   */
+  applyTime?: string;
+  /**
+   * 审批流详情
+   */
+  approvalDetail?: BpmApprovalDetailRespDTO;
+  /**
+   * 创建时间
+   */
+  createTime?: string;
+  /**
+   * 申请ID
+   */
+  id?: number;
+  /**
+   * 审批流程实例ID
+   */
+  processInstanceId?: string;
+  /**
+   * 上架人ID
+   */
+  publishUserId?: number;
+  /**
+   * 上架人姓名
+   */
+  publishUserName?: string;
+  /**
+   * 驳回原因
+   */
+  rejectReason?: string;
+  /**
+   * 资源ID
+   */
+  resourceId?: number;
+  /**
+   * 资源名称
+   */
+  resourceName?: string;
+  /**
+   * 资源标签
+   */
+  resourceTag?: string;
+  /**
+   * 资源类型
+   */
+  resourceType?: number;
+  /**
+   * 审批状态
+   */
+  status?: number;
+  [property: string]: any;
+}
+
+/**
+* 审批流详情
+*
+* BpmApprovalDetailRespDTO
+*/
+export interface BpmApprovalDetailRespDTO {
+  /**
+   * 活动节点列表
+   */
+  activityNodes?: ActivityNode[];
+  /**
+   * 所属流程定义信息
+   */
+  processDefinition?: ProcessDefinition;
+  /**
+   * 所属流程实例信息
+   */
+  processInstance?: ProcessInstance;
+  /**
+   * 流程实例的状态
+   */
+  status?: number;
+  [property: string]: any;
+}
+
+/**
+* com.tcwy.tcwyirs.module.bpm.api.task.dto.BpmApprovalDetailRespDTO.ActivityNode
+*
+* ActivityNode
+*/
+export interface ActivityNode {
+  /**
+   * 只包含未生成 ApprovalTaskInfo 的用户列表
+   * 候选人用户列表
+   */
+  candidateUsers?: CandidateUser[];
+  /**
+   * 节点的结束时间
+   */
+  endTime?: string;
+  /**
+   * 节点编号
+   */
+  id?: string;
+  /**
+   * 节点名称
+   */
+  name?: string;
+  /**
+   * 参见 BpmSimpleModelNodeType 枚举
+   * 节点类型
+   */
+  nodeType?: number;
+  /**
+   * 节点的开始时间
+   */
+  startTime?: string;
+  /**
+   * 参见 BpmTaskStatusEnum 枚举
+   * 节点状态
+   */
+  status?: number;
+  /**
+   * 审批节点的任务信息
+   */
+  tasks?: ActivityNodeTask[];
+  [property: string]: any;
+}
+
+/**
+* com.tcwy.tcwyirs.module.bpm.controller.admin.base.user.UserSimpleBaseVO
+*
+* CandidateUser
+*/
+export interface CandidateUser {
+  /**
+   * 用户编号
+   */
+  id?: number;
+  /**
+   * 用户昵称
+   */
+  nickname?: string;
+  [property: string]: any;
+}
+
+/**
+*
+* com.tcwy.tcwyirs.module.bpm.controller.admin.task.vo.instance.BpmApprovalDetailRespVO.ActivityNodeTask
+*
+* ActivityNodeTask
+*/
+export interface ActivityNodeTask {
+  /**
+   * 任务分配人编号
+   */
+  assigneeUserId?: number;
+  /**
+   * 任务分配人昵称
+   */
+  assigneeUserName?: string;
+  /**
+   * 任务编号
+   */
+  id?: string;
+  /**
+   * 任务所属人编号（转交场景：原审批人）
+   */
+  ownerUserId?: number;
+  /**
+   * 任务所属人昵称（转交场景：原审批人）
+   */
+  ownerUserName?: string;
+  /**
+   * 审批意见
+   */
+  reason?: string;
+  /**
+   * 参见 BpmTaskStatusEnum 枚举
+   * 任务状态
+   */
+  status?: number;
+  /**
+   * 转交历史列表（记录完整的转交链路）
+   */
+  transferRecords?: TransferRecord[];
+  [property: string]: any;
+}
+
+/**
+* com.tcwy.tcwyirs.module.bpm.api.task.dto.BpmApprovalDetailRespDTO.TransferRecord
+*
+* TransferRecord
+*/
+export interface TransferRecord {
+  /**
+   * 转交人编号
+   */
+  fromUserId?: null;
+  /**
+   * 转交人昵称
+   */
+  fromUserName?: null;
+  /**
+   * 转交理由
+   */
+  reason?: null;
+  /**
+   * 接收人编号
+   */
+  toUserId?: null;
+  /**
+   * 接收人昵称
+   */
+  toUserName?: null;
+  /**
+   * 转交时间
+   */
+  transferTime?: null;
+  [property: string]: any;
+}
+
+/**
+* 所属流程定义信息
+*
+* ProcessDefinition
+*/
+export interface ProcessDefinition {
+  /**
+   * 流程定义编号
+   */
+  id?: string;
+  /**
+   * 流程名称
+   */
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+* 所属流程实例信息
+*
+* ProcessInstance
+*/
+export interface ProcessInstance {
+  /**
+   * 结束时间
+   */
+  endTime?: string;
+  /**
+   * 流程实例编号
+   */
+  id?: string;
+  /**
+   * 流程实例名称
+   */
+  name?: string;
+  /**
+   * 发起时间
+   */
+  startTime?: string;
+  /**
+   * 发起人编号
+   */
+  startUserId?: number;
+  /**
+   * 发起人昵称
+   */
+  startUserName?: string;
+  [property: string]: any;
+}
+
 // 创建资源
 export const createResourceInfo = (data: ResourceInfoVO) => {
   return request.post<number>({ url: '/resource/info/create', data })
@@ -74,3 +362,30 @@ export const publishResourceInfo = (id: number) => {
 export const unpublishResourceInfo = (id: number) => {
   return request.post<void>({ url: '/resource/info/unpublish', data: { id } })
 }
+
+
+/**
+ * 获取我上架的资源统计
+ */
+export interface ResourceStatsRespVO {
+   /**
+     * 应用资源数
+     */
+   appResourceCount?: number;
+   /**
+    * 组件资源数
+    */
+   componentResourceCount?: number;
+   /**
+    * 数据资源数
+    */
+   dataResourceCount?: number;
+  [property: string]: any
+}
+
+// 获取我上架的资源统计
+export const fetchResourceStats = () => request.post<ResourceStatsRespVO>({ url: '/resource/info/statistics' })
+
+
+//  获得资源上架申请分页
+export const getPublishApplicationPage  = (data: PublishApplicationPageParamVO) => request.post<PageResult<ResourcePublishApplyRespVO[]>>({ url: '/resource/publish-apply/page' })

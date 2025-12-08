@@ -11,14 +11,31 @@
     <!-- 搜索区域 -->
     <div class="mb-16px">
       <SearchForm
-        :schema="tagSearchSchema"
         :model="tagSearchModel"
         :cols-per-row="3"
-        :show-expand="false"
         label-width="90px"
         @search="handleTagSearch"
         @reset="handleTagSearchReset"
-      />
+      >
+        <template #default="{ model }">
+          <el-form-item label="标签名称">
+            <el-input v-model="model.name" placeholder="请输入" clearable />
+          </el-form-item>
+          <el-form-item label="分数类型">
+            <el-select v-model="model.scoreType" placeholder="全部" clearable>
+              <el-option label="上升" value="1" />
+              <el-option label="下降" value="2" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="分数权重">
+            <el-select v-model="model.weight" placeholder="全部" clearable>
+              <el-option label="高权重" value="1" />
+              <el-option label="中权重" value="2" />
+              <el-option label="低权重" value="3" />
+            </el-select>
+          </el-form-item>
+        </template>
+      </SearchForm>
     </div>
 
     <!-- 卡片列表 -->
@@ -48,16 +65,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { SearchForm } from '@/components/SearchForm'
-import type { SearchFormSchema } from '@/components/SearchForm'
 import { TagCardList } from '@/components/TagCardList'
 import type { TagCardItem } from '@/components/TagCardList'
 import ScoreConfigDrawer from './components/ScoreConfigDrawer.vue'
 import type { ScoreConfig } from './components/ScoreConfigDrawer.vue'
 import TagFormDrawer from './components/TagFormDrawer.vue'
 import type { TagFormData } from './components/TagFormDrawer.vue'
+import {
+  getScoreTagList,
+  createScoreTag,
+  updateScoreTag,
+  deleteScoreTag,
+  toggleScoreTag,
+  type ScoreTagVO
+} from '@/api/resource/scoreTag'
 
 defineOptions({ name: 'ScorePage' })
 
@@ -68,6 +92,9 @@ type Recordable = Record<string, any>
 const scoreConfigDrawerRef = ref<InstanceType<typeof ScoreConfigDrawer>>()
 const tagFormDrawerRef = ref<InstanceType<typeof TagFormDrawer>>()
 
+// Loading 状态
+const loading = ref(false)
+
 // 分数配置数据
 const scoreConfig = ref<ScoreConfig>({
   category: '标签分类',
@@ -77,133 +104,72 @@ const scoreConfig = ref<ScoreConfig>({
   lowWeight: 2
 })
 
-// TagCardList 标签卡片列表演示
-const selectedTagId = ref(1)
+// TagCardList 标签卡片列表
+const selectedTagId = ref<number>()
+const tagCardData = ref<TagCardItem[]>([])
+const allTagCardData = ref<TagCardItem[]>([]) // 存储所有数据用于搜索
 
+// 搜索
 const tagSearchModel = ref({
   name: '',
   scoreType: '',
   weight: ''
 })
 
-const tagSearchSchema: SearchFormSchema[] = [
-  {
-    field: 'name',
-    label: '标签名称',
-    component: 'Input',
-    componentProps: {
-      placeholder: '请输入'
-    }
-  },
-  {
-    field: 'scoreType',
-    label: '分数类型',
-    component: 'Select',
-    componentProps: {
-      placeholder: '全部',
-      options: [
-        { label: '上降', value: 'up' },
-        { label: '下降', value: 'down' }
-      ]
-    }
-  },
-  {
-    field: 'weight',
-    label: '分数权重',
-    component: 'Select',
-    componentProps: {
-      placeholder: '全部',
-      options: [
-        { label: '高权重', value: 'high' },
-        { label: '中权重', value: 'medium' },
-        { label: '低权重', value: 'low' }
-      ]
-    }
-  }
-]
+// 数据转换：ScoreTagVO -> TagCardItem
+const convertToTagCardItem = (tag: ScoreTagVO): TagCardItem => {
+  const scoreTypeMap = { 1: '上升', 2: '下降' }
+  const weightMap = { high: '高权重', medium: '中权重', low: '低权重' }
 
-const tagCardData = ref<TagCardItem[]>([
-  {
-    id: 1,
-    title: '资源内容丰富',
+  return {
+    id: tag.id!,
+    title: tag.name,
     icon: 'ep:document',
-    status: '启用中',
-    scoreType: '上降',
-    weight: '高权重'
-  },
-  {
-    id: 2,
-    title: '操作使用便捷',
-    icon: 'ep:finished',
-    status: '启用中',
-    scoreType: '上降',
-    weight: '中权重'
-  },
-  {
-    id: 3,
-    title: '资源数据精准',
-    icon: 'ep:data-line',
-    status: '启用中',
-    scoreType: '上降',
-    weight: '中权重'
-  },
-  {
-    id: 4,
-    title: '符合需求',
-    icon: 'ep:circle-check',
-    status: '启用中',
-    scoreType: '上降',
-    weight: '低权重'
-  },
-  {
-    id: 5,
-    title: '体验不佳',
-    icon: 'ep:circle-close',
-    status: '启用中',
-    scoreType: '下降',
-    weight: '高权重'
-  },
-  {
-    id: 6,
-    title: '内容出错',
-    icon: 'ep:warning',
-    status: '启用中',
-    scoreType: '下降',
-    weight: '中权重'
-  },
-  {
-    id: 7,
-    title: '与业务场景大不匹配',
-    icon: 'ep:close',
-    status: '启用中',
-    scoreType: '下降',
-    weight: '中权重'
-  },
-  {
-    id: 8,
-    title: '数据出现报错',
-    icon: 'ep:warning-filled',
-    status: '停用',
-    scoreType: '下降',
-    weight: '低权重'
-  },
-  {
-    id: 9,
-    title: '体验不佳',
-    icon: 'ep:circle-close',
-    status: '启用中',
-    scoreType: '下降',
-    weight: '高权重'
+    status: tag.showFlag ? '启用中' : '停用',
+    scoreType: scoreTypeMap[tag.type] || '上升',
+    weight: tag.weight ? weightMap[tag.weight] : '低权重'
   }
-])
+}
 
+
+// 加载数据
+const loadData = async () => {
+  try {
+    loading.value = true
+    const data = await getScoreTagList()
+    allTagCardData.value = data.map(convertToTagCardItem)
+    tagCardData.value = [...allTagCardData.value]
+  } catch (error) {
+    console.error('加载数据失败:', error)
+    ElMessage.error('加载数据失败')
+  } finally {
+    loading.value = false
+  }
+}
+
+// 搜索
 const handleTagSearch = (values: Recordable) => {
-  console.log('标签搜索:', values)
+  let filtered = [...allTagCardData.value]
+
+  if (values.name) {
+    filtered = filtered.filter((item) => item.title.includes(values.name))
+  }
+  if (values.scoreType) {
+    const typeMap = { '1': '上升', '2': '下降' }
+    filtered = filtered.filter((item) => item.scoreType === typeMap[values.scoreType])
+  }
+  if (values.weight) {
+    const weightMap = { '1': '高权重', '2': '中权重', '3': '低权重' }
+    filtered = filtered.filter((item) => item.weight === weightMap[values.weight])
+  }
+
+  tagCardData.value = filtered
   ElMessage.success('搜索成功!')
 }
 
 const handleTagSearchReset = () => {
-  console.log('重置标签搜索')
+  tagSearchModel.value = { name: '', scoreType: '', weight: '' }
+  tagCardData.value = [...allTagCardData.value]
 }
 
 // 打开配置分数抽屉
@@ -218,41 +184,49 @@ const handleAdd = () => {
 
 // 编辑标签
 const handleTagEdit = (item: TagCardItem) => {
+  const scoreTypeMap = { 上升: '1', 下降: '2' } as const
+  const weightMap = { 高权重: '1', 中权重: '2', 低权重: '3' } as const
+
   const formData: TagFormData = {
-    id: item.id,
-    title: item.title,
-    icon: item.icon,
-    status: item.status,
-    scoreType: item.scoreType,
-    weight: item.weight,
-    enabled: item.status === '启用中'
+    id: item.id as number,
+    name: item.title,
+    confId: '1',
+    type: scoreTypeMap[item.scoreType as keyof typeof scoreTypeMap] || '1',
+    weight: weightMap[item.weight as keyof typeof weightMap] || '1',
+    showFlag: item.status === '启用中'
   }
   tagFormDrawerRef.value?.open(formData)
 }
 
-const handleTagDelete = (item: TagCardItem) => {
-  ElMessageBox.confirm(`确定要删除 "${item.title}" 吗?`, '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(() => {
-      const index = tagCardData.value.findIndex((t) => t.id === item.id)
-      if (index > -1) {
-        tagCardData.value.splice(index, 1)
-        ElMessage.success('删除成功!')
-      }
+// 删除标签
+const handleTagDelete = async (item: TagCardItem) => {
+  try {
+    await ElMessageBox.confirm(`确定要删除 "${item.title}" 吗?`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
     })
-    .catch(() => {
-      ElMessage.info('已取消删除')
-    })
+
+    await deleteScoreTag(item.id)
+    ElMessage.success('删除成功!')
+    await loadData()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      console.error('删除失败:', error)
+      ElMessage.error('删除失败')
+    }
+  }
 }
 
-const handleTagStatusChange = (item: TagCardItem, status: boolean) => {
-  const tag = tagCardData.value.find((t) => t.id === item.id)
-  if (tag) {
-    tag.status = status ? '启用中' : '停用'
+// 启用/停用标签
+const handleTagStatusChange = async (item: TagCardItem, status: boolean) => {
+  try {
+    await toggleScoreTag(item.id, status ? 1 : 0)
     ElMessage.success(`${item.title}: 已${status ? '启用' : '停用'}`)
+    await loadData()
+  } catch (error) {
+    console.error('状态切换失败:', error)
+    ElMessage.error('状态切换失败')
   }
 }
 
@@ -268,38 +242,33 @@ const handleConfigCancel = () => {
 }
 
 // 标签表单相关
-const handleTagFormConfirm = (data: TagFormData) => {
-  if (data.id) {
-    // 编辑
-    const index = tagCardData.value.findIndex((t) => t.id === data.id)
-    if (index > -1) {
-      tagCardData.value[index] = {
-        id: data.id,
-        title: data.title,
-        icon: data.icon || 'ep:document',
-        status: data.enabled ? '启用中' : '停用',
-        scoreType: data.scoreType,
-        weight: data.weight
-      }
+const handleTagFormConfirm = async (data: TagFormData) => {
+  try {
+    const scoreTagData = data
+
+    if (data.id) {
+      // 编辑
+      await updateScoreTag(scoreTagData)
       ElMessage.success('编辑成功!')
+    } else {
+      // 新增
+      await createScoreTag(scoreTagData)
+      ElMessage.success('新增成功!')
     }
-  } else {
-    // 新增
-    const newId = Math.max(...tagCardData.value.map((t) => t.id || 0)) + 1
-    tagCardData.value.push({
-      id: newId,
-      title: data.title,
-      icon: data.icon || 'ep:document',
-      status: data.enabled ? '启用中' : '停用',
-      scoreType: data.scoreType,
-      weight: data.weight
-    })
-    ElMessage.success('新增成功!')
+
+    await loadData()
+  } catch (error) {
+    console.error('保存失败:', error)
+    ElMessage.error('保存失败')
   }
-  console.log('保存标签:', data)
 }
 
 const handleTagFormCancel = () => {
   console.log('取消保存')
 }
+
+// 页面加载时获取数据
+onMounted(() => {
+  loadData()
+})
 </script>

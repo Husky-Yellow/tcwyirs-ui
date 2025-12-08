@@ -16,25 +16,33 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { Echart } from '@/components/Echart'
 import { AppCard } from '@/components/AppCard'
 import LegendList from './LegendList.vue'
-import { createDonutChart } from '../utils/echarts-config'
+import { getWorkbenchUsageBoard, type ResourceUsageBoardRespVO } from '@/api/resource/workbench'
 
 defineOptions({ name: 'ResourceUsageCard' })
 
+// 资源类型颜色映射
+const RESOURCE_TYPE_COLORS: Record<string, string> = {
+  '数据资源': '#8C8D9F',
+  '应用资源': '#6BC2A2',
+  '组件资源': '#4F98E8'
+}
+
 // 图例数据
 const legendData = ref([
-  { name: '数据资源', value: 1442, color: '#5470C6' },
-  { name: '组件资源', value: 1442, color: '#91CC75' },
-  { name: '应用资源', value: 1442, color: '#FAC858' }
+  { name: '数据资源', value: 0, color: RESOURCE_TYPE_COLORS['数据资源'] },
+  { name: '组件资源', value: 0, color: RESOURCE_TYPE_COLORS['组件资源'] },
+  { name: '应用资源', value: 0, color: RESOURCE_TYPE_COLORS['应用资源'] }
 ])
 
-var option = {
+// 图表配置
+const chartOptions = reactive({
   title: {
     text: '总数量 ',
-    subtext: '1,430',
+    subtext: '0',
     left: 'center',
     top: 'center',
     textStyle: {
@@ -54,14 +62,10 @@ var option = {
       type: 'pie',
       radius: ['55%', '100%'],  // 增大圆环的厚度
       center: ['50%', '50%'],  // 定义饼图的中心位置
-      data: [
-        { value: 1442, name: '数据资源', itemStyle: { color: '#8C8D9F' } },
-        { value: 1442, name: '应用资源', itemStyle: { color: '#6BC2A2' } },
-        { value: 1442, name: '组件资源', itemStyle: { color: '#4F98E8' } },
-      ],
+      data: [] as any[],
       label: {
         position: 'inside',  // 标签位于圆环内部
-        formatter: function(params) {
+        formatter: function(params: any) {
           return Math.round(params.percent) + '%';  // 将百分比四舍五入为整数
         },
         fontSize: 12,  // 设置字体大小
@@ -77,20 +81,48 @@ var option = {
       },
     },
   ],
+})
+
+// 加载资源使用看板数据
+const loadUsageBoardData = async () => {
+  try {
+    const data = await getWorkbenchUsageBoard()
+
+    // 更新总数量
+    chartOptions.title.subtext = String(data.totalCount || 0)
+
+    // 更新图例数据
+    legendData.value = [
+      {
+        name: '数据资源',
+        value: data.dataResourceCount || 0,
+        color: RESOURCE_TYPE_COLORS['数据资源']
+      },
+      {
+        name: '组件资源',
+        value: data.componentResourceCount || 0,
+        color: RESOURCE_TYPE_COLORS['组件资源']
+      },
+      {
+        name: '应用资源',
+        value: data.appResourceCount || 0,
+        color: RESOURCE_TYPE_COLORS['应用资源']
+      }
+    ]
+
+    // 更新图表数据
+    chartOptions.series[0].data = legendData.value.map(item => ({
+      value: item.value,
+      name: item.name,
+      itemStyle: { color: item.color }
+    }))
+  } catch (error) {
+    console.error('加载资源使用看板数据失败:', error)
+  }
 }
 
-
-
-
-// 图表配置 - 使用工厂函数创建
-const chartOptions = reactive(option)
-// const chartOptions = reactive(
-//   createDonutChart({
-//     data: legendData.value,
-//     centerText: '总数量\n4,326',
-//     innerRadius: '50%',
-//     outerRadius: '75%',
-//     showPercentInside: false
-//   })
-// )
+// 组件挂载时加载数据
+onMounted(() => {
+  loadUsageBoardData()
+})
 </script>

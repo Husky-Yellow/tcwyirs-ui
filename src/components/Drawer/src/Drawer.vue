@@ -92,7 +92,7 @@ const handleClosed = () => {
     </template>
 
     <!-- 主体内容插槽 -->
-    <div class="h-full overflow-y-auto p-20px">
+    <div class="h-full overflow-y-auto">
       <slot></slot>
     </div>
 
@@ -111,10 +111,6 @@ const handleClosed = () => {
     margin-bottom: 0;
     padding: 16px 20px;
     border-bottom: 1px solid var(--el-border-color);
-  }
-
-  :deep(.el-drawer__body) {
-    padding: 0;
   }
 
   :deep(.el-drawer__footer) {

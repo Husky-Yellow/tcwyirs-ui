@@ -7,7 +7,8 @@
   "scripts": {
     "i": "pnpm install",
     "prepare": "msw init public --save",
-    "local": "vite --mode env.local",
+    "local:yh": "vite --mode localYh",
+    "local:xh": "vite --mode localXh",
     "dev": "vite --mode dev",
     "ts:check": "vue-tsc --noEmit",
     "build:local": "node --max_old_space_size=4096 ./node_modules/vite/bin/vite.js build",

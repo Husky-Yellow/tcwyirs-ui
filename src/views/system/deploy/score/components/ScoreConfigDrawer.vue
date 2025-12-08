@@ -1,16 +1,16 @@
 <template>
-  <Drawer v-model="visible" title="配置仪表盘" size="524px" @close="handleClose">
+  <Drawer v-model="visible" title="配置权重分数" size="524px" @close="handleClose">
     <el-form label-position="top" class="!p-0">
       <!-- 标签分类 -->
-      <el-form-item label="标签分类">
+      <el-form-item label="起始分数">
         <el-input v-model="formData.category" placeholder="请输入" disabled />
       </el-form-item>
 
       <!-- 标签分数 -->
-      <el-form-item label="标签分数">
-        <el-radio-group v-model="formData.scoreDirection" class="w-full">
-          <el-radio label="up" class="!mb-8px">上升</el-radio>
-          <el-radio label="down">下降</el-radio>
+      <el-form-item label="权重分数设定">
+        <el-radio-group v-model="formData.type" class="w-full">
+          <el-radio label="上升"  value="1">上升</el-radio>
+          <el-radio label="下降"  value="2">下降</el-radio>
         </el-radio-group>
       </el-form-item>
 

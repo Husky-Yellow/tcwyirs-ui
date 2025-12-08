@@ -16,7 +16,7 @@
       <el-descriptions-item label="浏览器">
         {{ detailData.userAgent }}
       </el-descriptions-item>
-      <el-descriptions-item label="登陆结果">
+      <el-descriptions-item label="登录结果">
         <dict-tag :type="DICT_TYPE.SYSTEM_LOGIN_RESULT" :value="detailData.result" />
       </el-descriptions-item>
       <el-descriptions-item label="登录日期">

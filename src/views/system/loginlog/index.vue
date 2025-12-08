@@ -65,7 +65,7 @@
       <el-table-column label="用户名称" align="center" prop="username" width="180" />
       <el-table-column label="登录地址" align="center" prop="userIp" width="180" />
       <el-table-column label="浏览器" align="center" prop="userAgent" />
-      <el-table-column label="登陆结果" align="center" prop="result">
+      <el-table-column label="登录结果" align="center" prop="result">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_LOGIN_RESULT" :value="scope.row.result" />
         </template>

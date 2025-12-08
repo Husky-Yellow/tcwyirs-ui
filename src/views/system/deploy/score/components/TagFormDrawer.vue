@@ -7,30 +7,30 @@
   >
     <el-form ref="formRef" :model="formData" :rules="rules" label-position="top" class="!p-0">
       <!-- 标签名称 -->
-      <el-form-item label="标签名称" prop="title" required>
-        <el-input v-model="formData.title" placeholder="请输入" />
+      <el-form-item label="标签名称" prop="name" required>
+        <el-input v-model="formData.name" placeholder="请输入" />
       </el-form-item>
 
       <!-- 分数类型 -->
-      <el-form-item label="分数类型" prop="scoreType" required>
-        <el-radio-group v-model="formData.scoreType" class="w-full">
-          <el-radio label="上升" class="!mb-8px">上升</el-radio>
-          <el-radio label="下降">下降</el-radio>
+      <el-form-item label="分数类型" prop="type" required>
+        <el-radio-group v-model="formData.type" class="w-full">
+          <el-radio label="上升"  value="1">上升</el-radio>
+          <el-radio label="下降"  value="2">下降</el-radio>
         </el-radio-group>
       </el-form-item>
 
       <!-- 分数权重 -->
       <el-form-item label="分数权重" prop="weight" required>
         <el-select v-model="formData.weight" placeholder="请选择" class="w-full">
-          <el-option label="高权重" value="高权重" />
-          <el-option label="中权重" value="中权重" />
-          <el-option label="低权重" value="低权重" />
+          <el-option label="高权重" value="1" />
+          <el-option label="中权重" value="2" />
+          <el-option label="低权重" value="3" />
         </el-select>
       </el-form-item>
 
       <!-- 是否启用评分标签 -->
       <el-form-item label="是否启用评分标签">
-        <el-switch v-model="formData.enabled" />
+        <el-switch v-model="formData.showFlag" />
       </el-form-item>
     </el-form>
 
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Drawer } from '@/components/Drawer'
 
@@ -50,12 +50,13 @@ defineOptions({ name: 'TagFormDrawer' })
 
 export interface TagFormData {
   id?: number
-  title: string
-  icon?: string
-  status?: string
-  scoreType: string
-  weight: string
-  enabled: boolean
+  name: string
+  confId?: string
+  type: '1' | '2' // 1-上升 2-下降
+  weight: '1' | '2' | '3' // 1-高权重 2-中权重 3-低权重
+  showFlag: boolean
+  remark?: string
+  score?: number
 }
 
 interface Emits {
@@ -70,17 +71,18 @@ const visible = ref(false)
 const isEdit = ref(false)
 
 const defaultFormData: TagFormData = {
-  title: '',
-  scoreType: '上升',
-  weight: '',
-  enabled: true
+  name: '',
+  confId: '1',
+  type: '1',
+  weight: '1',
+  showFlag: true
 }
 
 const formData = ref<TagFormData>({ ...defaultFormData })
 
 const rules: FormRules = {
-  title: [{ required: true, message: '请输入标签名称', trigger: 'blur' }],
-  scoreType: [{ required: true, message: '请选择分数类型', trigger: 'change' }],
+  name: [{ required: true, message: '请输入标签名称', trigger: 'blur' }],
+  type: [{ required: true, message: '请选择分数类型', trigger: 'change' }],
   weight: [{ required: true, message: '请选择分数权重', trigger: 'change' }]
 }
 

@@ -2,21 +2,28 @@ import request from '@/config/axios'
 
 /** 评分标签 VO */
 export interface ScoreTagVO {
+    /** 标签id */
   id?: number
   /** 标签名称 */
   name: string
+  /** 评分配置ID */
+  confId: string
+  /** 分数类型：1-上升(好评) 2-下降(差评) */
+  type: '1' | '2'
+  /** 分数权重：1-高权重 2-中权重 3-低权重 */
+  weight?: '1' | '2' | '3'
+  /** 是否展示 */
+  showFlag: boolen
   /** 标签描述 */
-  description?: string
+  remark?: string
+
+  
+
+  
   /** 分数 */
   score: number
-  /** 标签图标 */
-  icon?: string
-  /** 标签颜色 */
-  color?: string
   /** 排序 */
   sort?: number
-  /** 状态：0-停用 1-启用（展示） */
-  status?: number
   /** 创建时间 */
   createTime?: Date
 }

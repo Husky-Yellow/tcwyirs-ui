@@ -1,6 +1,6 @@
 <template>
   <div class="mb-8">
-    <h2 v-if="!isRegister" class="text-2xl text-gray-800 font-bold xl:text-3xl"> 登陆/注册 </h2>
+    <h2 v-if="!isRegister" class="text-2xl text-gray-800 font-bold xl:text-3xl"> 登录/注册 </h2>
     <div v-else class="flex items-center gap-3">
       <button @click="handleBack" class="text-blue-500 hover:text-blue-600">
         <Icon icon="ep:arrow-left" class="text-20px" />

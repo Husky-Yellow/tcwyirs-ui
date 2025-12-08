@@ -90,9 +90,14 @@ export function calcDashboard(): DashboardDataVO {
 
   // score tags
   db.scoreTags.push(
-    { id: nextId('scoreTag'), name: 'Easy To Use', description: 'Simple and friendly', score: 10, status: 1, sort: 1, createTime: new Date() as any },
-    { id: nextId('scoreTag'), name: 'Stable', description: 'Reliable', score: 8, status: 1, sort: 2, createTime: new Date() as any },
-    { id: nextId('scoreTag'), name: 'Fast', description: 'High performance', score: 9, status: 1, sort: 3, createTime: new Date() as any }
+    { id: nextId('scoreTag'), name: '资源内容丰富', confId: '1', type: 1, weight: 'high', showFlag: true, remark: '资源提供的内容全面、详细', score: 10, sort: 1, createTime: new Date() as any },
+    { id: nextId('scoreTag'), name: '操作使用便捷', confId: '1', type: 1, weight: 'medium', showFlag: true, remark: '资源操作简单易用', score: 5, sort: 2, createTime: new Date() as any },
+    { id: nextId('scoreTag'), name: '资源数据精准', confId: '1', type: 1, weight: 'medium', showFlag: true, remark: '资源数据准确可靠', score: 5, sort: 3, createTime: new Date() as any },
+    { id: nextId('scoreTag'), name: '符合需求', confId: '1', type: 1, weight: 'low', showFlag: true, remark: '资源符合业务需求', score: 2, sort: 4, createTime: new Date() as any },
+    { id: nextId('scoreTag'), name: '体验不佳', confId: '1', type: 2, weight: 'high', showFlag: true, remark: '使用体验较差', score: -10, sort: 5, createTime: new Date() as any },
+    { id: nextId('scoreTag'), name: '内容出错', confId: '1', type: 2, weight: 'medium', showFlag: true, remark: '资源内容存在错误', score: -5, sort: 6, createTime: new Date() as any },
+    { id: nextId('scoreTag'), name: '与业务场景大不匹配', confId: '1', type: 2, weight: 'medium', showFlag: true, remark: '资源与实际业务场景不符', score: -5, sort: 7, createTime: new Date() as any },
+    { id: nextId('scoreTag'), name: '数据出现报错', confId: '1', type: 2, weight: 'low', showFlag: false, remark: '资源数据运行报错', score: -2, sort: 8, createTime: new Date() as any }
   )
 
   // score configs
