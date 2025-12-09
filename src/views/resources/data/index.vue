@@ -133,6 +133,14 @@
         />
       </div>
     </ContentWrap>
+
+    <!-- 新建/编辑表单 -->
+    <DataResourceForm
+      v-model="formVisible"
+      :data="currentFormData"
+      :is-edit="isEdit"
+      @save="handleFormSave"
+    />
   </div>
 </template>
 
@@ -140,6 +148,7 @@
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ContentWrap } from '@/components/ContentWrap'
+import DataResourceForm from './components/DataResourceForm.vue'
 import { formatDate } from '@/utils/formatTime'
 import { ResourceType } from '@/api/resource/types'
 import { getResourceInfoPage, deleteResourceInfo } from '@/api/resource/info'
@@ -229,9 +238,16 @@ const handlePageChange = () => {
   loadData()
 }
 
+// 表单相关
+const formVisible = ref(false)
+const currentFormData = ref<any>(null)
+const isEdit = ref(false)
+
 // 新增
 const handleCreate = () => {
-  ElMessage.info('新增数据资源')
+  isEdit.value = false
+  currentFormData.value = null
+  formVisible.value = true
 }
 
 // 详情
@@ -241,7 +257,29 @@ const handleDetail = (row: any) => {
 
 // 编辑
 const handleEdit = (row: any) => {
-  ElMessage.info(`编辑: ${row.name}`)
+  isEdit.value = true
+  currentFormData.value = { ...row }
+  formVisible.value = true
+}
+
+// 保存表单
+const handleFormSave = async (data: any, publish: boolean) => {
+  try {
+    // TODO: 调用 API 保存数据
+    console.log('保存数据:', data, '是否上架:', publish)
+
+    if (publish) {
+      ElMessage.success('新增并上架成功')
+    } else {
+      ElMessage.success('保存成功')
+    }
+
+    formVisible.value = false
+    await loadData()
+  } catch (error) {
+    console.error('保存失败:', error)
+    ElMessage.error('保存失败')
+  }
 }
 
 // 上架/下架

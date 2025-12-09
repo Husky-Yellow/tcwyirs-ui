@@ -132,16 +132,260 @@
         />
       </div>
     </ContentWrap>
+
+    <!-- 新增/编辑抽屉 -->
+    <Drawer
+      v-model="drawerVisible"
+      :title="isEdit ? '编辑组件资源' : '新增组件资源'"
+      size="800px"
+      direction="rtl"
+      :close-on-click-modal="false"
+      @close="handleDrawerClose"
+    >
+      <el-form
+        ref="formRef"
+        :model="formData"
+        :rules="formRules"
+        label-width="120px"
+        label-position="left"
+      >
+        <!-- 资源信息 -->
+        <div class="form-section-title">资源信息</div>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="资源名称" prop="name">
+              <el-input v-model="formData.name" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="资源性质" prop="nature">
+              <el-input v-model="formData.nature" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="供应方式" prop="supplyMethod">
+              <el-input v-model="formData.supplyMethod" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="联系人" prop="contactPerson">
+              <el-input v-model="formData.contactPerson" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="联系方式" prop="contactInfo">
+              <el-input v-model="formData.contactInfo" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="总数量" prop="totalCount">
+              <el-input v-model="formData.totalCount" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-form-item label="引用说明" prop="referenceDesc">
+          <el-input v-model="formData.referenceDesc" placeholder="请输入" />
+        </el-form-item>
+
+        <el-form-item label="资源介绍" prop="introduction">
+          <el-input
+            v-model="formData.introduction"
+            type="textarea"
+            :rows="4"
+            placeholder="请输入简介"
+            maxlength="500"
+            show-word-limit
+          />
+        </el-form-item>
+
+        <el-form-item label="介绍封面" prop="coverImage">
+          <el-upload
+            v-model:file-list="coverImageList"
+            :action="uploadAction"
+            list-type="picture-card"
+            :limit="1"
+          >
+            <Icon icon="ep:plus" class="text-24px" />
+            <template #tip>
+              <div class="el-upload__tip">支持 png, jpg, jpeg 格式，不超过 20 MB</div>
+            </template>
+          </el-upload>
+        </el-form-item>
+
+        <el-form-item label="程式" prop="program">
+          <el-input v-model="formData.program" placeholder="请输入简介" />
+        </el-form-item>
+
+        <!-- 数据提供 -->
+        <div class="form-section-title mt-24px">数据提供</div>
+
+        <el-form-item label="请求URL" prop="requestUrl">
+          <el-input v-model="formData.requestUrl" placeholder="GET">
+            <template #prepend>GET</template>
+          </el-input>
+        </el-form-item>
+
+        <!-- 请求参数 -->
+        <el-form-item label="请求参数">
+          <div class="w-full">
+            <el-table :data="formData.requestParams" border class="mb-12px">
+              <el-table-column type="index" label="序号" width="60" align="center" />
+              <el-table-column label="参数名称" min-width="120">
+                <template #default="{ row }">
+                  <el-input v-model="row.name" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="参数类型" min-width="100">
+                <template #default="{ row }">
+                  <el-input v-model="row.type" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="参数说明" min-width="120">
+                <template #default="{ row }">
+                  <el-input v-model="row.description" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="是否必填" width="100" align="center">
+                <template #default="{ row }">
+                  <el-checkbox v-model="row.required" />
+                </template>
+              </el-table-column>
+              <el-table-column label="参数位置" min-width="100">
+                <template #default="{ row }">
+                  <el-input v-model="row.position" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="实现标准依据" min-width="120">
+                <template #default="{ row }">
+                  <el-input v-model="row.standard" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="120" align="center" fixed="right">
+                <template #default="{ $index }">
+                  <el-button link type="primary" size="small" @click="addRequestParam($index)">
+                    添加下部
+                  </el-button>
+                  <el-button
+                    link
+                    type="danger"
+                    size="small"
+                    @click="removeRequestParam($index)"
+                    :disabled="formData.requestParams.length === 1"
+                  >
+                    删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-button text @click="addRequestParam()">
+              <Icon icon="ep:plus" class="mr-4px" />
+              添加一行
+            </el-button>
+          </div>
+        </el-form-item>
+
+        <!-- 返回参数 -->
+        <el-form-item label="返回参数">
+          <div class="w-full">
+            <el-table :data="formData.responseParams" border class="mb-12px">
+              <el-table-column type="index" label="序号" width="60" align="center" />
+              <el-table-column label="参数名称" min-width="120">
+                <template #default="{ row }">
+                  <el-input v-model="row.name" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="参数类型" min-width="100">
+                <template #default="{ row }">
+                  <el-input v-model="row.type" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="参数说明" min-width="120">
+                <template #default="{ row }">
+                  <el-input v-model="row.description" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="是否必填" width="100" align="center">
+                <template #default="{ row }">
+                  <el-checkbox v-model="row.required" />
+                </template>
+              </el-table-column>
+              <el-table-column label="参数位置" min-width="100">
+                <template #default="{ row }">
+                  <el-input v-model="row.position" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="实现标准依据" min-width="120">
+                <template #default="{ row }">
+                  <el-input v-model="row.standard" placeholder="请输入" size="small" />
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="120" align="center" fixed="right">
+                <template #default="{ $index }">
+                  <el-button link type="primary" size="small" @click="addResponseParam($index)">
+                    添加下部
+                  </el-button>
+                  <el-button
+                    link
+                    type="danger"
+                    size="small"
+                    @click="removeResponseParam($index)"
+                    :disabled="formData.responseParams.length === 1"
+                  >
+                    删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-button text @click="addResponseParam()">
+              <Icon icon="ep:plus" class="mr-4px" />
+              添加一行
+            </el-button>
+          </div>
+        </el-form-item>
+
+        <!-- 示例代码 -->
+        <el-form-item label="示例代码" prop="sampleCode">
+          <el-input
+            v-model="formData.sampleCode"
+            type="textarea"
+            :rows="8"
+            placeholder="请输入示例代码"
+          />
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <div class="drawer-footer">
+          <el-button @click="handleDrawerClose">取消</el-button>
+          <el-button type="primary" @click="handleSave(false)">保存</el-button>
+          <el-button type="success" @click="handleSave(true)">直接提交上架</el-button>
+        </div>
+      </template>
+    </Drawer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ref, reactive, onMounted } from 'vue'
+import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { ContentWrap } from '@/components/ContentWrap'
 import { formatDate } from '@/utils/formatTime'
 import { ResourceType } from '@/api/resource/types'
-import { getResourceInfoPage, deleteResourceInfo } from '@/api/resource/info'
+import {
+  getResourceInfoPage,
+  deleteResourceInfo,
+  createResourceInfo,
+  updateResourceInfo,
+  type ResourceInfoVO
+} from '@/api/resource/info'
 
 defineOptions({ name: 'ComponentResource' })
 
@@ -167,6 +411,56 @@ const pagination = ref({
   page: 1,
   pageSize: 10,
   total: 0
+})
+
+// 抽屉状态
+const drawerVisible = ref(false)
+const isEdit = ref(false)
+const formRef = ref<FormInstance>()
+const coverImageList = ref([])
+const uploadAction = ref(import.meta.env.VITE_UPLOAD_URL || '/api/upload')
+
+// 参数接口
+interface ParamItem {
+  name: string
+  type: string
+  description: string
+  required: boolean
+  position: string
+  standard: string
+}
+
+// 表单数据
+const formData = reactive({
+  // ID（编辑时使用）
+  id: undefined as number | undefined,
+  // 资源信息
+  name: '',
+  nature: '',
+  supplyMethod: '',
+  contactPerson: '',
+  contactInfo: '',
+  totalCount: '',
+  referenceDesc: '',
+  introduction: '',
+  coverImage: '',
+  program: '',
+  // 数据提供
+  requestUrl: '',
+  requestParams: [
+    { name: '', type: '', description: '', required: false, position: '', standard: '' }
+  ] as ParamItem[],
+  responseParams: [
+    { name: '', type: '', description: '', required: false, position: '', standard: '' }
+  ] as ParamItem[],
+  sampleCode: ''
+})
+
+// 表单验证规则
+const formRules = reactive<FormRules>({
+  name: [
+    { required: true, message: '请输入资源名称', trigger: 'blur' }
+  ]
 })
 
 // 状态映射
@@ -228,9 +522,70 @@ const handlePageChange = () => {
   loadData()
 }
 
+// 重置表单
+const resetForm = () => {
+  formRef.value?.resetFields()
+  formData.id = undefined
+  formData.name = ''
+  formData.nature = ''
+  formData.supplyMethod = ''
+  formData.contactPerson = ''
+  formData.contactInfo = ''
+  formData.totalCount = ''
+  formData.referenceDesc = ''
+  formData.introduction = ''
+  formData.coverImage = ''
+  formData.program = ''
+  formData.requestUrl = ''
+  formData.requestParams = [
+    { name: '', type: '', description: '', required: false, position: '', standard: '' }
+  ]
+  formData.responseParams = [
+    { name: '', type: '', description: '', required: false, position: '', standard: '' }
+  ]
+  formData.sampleCode = ''
+  coverImageList.value = []
+}
+
+// 添加请求参数
+const addRequestParam = (index?: number) => {
+  const newParam = { name: '', type: '', description: '', required: false, position: '', standard: '' }
+  if (index !== undefined) {
+    formData.requestParams.splice(index + 1, 0, newParam)
+  } else {
+    formData.requestParams.push(newParam)
+  }
+}
+
+// 删除请求参数
+const removeRequestParam = (index: number) => {
+  if (formData.requestParams.length > 1) {
+    formData.requestParams.splice(index, 1)
+  }
+}
+
+// 添加返回参数
+const addResponseParam = (index?: number) => {
+  const newParam = { name: '', type: '', description: '', required: false, position: '', standard: '' }
+  if (index !== undefined) {
+    formData.responseParams.splice(index + 1, 0, newParam)
+  } else {
+    formData.responseParams.push(newParam)
+  }
+}
+
+// 删除返回参数
+const removeResponseParam = (index: number) => {
+  if (formData.responseParams.length > 1) {
+    formData.responseParams.splice(index, 1)
+  }
+}
+
 // 新增
 const handleCreate = () => {
-  ElMessage.info('新增组件资源')
+  isEdit.value = false
+  resetForm()
+  drawerVisible.value = true
 }
 
 // 详情
@@ -240,7 +595,89 @@ const handleDetail = (row: any) => {
 
 // 编辑
 const handleEdit = (row: any) => {
-  ElMessage.info(`编辑: ${row.name}`)
+  isEdit.value = true
+  // 加载表单数据
+  formData.id = row.id
+  formData.name = row.name || ''
+  formData.nature = row.nature || ''
+  formData.supplyMethod = row.supplyMethod || ''
+  formData.contactPerson = row.contactPerson || ''
+  formData.contactInfo = row.contactInfo || ''
+  formData.totalCount = row.totalCount || ''
+  formData.referenceDesc = row.referenceDesc || ''
+  formData.introduction = row.introduction || row.description || ''
+  formData.program = row.program || ''
+  formData.requestUrl = row.componentExt?.requestUrl || ''
+  formData.sampleCode = row.componentExt?.sampleCode || ''
+
+  // 加载封面图片
+  if (row.icon) {
+    formData.coverImage = row.icon
+    coverImageList.value = [{ name: '封面图片', url: row.icon }]
+  }
+
+  // 加载请求参数
+  if (row.componentExt?.inputParamsJson?.length) {
+    formData.requestParams = row.componentExt.inputParamsJson
+  }
+
+  // 加载返回参数
+  if (row.componentExt?.outputParamsJson?.length) {
+    formData.responseParams = row.componentExt.outputParamsJson
+  }
+
+  drawerVisible.value = true
+}
+
+// 关闭抽屉
+const handleDrawerClose = () => {
+  drawerVisible.value = false
+  resetForm()
+}
+
+// 保存
+const handleSave = async (publish: boolean) => {
+  if (!formRef.value) return
+
+  try {
+    await formRef.value.validate()
+
+    // 构建请求数据
+    const requestData: ResourceInfoVO = {
+      name: formData.name,
+      type: ResourceType.COMPONENT,
+      description: formData.introduction,
+      icon: formData.coverImage,
+      componentExt: {
+        requestMethod: 1, // 默认 GET
+        requestUrl: formData.requestUrl,
+        sampleCode: formData.sampleCode,
+        inputParamsJson: formData.requestParams,
+        outputParamsJson: formData.responseParams
+      }
+    }
+
+    // 如果是编辑，添加 ID
+    if (isEdit.value && formData.id) {
+      requestData.id = formData.id
+    }
+
+    // 调用创建或更新接口
+    if (isEdit.value) {
+      await updateResourceInfo(requestData)
+    } else {
+      await createResourceInfo(requestData)
+    }
+
+    const action = publish ? '提交上架' : (isEdit.value ? '编辑' : '保存')
+    ElMessage.success(`${action}成功!`)
+
+    drawerVisible.value = false
+    await loadData()
+  } catch (error) {
+    console.error('保存失败:', error)
+    ElMessage.error('保存失败')
+  }
 }
 
 // 上架/下架
@@ -274,3 +711,25 @@ onMounted(() => {
   loadData()
 })
 </script>
+
+<style scoped lang="scss">
+.drawer-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.form-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 16px;
+  padding-left: 12px;
+  border-left: 4px solid #409eff;
+}
+
+.mt-24px {
+  margin-top: 24px;
+}
+</style>

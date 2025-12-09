@@ -1,41 +1,60 @@
 <template>
-  <div class="dynamic-data-table">
+  <div class="w-full rd-4px">
     <!-- 标题 -->
-    <div class="table-title">{{ title }}</div>
+    <div class="mb-12px text-14px text-[#303133] font-500">{{ title }}</div>
 
     <!-- 表格 -->
-    <div class="table-container">
+    <div class="overflow-hidden rd-4px bg-white">
       <!-- 表头 -->
-      <div class="table-header">
-        <div v-for="column in columns" :key="column.key" :style="{ width: column.width || 'auto' }" class="header-cell">
+      <div class="flex border-b border-[#ebeef5] border-solid bg-[#f5f7fa] p-x-16px p-y-12px">
+        <div
+          v-for="column in columns"
+          :key="column.key"
+          class="flex-1 text-14px text-[#909399] font-500"
+        >
           {{ column.label }}
+          <span v-if="column.required" class="text-red-500">*</span>
         </div>
-        <div class="header-cell operation-cell">操作</div>
+        <div class="w-80px flex-shrink-0 text-center text-14px text-[#909399] font-500">
+          操作
+        </div>
       </div>
 
       <!-- 表格内容 -->
-      <div class="table-body">
-        <div v-for="(row, rowIndex) in localData" :key="rowIndex" class="table-row">
+      <div>
+        <div
+          v-for="(row, rowIndex) in localData"
+          :key="rowIndex"
+          class="flex border-b border-[#ebeef5] border-solid p-x-16px p-y-12px last:border-b-0"
+        >
           <!-- 数据列 -->
           <div
             v-for="column in columns"
             :key="column.key"
-            :style="{ width: column.width || 'auto' }"
-            class="body-cell"
+            class="flex-1 pr-12px"
           >
             <el-input
               v-model="row[column.key]"
               :placeholder="column.placeholder || '请输入'"
               size="default"
-              @input="handleInput"
+              :class="{ 'is-error': validationErrors[`${rowIndex}-${column.key}`] }"
+              @blur="validateField(rowIndex, column)"
+              @input="() => clearError(rowIndex, column.key)"
             />
+            <div
+              v-if="validationErrors[`${rowIndex}-${column.key}`]"
+              class="mt-4px text-12px text-red-500"
+            >
+              {{ validationErrors[`${rowIndex}-${column.key}`] }}
+            </div>
           </div>
 
           <!-- 操作列 -->
-          <div class="body-cell operation-cell">
+          <div class="w-80px flex flex-shrink-0 items-center">
             <el-button
               link
-              type="primary"
+              type="danger"
+              size="small"
               @click="deleteRow(rowIndex)"
             >
               删除
@@ -45,7 +64,7 @@
       </div>
 
       <!-- 新增行按钮 -->
-      <div class="table-footer">
+      <div class="border-t border-[#ebeef5] border-solid p-x-16px p-y-12px text-center">
         <el-button link type="primary" @click="addRow">
           <Icon icon="ep:plus" class="mr-5px" />
           新增一行
@@ -56,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, reactive } from 'vue'
 import { Icon } from '@/components/Icon'
 
 export interface TableColumn {
@@ -64,6 +83,8 @@ export interface TableColumn {
   label: string
   width?: string
   placeholder?: string
+  required?: boolean
+  validator?: (value: any, row: TableRow) => string | true
 }
 
 export interface TableRow {
@@ -80,9 +101,9 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   modelValue: () => [],
   columns: () => [
-    { key: 'col1', label: '标题名称', width: '30%' },
-    { key: 'col2', label: '标题名称', width: '30%' },
-    { key: 'col3', label: '标题名称', width: '30%' }
+    { key: 'col1', label: '标题名称', required: true },
+    { key: 'col2', label: '标题名称', required: false },
+    { key: 'col3', label: '标题名称', required: false }
   ],
   title: '数据库表格式',
   minRows: 1
@@ -95,6 +116,9 @@ const emit = defineEmits<{
 
 // 本地数据
 const localData = ref<TableRow[]>([])
+
+// 验证错误
+const validationErrors = reactive<Record<string, string>>({})
 
 // 初始化数据
 const initData = () => {
@@ -120,6 +144,59 @@ const isLastRow = (index: number): boolean => {
   return localData.value.length <= props.minRows || index === localData.value.length - 1
 }
 
+// 验证单个字段
+const validateField = (rowIndex: number, column: TableColumn): boolean => {
+  const key = `${rowIndex}-${column.key}`
+  const value = localData.value[rowIndex][column.key]
+  const row = localData.value[rowIndex]
+
+  // 清除之前的错误
+  delete validationErrors[key]
+
+  // 必填验证
+  if (column.required && (!value || value.toString().trim() === '')) {
+    validationErrors[key] = `${column.label}不能为空`
+    return false
+  }
+
+  // 自定义验证
+  if (column.validator) {
+    const result = column.validator(value, row)
+    if (result !== true) {
+      validationErrors[key] = result as string
+      return false
+    }
+  }
+
+  return true
+}
+
+// 验证所有字段
+const validateAll = (): boolean => {
+  let isValid = true
+  localData.value.forEach((row, rowIndex) => {
+    props.columns.forEach((column) => {
+      if (!validateField(rowIndex, column)) {
+        isValid = false
+      }
+    })
+  })
+  return isValid
+}
+
+// 清除错误
+const clearError = (rowIndex: number, columnKey: string) => {
+  const key = `${rowIndex}-${columnKey}`
+  delete validationErrors[key]
+}
+
+// 清除所有错误
+const clearAllErrors = () => {
+  Object.keys(validationErrors).forEach((key) => {
+    delete validationErrors[key]
+  })
+}
+
 // 新增行
 const addRow = () => {
   localData.value.push(createEmptyRow())
@@ -128,18 +205,33 @@ const addRow = () => {
 
 // 删除行
 const deleteRow = (index: number) => {
+  // 清除该行的所有验证错误
+  props.columns.forEach((column) => {
+    const key = `${index}-${column.key}`
+    delete validationErrors[key]
+  })
+
   // 如果是最后一行，只清空数据，不删除行
   if (isLastRow(index)) {
     localData.value[index] = createEmptyRow()
   } else {
     // 不是最后一行，删除整行
     localData.value.splice(index, 1)
-  }
-  emitChange()
-}
 
-// 输入变化
-const handleInput = () => {
+    // 更新后续行的验证错误键
+    const newErrors: Record<string, string> = {}
+    Object.keys(validationErrors).forEach((key) => {
+      const [rowIdx, colKey] = key.split('-')
+      const rowIndex = parseInt(rowIdx)
+      if (rowIndex > index) {
+        newErrors[`${rowIndex - 1}-${colKey}`] = validationErrors[key]
+      } else if (rowIndex < index) {
+        newErrors[key] = validationErrors[key]
+      }
+    })
+    Object.keys(validationErrors).forEach((key) => delete validationErrors[key])
+    Object.assign(validationErrors, newErrors)
+  }
   emitChange()
 }
 
@@ -155,6 +247,7 @@ watch(
   (newVal) => {
     if (JSON.stringify(newVal) !== JSON.stringify(localData.value)) {
       initData()
+      clearAllErrors()
     }
   },
   { deep: true }
@@ -168,92 +261,12 @@ defineExpose({
   getData: () => localData.value,
   setData: (data: TableRow[]) => {
     localData.value = data
+    clearAllErrors()
     emitChange()
   },
   addRow,
-  deleteRow
+  deleteRow,
+  validate: validateAll,
+  clearErrors: clearAllErrors
 })
 </script>
-
-<style scoped lang="scss">
-.dynamic-data-table {
-  width: 100%;
-  background: #f5f7fa;
-  padding: 16px;
-  border-radius: 4px;
-
-  .table-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: #303133;
-    margin-bottom: 12px;
-  }
-
-  .table-container {
-    background: #fff;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .table-header {
-    display: flex;
-    background: #f5f7fa;
-    padding: 12px 16px;
-    border-bottom: 1px solid #ebeef5;
-
-    .header-cell {
-      flex: 1;
-      font-size: 14px;
-      color: #909399;
-      font-weight: 500;
-
-      &.operation-cell {
-        flex: 0 0 300px;
-        text-align: left;
-      }
-    }
-  }
-
-  .table-body {
-    .table-row {
-      display: flex;
-      padding: 12px 16px;
-      border-bottom: 1px solid #ebeef5;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .body-cell {
-        flex: 1;
-        display: flex;
-        align-items: center;
-
-        &.operation-cell {
-          flex: 0 0 300px;
-          gap: 8px;
-
-          .operation-tip {
-            font-size: 12px;
-            color: #409eff;
-          }
-        }
-
-        :deep(.el-input) {
-          width: 95%;
-        }
-      }
-    }
-  }
-
-  .table-footer {
-    padding: 12px 16px;
-    text-align: center;
-    border-top: 1px solid #ebeef5;
-
-    .el-button {
-      font-size: 14px;
-    }
-  }
-}
-</style>

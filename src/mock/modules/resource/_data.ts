@@ -141,6 +141,7 @@ export function calcDashboard(): DashboardDataVO {
       id: nextId('apply'),
       resourceId: db.resourceInfos[i].id!,
       resourceName: db.resourceInfos[i].name,
+      resourceType: db.resourceInfos[i].type,
       reason: 'Need access',
       projectId: db.projects[0].id!,
       projectName: db.projects[0].name,

@@ -1,6 +1,34 @@
 import request from '@/config/axios'
 import type { ResourceType, ResourceStatus } from '../types'
 
+/** 组件扩展信息 */
+export interface ComponentExtVO {
+  /** 对接方式: 1-GET 2-POST */
+  requestMethod?: number
+  /** 请求地址 */
+  requestUrl?: string
+  /** 示例代码 */
+  sampleCode?: string
+  /** 输入参数JSON */
+  inputParamsJson?: Array<{
+    name: string
+    type: string
+    description: string
+    required: boolean
+    position: string
+    standard: string
+  }>
+  /** 输出参数JSON */
+  outputParamsJson?: Array<{
+    name: string
+    type: string
+    description: string
+    required: boolean
+    position: string
+    standard: string
+  }>
+}
+
 /** 资源信息 VO */
 export interface ResourceInfoVO {
   id?: number
@@ -18,6 +46,8 @@ export interface ResourceInfoVO {
   tags?: number[]
   /** 扩展信息（JSON字符串） */
   extInfo?: string
+  /** 组件扩展信息（仅用于组件资源类型） */
+  componentExt?: ComponentExtVO
   /** 创建人 */
   creator?: string
   /** 创建时间 */

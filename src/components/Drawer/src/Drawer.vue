@@ -92,7 +92,7 @@ const handleClosed = () => {
     </template>
 
     <!-- 主体内容插槽 -->
-    <div class="h-full overflow-y-auto">
+    <div class="h-full overflow-hidden overflow-y-auto">
       <slot></slot>
     </div>
 
@@ -105,15 +105,14 @@ const handleClosed = () => {
   </ElDrawer>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .custom-drawer {
-  :deep(.el-drawer__header) {
+  .el-drawer__header {
     margin-bottom: 0;
     padding: 16px 20px;
     border-bottom: 1px solid var(--el-border-color);
   }
-
-  :deep(.el-drawer__footer) {
+  .el-drawer__footer {
     padding: 12px 20px;
     border-top: 1px solid var(--el-border-color);
   }

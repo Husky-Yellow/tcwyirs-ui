@@ -269,7 +269,83 @@
           </div>
         </el-card>
 
-        <!-- 5. DynamicSelect - 动态下拉选择组件 -->
+        <!-- 5. DynamicTreeTable - 树形表格组件 -->
+        <el-card shadow="hover" class="demo-card">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-12px">
+                <Icon icon="ep:grid" :size="24" color="#00BCD4" />
+                <div>
+                  <h2 class="text-18px font-600">DynamicTreeTable - 树形表格组件</h2>
+                  <p class="mt-4px text-12px text-[var(--el-text-color-secondary)]">
+                    支持树形结构、添加下级、展开/折叠，适用于参数配置等场景
+                  </p>
+                </div>
+              </div>
+              <el-tag type="success">新增</el-tag>
+            </div>
+          </template>
+
+          <div class="demo-content">
+            <div class="mb-16px">
+              <el-alert
+                title="功能说明"
+                type="info"
+                :closable="false"
+                class="mb-16px"
+              >
+                <template #default>
+                  <div class="text-13px leading-relaxed">
+                    <p class="mb-8px">1. 支持无限层级嵌套，每一行都可以添加子级</p>
+                    <p class="mb-8px">2. 点击箭头图标可以展开/折叠子节点</p>
+                    <p class="mb-8px">3. 支持多种输入类型：Input、Select、Number</p>
+                    <p>4. 删除节点时会删除其所有子节点</p>
+                  </div>
+                </template>
+              </el-alert>
+
+              <DynamicTreeTable
+                v-model="treeTableData"
+                :columns="treeTableColumns"
+                title="输出参数"
+                @change="handleTreeTableChange"
+              />
+
+              <div class="mt-16px flex flex-wrap gap-12px">
+                <el-button type="primary" @click="showTreeData = !showTreeData">
+                  <Icon icon="ep:view" class="mr-6px" />
+                  {{ showTreeData ? '隐藏' : '显示' }}数据结构
+                </el-button>
+              </div>
+
+              <div v-if="showTreeData" class="mt-16px">
+                <el-divider content-position="left">树形数据结构</el-divider>
+                <pre class="code-block">{{ JSON.stringify(treeTableData, null, 2) }}</pre>
+              </div>
+            </div>
+
+            <div class="demo-info">
+              <div class="demo-info-item">
+                <span class="label">功能:</span>
+                <span>树形结构、添加下级、展开/折叠、多种输入类型、层级缩进</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">特性:</span>
+                <span>自动管理层级、支持 Select/Number 等组件、数据双向绑定</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">适用场景:</span>
+                <span>API 参数配置、数据库表字段、JSON 结构编辑、配置项管理</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">位置:</span>
+                <span class="code">src/components/DynamicDataTable/src/DynamicTreeTable.vue</span>
+              </div>
+            </div>
+          </div>
+        </el-card>
+
+        <!-- 6. DynamicSelect - 动态下拉选择组件 -->
         <el-card shadow="hover" class="demo-card">
           <template #header>
             <div class="flex items-center justify-between">
@@ -488,7 +564,7 @@
       <div class="mt-32px text-center">
         <el-divider />
         <p class="text-14px text-[var(--el-text-color-secondary)]">
-          共 7 个组件 | 创建时间: 2025-10-19 |
+          共 8 个组件 | 创建时间: 2025-10-19 |
           <span class="cursor-pointer text-[var(--el-color-primary)]" @click="showInfo"
             >查看详细信息</span
           >
@@ -625,8 +701,8 @@ import { SearchForm } from '@/components/SearchForm'
 import type { SearchFormSchema } from '@/components/SearchForm'
 import { DynamicSelect } from '@/components/DynamicSelect'
 import type { DynamicSelectOption } from '@/components/DynamicSelect'
-import { DynamicDataTable } from '@/components/DynamicDataTable'
-import type { TableColumn, TableRow } from '@/components/DynamicDataTable'
+import { DynamicDataTable, DynamicTreeTable } from '@/components/DynamicDataTable'
+import type { TableColumn, TableRow, TreeTableColumn, TreeTableRow } from '@/components/DynamicDataTable'
 import { ExtensionApplicationForm } from '@/components/ExtensionApplicationForm'
 import type { ExtensionFormData } from '@/components/ExtensionApplicationForm'
 import { FeedbackDetail, FeedbackStatus } from '@/components/FeedbackDetail'
@@ -795,6 +871,133 @@ const handleTableChange = (data: TableRow[]) => {
   console.log('表格数据变化:', data)
 }
 
+// DynamicTreeTable 树形表格演示
+const treeTableData = ref<TreeTableRow[]>([
+  {
+    name: 'user',
+    type: 'Object',
+    description: '用户信息对象',
+    required: true,
+    position: 'body',
+    serviceRange: '用户服务',
+    children: [
+      {
+        name: 'id',
+        type: 'String',
+        description: '用户ID',
+        required: true,
+        position: 'body',
+        serviceRange: '用户服务'
+      },
+      {
+        name: 'name',
+        type: 'String',
+        description: '用户名称',
+        required: true,
+        position: 'body',
+        serviceRange: '用户服务'
+      },
+      {
+        name: 'profile',
+        type: 'Object',
+        description: '用户资料',
+        required: false,
+        position: 'body',
+        serviceRange: '用户服务',
+        children: [
+          {
+            name: 'avatar',
+            type: 'String',
+            description: '头像地址',
+            required: false,
+            position: 'body',
+            serviceRange: '用户服务'
+          },
+          {
+            name: 'bio',
+            type: 'String',
+            description: '个人简介',
+            required: false,
+            position: 'body',
+            serviceRange: '用户服务'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    name: 'token',
+    type: 'String',
+    description: '认证令牌',
+    required: true,
+    position: 'header',
+    serviceRange: '认证服务'
+  }
+])
+
+const treeTableColumns: TreeTableColumn[] = [
+  {
+    key: 'name',
+    label: '参数名称',
+    width: '15%',
+    placeholder: '请输入参数名称'
+  },
+  {
+    key: 'type',
+    label: '参数类型',
+    width: '13%',
+    type: 'select',
+    options: [
+      { label: 'String', value: 'String' },
+      { label: 'Number', value: 'Number' },
+      { label: 'Boolean', value: 'Boolean' },
+      { label: 'Object', value: 'Object' },
+      { label: 'Array', value: 'Array' }
+    ]
+  },
+  {
+    key: 'description',
+    label: '参数说明',
+    width: '18%',
+    placeholder: '请输入参数说明'
+  },
+  {
+    key: 'required',
+    label: '是否必填',
+    width: '12%',
+    type: 'select',
+    options: [
+      { label: '请选择', value: '' },
+      { label: '是', value: true },
+      { label: '否', value: false }
+    ]
+  },
+  {
+    key: 'position',
+    label: '参数位置',
+    width: '12%',
+    type: 'select',
+    options: [
+      { label: 'body', value: 'body' },
+      { label: 'query', value: 'query' },
+      { label: 'path', value: 'path' },
+      { label: 'header', value: 'header' }
+    ]
+  },
+  {
+    key: 'serviceRange',
+    label: '关联服务范围',
+    width: '15%',
+    placeholder: '请输入服务范围'
+  }
+]
+
+const showTreeData = ref(false)
+
+const handleTreeTableChange = (data: TreeTableRow[]) => {
+  console.log('树形表格数据变化:', data)
+}
+
 // DynamicSelect 动态选择演示
 const selectedValue1 = ref<string | number | null>(null)
 const selectedValue2 = ref<string | number | null>(null)
@@ -945,10 +1148,10 @@ const showInfo = () => {
   ElMessageBox.alert(
     `
       <div>
-        <p><strong>组件总数:</strong> 7 个</p>
+        <p><strong>组件总数:</strong> 8 个</p>
         <p><strong>创建时间:</strong> 2025-10-19</p>
         <p><strong>技术栈:</strong> Vue 3 + TypeScript + Element Plus + UnoCSS</p>
-        <p><strong>组件列表:</strong> RatingReviewModal, Drawer, SearchForm, DynamicDataTable, DynamicSelect, ExtensionApplicationForm, FeedbackDetail</p>
+        <p><strong>组件列表:</strong> RatingReviewModal, Drawer, SearchForm, DynamicDataTable, DynamicTreeTable, DynamicSelect, ExtensionApplicationForm, FeedbackDetail</p>
       </div>
     `,
     '组件信息',

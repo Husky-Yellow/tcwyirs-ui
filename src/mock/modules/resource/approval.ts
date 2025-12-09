@@ -7,8 +7,15 @@ const mockConfigs: MockConfig[] = [
     url: '/admin-api/resource/approval/pending-page',
     type: 'get',
     response: ({ query }): ApiResponse<PageResponse<ResourceApplyVO>> => {
-      const { pageNo = 1, pageSize = 10 } = query as any
-      const list = db.applies.filter((a) => a.status === 0)
+      const { pageNo = 1, pageSize = 10, resourceName, resourceType, applicant, projectName } = query as any
+      let list = db.applies.filter((a) => a.status === 0)
+
+      // 过滤条件
+      if (resourceName) list = list.filter((a) => (a.resourceName || '').toLowerCase().includes(String(resourceName).toLowerCase()))
+      if (resourceType !== undefined && String(resourceType) !== '') list = list.filter((a) => a.resourceType === Number(resourceType))
+      if (applicant) list = list.filter((a) => (a.applicant || '').toLowerCase().includes(String(applicant).toLowerCase()))
+      if (projectName) list = list.filter((a) => (a.projectName || '').toLowerCase().includes(String(projectName).toLowerCase()))
+
       const { list: pageList, total } = paginate(list, Number(pageNo), Number(pageSize))
       return { code: 0, data: { list: pageList, total }, msg: '' }
     }
@@ -17,8 +24,15 @@ const mockConfigs: MockConfig[] = [
     url: '/admin-api/resource/approval/done-page',
     type: 'get',
     response: ({ query }): ApiResponse<PageResponse<ResourceApplyVO>> => {
-      const { pageNo = 1, pageSize = 10 } = query as any
-      const list = db.applies.filter((a) => a.status !== 0)
+      const { pageNo = 1, pageSize = 10, resourceName, resourceType, applicant, projectName } = query as any
+      let list = db.applies.filter((a) => a.status !== 0)
+
+      // 过滤条件
+      if (resourceName) list = list.filter((a) => (a.resourceName || '').toLowerCase().includes(String(resourceName).toLowerCase()))
+      if (resourceType !== undefined && String(resourceType) !== '') list = list.filter((a) => a.resourceType === Number(resourceType))
+      if (applicant) list = list.filter((a) => (a.applicant || '').toLowerCase().includes(String(applicant).toLowerCase()))
+      if (projectName) list = list.filter((a) => (a.projectName || '').toLowerCase().includes(String(projectName).toLowerCase()))
+
       const { list: pageList, total } = paginate(list, Number(pageNo), Number(pageSize))
       return { code: 0, data: { list: pageList, total }, msg: '' }
     }

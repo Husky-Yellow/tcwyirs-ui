@@ -89,9 +89,8 @@ defineOptions({ name: 'ResourceUsage' })
 // 搜索表单数据
 const searchForm = ref({
   resourceName: '',
-  userName: '',
   projectName: '',
-  status: undefined
+  useStatus: undefined
 })
 
 // 搜索表单配置
@@ -99,15 +98,6 @@ const searchSchema = computed<FormSchema[]>(() => [
   {
     field: 'resourceName',
     label: '资源名称',
-    component: 'Input',
-    componentProps: {
-      placeholder: '请输入',
-      clearable: true
-    }
-  },
-  {
-    field: 'userName',
-    label: '使用人',
     component: 'Input',
     componentProps: {
       placeholder: '请输入',
@@ -124,7 +114,7 @@ const searchSchema = computed<FormSchema[]>(() => [
     }
   },
   {
-    field: 'status',
+    field: 'useStatus',
     label: '使用状态',
     component: 'Select',
     componentProps: {

@@ -20,7 +20,7 @@ export const COMPONENT_MAP: Record<HomeComponentType, Component> = {
   [HomeComponentType.MESSAGES]: markRaw(MessagesWidget), // 消息
   [HomeComponentType.RESOURCE_USAGE]: markRaw(ResourceUsageCard), // 资源使用看板
   [HomeComponentType.MY_APPROVALS]: markRaw(MyApprovalsWidget), // 我发起的审批
-  [HomeComponentType.MY_UPLOADED_RESOURCES]: markRaw(MyUploadedResourcesWidget), // 资源管理员：我上架的资源+待我审批的资源
+  [HomeComponentType.MY_UPLOADED_RESOURCES]: markRaw(MyUploadedResourcesWidget), // 资源管理员：我上架的资源+待我审批的资源 done
   [HomeComponentType.APPROVAL_PENDING]: markRaw(ApprovalPendingWidget), // 资源上架审批
   [HomeComponentType.CUSTOM]: markRaw({} as Component) // 自定义组件预留
 }

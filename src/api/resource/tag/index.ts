@@ -5,6 +5,8 @@ export interface ResourceTagVO {
   id?: number
   /** 标签名称 */
   name: string
+  /** 标签编码 */
+  code?: string
   /** 标签颜色 */
   color?: string
   /** 标签图标 */
@@ -13,8 +15,20 @@ export interface ResourceTagVO {
   type?: number
   /** 排序 */
   sort?: number
+  /** 状态: 0-禁用 1-启用 */
+  status?: number
+  /** 备注 */
+  remark?: string
   /** 创建时间 */
   createTime?: Date
+}
+
+/** 标签列表查询参数 */
+export interface ResourceTagListReqVO {
+  /** 标签类型 */
+  type?: number
+  /** 状态: 0-禁用 1-启用 */
+  status?: number
 }
 
 // 创建标签
@@ -32,9 +46,9 @@ export const deleteResourceTag = (id: number) => {
   return request.delete<void>({ url: '/resource/tag/delete?id=' + id })
 }
 
-// 获取系统标签列表
-export const getResourceTagList = () => {
-  return request.get<ResourceTagVO[]>({ url: '/resource/tag/list' })
+// 获取标签列表
+export const getResourceTagList = (params?: ResourceTagListReqVO) => {
+  return request.get<ResourceTagVO[]>({ url: '/resource/tag/list', params })
 }
 
 // 获取用户自定义标签列表

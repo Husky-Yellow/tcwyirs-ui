@@ -3,6 +3,13 @@
     <!-- 页面标题 -->
     <h2 class="mb-24px text-20px text-[#303133] font-600">应用资源管理</h2>
 
+    <!-- 应用资源表单 -->
+    <ApplicationForm
+      v-model="formVisible"
+      :data="currentRow"
+      @success="handleFormSuccess"
+    />
+
     <!-- 统计卡片 -->
     <div class="grid grid-cols-4 mb-24px gap-16px">
       <el-card shadow="hover">
@@ -143,8 +150,13 @@ import { ContentWrap } from '@/components/ContentWrap'
 import { formatDate } from '@/utils/formatTime'
 import { ResourceType } from '@/api/resource/types'
 import { getResourceInfoPage, deleteResourceInfo } from '@/api/resource/info'
+import ApplicationForm from './components/ApplicationForm.vue'
 
 defineOptions({ name: 'ApplicationResource' })
+
+// 表单相关
+const formVisible = ref(false)
+const currentRow = ref<any>(null)
 
 // 统计数据
 const statistics = ref({
@@ -231,7 +243,8 @@ const handlePageChange = () => {
 
 // 新增
 const handleCreate = () => {
-  ElMessage.info('新增应用资源')
+  currentRow.value = null
+  formVisible.value = true
 }
 
 // 详情
@@ -241,7 +254,13 @@ const handleDetail = (row: any) => {
 
 // 编辑
 const handleEdit = (row: any) => {
-  ElMessage.info(`编辑: ${row.name}`)
+  currentRow.value = { ...row }
+  formVisible.value = true
+}
+
+// 表单提交成功
+const handleFormSuccess = () => {
+  loadData()
 }
 
 // 上架/下架

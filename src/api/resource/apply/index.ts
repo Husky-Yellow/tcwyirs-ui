@@ -8,6 +8,8 @@ export interface ResourceApplyVO {
   resourceId: number
   /** 资源名称 */
   resourceName?: string
+  /** 资源类型：1-数据资源 2-应用资源 3-组件资源 */
+  resourceType?: number
   /** 申请原因 */
   reason: string
   /** 项目ID */
@@ -34,6 +36,12 @@ export interface ResourceApplyVO {
 export interface ResourceApplyPageReqVO extends PageParam {
   /** 资源名称 */
   resourceName?: string
+  /** 资源类型 */
+  resourceType?: number
+  /** 申请人 */
+  applicant?: string
+  /** 项目名称 */
+  projectName?: string
   /** 申请状态 */
   status?: ApplyStatus
   /** 申请时间 */

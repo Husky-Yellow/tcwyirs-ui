@@ -32,14 +32,10 @@ export interface ResourceUsageVO {
 export interface ResourceUsagePageReqVO extends PageParam {
   /** 资源名称 */
   resourceName?: string
-  /** 使用人 */
-  userName?: string
-  /** 使用状态 */
-  status?: UsageStatus
   /** 项目名称 */
   projectName?: string
-  /** 创建时间 */
-  createTime?: string[]
+  /** 使用状态 */
+  useStatus?: number
 }
 
 // 获取资源使用列表
