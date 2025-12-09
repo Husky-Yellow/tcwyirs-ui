@@ -8,25 +8,25 @@
       <el-card shadow="hover">
         <div class="flex flex-col">
           <div class="mb-8px text-14px text-[#909399]">访问总量</div>
-          <div class="text-24px text-[#303133] font-600">{{ statistics.visitCount }}</div>
+          <div class="text-24px text-[#303133] font-600">{{ statistics.visitCount || 0 }}</div>
         </div>
       </el-card>
       <el-card shadow="hover">
         <div class="flex flex-col">
           <div class="mb-8px text-14px text-[#909399]">申请总量</div>
-          <div class="text-24px text-[#303133] font-600">{{ statistics.applyCount }}</div>
+          <div class="text-24px text-[#303133] font-600">{{ statistics.applyCount || 0 }}</div>
         </div>
       </el-card>
       <el-card shadow="hover">
         <div class="flex flex-col">
           <div class="mb-8px text-14px text-[#909399]">综合平均分</div>
-          <div class="text-24px text-[#303133] font-600">{{ statistics.avgScore }}</div>
+          <div class="text-24px text-[#303133] font-600">{{ statistics.avgScore || 0 }}</div>
         </div>
       </el-card>
       <el-card shadow="hover">
         <div class="flex flex-col">
           <div class="mb-8px text-14px text-[#909399]">未上架资源</div>
-          <div class="text-24px text-[#303133] font-600">{{ statistics.unpublishedCount }}</div>
+          <div class="text-24px text-[#303133] font-600">{{ statistics.unpublishedCount || 0 }}</div>
         </div>
       </el-card>
     </div>
@@ -151,17 +151,33 @@ import { ContentWrap } from '@/components/ContentWrap'
 import DataResourceForm from './components/DataResourceForm.vue'
 import { formatDate } from '@/utils/formatTime'
 import { ResourceType } from '@/api/resource/types'
-import { getResourceInfoPage, deleteResourceInfo } from '@/api/resource/info'
+import { createResourceInfo, getResourceInfoPage, deleteResourceInfo } from '@/api/resource/info'
+import {
+  getResourceStatisticsByType,
+  type ResourceInfoSaveReqVO
+} from '@/api/resource/apply'
 
 defineOptions({ name: 'DataResource' })
 
 // 统计数据
 const statistics = ref({
-  visitCount: 2379,
-  applyCount: 1326,
-  avgScore: 81.6,
-  unpublishedCount: 12
+  visitCount: 0, // 访问总量
+  applyCount: 0, // 资源申请总量
+  avgScore: 0, // 综合评分（预留）
+  unpublishedCount: 0 // 未上架资源数
 })
+
+// 加载统计数据
+const loadStatistics = async () => {
+  try {
+    const res = await getResourceStatisticsByType({
+      type: 1
+    })
+    statistics.value = res
+  } catch (error) {
+    console.error('加载统计数据失败:', error)
+  }
+}
 
 // 搜索表单
 const searchForm = ref({
@@ -265,8 +281,36 @@ const handleEdit = (row: any) => {
 // 保存表单
 const handleFormSave = async (data: any, publish: boolean) => {
   try {
-    // TODO: 调用 API 保存数据
-    console.log('保存数据:', data, '是否上架:', publish)
+    console.log('表单数据:', data)
+
+    // 将 dataConfigs 转换为 extInfo JSON 字符串
+    const extInfo = JSON.stringify({
+      dataConfigs: data.dataConfigs || [],
+      collectCount: data.collectCount,
+      contact: data.contact,
+      contactInfo: data.contactInfo,
+      owner: data.owner,
+      ownerApp: data.ownerApp,
+      summary: data.summary
+    })
+
+    // 构建资源信息保存请求
+    const saveData = {
+      id: data.id,
+      name: data.name,
+      type: ResourceType.DATA,
+      description: data.description,
+      icon: data.coverUrl,
+      tags: data.tags ? [data.tags] : [], // 将字符串转为数组
+      extInfo: extInfo,
+      status: publish ? 1 : 0 // 如果上架则状态为待审批(1)，否则为草稿(0)
+    }
+
+    console.log('调用接口参数:', saveData)
+
+    // 调用创建资源接口
+    const resourceId = await createResourceInfo(saveData)
+    console.log('保存成功，资源ID:', resourceId)
 
     if (publish) {
       ElMessage.success('新增并上架成功')
@@ -310,6 +354,7 @@ const handleDelete = async (row: any) => {
 
 // 初始化
 onMounted(() => {
+  loadStatistics()
   loadData()
 })
 </script>

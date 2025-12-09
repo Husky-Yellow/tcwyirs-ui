@@ -21,7 +21,7 @@
       </div>
 
       <!-- 表格内容 -->
-      <div>
+      <el-form ref="formRef" :model="{ localData }">
         <div
           v-for="(row, rowIndex) in localData"
           :key="rowIndex"
@@ -33,20 +33,17 @@
             :key="column.key"
             class="flex-1 pr-12px"
           >
-            <el-input
-              v-model="row[column.key]"
-              :placeholder="column.placeholder || '请输入'"
-              size="default"
-              :class="{ 'is-error': validationErrors[`${rowIndex}-${column.key}`] }"
-              @blur="validateField(rowIndex, column)"
-              @input="() => clearError(rowIndex, column.key)"
-            />
-            <div
-              v-if="validationErrors[`${rowIndex}-${column.key}`]"
-              class="mt-4px text-12px text-red-500"
+            <el-form-item
+              :prop="`localData.${rowIndex}.${column.key}`"
+              :rules="getFieldRules(column, rowIndex)"
+              class="!mb-0"
             >
-              {{ validationErrors[`${rowIndex}-${column.key}`] }}
-            </div>
+              <el-input
+                v-model="row[column.key]"
+                :placeholder="column.placeholder || '请输入'"
+                size="default"
+              />
+            </el-form-item>
           </div>
 
           <!-- 操作列 -->
@@ -61,7 +58,7 @@
             </el-button>
           </div>
         </div>
-      </div>
+      </el-form>
 
       <!-- 新增行按钮 -->
       <div class="border-t border-[#ebeef5] border-solid p-x-16px p-y-12px text-center">
@@ -75,7 +72,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, reactive } from 'vue'
+import { ref, watch } from 'vue'
+import type { FormInstance, FormItemRule } from 'element-plus'
 import { Icon } from '@/components/Icon'
 
 export interface TableColumn {
@@ -114,11 +112,11 @@ const emit = defineEmits<{
   (e: 'change', value: TableRow[]): void
 }>()
 
+// 表单引用
+const formRef = ref<FormInstance>()
+
 // 本地数据
 const localData = ref<TableRow[]>([])
-
-// 验证错误
-const validationErrors = reactive<Record<string, string>>({})
 
 // 初始化数据
 const initData = () => {
@@ -144,57 +142,59 @@ const isLastRow = (index: number): boolean => {
   return localData.value.length <= props.minRows || index === localData.value.length - 1
 }
 
-// 验证单个字段
-const validateField = (rowIndex: number, column: TableColumn): boolean => {
-  const key = `${rowIndex}-${column.key}`
-  const value = localData.value[rowIndex][column.key]
-  const row = localData.value[rowIndex]
-
-  // 清除之前的错误
-  delete validationErrors[key]
+// 获取字段验证规则
+const getFieldRules = (column: TableColumn, rowIndex: number): FormItemRule[] => {
+  const rules: FormItemRule[] = []
 
   // 必填验证
-  if (column.required && (!value || value.toString().trim() === '')) {
-    validationErrors[key] = `${column.label}不能为空`
-    return false
+  if (column.required) {
+    rules.push({
+      required: true,
+      message: `${column.label}不能为空`,
+      trigger: 'blur',
+      validator: (_rule, value, callback) => {
+        if (!value || value.toString().trim() === '') {
+          callback(new Error(`${column.label}不能为空`))
+        } else {
+          callback()
+        }
+      }
+    })
   }
 
   // 自定义验证
   if (column.validator) {
-    const result = column.validator(value, row)
-    if (result !== true) {
-      validationErrors[key] = result as string
-      return false
-    }
+    rules.push({
+      trigger: 'blur',
+      validator: (_rule, value, callback) => {
+        const row = localData.value[rowIndex]
+        const result = column.validator!(value, row)
+        if (result === true) {
+          callback()
+        } else {
+          callback(new Error(result as string))
+        }
+      }
+    })
   }
 
-  return true
+  return rules
 }
 
 // 验证所有字段
-const validateAll = (): boolean => {
-  let isValid = true
-  localData.value.forEach((row, rowIndex) => {
-    props.columns.forEach((column) => {
-      if (!validateField(rowIndex, column)) {
-        isValid = false
-      }
-    })
-  })
-  return isValid
+const validateAll = async (): Promise<boolean> => {
+  if (!formRef.value) return false
+  try {
+    await formRef.value.validate()
+    return true
+  } catch {
+    return false
+  }
 }
 
-// 清除错误
-const clearError = (rowIndex: number, columnKey: string) => {
-  const key = `${rowIndex}-${columnKey}`
-  delete validationErrors[key]
-}
-
-// 清除所有错误
+// 清除所有验证错误
 const clearAllErrors = () => {
-  Object.keys(validationErrors).forEach((key) => {
-    delete validationErrors[key]
-  })
+  formRef.value?.clearValidate()
 }
 
 // 新增行
@@ -205,33 +205,16 @@ const addRow = () => {
 
 // 删除行
 const deleteRow = (index: number) => {
-  // 清除该行的所有验证错误
-  props.columns.forEach((column) => {
-    const key = `${index}-${column.key}`
-    delete validationErrors[key]
-  })
-
   // 如果是最后一行，只清空数据，不删除行
   if (isLastRow(index)) {
     localData.value[index] = createEmptyRow()
   } else {
     // 不是最后一行，删除整行
     localData.value.splice(index, 1)
-
-    // 更新后续行的验证错误键
-    const newErrors: Record<string, string> = {}
-    Object.keys(validationErrors).forEach((key) => {
-      const [rowIdx, colKey] = key.split('-')
-      const rowIndex = parseInt(rowIdx)
-      if (rowIndex > index) {
-        newErrors[`${rowIndex - 1}-${colKey}`] = validationErrors[key]
-      } else if (rowIndex < index) {
-        newErrors[key] = validationErrors[key]
-      }
-    })
-    Object.keys(validationErrors).forEach((key) => delete validationErrors[key])
-    Object.assign(validationErrors, newErrors)
   }
+
+  // 清除表单验证状态
+  formRef.value?.clearValidate()
   emitChange()
 }
 
