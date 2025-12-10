@@ -164,6 +164,7 @@ import { useResourceTag } from '@/hooks/web/useResourceTag'
 import type { TableColumn } from '@/components/DynamicDataTable'
 import type { DynamicSelectOption } from '@/components/DynamicSelect'
 import type { ResourceInfoSaveReqVO, ResourceDataExtVO, FieldInfo } from '@/api/resource/info'
+import type { ResourceTagVO } from '@/api/resource/tag'
 import { QuestionFilled } from '@element-plus/icons-vue'
 import { ResourceType } from '@/api/resource/types'
 defineOptions({ name: 'DataResourceForm' })
@@ -173,12 +174,14 @@ interface Props {
   modelValue: boolean
   data?: ResourceInfoSaveReqVO | null
   isEdit?: boolean
+  tagList?: ResourceTagVO[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
   data: null,
-  isEdit: false
+  isEdit: false,
+  tagList: () => []
 })
 
 // Emits
@@ -194,7 +197,7 @@ const dataTableColumns: TableColumn[] = [
   { key: 'fieldType', label: '字段类型', width: '30%', placeholder: '请输入字段类型' }
 ]
 
-// 使用标签管理 Hook
+// 使用标签管理 Hook（使用页面传入的标签列表，避免重复加载）
 const {
   tagOptions,
   loading: tagLoading,
@@ -202,7 +205,10 @@ const {
   editTag,
   deleteTag,
   handleOptionsChange
-} = useResourceTag()
+} = useResourceTag({
+  autoLoad: false,
+  initialOptions: props.tagList
+})
 
 // 表单引用
 const formRef = ref()

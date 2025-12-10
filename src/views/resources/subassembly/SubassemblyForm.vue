@@ -103,137 +103,22 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="组件地址">
-            <el-input v-model="formData.componentExt.componentUrl" placeholder="请输入组件地址" />
-          </el-form-item>
-        </el-col>
       </el-row>
-
-      <el-form-item label="请求地址">
-        <el-input v-model="formData.componentExt.requestUrl" placeholder="请输入请求地址">
-          <template #prepend>
-            {{ formData.componentExt.dockingType === 2 ? 'POST' : 'GET' }}
-          </template>
-        </el-input>
-      </el-form-item>
 
       <!-- 输入参数 -->
       <el-form-item label="输入参数">
-        <div class="w-full">
-          <el-table :data="formData.componentExt.inputParamsJson" border class="mb-12px">
-            <el-table-column type="index" label="序号" width="60" align="center" />
-            <el-table-column label="参数名称" min-width="120">
-              <template #default="{ row }">
-                <el-input v-model="row.paramName" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="参数类型" min-width="100">
-              <template #default="{ row }">
-                <el-input v-model="row.paramType" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="参数描述" min-width="120">
-              <template #default="{ row }">
-                <el-input v-model="row.paramDesc" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="是否必填" width="100" align="center">
-              <template #default="{ row }">
-                <el-checkbox v-model="row.required" />
-              </template>
-            </el-table-column>
-            <el-table-column label="参数位置" min-width="100">
-              <template #default="{ row }">
-                <el-input v-model="row.paramPosition" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="关联表信息" min-width="120">
-              <template #default="{ row }">
-                <el-input v-model="row.relTableInfo" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="120" align="center" fixed="right">
-              <template #default="{ $index }">
-                <el-button link type="primary" size="small" @click="addInputParam($index)">
-                  添加
-                </el-button>
-                <el-button
-                  link
-                  type="danger"
-                  size="small"
-                  @click="removeInputParam($index)"
-                  :disabled="formData.componentExt.inputParamsJson!.length === 1"
-                >
-                  删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <el-button text @click="addInputParam()">
-            <Icon icon="ep:plus" class="mr-4px" />
-            添加一行
-          </el-button>
-        </div>
+        <DynamicTreeTable
+          v-model="formData.componentExt.inputParamsJson"
+          :columns="paramColumns"
+        />
       </el-form-item>
 
       <!-- 输出参数 -->
       <el-form-item label="输出参数">
-        <div class="w-full">
-          <el-table :data="formData.componentExt.outputParamsJson" border class="mb-12px">
-            <el-table-column type="index" label="序号" width="60" align="center" />
-            <el-table-column label="参数名称" min-width="120">
-              <template #default="{ row }">
-                <el-input v-model="row.paramName" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="参数类型" min-width="100">
-              <template #default="{ row }">
-                <el-input v-model="row.paramType" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="参数描述" min-width="120">
-              <template #default="{ row }">
-                <el-input v-model="row.paramDesc" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="是否必填" width="100" align="center">
-              <template #default="{ row }">
-                <el-checkbox v-model="row.required" />
-              </template>
-            </el-table-column>
-            <el-table-column label="参数位置" min-width="100">
-              <template #default="{ row }">
-                <el-input v-model="row.paramPosition" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="关联表信息" min-width="120">
-              <template #default="{ row }">
-                <el-input v-model="row.relTableInfo" placeholder="请输入" size="small" />
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="120" align="center" fixed="right">
-              <template #default="{ $index }">
-                <el-button link type="primary" size="small" @click="addOutputParam($index)">
-                  添加
-                </el-button>
-                <el-button
-                  link
-                  type="danger"
-                  size="small"
-                  @click="removeOutputParam($index)"
-                  :disabled="formData.componentExt.outputParamsJson!.length === 1"
-                >
-                  删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <el-button text @click="addOutputParam()">
-            <Icon icon="ep:plus" class="mr-4px" />
-            添加一行
-          </el-button>
-        </div>
+        <DynamicTreeTable
+          v-model="formData.componentExt.outputParamsJson"
+          :columns="paramColumns"
+        />
       </el-form-item>
 
       <!-- 示例代码 -->
@@ -262,11 +147,14 @@ import { ref, computed, watch, nextTick } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { Drawer } from '@/components/Drawer'
 import { DynamicSelect } from '@/components/DynamicSelect'
+import { DynamicTreeTable } from '@/components/DynamicDataTable'
 import { UploadImg } from '@/components/UploadFile'
 import { Icon } from '@/components/Icon'
 import { useResourceTag } from '@/hooks/web/useResourceTag'
 import type { DynamicSelectOption } from '@/components/DynamicSelect'
+import type { TableColumn } from '@/components/DynamicDataTable'
 import type { ResourceInfoSaveReqVO, ParamInfo } from '@/api/resource/info'
+import type { ResourceTagVO } from '@/api/resource/tag'
 import { createResourceInfo, updateResourceInfo } from '@/api/resource/info'
 
 defineOptions({ name: 'SubassemblyForm' })
@@ -276,12 +164,14 @@ interface Props {
   modelValue: boolean
   data?: ResourceInfoSaveReqVO | null
   isEdit?: boolean
+  tagList?: ResourceTagVO[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
   data: null,
-  isEdit: false
+  isEdit: false,
+  tagList: () => []
 })
 
 // Emits
@@ -290,7 +180,7 @@ const emit = defineEmits<{
   success: []
 }>()
 
-// 使用标签管理 Hook
+// 使用标签管理 Hook（使用页面传入的标签列表，避免重复加载）
 const {
   tagOptions,
   loading: tagLoading,
@@ -298,10 +188,26 @@ const {
   editTag,
   deleteTag,
   handleOptionsChange
-} = useResourceTag()
+} = useResourceTag({
+  autoLoad: false,
+  initialOptions: props.tagList
+})
 
 // 表单引用
 const formRef = ref<FormInstance>()
+
+// 参数表格列配置
+const paramColumns: TableColumn[] = [
+  { key: 'paramName', label: '参数名称', width: '200px', placeholder: '请输入参数名称' },
+  { key: 'paramType', label: '参数类型', width: '150px', placeholder: '请输入参数类型' },
+  { key: 'paramDesc', label: '参数描述', width: '200px', placeholder: '请输入参数描述' },
+  { key: 'required', label: '是否必填', width: '120px', type: 'select', options: [
+    { label: '是', value: true },
+    { label: '否', value: false }
+  ]},
+  { key: 'paramPosition', label: '参数位置', width: '150px', placeholder: '请输入参数位置' },
+  { key: 'relTableInfo', label: '关联表信息', width: '200px', placeholder: '请输入关联表信息' }
+]
 
 // 创建空参数
 const createEmptyParam = (): ParamInfo => ({
@@ -371,40 +277,6 @@ const formRules = {
     { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号码', trigger: 'blur' }
   ],
   belong: [{ required: true, message: '请输入归属方', trigger: 'blur' }]
-}
-
-// 添加输入参数
-const addInputParam = (index?: number) => {
-  const newParam = createEmptyParam()
-  if (index !== undefined) {
-    formData.value.componentExt!.inputParamsJson!.splice(index + 1, 0, newParam)
-  } else {
-    formData.value.componentExt!.inputParamsJson!.push(newParam)
-  }
-}
-
-// 删除输入参数
-const removeInputParam = (index: number) => {
-  if (formData.value.componentExt!.inputParamsJson!.length > 1) {
-    formData.value.componentExt!.inputParamsJson!.splice(index, 1)
-  }
-}
-
-// 添加输出参数
-const addOutputParam = (index?: number) => {
-  const newParam = createEmptyParam()
-  if (index !== undefined) {
-    formData.value.componentExt!.outputParamsJson!.splice(index + 1, 0, newParam)
-  } else {
-    formData.value.componentExt!.outputParamsJson!.push(newParam)
-  }
-}
-
-// 删除输出参数
-const removeOutputParam = (index: number) => {
-  if (formData.value.componentExt!.outputParamsJson!.length > 1) {
-    formData.value.componentExt!.outputParamsJson!.splice(index, 1)
-  }
 }
 
 // 重置表单

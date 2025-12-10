@@ -10,10 +10,22 @@ import {
 } from '@/api/resource/tag'
 
 /**
+ * 资源标签管理 Hook 选项
+ */
+export interface UseResourceTagOptions {
+  /** 是否自动加载标签列表，默认为 true */
+  autoLoad?: boolean
+  /** 初始标签选项（如果提供则不自动加载） */
+  initialOptions?: ResourceTagVO[]
+}
+
+/**
  * 资源标签管理 Hook
  * 提供资源标签的增删改查功能
  */
-export const useResourceTag = () => {
+export const useResourceTag = (options: UseResourceTagOptions = {}) => {
+  const { autoLoad = true, initialOptions } = options
+
   const tagOptions = ref<DynamicSelectOption[]>([])
   const loading = ref(false)
 
@@ -39,6 +51,11 @@ export const useResourceTag = () => {
       value,
       fixed
     }
+  }
+
+  // 如果提供了初始选项，则使用它们
+  if (initialOptions) {
+    tagOptions.value = initialOptions.map(convertToOption)
   }
 
   /**
@@ -160,9 +177,11 @@ export const useResourceTag = () => {
     tagOptions.value = options
   }
 
-  // 组件挂载时加载标签列表
+  // 组件挂载时加载标签列表（仅当 autoLoad 为 true 且未提供初始选项时）
   onMounted(() => {
-    loadTags({ status: 1 }) // 只加载启用的标签
+    if (autoLoad && !initialOptions) {
+      loadTags({ status: 1 }) // 只加载启用的标签
+    }
   })
 
   return {

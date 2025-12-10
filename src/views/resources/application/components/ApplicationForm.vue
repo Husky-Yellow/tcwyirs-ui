@@ -237,6 +237,7 @@ import { Icon } from '@/components/Icon'
 import { useResourceTag } from '@/hooks/web/useResourceTag'
 import type { DynamicSelectOption } from '@/components/DynamicSelect'
 import type { ResourceInfoSaveReqVO, ResourceAppExtVO, IntroScene } from '@/api/resource/info'
+import type { ResourceTagVO } from '@/api/resource/tag'
 import { createResourceInfo, updateResourceInfo } from '@/api/resource/info'
 
 defineOptions({ name: 'ApplicationForm' })
@@ -246,12 +247,14 @@ interface Props {
   modelValue: boolean
   data?: ResourceInfoSaveReqVO | null
   isEdit?: boolean
+  tagList?: ResourceTagVO[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
   data: null,
-  isEdit: false
+  isEdit: false,
+  tagList: () => []
 })
 
 // Emits
@@ -260,7 +263,7 @@ const emit = defineEmits<{
   success: []
 }>()
 
-// 使用标签管理 Hook
+// 使用标签管理 Hook（使用页面传入的标签列表，避免重复加载）
 const {
   tagOptions,
   loading: tagLoading,
@@ -268,7 +271,10 @@ const {
   editTag,
   deleteTag,
   handleOptionsChange
-} = useResourceTag()
+} = useResourceTag({
+  autoLoad: false,
+  initialOptions: props.tagList
+})
 
 // 表单引用
 const formRef = ref<FormInstance>()

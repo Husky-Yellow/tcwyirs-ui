@@ -731,8 +731,5 @@ export const unpublishResourceInfo = (id: number) => request.post<void>({ url: '
 // 获取我上架的资源统计
 export const fetchResourceStats = () => request.get<ResourceStatsRespVO>({ url: '/resource/info/statistics' })
 
-//  获得资源上架申请分页
-export const getPublishApplicationPage  = (params: PublishApplicationPageParamVO) => request.get<PageResult<ResourcePublishApplyRespVO[]>>({ url: '/resource/publish-apply/page', params })
-
 // 待我审批的资源
 export const getApplyTodoPage  = (params: PageResultResourceApplyTodoRespVO) => request.get<PageResult<ResourceApplyTodoRespVO[]>>({ url: '/resource/apply/todo-page', params })

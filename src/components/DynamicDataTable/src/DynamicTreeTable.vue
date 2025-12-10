@@ -1,41 +1,46 @@
 <template>
-  <div class="dynamic-tree-table">
+  <div class="w-full">
     <!-- 标题 -->
-    <div v-if="title" class="table-title">{{ title }}</div>
+    <div v-if="title" class="text-16px font-600 text-#303133 mb-16px">{{ title }}</div>
 
     <!-- 表格 -->
-    <div class="table-container">
+    <div class="bg-#fafafa border border-#ebeef5 border-rd-4px overflow-x-auto overflow-y-hidden">
       <!-- 表头 -->
-      <div class="table-header">
-        <div v-for="column in columns" :key="column.key" :style="{ width: column.width || 'auto' }" class="header-cell">
+      <div class="table-header flex bg-#fafafa px-16px py-16px border-b border-#ebeef5 relative">
+        <div
+          v-for="column in columns"
+          :key="column.key"
+          :style="column.width ? { width: column.width, flex: '0 0 auto' } : { flex: 1 }"
+          class="header-cell text-14px text-#606266 font-500 px-8px"
+        >
           {{ column.label }}
         </div>
-        <div class="header-cell operation-cell">操作</div>
+        <div class="header-cell operation-cell flex-0-0-160px text-center sticky right-0 bg-#fafafa z-10 shadow-[-2px_0_4px_rgba(0,0,0,0.05)] px-8px">操作</div>
       </div>
 
       <!-- 表格内容 -->
       <div class="table-body">
         <template v-for="(row, rowIndex) in flattenData" :key="row._key">
-          <div class="table-row">
+          <div class="table-row flex px-16px py-14px border-b border-#ebeef5 bg-white min-h-56px transition-background-color-200">
             <!-- 数据列 -->
             <div
               v-for="(column, colIndex) in columns"
               :key="column.key"
-              :style="{ width: column.width || 'auto' }"
-              class="body-cell"
-              :class="{ 'first-cell': colIndex === 0 }"
+              :style="column.width ? { width: column.width, flex: '0 0 auto' } : { flex: 1 }"
+              class="body-cell flex items-center px-8px bg-white transition-background-color-200"
+              :class="{ 'pl-0': colIndex === 0 }"
             >
               <!-- 第一列显示展开/折叠图标和缩进 -->
-              <div v-if="colIndex === 0" class="flex items-center w-full">
+              <div v-if="colIndex === 0" class="w-full flex items-center">
                 <!-- 缩进 -->
-                <span :style="{ width: `${row._level * 20}px` }" class="indent-space"></span>
+                <span :style="{ width: `${row._level * 20}px` }" class="inline-block flex-shrink-0"></span>
 
                 <!-- 展开/折叠按钮 -->
                 <el-button
                   v-if="row.children && row.children.length > 0"
                   link
                   size="small"
-                  class="expand-btn"
+                  class="expand-btn flex-shrink-0 w-20px h-20px p-0 mr-4px min-h-unset"
                   @click="toggleExpand(row)"
                 >
                   <Icon
@@ -43,10 +48,25 @@
                     class="text-12px"
                   />
                 </el-button>
-                <span v-else class="expand-placeholder"></span>
+                <span v-else class="inline-block w-20px mr-4px flex-shrink-0"></span>
 
                 <!-- 输入框 -->
+                <el-select
+                  v-if="column.type === 'select'"
+                  v-model="row[column.key]"
+                  v-bind="getInputProps(column, row)"
+                  class="flex-1"
+                  @change="handleInput"
+                >
+                  <el-option
+                    v-for="option in column.options"
+                    :key="option.value"
+                    :label="option.label"
+                    :value="option.value"
+                  />
+                </el-select>
                 <component
+                  v-else
                   :is="getInputComponent(column)"
                   v-model="row[column.key]"
                   v-bind="getInputProps(column, row)"
@@ -55,8 +75,21 @@
                 />
               </div>
               <!-- 其他列 -->
+              <el-select
+                v-if="colIndex !== 0 && column.type === 'select'"
+                v-model="row[column.key]"
+                v-bind="getInputProps(column, row)"
+                @change="handleInput"
+              >
+                <el-option
+                  v-for="option in column.options"
+                  :key="option.value"
+                  :label="option.label"
+                  :value="option.value"
+                />
+              </el-select>
               <component
-                v-else
+                v-else-if="colIndex !== 0"
                 :is="getInputComponent(column)"
                 v-model="row[column.key]"
                 v-bind="getInputProps(column, row)"
@@ -65,7 +98,7 @@
             </div>
 
             <!-- 操作列 -->
-            <div class="body-cell operation-cell">
+            <div class="body-cell operation-cell flex-0-0-160px flex items-center justify-center gap-12px sticky right-0 bg-white z-9 shadow-[-2px_0_4px_rgba(0,0,0,0.05)] px-8px transition-background-color-200">
               <el-button
                 link
                 type="primary"
@@ -88,8 +121,8 @@
       </div>
 
       <!-- 新增行按钮 -->
-      <div class="table-footer">
-        <el-button class="add-row-btn" @click="addRootRow">
+      <div class="px-16px py-12px border-t border-#ebeef5 bg-#fafafa">
+        <el-button class="add-row-btn w-full border border-dashed border-#dcdfe6 bg-transparent text-#606266 text-14px h-36px" @click="addRootRow">
           <Icon icon="ep:plus" class="mr-5px text-14px" />
           新增一行
         </el-button>
@@ -282,19 +315,20 @@ const handleInput = () => {
   emitChange()
 }
 
-// 清理内部属性
+// 清理内部属性（深拷贝并移除内部属性）
 const cleanInternalProps = (data: TreeTableRow[]): TreeTableRow[] => {
   return data.map((item) => {
-    const cleaned: TreeTableRow = { ...item }
-    delete cleaned._key
-    delete cleaned._level
-    delete cleaned._expanded
-    delete cleaned._parent
+    // 创建新对象，排除内部属性
+    const cleaned: TreeTableRow = {}
+    Object.keys(item).forEach((key) => {
+      if (!key.startsWith('_') && key !== 'children') {
+        cleaned[key] = item[key]
+      }
+    })
 
-    if (cleaned.children && cleaned.children.length > 0) {
-      cleaned.children = cleanInternalProps(cleaned.children)
-    } else {
-      delete cleaned.children
+    // 递归处理子节点
+    if (item.children && item.children.length > 0) {
+      cleaned.children = cleanInternalProps(item.children)
     }
 
     return cleaned
@@ -303,7 +337,8 @@ const cleanInternalProps = (data: TreeTableRow[]): TreeTableRow[] => {
 
 // 触发更新
 const emitChange = () => {
-  const cleanedData = cleanInternalProps(JSON.parse(JSON.stringify(localData.value)))
+  // 先清理内部属性（避免循环引用），然后再序列化和反序列化进行深拷贝
+  const cleanedData = cleanInternalProps(localData.value)
   emit('update:modelValue', cleanedData)
   emit('change', cleanedData)
 }
@@ -312,7 +347,8 @@ const emitChange = () => {
 watch(
   () => props.modelValue,
   (newVal) => {
-    const currentClean = cleanInternalProps(JSON.parse(JSON.stringify(localData.value)))
+    // 先清理再比较，避免循环引用问题
+    const currentClean = cleanInternalProps(localData.value)
     if (JSON.stringify(newVal) !== JSON.stringify(currentClean)) {
       initData()
     }
@@ -325,7 +361,7 @@ initData()
 
 // 暴露方法给父组件
 defineExpose({
-  getData: () => cleanInternalProps(JSON.parse(JSON.stringify(localData.value))),
+  getData: () => cleanInternalProps(localData.value),
   setData: (data: TreeTableRow[]) => {
     localData.value = JSON.parse(JSON.stringify(data))
     processTreeData(localData.value, null, 0)
@@ -338,133 +374,53 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-.dynamic-tree-table {
-  width: 100%;
+// Hover 状态
+.table-row {
+  &:hover {
+    background-color: #f5f7fa !important;
 
-  .table-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #303133;
-    margin-bottom: 16px;
-  }
+    .body-cell {
+      background-color: #f5f7fa !important;
+    }
 
-  .table-container {
-    background: #fff;
-    border: 1px solid #ebeef5;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .table-header {
-    display: flex;
-    background: #fafafa;
-    padding: 12px 16px;
-    border-bottom: 1px solid #ebeef5;
-
-    .header-cell {
-      flex: 1;
-      font-size: 14px;
-      color: #606266;
-      font-weight: 500;
-      padding: 0 8px;
-
-      &.operation-cell {
-        flex: 0 0 160px;
-        text-align: center;
-      }
+    .operation-cell {
+      background-color: #f5f7fa !important;
     }
   }
 
-  .table-body {
-    .table-row {
-      display: flex;
-      padding: 8px 16px;
-      border-bottom: 1px solid #ebeef5;
-      transition: background-color 0.2s;
+  &:last-child {
+    border-bottom: none;
+  }
+}
 
-      &:hover {
-        background-color: #f5f7fa;
-      }
+// 展开按钮内部样式
+.expand-btn {
+  :deep(.el-icon) {
+    margin: 0;
+  }
+}
 
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .body-cell {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        padding: 0 8px;
-
-        &.first-cell {
-          padding-left: 0;
-        }
-
-        &.operation-cell {
-          flex: 0 0 160px;
-          justify-content: center;
-          gap: 12px;
-        }
-
-        .indent-space {
-          display: inline-block;
-          flex-shrink: 0;
-        }
-
-        .expand-btn {
-          flex-shrink: 0;
-          width: 20px;
-          height: 20px;
-          padding: 0;
-          margin-right: 4px;
-          min-height: unset;
-
-          :deep(.el-icon) {
-            margin: 0;
-          }
-        }
-
-        .expand-placeholder {
-          display: inline-block;
-          width: 20px;
-          margin-right: 4px;
-          flex-shrink: 0;
-        }
-
-        :deep(.el-input),
-        :deep(.el-select),
-        :deep(.el-input-number) {
-          width: 100%;
-        }
-
-        :deep(.el-select) {
-          .el-input__wrapper {
-            box-shadow: 0 0 0 1px #dcdfe6 inset;
-          }
-        }
-      }
-    }
+// 表单控件全宽
+.body-cell {
+  :deep(.el-input),
+  :deep(.el-select),
+  :deep(.el-input-number) {
+    width: 100%;
   }
 
-  .table-footer {
-    padding: 12px 16px;
-    border-top: 1px solid #ebeef5;
-    background: #fafafa;
-
-    .add-row-btn {
-      width: 100%;
-      border: 1px dashed #dcdfe6;
-      background: transparent;
-      color: #606266;
-      font-size: 14px;
-      height: 36px;
-
-      &:hover {
-        border-color: #409eff;
-        color: #409eff;
-        background: #ecf5ff;
-      }
+  :deep(.el-select) {
+    .el-input__wrapper {
+      box-shadow: 0 0 0 1px #dcdfe6 inset;
     }
+  }
+}
+
+// 新增按钮 hover 效果
+.add-row-btn {
+  &:hover {
+    border-color: #409eff;
+    color: #409eff;
+    background: #ecf5ff;
   }
 }
 </style>
