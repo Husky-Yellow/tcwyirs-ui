@@ -32,7 +32,7 @@
           <el-col :span="12">
             <el-form-item label="资源标签">
               <DynamicSelect
-                v-model="formData.tags"
+                v-model="formData.resourceTagId"
                 :options="tagOptions"
                 :loading="tagLoading"
                 placeholder="请选择标签"
@@ -56,7 +56,7 @@
                 </el-tooltip>
               </template>
               <el-input-number
-                v-model="formData.collectCount"
+                v-model="formData.dataExt.dataRow"
                 :min="0"
                 controls-position="right"
                 class="w-full"
@@ -65,7 +65,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="联系人">
-              <el-input v-model="formData.contact" placeholder="请输入" />
+              <el-input v-model="formData.linkPerson" placeholder="请输入" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -74,25 +74,25 @@
         <el-row :gutter="16">
           <el-col :span="12">
             <el-form-item label="联系方式">
-              <el-input v-model="formData.contactInfo" placeholder="请输入" />
+              <el-input v-model="formData.linkPhone" placeholder="请输入" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="归属方">
-              <el-input v-model="formData.owner" placeholder="请输入" />
+              <el-input v-model="formData.belong" placeholder="请输入" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <!-- 归属应用 -->
         <el-form-item label="归属应用">
-          <el-input v-model="formData.ownerApp" placeholder="请输入" />
+          <el-input v-model="formData.dataExt.belongApp" placeholder="请输入" />
         </el-form-item>
 
         <!-- 资源介绍 -->
         <el-form-item label="资源介绍">
           <el-input
-            v-model="formData.summary"
+            v-model="formData.introduction"
             type="textarea"
             :rows="3"
             placeholder="请输入"
@@ -132,10 +132,9 @@
       <!-- 数据信息 -->
       <div class="mb-24px">
         <div class="mb-16px text-16px font-600">数据信息</div>
-
         <!-- 数据库表格式 -->
         <DynamicDataTable
-          v-model="formData.dataConfigs"
+          v-model="formData.dataExt.fieldsJson"
           :columns="dataTableColumns"
           title="数据库表格式"
           :min-rows="1"
@@ -155,7 +154,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Drawer } from '@/components/Drawer'
 import { DynamicDataTable } from '@/components/DynamicDataTable'
@@ -164,13 +163,15 @@ import { UploadImg } from '@/components/UploadFile'
 import { useResourceTag } from '@/hooks/web/useResourceTag'
 import type { TableColumn } from '@/components/DynamicDataTable'
 import type { DynamicSelectOption } from '@/components/DynamicSelect'
+import type { ResourceInfoSaveReqVO, ResourceDataExtVO, FieldInfo } from '@/api/resource/info'
 import { QuestionFilled } from '@element-plus/icons-vue'
+import { ResourceType } from '@/api/resource/types'
 defineOptions({ name: 'DataResourceForm' })
 
 // Props
 interface Props {
   modelValue: boolean
-  data?: DataResourceForm | null
+  data?: ResourceInfoSaveReqVO | null
   isEdit?: boolean
 }
 
@@ -183,30 +184,8 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  save: [data: DataResourceForm, publish: boolean]
+  save: [data: ResourceInfoSaveReqVO, publish: boolean]
 }>()
-
-// 表单数据类型
-interface DataFieldConfig {
-  fieldName: string
-  fieldDesc: string
-  fieldType: string
-}
-
-interface DataResourceForm {
-  id?: number
-  name: string
-  tags: string
-  collectCount: number
-  contact: string
-  contactInfo: string
-  owner: string
-  ownerApp: string
-  summary: string
-  coverUrl: string
-  description: string
-  dataConfigs: DataFieldConfig[]
-}
 
 // 数据表格列配置
 const dataTableColumns: TableColumn[] = [
@@ -225,9 +204,35 @@ const {
   handleOptionsChange
 } = useResourceTag()
 
+// 表单引用
+const formRef = ref()
+
+// 表单数据（完全符合 ResourceInfoSaveReqVO 结构）
+const formData = ref<ResourceInfoSaveReqVO>({
+  name: '',
+  type: 1, // 1-数据资源
+  resourceTagId: undefined,
+  description: '',
+  introduction: '',
+  coverUrl: '',
+  linkPerson: '',
+  linkPhone: '',
+  belong: '',
+  dataExt: {
+    belongApp: '',
+    dataRow: 0,
+    fieldsJson: []
+  }
+})
+
 // 处理添加标签
 const handleAddTag = async (option: DynamicSelectOption) => {
-  await addTag(option)
+  const newTagId = await addTag(option)
+  // 添加成功后，自动选中新标签
+  if (newTagId) {
+    await nextTick()
+    formData.value.resourceTagId = newTagId
+  }
 }
 
 // 处理编辑标签
@@ -249,24 +254,6 @@ const visible = computed({
 // 标题
 const title = computed(() => (props.isEdit ? '编辑数据资源' : '新建数据资源'))
 
-// 表单引用
-const formRef = ref()
-
-// 表单数据
-const formData = ref<DataResourceForm>({
-  name: '',
-  tags: '',
-  collectCount: 0,
-  contact: '',
-  contactInfo: '',
-  owner: '',
-  ownerApp: '',
-  summary: '',
-  coverUrl: '',
-  description: '',
-  dataConfigs: [{ fieldName: '', fieldDesc: '', fieldType: '' }]
-})
-
 // 表单验证规则
 const formRules = {
   name: [{ required: true, message: '请输入资源名称', trigger: 'blur' }]
@@ -276,16 +263,19 @@ const formRules = {
 const resetForm = () => {
   formData.value = {
     name: '',
-    tags: '',
-    collectCount: 0,
-    contact: '',
-    contactInfo: '',
-    owner: '',
-    ownerApp: '',
-    summary: '',
-    coverUrl: '',
+    type: ResourceType.DATA,
+    resourceTagId: undefined,
     description: '',
-    dataConfigs: [{ fieldName: '', fieldDesc: '', fieldType: '' }]
+    introduction: '',
+    coverUrl: '',
+    linkPerson: '',
+    linkPhone: '',
+    belong: '',
+    dataExt: {
+      belongApp: '',
+      dataRow: 0,
+      fieldsJson: []
+    }
   }
   formRef.value?.clearValidate()
 }
@@ -298,19 +288,21 @@ watch(
       formData.value = {
         id: newData.id,
         name: newData.name || '',
-        tags: newData.tags || '',
-        collectCount: newData.collectCount || 0,
-        contact: newData.contact || '',
-        contactInfo: newData.contactInfo || '',
-        owner: newData.owner || '',
-        ownerApp: newData.ownerApp || '',
-        summary: newData.summary || '',
-        coverUrl: newData.coverUrl || '',
+        type: ResourceType.DATA,
+        resourceTagId: newData.resourceTagId,
         description: newData.description || '',
-        dataConfigs: newData.dataConfigs || [{ fieldName: '', fieldDesc: '', fieldType: '' }]
+        introduction: newData.introduction || '',
+        coverUrl: newData.coverUrl || '',
+        linkPerson: newData.linkPerson || '',
+        linkPhone: newData.linkPhone || '',
+        belong: newData.belong || '',
+        dataExt: {
+          belongApp: newData.dataExt?.belongApp || '',
+          dataRow: newData.dataExt?.dataRow || 0,
+          fieldsJson: newData.dataExt?.fieldsJson || []
+        }
       }
     } else {
-      // 重置表单
       resetForm()
     }
   },
@@ -337,7 +329,12 @@ const handleSave = async () => {
 const handleSaveAndPublish = async () => {
   try {
     await formRef.value?.validate()
-    emit('save', formData.value, true)
+    // 设置直接上架标志
+    const submitData: ResourceInfoSaveReqVO = {
+      ...formData.value,
+      publishDirectly: true
+    }
+    emit('save', submitData, true)
   } catch (error) {
     console.error('表单验证失败:', error)
   }

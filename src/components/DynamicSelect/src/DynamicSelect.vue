@@ -186,6 +186,10 @@ const handleAddOption = useDebounceFn(() => {
   }
 
   internalOptions.value.push(newOption)
+
+  // 自动选中新添加的选项
+  localValue.value = newOption.value
+
   emit('add-option', newOption)
   emit('options-change', [...internalOptions.value])
   ElMessage.success(`已添加选项: ${label}`)

@@ -31,6 +31,18 @@ export interface ResourceTagListReqVO {
   status?: number
 }
 
+/** 资源标签 Response VO */
+export interface ResourceTagRespVO {
+  /** 标签ID */
+  id?: number
+  /** 标签名称 */
+  name?: string
+  /** 创建用户ID */
+  userId?: number
+  /** 创建时间 */
+  createTime?: string
+}
+
 // 创建标签
 export const createResourceTag = (data: ResourceTagVO) => {
   return request.post<number>({ url: '/resource/tag/create', data })
@@ -64,4 +76,9 @@ export const createUserTag = (data: ResourceTagVO) => {
 // 删除用户自定义标签
 export const deleteUserTag = (id: number) => {
   return request.delete<void>({ url: '/resource/tag/user-delete?id=' + id })
+}
+
+// 获取标签简单列表
+export const getResourceTagSimpleList = (params?: ResourceTagListReqVO) => {
+  return request.get<ResourceTagRespVO[]>({ url: '/resource/tag/simple-list', params })
 }

@@ -1,32 +1,32 @@
 <template>
   <div>
     <!-- 页面标题 -->
-    <h2 class="mb-24px text-20px text-[#303133] font-600">数据资源管理</h2>
+    <h2 class="mb-24px text-20px text-[#303133] font-600">组件资源管理</h2>
 
     <!-- 统计卡片 -->
     <div class="grid grid-cols-4 mb-24px gap-16px">
       <el-card shadow="hover">
         <div class="flex flex-col">
           <div class="mb-8px text-14px text-[#909399]">访问总量</div>
-          <div class="text-24px text-[#303133] font-600">{{ statistics.visitCount || 0 }}</div>
+          <div class="text-24px text-[#303133] font-600">{{ statistics.visitCount }}</div>
         </div>
       </el-card>
       <el-card shadow="hover">
         <div class="flex flex-col">
           <div class="mb-8px text-14px text-[#909399]">申请总量</div>
-          <div class="text-24px text-[#303133] font-600">{{ statistics.applyCount || 0 }}</div>
+          <div class="text-24px text-[#303133] font-600">{{ statistics.applyCount }}</div>
         </div>
       </el-card>
       <el-card shadow="hover">
         <div class="flex flex-col">
           <div class="mb-8px text-14px text-[#909399]">综合平均分</div>
-          <div class="text-24px text-[#303133] font-600">{{ statistics.avgScore || 0 }}</div>
+          <div class="text-24px text-[#303133] font-600">{{ statistics.avgScore }}</div>
         </div>
       </el-card>
       <el-card shadow="hover">
         <div class="flex flex-col">
           <div class="mb-8px text-14px text-[#909399]">未上架资源</div>
-          <div class="text-24px text-[#303133] font-600">{{ statistics.unpublishedCount || 0 }}</div>
+          <div class="text-24px text-[#303133] font-600">{{ statistics.unpublishedCount }}</div>
         </div>
       </el-card>
     </div>
@@ -38,13 +38,10 @@
           <el-input v-model="searchForm.name" placeholder="请输入" clearable class="!w-240px" />
         </el-form-item>
         <el-form-item label="资源标签">
-          <el-select v-model="searchForm.tagId" placeholder="全部" clearable class="!w-240px">
-            <el-option
-              v-for="tag in tagList"
-              :key="tag.id"
-              :label="tag.name"
-              :value="tag.id"
-            />
+          <el-select v-model="searchForm.type" placeholder="全部" clearable class="!w-240px">
+            <el-option label="全部" value="" />
+            <el-option label="线路一" value="route1" />
+            <el-option label="线路二" value="route2" />
           </el-select>
         </el-form-item>
         <el-form-item label="上架状态">
@@ -74,7 +71,7 @@
       <div class="text-16px text-[#303133] font-600">资源列表</div>
       <el-button type="primary" @click="handleCreate">
         <Icon icon="ep:plus" class="mr-6px" />
-        新增数据资源
+        新增组件资源
       </el-button>
     </div>
 
@@ -136,12 +133,12 @@
       </div>
     </ContentWrap>
 
-    <!-- 新建/编辑表单 -->
-    <DataResourceForm
-      v-model="formVisible"
-      :data="currentFormData"
+    <!-- 新增/编辑表单 -->
+    <SubassemblyForm
+      v-model="drawerVisible"
+      :data="currentRow"
       :is-edit="isEdit"
-      @save="handleFormSave"
+      @success="handleFormSuccess"
     />
   </div>
 </template>
@@ -149,57 +146,30 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { omitBy } from 'es-toolkit/compat'
 import { ContentWrap } from '@/components/ContentWrap'
-import DataResourceForm from './components/DataResourceForm.vue'
+import SubassemblyForm from './SubassemblyForm.vue'
 import { formatDate } from '@/utils/formatTime'
 import { ResourceType } from '@/api/resource/types'
-import { createResourceInfo, getResourceInfoPage, deleteResourceInfo } from '@/api/resource/info'
 import {
-  getResourceStatisticsByType,
+  getResourceInfoPage,
+  deleteResourceInfo,
   type ResourceInfoSaveReqVO
-} from '@/api/resource/apply'
-import { getResourceTagSimpleList, type ResourceTagVO } from '@/api/resource/tag'
+} from '@/api/resource/info'
 
-defineOptions({ name: 'DataResource' })
-
-// 资源标签列表
-const tagList = ref<ResourceTagVO[]>([])
-
-// 加载资源标签列表
-const loadTagList = async () => {
-  try {
-    const res = await getResourceTagSimpleList({ status: 1 })
-    tagList.value = res || []
-  } catch (error) {
-    console.error('加载标签列表失败:', error)
-  }
-}
+defineOptions({ name: 'ComponentResource' })
 
 // 统计数据
 const statistics = ref({
-  visitCount: 0, // 访问总量
-  applyCount: 0, // 资源申请总量
-  avgScore: 0, // 综合评分（预留）
-  unpublishedCount: 0 // 未上架资源数
+  visitCount: 2379,
+  applyCount: 1326,
+  avgScore: 81.6,
+  unpublishedCount: 12
 })
-
-// 加载统计数据
-const loadStatistics = async () => {
-  try {
-    const res = await getResourceStatisticsByType({
-      type: 1
-    })
-    statistics.value = res
-  } catch (error) {
-    console.error('加载统计数据失败:', error)
-  }
-}
 
 // 搜索表单
 const searchForm = ref({
   name: '',
-  tagId: undefined as number | undefined,
+  type: '',
   status: ''
 })
 
@@ -211,6 +181,11 @@ const pagination = ref({
   pageSize: 10,
   total: 0
 })
+
+// 抽屉状态
+const drawerVisible = ref(false)
+const isEdit = ref(false)
+const currentRow = ref<ResourceInfoSaveReqVO | null>(null)
 
 // 状态映射
 const STATUS_MAP = {
@@ -228,19 +203,13 @@ const getStatusTextClass = (status: number) => STATUS_MAP[status]?.color || 'tex
 const loadData = async () => {
   try {
     loading.value = true
-    const params = omitBy(
-      {
-        name: searchForm.value.name,
-        type: ResourceType.DATA,
-        tagId: searchForm.value.tagId,
-        status: searchForm.value.status,
-        pageNo: pagination.value.page,
-        pageSize: pagination.value.pageSize
-      },
-      (value) => value === '' || value === null || value === undefined
-    )
-
-    const res = await getResourceInfoPage(params)
+    const res = await getResourceInfoPage({
+      name: searchForm.value.name,
+      type: ResourceType.COMPONENT,
+      status: searchForm.value.status,
+      pageNo: pagination.value.page,
+      pageSize: pagination.value.pageSize
+    })
 
     tableData.value = res.list.map((item: any) => ({
       ...item,
@@ -267,7 +236,7 @@ const handleSearch = () => {
 
 // 重置
 const handleReset = () => {
-  searchForm.value = { name: '', tagId: undefined, status: '' }
+  searchForm.value = { name: '', type: '', status: '' }
   pagination.value.page = 1
   loadData()
 }
@@ -277,16 +246,11 @@ const handlePageChange = () => {
   loadData()
 }
 
-// 表单相关
-const formVisible = ref(false)
-const currentFormData = ref<any>(null)
-const isEdit = ref(false)
-
 // 新增
 const handleCreate = () => {
   isEdit.value = false
-  currentFormData.value = null
-  formVisible.value = true
+  currentRow.value = null
+  drawerVisible.value = true
 }
 
 // 详情
@@ -297,42 +261,14 @@ const handleDetail = (row: any) => {
 // 编辑
 const handleEdit = (row: any) => {
   isEdit.value = true
-  currentFormData.value = { ...row }
-  formVisible.value = true
+  currentRow.value = row
+  drawerVisible.value = true
 }
 
-// 保存表单
-const handleFormSave = async (data: any, publish: boolean) => {
-  try {
-    console.log('表单数据:', data)
-    // 构建资源信息保存请求
-    const saveData = omitBy(
-      {
-        type: ResourceType.DATA,
-        publishDirectly: publish ? true : false, // 是否直接上架
-        ...data
-      },
-      (value) => value === '' || value === null || value === undefined
-    )
-
-    console.log('调用接口参数:', saveData)
-
-    // 调用创建资源接口
-    const resourceId = await createResourceInfo(saveData)
-    console.log('保存成功，资源ID:', resourceId)
-
-    if (publish) {
-      ElMessage.success('新增并上架成功')
-    } else {
-      ElMessage.success('保存成功')
-    }
-
-    formVisible.value = false
-    await loadData()
-  } catch (error) {
-    console.error('保存失败:', error)
-    ElMessage.error('保存失败')
-  }
+// 表单提交成功
+const handleFormSuccess = async () => {
+  drawerVisible.value = false
+  await loadData()
 }
 
 // 上架/下架
@@ -363,8 +299,10 @@ const handleDelete = async (row: any) => {
 
 // 初始化
 onMounted(() => {
-  loadTagList()
-  loadStatistics()
   loadData()
 })
 </script>
+
+<style scoped lang="scss">
+// 页面样式
+</style>

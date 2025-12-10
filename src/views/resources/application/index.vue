@@ -45,11 +45,13 @@
           <el-input v-model="searchForm.name" placeholder="请输入" clearable class="!w-240px" />
         </el-form-item>
         <el-form-item label="资源标签">
-          <el-select v-model="searchForm.type" placeholder="全部" clearable class="!w-240px">
-            <el-option label="全部" value="" />
-            <el-option label="数据库" value="database" />
-            <el-option label="缓存" value="cache" />
-            <el-option label="消息队列" value="mq" />
+          <el-select v-model="searchForm.tagId" placeholder="全部" clearable class="!w-240px">
+            <el-option
+              v-for="tag in tagList"
+              :key="tag.id"
+              :label="tag.name"
+              :value="tag.id"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="上架状态">
@@ -146,13 +148,28 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { omitBy } from 'es-toolkit/compat'
 import { ContentWrap } from '@/components/ContentWrap'
 import { formatDate } from '@/utils/formatTime'
 import { ResourceType } from '@/api/resource/types'
 import { getResourceInfoPage, deleteResourceInfo } from '@/api/resource/info'
+import { getResourceTagSimpleList, type ResourceTagVO } from '@/api/resource/tag'
 import ApplicationForm from './components/ApplicationForm.vue'
 
 defineOptions({ name: 'ApplicationResource' })
+
+// 资源标签列表
+const tagList = ref<ResourceTagVO[]>([])
+
+// 加载资源标签列表
+const loadTagList = async () => {
+  try {
+    const res = await getResourceTagSimpleList({ status: 1 })
+    tagList.value = res || []
+  } catch (error) {
+    console.error('加载标签列表失败:', error)
+  }
+}
 
 // 表单相关
 const formVisible = ref(false)
@@ -169,7 +186,7 @@ const statistics = ref({
 // 搜索表单
 const searchForm = ref({
   name: '',
-  type: '',
+  tagId: undefined as number | undefined,
   status: ''
 })
 
@@ -198,13 +215,19 @@ const getStatusTextClass = (status: number) => STATUS_MAP[status]?.color || 'tex
 const loadData = async () => {
   try {
     loading.value = true
-    const res = await getResourceInfoPage({
-      name: searchForm.value.name,
-      type: ResourceType.APPLICATION,
-      status: searchForm.value.status,
-      pageNo: pagination.value.page,
-      pageSize: pagination.value.pageSize
-    })
+    const params = omitBy(
+      {
+        name: searchForm.value.name,
+        type: ResourceType.APPLICATION,
+        tagId: searchForm.value.tagId,
+        status: searchForm.value.status,
+        pageNo: pagination.value.page,
+        pageSize: pagination.value.pageSize
+      },
+      (value) => value === '' || value === null || value === undefined
+    )
+
+    const res = await getResourceInfoPage(params)
 
     tableData.value = res.list.map((item: any) => ({
       ...item,
@@ -231,7 +254,7 @@ const handleSearch = () => {
 
 // 重置
 const handleReset = () => {
-  searchForm.value = { name: '', type: '', status: '' }
+  searchForm.value = { name: '', tagId: undefined, status: '' }
   pagination.value.page = 1
   loadData()
 }
@@ -291,6 +314,7 @@ const handleDelete = async (row: any) => {
 
 // 初始化
 onMounted(() => {
+  loadTagList()
   loadData()
 })
 </script>

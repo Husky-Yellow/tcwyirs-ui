@@ -236,6 +236,16 @@ watch(
   { deep: true }
 )
 
+// 监听本地数据变化，同步到父组件
+watch(
+  localData,
+  (newVal) => {
+    emit('update:modelValue', newVal)
+    emit('change', newVal)
+  },
+  { deep: true }
+)
+
 // 初始化
 initData()
 

@@ -1,6 +1,6 @@
 import { shallowReactive, onMounted } from 'vue'
 import { getResourceInfoPage } from '@/api/resource/info'
-import { getResourceTagList } from '@/api/resource/tag'
+import { getResourceTagSimpleList } from '@/api/resource/tag'
 
 /** 市场资源产品 */
 export interface MarketplaceProduct {
@@ -26,7 +26,7 @@ export const useMarketplaceData = () => {
   const load = async () => {
     try {
       const [tags, result] = await Promise.all([
-        getResourceTagList(),
+        getResourceTagSimpleList(),
         getResourceInfoPage({
           pageNo: 1,
           pageSize: 100,

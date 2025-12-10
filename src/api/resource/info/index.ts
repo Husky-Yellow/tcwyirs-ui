@@ -472,8 +472,243 @@ export interface ResourceApplyTodoRespVO {
   [property: string]: any;
 }
 
+/**
+ * ResourceInfoSaveReqVO
+ */
+export interface ResourceInfoSaveReqVO {
+  /**
+   * ===== 应用资源扩展字段 =====
+   * 应用资源扩展信息
+   */
+  appExt?: ResourceAppExtVO;
+  /**
+   * 归属方
+   */
+  belong?: string;
+  /**
+   * ===== 组件资源扩展字段 =====
+   * 组件资源扩展信息
+   */
+  componentExt?: ResourceComponentExtVO;
+  /**
+   * 内容封面URL
+   */
+  coverUrl?: string;
+  /**
+   * ===== 数据资源扩展字段 =====
+   * 数据资源扩展信息
+   */
+  dataExt?: ResourceDataExtVO;
+  /**
+   * 资源描述
+   */
+  description?: string;
+  /**
+   * 资源ID
+   */
+  id?: number;
+  /**
+   * 资源介绍
+   */
+  introduction?: string;
+  /**
+   * 联系人
+   */
+  linkPerson?: string;
+  /**
+   * 联系方式
+   */
+  linkPhone?: string;
+  /**
+   * 资源名称
+   */
+  name: string;
+  /**
+   * 是否直接上架
+   */
+  publishDirectly?: boolean;
+  /**
+   * 资源标签ID
+   */
+  resourceTagId?: number;
+  /**
+   * 资源类型(1-数据资源 2-应用资源 3-组件资源)
+   */
+  type: number;
+  [property: string]: any;
+}
+
+/**
+* ===== 应用资源扩展字段 =====
+* 应用资源扩展信息
+*
+* ResourceAppExtVO
+*/
+export interface ResourceAppExtVO {
+  /**
+   * 是否接入物联网设备
+   */
+  connDeviceFlag?: boolean;
+  /**
+   * 设备地址
+   */
+  deviceAddr?: string;
+  /**
+   * 设备数量
+   */
+  deviceNum?: number;
+  /**
+   * 设备类型
+   */
+  deviceType?: number;
+  /**
+   * 应用文档文件IDs
+   */
+  docFileIds?: string;
+  /**
+   * 介绍场景列表
+   */
+  introScenes?: IntroScene[];
+  [property: string]: any;
+}
+
+/**
+* 介绍场景
+*
+* IntroScene
+*/
+export interface IntroScene {
+  /**
+   * 场景ID
+   */
+  id?: number;
+  /**
+   * 介绍图URL
+   */
+  imgUrl?: string;
+  /**
+   * 介绍文本
+   */
+  introText?: string;
+  /**
+   * 排序号
+   */
+  sort?: number;
+  [property: string]: any;
+}
+
+/**
+* ===== 组件资源扩展字段 =====
+* 组件资源扩展信息
+*
+* ResourceComponentExtVO
+*/
+export interface ResourceComponentExtVO {
+  /**
+   * 资源地址
+   */
+  componentUrl?: string;
+  /**
+   * 对接方式: 1-GET 2-POST
+   */
+  dockingType?: number;
+  /**
+   * 输入参数
+   */
+  inputParamsJson?: ParamInfo[];
+  /**
+   * 输出参数
+   */
+  outputParamsJson?: ParamInfo[];
+  /**
+   * 请求地址
+   */
+  requestUrl?: string;
+  /**
+   * 示例代码
+   */
+  sampleCode?: string;
+  [property: string]: any;
+}
+
+/**
+* 参数信息
+*
+* ParamInfo
+*/
+export interface ParamInfo {
+  /**
+   * 参数描述
+   */
+  paramDesc?: string;
+  /**
+   * 参数名称
+   */
+  paramName?: string;
+  /**
+   * 参数位置
+   */
+  paramPosition?: string;
+  /**
+   * 参数类型
+   */
+  paramType?: string;
+  /**
+   * 关联表信息
+   */
+  relTableInfo?: string;
+  /**
+   * 是否必填
+   */
+  required?: boolean;
+  [property: string]: any;
+}
+
+/**
+* ===== 数据资源扩展字段 =====
+* 数据资源扩展信息
+*
+* ResourceDataExtVO
+*/
+export interface ResourceDataExtVO {
+  /**
+   * 归属应用
+   */
+  belongApp?: string;
+  /**
+   * 数据量/归集数量
+   */
+  dataRow?: number;
+  /**
+   * 字段信息
+   */
+  fieldsJson?: FieldInfo[];
+  [property: string]: any;
+}
+
+/**
+* 字段信息
+*
+* FieldInfo
+*/
+export interface FieldInfo {
+  /**
+   * 字段描述
+   */
+  fieldDesc?: string;
+  /**
+   * 字段名
+   */
+  fieldName?: string;
+  /**
+   * 字段类型
+   */
+  fieldType?: string;
+  [property: string]: any;
+}
+
 // 创建资源
-export const createResourceInfo = (data: ResourceInfoVO) => request.post<number>({ url: '/resource/info/create', data })
+export const createResourceInfo = (data: ResourceInfoSaveReqVO ) => request.post<number>({ url: '/resource/info/create', data })
 
 // 更新资源
 export const updateResourceInfo = (data: ResourceInfoVO) => request.put<void>({ url: '/resource/info/update', data })
