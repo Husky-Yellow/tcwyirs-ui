@@ -480,6 +480,42 @@ const remainingRouter: AppRouteRecordRaw[] = [
     ]
   },
   {
+    path: '/resources',
+    component: Layout,
+    name: 'ResourcesLayout',
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: 'detail',
+        component: () => import('@/views/resources/detail/index.vue'),
+        name: 'ResourceDetail',
+        meta: {
+          hidden: true,
+          canTo: true,
+          noTagsView: false,
+          icon: 'ep:document',
+          title: '资源详情',
+          showBreadcrumb: true
+        }
+      },
+      {
+        path: 'usage/detail/:id',
+        component: () => import('@/views/resources/usage/detail.vue'),
+        name: 'ResourceUsageDetail',
+        meta: {
+          hidden: true,
+          canTo: true,
+          noTagsView: false,
+          icon: 'ep:document',
+          title: '资源使用详情',
+          showBreadcrumb: true
+        }
+      }
+    ]
+  },
+  {
     path: '/other',
     component: Layout,
     name: 'OtherLayout',

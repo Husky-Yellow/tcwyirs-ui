@@ -57,13 +57,11 @@
     <!-- 分页 -->
     <div class="mt-16px flex justify-end">
       <el-pagination
-        :current-page="pagination.page"
-        :page-size="pagination.pageSize"
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
         :total="pagination.total"
         :page-sizes="[10, 20, 30, 50]"
         layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
       />
     </div>
   </ContentWrap>
@@ -96,7 +94,7 @@ interface Emits {
   (e: 'edit', row: any): void
   (e: 'delete', row: any): void
   (e: 'toggle-status', row: any): void
-  (e: 'page-change'): void
+  (e: 'update:pagination', value: Pagination): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -105,6 +103,21 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<Emits>()
+
+// 可写的计算属性用于双向绑定
+const currentPage = computed({
+  get: () => props.pagination.page,
+  set: (val) => {
+    emit('update:pagination', { ...props.pagination, page: val })
+  }
+})
+
+const pageSize = computed({
+  get: () => props.pagination.pageSize,
+  set: (val) => {
+    emit('update:pagination', { ...props.pagination, pageSize: val, page: 1 })
+  }
+})
 
 // 根据标签ID获取标签名称
 const getTagName = (tagId: number | string | undefined) => {
@@ -131,13 +144,5 @@ const handleDelete = (row: any) => {
 
 const handleToggleStatus = (row: any) => {
   emit('toggle-status', row)
-}
-
-const handleSizeChange = () => {
-  emit('page-change')
-}
-
-const handleCurrentChange = () => {
-  emit('page-change')
 }
 </script>

@@ -70,10 +70,9 @@ import {
   type ResourceApplyVO
 } from '@/api/resource/apply'
 import {
-  getCollectRecordPage,
-  type CollectRecordVO
+  getMyCollectStatistics
 } from '@/api/resource/collect'
-import { ApplyStatus, ResourceType } from '@/api/resource/types'
+import { ApplyStatus } from '@/api/resource/types'
 
 defineOptions({ name: 'BrowsedResourcesWidget' })
 
@@ -211,35 +210,12 @@ const loadApplicationResources = async () => {
 // 加载收藏的资源统计
 const loadCollectStats = async () => {
   try {
-    const response = await getCollectRecordPage({
-      pageNo: 1,
-      pageSize: 100 // 获取足够多的数据用于统计
-    })
-
-    const collectList = response.list || []
-
-    // 按资源类型统计
-    const stats = {
-      dataResourceCount: 0,
-      appResourceCount: 0,
-      componentResourceCount: 0
+    const stats = await getMyCollectStatistics()
+    collectStats.value = {
+      dataResourceCount: stats.dataResourceCount || 0,
+      appResourceCount: stats.appResourceCount || 0,
+      componentResourceCount: stats.componentResourceCount || 0
     }
-
-    collectList.forEach((item: CollectRecordVO) => {
-      switch (item.resourceType) {
-        case ResourceType.DATA:
-          stats.dataResourceCount++
-          break
-        case ResourceType.APPLICATION:
-          stats.appResourceCount++
-          break
-        case ResourceType.COMPONENT:
-          stats.componentResourceCount++
-          break
-      }
-    })
-
-    collectStats.value = stats
   } catch (error) {
     console.error('加载收藏资源统计失败:', error)
   }

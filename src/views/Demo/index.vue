@@ -505,7 +505,65 @@
           </div>
         </el-card>
 
-        <!-- 7. FeedbackDetail - 反馈详情组件 -->
+        <!-- 7. FeedbackForm - 反馈表单组件 -->
+        <el-card shadow="hover" class="demo-card">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-12px">
+                <Icon icon="ep:edit" :size="24" color="#FF9800" />
+                <div>
+                  <h2 class="text-18px font-600">FeedbackForm - 反馈表单组件</h2>
+                  <p class="mt-4px text-12px text-[var(--el-text-color-secondary)]">
+                    抽屉形式的反馈表单，支持类型选择、问题描述、截图上传
+                  </p>
+                </div>
+              </div>
+              <el-tag type="success">已完成</el-tag>
+            </div>
+          </template>
+
+          <div class="demo-content">
+            <div class="mb-16px flex flex-wrap gap-12px">
+              <el-button type="warning" @click="feedbackFormVisible = true">
+                <Icon icon="ep:edit" class="mr-6px" />
+                打开反馈表单
+              </el-button>
+              <el-button
+                type="warning"
+                plain
+                @click="
+                  () => {
+                    feedbackFormVisible = true
+                  }
+                "
+              >
+                <Icon icon="ep:document" class="mr-6px" />
+                带资源信息的反馈
+              </el-button>
+            </div>
+
+            <div class="demo-info">
+              <div class="demo-info-item">
+                <span class="label">功能:</span>
+                <span>反馈类型选择、问题描述输入、截图上传、资源关联（可选）</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">特性:</span>
+                <span>抽屉形式、表单验证、图片上传、支持资源ID和名称关联</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">类型:</span>
+                <span>功能问题、资源使用问题、操作与体验、内容与数据问题、其他问题</span>
+              </div>
+              <div class="demo-info-item">
+                <span class="label">位置:</span>
+                <span class="code">src/components/FeedbackForm/</span>
+              </div>
+            </div>
+          </div>
+        </el-card>
+
+        <!-- 8. FeedbackDetail - 反馈详情组件 -->
         <el-card shadow="hover" class="demo-card">
           <template #header>
             <div class="flex items-center justify-between">
@@ -564,7 +622,7 @@
       <div class="mt-32px text-center">
         <el-divider />
         <p class="text-14px text-[var(--el-text-color-secondary)]">
-          共 8 个组件 | 创建时间: 2025-10-19 |
+          共 9 个组件 | 创建时间: 2025-10-19 |
           <span class="cursor-pointer text-[var(--el-color-primary)]" @click="showInfo"
             >查看详细信息</span
           >
@@ -577,6 +635,14 @@
 
     <!-- 延期申请表单 -->
     <ExtensionApplicationForm ref="extensionFormRef" @submit="handleExtensionSubmit" />
+
+    <!-- 反馈表单 -->
+    <FeedbackForm
+      v-model="feedbackFormVisible"
+      :resource-id="123"
+      resource-name="示例资源名称"
+      @success="handleFeedbackSubmit"
+    />
 
     <!-- 反馈详情组件 -->
     <FeedbackDetail
@@ -706,6 +772,7 @@ import type { TableColumn, TableRow, TreeTableColumn, TreeTableRow } from '@/com
 import { ExtensionApplicationForm } from '@/components/ExtensionApplicationForm'
 import type { ExtensionFormData } from '@/components/ExtensionApplicationForm'
 import { FeedbackDetail, FeedbackStatus } from '@/components/FeedbackDetail'
+import { FeedbackForm } from '@/components/FeedbackForm'
 
 defineOptions({ name: 'DemoPage' })
 
@@ -1066,6 +1133,14 @@ const handleExtensionSubmit = (data: ExtensionFormData) => {
   ElMessage.success('延期申请提交成功!')
 }
 
+// FeedbackForm 反馈表单演示
+const feedbackFormVisible = ref(false)
+
+const handleFeedbackSubmit = () => {
+  console.log('反馈提交成功')
+  ElMessage.success('感谢您的反馈！')
+}
+
 // FeedbackDetail 反馈详情演示
 const pendingVisible = ref(false)
 const resolvedVisible = ref(false)
@@ -1148,10 +1223,10 @@ const showInfo = () => {
   ElMessageBox.alert(
     `
       <div>
-        <p><strong>组件总数:</strong> 8 个</p>
+        <p><strong>组件总数:</strong> 9 个</p>
         <p><strong>创建时间:</strong> 2025-10-19</p>
         <p><strong>技术栈:</strong> Vue 3 + TypeScript + Element Plus + UnoCSS</p>
-        <p><strong>组件列表:</strong> RatingReviewModal, Drawer, SearchForm, DynamicDataTable, DynamicTreeTable, DynamicSelect, ExtensionApplicationForm, FeedbackDetail</p>
+        <p><strong>组件列表:</strong> RatingReviewModal, Drawer, SearchForm, DynamicDataTable, DynamicTreeTable, DynamicSelect, ExtensionApplicationForm, FeedbackForm, FeedbackDetail</p>
       </div>
     `,
     '组件信息',

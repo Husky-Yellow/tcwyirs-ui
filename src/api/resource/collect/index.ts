@@ -25,9 +25,26 @@ export interface CollectRecordPageReqVO extends PageParam {
   createTime?: string[]
 }
 
+/** 我的收藏统计 VO */
+export interface MyCollectStatisticsVO {
+  /** 数据资源数量 */
+  dataResourceCount: number
+  /** 应用资源数量 */
+  appResourceCount: number
+  /** 组件资源数量 */
+  componentResourceCount: number
+  /** 总数量 */
+  totalCount?: number
+}
+
 // 获取我的收藏列表
 export const getCollectRecordPage = (params: CollectRecordPageReqVO) => {
   return request.get<PageResult<CollectRecordVO[]>>({ url: '/resource/collect/page', params })
+}
+
+// 获取我的收藏统计
+export const getMyCollectStatistics = () => {
+  return request.get<MyCollectStatisticsVO>({ url: '/resource/collect/my-statistics' })
 }
 
 // 添加收藏

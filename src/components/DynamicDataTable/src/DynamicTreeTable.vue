@@ -10,12 +10,12 @@
         <div
           v-for="column in columns"
           :key="column.key"
-          :style="column.width ? { width: column.width, flex: '0 0 auto' } : { flex: 1 }"
+          :style="column.width ? { width: column.width, minWidth: column.width, flex: `0 0 ${column.width}` } : { flex: 1 }"
           class="header-cell text-14px text-#606266 font-500 px-8px"
         >
           {{ column.label }}
         </div>
-        <div class="header-cell operation-cell flex-0-0-160px text-center sticky right-0 bg-#fafafa z-10 shadow-[-2px_0_4px_rgba(0,0,0,0.05)] px-8px">操作</div>
+        <div class="header-cell operation-cell text-center sticky right-0 bg-#fafafa z-10 shadow-[-2px_0_4px_rgba(0,0,0,0.05)] px-8px" style="width: 160px; min-width: 160px; flex: 0 0 160px;">操作</div>
       </div>
 
       <!-- 表格内容 -->

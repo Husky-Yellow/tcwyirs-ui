@@ -12,43 +12,37 @@
   <!-- 主体内容 -->
   <ContentWrap shadow="always">
     <el-table v-loading="loading" :data="tableData">
+      <el-table-column align="center" label="资源类型" prop="resourceName" show-overflow-tooltip />
       <el-table-column align="center" label="资源名称" prop="resourceName" show-overflow-tooltip />
-      <el-table-column align="center" label="使用人" prop="userName" show-overflow-tooltip />
-      <el-table-column align="center" label="项目名称" prop="projectName" show-overflow-tooltip />
-      <el-table-column align="center" label="使用状态" prop="status" width="100">
+      <el-table-column align="center" label="描述" prop="resourceName" show-overflow-tooltip />
+      <el-table-column align="center" label="上架状态" prop="status" width="100">
         <template #default="{ row }">
           <el-tag :type="row.status === 1 ? 'success' : 'info'">
             {{ row.status === 1 ? '使用中' : '已停用' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="开始时间" prop="startTime" width="180">
+      <el-table-column align="center" label="审批人" prop="resourceName" show-overflow-tooltip />
+      <el-table-column align="center" label="上架时间" prop="startTime" width="180">
         <template #default="{ row }">
           {{ formatDateTime(row.startTime) }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="到期时间" prop="expireTime" width="180">
-        <template #default="{ row }">
-          {{ formatDateTime(row.expireTime) }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="150">
         <template #default="{ row }">
           <el-button
-            v-if="row.status === 1"
             link
-            type="danger"
-            @click="handleStop(row)"
+            type="primary"
+            @click="handleDetail(row)"
           >
-            停用
+            详情
           </el-button>
           <el-button
-            v-else
             link
-            type="success"
-            @click="handleEnable(row)"
+            type="warning"
+            @click="handleFeedback(row)"
           >
-            启用
+            反馈
           </el-button>
         </template>
       </el-table-column>
@@ -67,12 +61,22 @@
       @current-change="handleCurrentChange"
     />
   </ContentWrap>
+
+  <!-- 反馈表单 -->
+  <FeedbackForm
+    v-model="feedbackFormVisible"
+    :resource-id="currentResource?.resourceId"
+    :resource-name="currentResource?.resourceName"
+    @success="handleFeedbackSuccess"
+  />
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Search } from '@/components/Search'
+import { FeedbackForm } from '@/components/FeedbackForm'
 import type { FormSchema } from '@/types/data'
 import { formatDate } from '@/utils/formatTime'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -85,6 +89,8 @@ import type { ResourceUsageVO } from '@/api/resource/usage'
 import { UsageStatus } from '@/api/resource/types'
 
 defineOptions({ name: 'ResourceUsage' })
+
+const router = useRouter()
 
 // 搜索表单数据
 const searchForm = ref({
@@ -134,6 +140,10 @@ const searchSchema = computed<FormSchema[]>(() => [
 const loading = ref(false)
 const tableData = ref<ResourceUsageVO[]>([])
 
+// 反馈表单
+const feedbackFormVisible = ref(false)
+const currentResource = ref<ResourceUsageVO | null>(null)
+
 // 分页
 const pagination = reactive({
   page: 1,
@@ -165,6 +175,23 @@ const loadData = async () => {
 const formatDateTime = (dateTime: Date | string | undefined) => {
   if (!dateTime) return '-'
   return formatDate(new Date(dateTime), 'YYYY-MM-DD HH:mm:ss')
+}
+
+// 查看详情
+const handleDetail = (row: ResourceUsageVO) => {
+  router.push(`/resources/usage/detail/${row.id}`)
+}
+
+// 打开反馈表单
+const handleFeedback = (row: ResourceUsageVO) => {
+  currentResource.value = row
+  feedbackFormVisible.value = true
+}
+
+// 反馈提交成功
+const handleFeedbackSuccess = () => {
+  feedbackFormVisible.value = false
+  currentResource.value = null
 }
 
 // 停用资源

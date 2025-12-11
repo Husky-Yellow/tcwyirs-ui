@@ -9,107 +9,109 @@
       </el-button>
     </div>
 
-    <!-- 审批流程 Steps -->
-    <div class="mb-32px rounded-8px bg-white p-24px">
-      <div class="mb-24px text-16px font-600">审批流程2</div>
-      <el-steps :active="currentStep" :process-status="processStatus" align-center>
-        <el-step title="提交申请" :description="stepDescriptions.submit" />
-        <el-step title="审批中" :description="stepDescriptions.review" />
-        <el-step :title="stepDescriptions.result.title" :description="stepDescriptions.result.time" />
-      </el-steps>
-    </div>
+    <!-- 详情内容 -->
+    <div v-loading="loading" class="min-h-500px">
+      <template v-if="applyData">
+        <!-- 审批流程 Steps -->
+        <div class="mb-32px rounded-8px bg-white p-24px">
+          <div class="mb-24px text-16px font-600">审批流程</div>
+          <el-steps :active="currentStep" :process-status="processStatus" align-center>
+            <el-step title="提交申请" :description="stepDescriptions.submit" />
+            <el-step title="审批中" :description="stepDescriptions.review" />
+            <el-step :title="stepDescriptions.result.title" :description="stepDescriptions.result.time" />
+          </el-steps>
+        </div>
 
-    <!-- 申请信息 -->
-    <div class="mb-32px rounded-8px bg-white p-24px">
-      <div class="mb-24px text-16px font-600">申请信息</div>
-      <div class="grid grid-cols-2 gap-x-80px gap-y-20px">
-        <div>
-          <span class="text-14px text-[var(--el-text-color-secondary)]">申请资源项目：</span>
-          <el-link type="primary" :underline="false" class="text-14px">
-            {{ applicationInfo.resourceName }}
-          </el-link>
-        </div>
-        <div>
-          <span class="text-14px text-[var(--el-text-color-secondary)]">资源类型：</span>
-          <span class="text-14px text-[var(--el-text-color-primary)]">
-            {{ applicationInfo.resourceType }}
-          </span>
-        </div>
-        <div>
-          <span class="text-14px text-[var(--el-text-color-secondary)]">关联项目：</span>
-          <span class="text-14px text-[var(--el-text-color-primary)]">
-            {{ applicationInfo.projectName }}
-          </span>
-        </div>
-        <div>
-          <span class="text-14px text-[var(--el-text-color-secondary)]">申请时间：</span>
-          <span class="text-14px text-[var(--el-text-color-primary)]">
-            {{ applicationInfo.applyTime }}
-          </span>
-        </div>
-        <div>
-          <span class="text-14px text-[var(--el-text-color-secondary)]">资源类型：</span>
-          <span class="text-14px text-[var(--el-text-color-primary)]">
-            {{ applicationInfo.resourceType2 }}
-          </span>
-        </div>
-        <div>
-          <span class="text-14px text-[var(--el-text-color-secondary)]">审批状态：</span>
-          <span class="text-14px" :style="{ color: getStatusColor(applicationInfo.status) }">
-            <span
-              class="mr-8px inline-block h-8px w-8px rounded-full"
-              :style="{ backgroundColor: getStatusColor(applicationInfo.status) }"
-            ></span>
-            {{ getStatusText(applicationInfo.status) }}
-          </span>
-        </div>
-        <div>
-          <span class="text-14px text-[var(--el-text-color-secondary)]">申请周期：</span>
-          <span class="text-14px text-[var(--el-text-color-primary)]">
-            {{ applicationInfo.period }}
-          </span>
-        </div>
-      </div>
-      <div class="mt-20px">
-        <span class="text-14px text-[var(--el-text-color-secondary)]">申请说明：</span>
-        <span class="text-14px text-[var(--el-text-color-primary)]">
-          {{ applicationInfo.description }}
-        </span>
-      </div>
-    </div>
-
-    <!-- 审批流程 Timeline -->
-    <div class="mb-32px rounded-8px bg-white p-24px">
-      <div class="mb-24px text-16px font-600">审批流程</div>
-      <el-timeline>
-        <el-timeline-item
-          v-for="(item, index) in approvalTimeline"
-          :key="index"
-          :color="getTimelineColor(item.status)"
-        >
-          <div class="text-14px text-[var(--el-text-color-primary)] font-500">
-            {{ item.nodeName }}
+        <!-- 申请信息 -->
+        <div class="mb-32px rounded-8px bg-white p-24px">
+          <div class="mb-24px text-16px font-600">申请信息</div>
+          <div class="grid grid-cols-2 gap-x-80px gap-y-20px">
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">申请资源项目：</span>
+              <el-link type="primary" :underline="false" class="text-14px">
+                {{ applyData.resourceName }}
+              </el-link>
+            </div>
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">资源类型：</span>
+              <span class="text-14px text-[var(--el-text-color-primary)]">
+                {{ getResourceTypeText(applyData.resourceType) }}
+              </span>
+            </div>
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">关联项目：</span>
+              <span class="text-14px text-[var(--el-text-color-primary)]">
+                {{ applyData.projectName || '-' }}
+              </span>
+            </div>
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">申请时间：</span>
+              <span class="text-14px text-[var(--el-text-color-primary)]">
+                {{ applyData.createTime ? new Date(applyData.createTime).toLocaleString('zh-CN') : '-' }}
+              </span>
+            </div>
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">申请人：</span>
+              <span class="text-14px text-[var(--el-text-color-primary)]">
+                {{ applyData.applicant || '-' }}
+              </span>
+            </div>
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">审批状态：</span>
+              <span class="text-14px" :style="{ color: getStatusColor(applyData.status) }">
+                <span
+                  class="mr-8px inline-block h-8px w-8px rounded-full"
+                  :style="{ backgroundColor: getStatusColor(applyData.status) }"
+                ></span>
+                {{ getStatusText(applyData.status) }}
+              </span>
+            </div>
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">申请周期：</span>
+              <span class="text-14px text-[var(--el-text-color-primary)]">
+                {{ formatDateRange(applyData.createTime, applyData.duration) }}
+              </span>
+            </div>
           </div>
-          <div class="mt-8px text-13px text-[var(--el-text-color-secondary)]">
-            {{ item.approver }} {{ item.time }}
-            <el-link
-              v-if="item.hasAttachment"
-              type="primary"
-              :underline="false"
-              class="ml-8px text-13px"
+          <div class="mt-20px">
+            <span class="text-14px text-[var(--el-text-color-secondary)]">申请说明：</span>
+            <span class="text-14px text-[var(--el-text-color-primary)]">
+              {{ applyData.reason || '-' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- 审批流程 Timeline -->
+        <div class="mb-32px rounded-8px bg-white p-24px">
+          <div class="mb-24px text-16px font-600">审批流程</div>
+          <el-timeline>
+            <el-timeline-item
+              v-for="(item, index) in approvalTimeline"
+              :key="index"
+              :color="getStatusColor(item.status)"
             >
-              唯一下
-            </el-link>
-          </div>
-          <div
-            v-if="item.remark"
-            class="mt-8px text-13px"
-            :style="{ color: getTimelineColor(item.status) }"
-          >
-            {{ item.remark }}
-          </div>
-        </el-timeline-item>
-      </el-timeline>
+              <!-- 上面是状态 -->
+              <div class="text-14px font-500" :style="{ color: getStatusColor(item.status) }">
+                {{ item.statusText }}
+              </div>
+              <!-- 下面是人 -->
+              <div class="mt-8px text-13px text-[var(--el-text-color-secondary)]">
+                {{ item.person }}
+                <span v-if="item.time" class="ml-8px">{{ item.time }}</span>
+              </div>
+              <!-- 审批意见 -->
+              <div
+                v-if="item.remark"
+                class="mt-8px text-13px text-[var(--el-text-color-regular)]"
+              >
+                审批意见：{{ item.remark }}
+              </div>
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </template>
+
+      <el-empty v-else description="暂无数据" />
     </div>
 
     </ContentWrap>
@@ -133,8 +135,11 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import { ContentWrap } from '@/components/ContentWrap'
 import { useAppStore } from '@/store/modules/app'
+import { getResourceApply, type ResourceApplyVO } from '@/api/resource/apply'
+import { ApplyStatus } from '@/api/resource/types'
 
 defineOptions({ name: 'ApprovalDetail' })
 
@@ -146,101 +151,156 @@ const appStore = useAppStore()
 const isCollapsed = computed(() => appStore.getCollapse)
 const isMobile = computed(() => appStore.getMobile)
 
-// 审批状态类型
-type ApprovalStatus = 'pending' | 'approved' | 'rejected'
+// 加载状态
+const loading = ref(false)
 
-// 申请信息
-const applicationInfo = ref({
-  resourceName: '停车数据记录',
-  resourceType: '数据资源',
-  resourceType2: '数据资源',
-  projectName: '天宫项目组',
-  applyTime: '2025-10-24 10:32',
-  status: 'pending' as ApprovalStatus,
-  period: '2025-10-12~2028-10-11 (3年)',
-  description: '用于项目提供成果工作中使用，对于车辆管理深度研究能力'
-})
+// 申请数据
+const applyData = ref<ResourceApplyVO | null>(null)
 
-// 审批流程数据
-const approvalTimeline = ref([
-  {
-    nodeName: '审批节点',
-    approver: '首道',
-    time: '2025-07-30 12:32:02',
-    status: 'approved' as ApprovalStatus,
-    hasAttachment: true,
-    remark: '附件中从精神审核结果详情，已完成权限分析'
-  },
-  {
-    nodeName: '审批节点',
-    approver: '首道',
-    time: '2025-07-31 12:32:02',
-    status: 'approved' as ApprovalStatus,
-    hasAttachment: false,
-    remark: '审批通过'
-  },
-  {
-    nodeName: '审批节点',
-    approver: '李纱绫',
-    time: '2025-10-24 10:32',
-    status: 'pending' as ApprovalStatus,
-    hasAttachment: false,
-    remark: '等待处理'
+// 状态配置
+const statusConfig = {
+  [ApplyStatus.PENDING]: { label: '待审批', color: '#409EFF' },
+  [ApplyStatus.APPROVED]: { label: '已通过', color: '#67C23A' },
+  [ApplyStatus.REJECTED]: { label: '已驳回', color: '#F56C6C' },
+  [ApplyStatus.CANCELLED]: { label: '已撤销', color: '#909399' }
+}
+
+// 审批流程数据 - 根据 API 数据构建
+const approvalTimeline = computed(() => {
+  if (!applyData.value) return []
+
+  const timeline = [
+    {
+      status: ApplyStatus.APPROVED,
+      statusText: '提交申请',
+      person: applyData.value.applicant || '-',
+      time: applyData.value.createTime ? new Date(applyData.value.createTime).toLocaleString('zh-CN') : '-',
+      remark: ''
+    }
+  ]
+
+  // 如果有审批人和审批时间，添加审批节点
+  if (applyData.value.approver && applyData.value.approvalTime) {
+    timeline.push({
+      status: applyData.value.status || ApplyStatus.PENDING,
+      statusText: getStatusText(applyData.value.status),
+      person: applyData.value.approver,
+      time: new Date(applyData.value.approvalTime).toLocaleString('zh-CN'),
+      remark: applyData.value.approvalComment || ''
+    })
+  } else if (applyData.value.status === ApplyStatus.PENDING) {
+    // 待审批状态
+    timeline.push({
+      status: ApplyStatus.PENDING,
+      statusText: '待审批',
+      person: applyData.value.approver || '待分配',
+      time: '',
+      remark: ''
+    })
   }
-])
+
+  return timeline
+})
 
 // 当前步骤
 const currentStep = computed(() => {
-  const status = applicationInfo.value.status
-  if (status === 'pending') return 1
-  if (status === 'approved' || status === 'rejected') return 2
+  if (!applyData.value) return 0
+  const status = applyData.value.status
+  if (status === ApplyStatus.PENDING) return 1
+  if (status === ApplyStatus.APPROVED || status === ApplyStatus.REJECTED) return 2
   return 0
 })
 
 // 步骤状态
 const processStatus = computed(() => {
-  const status = applicationInfo.value.status
-  if (status === 'approved') return 'success'
-  if (status === 'rejected') return 'error'
+  if (!applyData.value) return 'process'
+  const status = applyData.value.status
+  if (status === ApplyStatus.APPROVED) return 'success'
+  if (status === ApplyStatus.REJECTED) return 'error'
   return 'process'
 })
 
 // 步骤描述
 const stepDescriptions = computed(() => {
-  const status = applicationInfo.value.status
+  if (!applyData.value) {
+    return {
+      submit: '',
+      review: '',
+      result: { title: '申请结果', time: '' }
+    }
+  }
+
+  const status = applyData.value.status
+  const createTime = applyData.value.createTime ? new Date(applyData.value.createTime).toLocaleString('zh-CN') : ''
+  const approvalTime = applyData.value.approvalTime ? new Date(applyData.value.approvalTime).toLocaleString('zh-CN') : ''
+
   return {
-    submit: '2025-10-24 10:32',
-    review: '2025-10-24 10:32',
+    submit: createTime,
+    review: createTime,
     result: {
-      title: status === 'approved' ? '审批通过' : status === 'rejected' ? '审批失败' : '申请结果',
-      time: status === 'approved' || status === 'rejected' ? '2025-10-24 10:32' : ''
+      title: status === ApplyStatus.APPROVED ? '审批通过' : status === ApplyStatus.REJECTED ? '审批失败' : '申请结果',
+      time: status === ApplyStatus.APPROVED || status === ApplyStatus.REJECTED ? approvalTime : ''
     }
   }
 })
 
-// 获取状态文本
-const getStatusText = (status: ApprovalStatus) => {
-  const statusMap = {
-    pending: '审批中',
-    approved: '审批通过',
-    rejected: '审批失败'
+// 获取资源类型文本
+const getResourceTypeText = (type?: number) => {
+  const typeMap = {
+    1: '数据资源',
+    2: '应用资源',
+    3: '组件资源'
   }
-  return statusMap[status] || '未知'
+  return typeMap[type || 1] || '未知'
+}
+
+// 格式化日期范围
+const formatDateRange = (startDate?: Date | string, duration?: number) => {
+  if (!startDate) return '-'
+
+  const start = new Date(startDate)
+  const startStr = start.toLocaleDateString('zh-CN')
+
+  if (!duration) return startStr
+
+  const end = new Date(start)
+  end.setDate(end.getDate() + duration)
+  const endStr = end.toLocaleDateString('zh-CN')
+
+  return `${startStr} ~ ${endStr} (${duration}天)`
+}
+
+// 获取状态文本
+const getStatusText = (status?: ApplyStatus) => {
+  if (status === undefined) return '未知'
+  return statusConfig[status]?.label || '未知'
 }
 
 // 获取状态颜色
-const getStatusColor = (status: ApprovalStatus) => {
-  const colorMap = {
-    pending: '#409EFF',
-    approved: '#67C23A',
-    rejected: '#F56C6C'
-  }
-  return colorMap[status] || '#909399'
+const getStatusColor = (status?: ApplyStatus) => {
+  if (status === undefined) return '#909399'
+  return statusConfig[status]?.color || '#909399'
 }
 
-// 获取时间线颜色
-const getTimelineColor = (status: ApprovalStatus) => {
-  return getStatusColor(status)
+// 加载申请详情
+const loadData = async () => {
+  // const id = route.query.id as string
+  const id = '8'
+  if (!id) {
+    ElMessage.error('缺少申请ID')
+    handleBack()
+    return
+  }
+
+  loading.value = true
+  try {
+    applyData.value = await getResourceApply(Number(id))
+  } catch (error) {
+    console.error('加载申请详情失败:', error)
+    ElMessage.error('加载申请详情失败')
+  } finally {
+    loading.value = false
+  }
 }
 
 // 返回
@@ -250,29 +310,7 @@ const handleBack = () => {
 
 // 初始化
 onMounted(() => {
-  // 从路由参数中获取状态
-  const { status, id } = route.query
-  if (status) {
-    applicationInfo.value.status = status as ApprovalStatus
-
-    // 根据状态更新审批流程数据
-    if (status === 'approved') {
-      approvalTimeline.value = approvalTimeline.value.map((item) => ({
-        ...item,
-        status: 'approved',
-        remark: '审批通过'
-      }))
-    } else if (status === 'rejected') {
-      approvalTimeline.value[2] = {
-        ...approvalTimeline.value[2],
-        status: 'rejected',
-        remark: '审批失败：资源不满足申请条件'
-      }
-    }
-  }
-
-  // TODO: 根据 id 从后端获取详细数据
-  console.log('申请详情 ID:', id)
+  loadData()
 })
 </script>
 

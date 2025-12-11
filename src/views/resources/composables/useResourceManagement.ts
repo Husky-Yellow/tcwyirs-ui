@@ -121,7 +121,11 @@ export const useResourceManagement = (options: UseResourceManagementOptions) => 
   }
 
   // ========== 分页 ==========
-  const handlePageChange = () => {
+  const handlePageChange = (newPagination?: typeof pagination.value) => {
+    // 如果传入了新的分页参数，则更新
+    if (newPagination) {
+      pagination.value = newPagination
+    }
     loadData()
   }
 

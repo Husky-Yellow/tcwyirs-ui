@@ -1,5 +1,6 @@
 <template>
   我审批的
+  <!-- todo 根据角色调不同的列表 通过 roles 判断 -->
   <!-- 搜索表单 -->
   <ContentWrap>
     <Search
@@ -111,7 +112,8 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { getPendingApprovalPage, getDoneApprovalPage, approveResourceApply, rejectResourceApply } from '@/api/resource/approval'
+import { getTodoApplyPage } from '@/api/resource/apply'
+import { getDoneApprovalPage, approveResourceApply, rejectResourceApply } from '@/api/resource/approval'
 import type { ResourceApplyVO, ResourceApplyPageReqVO } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
 import { useStatusStyle } from '@/views/Home/composables/useStatusStyle'
@@ -246,7 +248,7 @@ const formatDateRange = (startDate: Date | string, duration?: number) => {
 const getList = async () => {
   loading.value = true
   try {
-    const api = activeTab.value === 'pending' ? getPendingApprovalPage : getDoneApprovalPage
+    const api = activeTab.value === 'pending' ? getTodoApplyPage : getDoneApprovalPage
     const { data } = await api(queryParams)
     list.value = data.list || []
     total.value = data.total || 0
@@ -263,7 +265,7 @@ const getList = async () => {
 /** 获取待审批数量 */
 const getPendingCount = async () => {
   try {
-    const { data } = await getPendingApprovalPage({ pageNo: 1, pageSize: 1 })
+    const { data } = await getTodoApplyPage({ pageNo: 1, pageSize: 1 })
     pendingCount.value = data.total || 0
   } catch (error) {
     console.error('获取待审批数量失败:', error)

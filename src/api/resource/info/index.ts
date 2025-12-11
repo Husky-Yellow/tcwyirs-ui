@@ -716,8 +716,61 @@ export const updateResourceInfo = (data: ResourceInfoVO) => request.put<void>({ 
 // 删除资源
 export const deleteResourceInfo = (id: number) => request.delete<void>({ url: '/resource/info/delete?id=' + id })
 
+/**
+ * 资源详情响应 VO（实际接口返回结构）
+ */
+export interface ResourceDetailRespVO {
+  /** 基本信息 */
+  baseInfo: {
+    id: number
+    name: string
+    type: number
+    resourceTagId?: number
+    resourceTagName?: string
+    description?: string
+    coverUrl?: string
+    publishStatus?: number
+    publishTime?: string
+    linkPerson?: string
+    linkPhone?: string
+    belong?: string
+    introduction?: string
+    createTime?: number | string
+    updateTime?: number | string
+    // 数据资源字段
+    belongApp?: string
+    // 应用资源字段
+    deviceType?: number
+    deviceAddr?: string
+    deviceNum?: number
+    docFileIds?: string
+    connDeviceFlag?: boolean
+    introScenes?: any[]
+    // 组件资源字段
+    componentUrl?: string
+    dockingType?: number
+    requestUrl?: string
+    sampleCode?: string
+  }
+  /** 数据信息 */
+  dataInfo?: {
+    applyCount?: number
+    visitCount?: number
+    dataRow?: number
+  }
+  /** 字段信息（数据资源） */
+  fieldsJson?: FieldInfo[]
+  /** 输入参数（组件资源） */
+  inputParamsJson?: ParamInfo[]
+  /** 输出参数（组件资源） */
+  outputParamsJson?: ParamInfo[]
+}
+
 // 获取资源详情
 export const getResourceInfo = (id: number) => request.get<ResourceInfoVO>({ url: '/resource/info/get?id=' + id })
+
+// 获取资源详情（新接口，返回完整详情）
+export const getResourceDetail = (id: number) => request.get<ResourceDetailRespVO>({ url: '/resource/info/get?id=' + id })
 
 // 获取资源分页列表
 export const getResourceInfoPage = (params: ResourceInfoPageReqVO) => request.get<PageResult<ResourceInfoVO[]>>({ url: '/resource/info/page', params })
@@ -733,3 +786,6 @@ export const fetchResourceStats = () => request.get<ResourceStatsRespVO>({ url: 
 
 // 待我审批的资源
 export const getApplyTodoPage  = (params: PageResultResourceApplyTodoRespVO) => request.get<PageResult<ResourceApplyTodoRespVO[]>>({ url: '/resource/apply/todo-page', params })
+
+// 获取我上架的资源申请分页列表
+export const getPublishApplicationPage = (params: PublishApplicationPageParamVO) => request.get<PageResult<ResourcePublishApplyRespVO[]>>({ url: '/resource/publish-apply/page', params })

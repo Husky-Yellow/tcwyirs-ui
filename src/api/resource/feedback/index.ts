@@ -1,6 +1,18 @@
 import request from '@/config/axios'
 import type { FeedbackStatus } from '../types'
 
+/** 反馈统计 VO */
+export interface FeedbackStatisticsVO {
+  /** 最近申请数 */
+  recentCount?: number
+  /** 申请中数量（待处理+处理中） */
+  processingCount?: number
+  /** 已处理数量 */
+  handledCount?: number
+  /** 总数 */
+  totalCount?: number
+}
+
 /** 反馈 VO */
 export interface FeedbackVO {
   id?: number
@@ -112,4 +124,9 @@ export const resolveFeedback = (id: number) => {
 // 继续反馈
 export const continueFeedback = (id: number, content: string) => {
   return request.post<void>({ url: '/resource/feedback/continue', data: { id, content } })
+}
+
+// 获取反馈统计
+export const getFeedbackStatistics = () => {
+  return request.get<FeedbackStatisticsVO>({ url: '/resource/feedback/statistics' })
 }

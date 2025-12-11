@@ -34,7 +34,7 @@
         </div>
       </div>
       <!-- 待审批资源列表 -->
-      <ul class="space-y-8px">
+      <ul v-if="pendingApprovalResources.length > 0" class="space-y-8px">
         <li
           v-for="(item, index) in pendingApprovalResources"
           :key="index"
@@ -46,6 +46,7 @@
           </div>
         </li>
       </ul>
+      <el-empty v-else description="暂无待审批资源" :image-size="80" />
     </div>
   </AppCard>
 </template>

@@ -26,7 +26,7 @@
       @edit="handleEdit"
       @delete="handleDelete"
       @toggle-status="handleToggleStatus"
-      @page-change="handlePageChange"
+      @update:pagination="handlePageChange"
     />
 
     <!-- 新建/编辑表单 -->
@@ -45,6 +45,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ResourceType } from '@/api/resource/types'
 import { createResourceInfo, unpublishResourceInfo } from '@/api/resource/info'
@@ -57,6 +58,8 @@ import DataResourceForm from './components/DataResourceForm.vue'
 import UnpublishDialog from '../components/UnpublishDialog.vue'
 
 defineOptions({ name: 'DataResource' })
+
+const router = useRouter()
 
 // 使用资源管理 composable
 const {
@@ -93,7 +96,10 @@ const handleCreate = () => {
 
 // 详情
 const handleDetail = (row: any) => {
-  ElMessage.info(`查看详情: ${row.name}`)
+  router.push({
+    path: '/resources/detail',
+    query: { id: row.id }
+  })
 }
 
 // 编辑

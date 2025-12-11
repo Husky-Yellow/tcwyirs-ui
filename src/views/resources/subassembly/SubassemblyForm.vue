@@ -2,7 +2,7 @@
   <Drawer
     v-model="visible"
     :title="title"
-    size="800px"
+    size="1000px"
     :close-on-click-modal="false"
     @close="handleClose"
   >
@@ -10,7 +10,6 @@
       ref="formRef"
       :model="formData"
       :rules="formRules"
-      label-width="120px"
       label-position="top"
     >
       <!-- 资源信息 -->
@@ -107,18 +106,124 @@
 
       <!-- 输入参数 -->
       <el-form-item label="输入参数">
-        <DynamicTreeTable
-          v-model="formData.componentExt.inputParamsJson"
-          :columns="paramColumns"
-        />
+        <el-table
+          :data="formData.componentExt.inputParamsJson"
+          border
+          style="width: 100%"
+          row-key="_key"
+          default-expand-all
+          :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        >
+          <el-table-column label="" width="100" align="center" />
+          <el-table-column label="参数名称" width="160">
+            <template #default="{ row }">
+              <el-input v-model="row.paramName" placeholder="请输入参数名称" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="参数类型" width="120">
+            <template #default="{ row }">
+              <el-input v-model="row.paramType" placeholder="请输入参数类型" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="参数描述" width="180">
+            <template #default="{ row }">
+              <el-input v-model="row.paramDesc" placeholder="请输入参数描述" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="是否必填" width="100">
+            <template #default="{ row }">
+              <el-select v-model="row.required" placeholder="请选择" size="small">
+                <el-option label="是" :value="true" />
+                <el-option label="否" :value="false" />
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="参数位置" width="120">
+            <template #default="{ row }">
+              <el-input v-model="row.paramPosition" placeholder="请输入参数位置" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="关联表信息" width="160">
+            <template #default="{ row }">
+              <el-input v-model="row.relTableInfo" placeholder="请输入关联表信息" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="150" fixed="right">
+            <template #default="{ row }">
+              <el-button link type="primary" size="small" @click="addInputParam(row)">
+                添加下级
+              </el-button>
+              <el-button link type="danger" size="small" @click="deleteInputParam(row)">
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-button class="w-full mt-8px" @click="addInputParam()">
+          <Icon icon="ep:plus" class="mr-5px" />
+          新增一行
+        </el-button>
       </el-form-item>
 
       <!-- 输出参数 -->
       <el-form-item label="输出参数">
-        <DynamicTreeTable
-          v-model="formData.componentExt.outputParamsJson"
-          :columns="paramColumns"
-        />
+        <el-table
+          :data="formData.componentExt.outputParamsJson"
+          border
+          style="width: 100%"
+          row-key="_key"
+          default-expand-all
+          :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        >
+          <el-table-column label="" width="100" align="center" />
+          <el-table-column label="参数名称" width="160">
+            <template #default="{ row }">
+              <el-input v-model="row.paramName" placeholder="请输入参数名称" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="参数类型" width="120">
+            <template #default="{ row }">
+              <el-input v-model="row.paramType" placeholder="请输入参数类型" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="参数描述" width="180">
+            <template #default="{ row }">
+              <el-input v-model="row.paramDesc" placeholder="请输入参数描述" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="是否必填" width="100">
+            <template #default="{ row }">
+              <el-select v-model="row.required" placeholder="请选择" size="small">
+                <el-option label="是" :value="true" />
+                <el-option label="否" :value="false" />
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="参数位置" width="120">
+            <template #default="{ row }">
+              <el-input v-model="row.paramPosition" placeholder="请输入参数位置" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="关联表信息" width="160">
+            <template #default="{ row }">
+              <el-input v-model="row.relTableInfo" placeholder="请输入关联表信息" size="small" />
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="150" fixed="right">
+            <template #default="{ row }">
+              <el-button link type="primary" size="small" @click="addOutputParam(row)">
+                添加下级
+              </el-button>
+              <el-button link type="danger" size="small" @click="deleteOutputParam(row)">
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-button class="w-full mt-8px" @click="addOutputParam()">
+          <Icon icon="ep:plus" class="mr-5px" />
+          新增一行
+        </el-button>
       </el-form-item>
 
       <!-- 示例代码 -->
@@ -147,12 +252,10 @@ import { ref, computed, watch, nextTick } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { Drawer } from '@/components/Drawer'
 import { DynamicSelect } from '@/components/DynamicSelect'
-import { DynamicTreeTable } from '@/components/DynamicDataTable'
 import { UploadImg } from '@/components/UploadFile'
 import { Icon } from '@/components/Icon'
 import { useResourceTag } from '@/hooks/web/useResourceTag'
 import type { DynamicSelectOption } from '@/components/DynamicSelect'
-import type { TableColumn } from '@/components/DynamicDataTable'
 import type { ResourceInfoSaveReqVO, ParamInfo } from '@/api/resource/info'
 import type { ResourceTagVO } from '@/api/resource/tag'
 import { createResourceInfo, updateResourceInfo } from '@/api/resource/info'
@@ -196,27 +299,20 @@ const {
 // 表单引用
 const formRef = ref<FormInstance>()
 
-// 参数表格列配置
-const paramColumns: TableColumn[] = [
-  { key: 'paramName', label: '参数名称', width: '200px', placeholder: '请输入参数名称' },
-  { key: 'paramType', label: '参数类型', width: '150px', placeholder: '请输入参数类型' },
-  { key: 'paramDesc', label: '参数描述', width: '200px', placeholder: '请输入参数描述' },
-  { key: 'required', label: '是否必填', width: '120px', type: 'select', options: [
-    { label: '是', value: true },
-    { label: '否', value: false }
-  ]},
-  { key: 'paramPosition', label: '参数位置', width: '150px', placeholder: '请输入参数位置' },
-  { key: 'relTableInfo', label: '关联表信息', width: '200px', placeholder: '请输入关联表信息' }
-]
+// 生成唯一 key
+let keyCounter = 0
+const generateKey = () => `param_${Date.now()}_${keyCounter++}`
 
 // 创建空参数
 const createEmptyParam = (): ParamInfo => ({
+  _key: generateKey(),
   paramName: '',
   paramType: '',
   paramDesc: '',
   required: false,
   paramPosition: '',
-  relTableInfo: ''
+  relTableInfo: '',
+  children: []
 })
 
 // 表单数据（完全符合 ResourceInfoSaveReqVO 结构）
@@ -334,6 +430,116 @@ watch(
   },
   { immediate: true, deep: true }
 )
+
+// 计算树中的节点总数
+const countNodes = (nodes: ParamInfo[]): number => {
+  let count = 0
+  for (const node of nodes) {
+    count++
+    if (node.children && node.children.length > 0) {
+      count += countNodes(node.children)
+    }
+  }
+  return count
+}
+
+// 输入参数操作
+const addInputParam = (row?: ParamInfo) => {
+  const newParam = createEmptyParam()
+  if (row) {
+    // 添加为子级
+    if (!row.children) {
+      row.children = []
+    }
+    row.children.push(newParam)
+  } else {
+    // 添加为根级
+    formData.value.componentExt.inputParamsJson!.push(newParam)
+  }
+}
+
+const deleteInputParam = (row: ParamInfo) => {
+  const params = formData.value.componentExt.inputParamsJson!
+  const totalNodes = countNodes(params)
+
+  // 如果只剩一个节点，清空数据而不删除
+  if (totalNodes === 1) {
+    row.paramName = ''
+    row.paramType = ''
+    row.paramDesc = ''
+    row.required = false
+    row.paramPosition = ''
+    row.relTableInfo = ''
+    ElMessage.info('最后一行数据已清空')
+    return
+  }
+
+  // 否则正常删除
+  const deleteFromArray = (arr: ParamInfo[], target: ParamInfo): boolean => {
+    const index = arr.findIndex(item => item._key === target._key)
+    if (index !== -1) {
+      arr.splice(index, 1)
+      return true
+    }
+    for (const item of arr) {
+      if (item.children && deleteFromArray(item.children, target)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  deleteFromArray(params, row)
+}
+
+// 输出参数操作
+const addOutputParam = (row?: ParamInfo) => {
+  const newParam = createEmptyParam()
+  if (row) {
+    // 添加为子级
+    if (!row.children) {
+      row.children = []
+    }
+    row.children.push(newParam)
+  } else {
+    // 添加为根级
+    formData.value.componentExt.outputParamsJson!.push(newParam)
+  }
+}
+
+const deleteOutputParam = (row: ParamInfo) => {
+  const params = formData.value.componentExt.outputParamsJson!
+  const totalNodes = countNodes(params)
+
+  // 如果只剩一个节点，清空数据而不删除
+  if (totalNodes === 1) {
+    row.paramName = ''
+    row.paramType = ''
+    row.paramDesc = ''
+    row.required = false
+    row.paramPosition = ''
+    row.relTableInfo = ''
+    ElMessage.info('最后一行数据已清空')
+    return
+  }
+
+  // 否则正常删除
+  const deleteFromArray = (arr: ParamInfo[], target: ParamInfo): boolean => {
+    const index = arr.findIndex(item => item._key === target._key)
+    if (index !== -1) {
+      arr.splice(index, 1)
+      return true
+    }
+    for (const item of arr) {
+      if (item.children && deleteFromArray(item.children, target)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  deleteFromArray(params, row)
+}
 
 // 关闭抽屉
 const handleClose = () => {

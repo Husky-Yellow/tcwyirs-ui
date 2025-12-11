@@ -26,7 +26,7 @@
       @edit="handleEdit"
       @delete="handleDelete"
       @toggle-status="handleToggleStatus"
-      @page-change="handlePageChange"
+      @update:pagination="handlePageChange"
     />
 
     <!-- 应用资源表单 -->
@@ -44,6 +44,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ResourceType } from '@/api/resource/types'
 import { unpublishResourceInfo } from '@/api/resource/info'
@@ -56,6 +57,8 @@ import ApplicationForm from './components/ApplicationForm.vue'
 import UnpublishDialog from '../components/UnpublishDialog.vue'
 
 defineOptions({ name: 'ApplicationResource' })
+
+const router = useRouter()
 
 // 使用资源管理 composable
 const {
@@ -90,7 +93,10 @@ const handleCreate = () => {
 
 // 详情
 const handleDetail = (row: any) => {
-  ElMessage.info(`查看详情: ${row.name}`)
+  router.push({
+    path: '/resources/detail',
+    query: { id: row.id }
+  })
 }
 
 // 编辑

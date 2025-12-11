@@ -1,11 +1,11 @@
 <template>
   <ContentWrap :body-style="{ padding: '0 20px' }">
       <!-- 主内容区 -->
-      <div class="h-[calc(100vh-198px)] flex">
+      <div class="h-[calc(100vh-218px)] flex">
         <!-- 左侧文档列表 -->
-        <div class="h-full w-258px overflow-y-auto border-0 border-r-1 border-[#0000000f] border-solid pr-24px pt-20px">
-          <!-- 搜索框 -->
-          <div class="border-0 border-b-1 border-[#0000000f] border-solid pb-18px pt-4px">
+        <div class="relative h-full w-258px border-0 border-r-1 border-[#0000000f] border-solid pr-24px">
+          <!-- 搜索框（悬浮固定） -->
+          <div class="sticky top-0 z-10 border-0 border-b-1 border-[#0000000f] border-solid bg-white pb-18px pt-20px">
             <el-input
               v-model="searchKeyword"
               placeholder="请输入名称关键字"
@@ -18,16 +18,37 @@
             </el-input>
           </div>
 
-          <!-- 文档列表 -->
-          <div class="px-8px py-16px">
-            <div
-              v-for="doc in filteredDocs"
-              :key="doc.id"
-              class="mb-4px cursor-pointer rounded-6px px-16px py-12px text-14px text-[#606266] transition-all duration-200"
-              :class="selectedDocId === doc.id ? 'bg-[#ecf5ff] text-[#409eff] font-500' : 'hover:bg-[#f5f7fa] hover:text-[#303133]'"
-              @click="selectDoc(doc)"
-            >
-              {{ doc.title }}
+          <!-- 文档列表（可滚动） -->
+          <div
+            ref="listContainerRef"
+            class="h-[calc(100%-80px)] overflow-y-auto"
+            @scroll="handleScroll"
+          >
+            <div v-loading="loading" class="min-h-200px px-8px py-16px">
+              <div
+                v-for="doc in docList"
+                :key="doc.id"
+                class="mb-4px cursor-pointer rounded-6px px-16px py-12px text-14px text-[#606266] transition-all duration-200"
+                :class="selectedDocId === doc.id ? 'bg-[#ecf5ff] text-[#409eff] font-500' : 'hover:bg-[#f5f7fa] hover:text-[#303133]'"
+                @click="selectDoc(doc)"
+              >
+                {{ doc.name }}
+              </div>
+
+              <!-- 加载更多提示 -->
+              <div v-if="hasMore && !loading" class="py-12px text-center text-14px text-[#909399]">
+                滚动加载更多...
+              </div>
+
+              <!-- 没有更多数据 -->
+              <div v-if="!hasMore && docList.length > 0 && !loading" class="py-12px text-center text-14px text-[#909399]">
+                已加载全部文档
+              </div>
+
+              <!-- 无数据提示 -->
+              <div v-if="!loading && docList.length === 0" class="py-40px text-center text-14px text-[#909399]">
+                暂无文档
+              </div>
             </div>
           </div>
         </div>
@@ -42,12 +63,31 @@
 
             <!-- 修改时间 -->
             <div class="mb-32px text-14px text-[#909399]">
-              修改时间：{{ currentDoc.updateTime }}
+              修改时间：{{ currentDoc.pushTime ? formatDate(currentDoc.pushTime) : (currentDoc.createTime ? formatDate(currentDoc.createTime) : '-') }}
             </div>
 
             <!-- 文档内容 -->
-            <div class="text-15px text-[#606266] leading-relaxed">
-              <div v-html="currentDoc.content"></div>
+            <div v-loading="contentLoading" class="min-h-200px text-15px text-[#606266] leading-relaxed">
+              <!-- PDF 文件 -->
+              <iframe
+                v-if="fileType === 'pdf' && currentDoc.url"
+                :src="currentDoc.url"
+                class="h-[calc(100vh-400px)] w-full border-1 border-[#dcdfe6] rounded-4px"
+              />
+
+              <!-- Markdown 文件 -->
+              <MarkdownView
+                v-else-if="fileType === 'markdown' && markdownContent"
+                :content="markdownContent"
+              />
+
+              <!-- HTML 内容（向后兼容） -->
+              <div v-else-if="currentDoc.content" v-html="currentDoc.content"></div>
+
+              <!-- 无内容 -->
+              <div v-else class="py-40px text-center text-[#909399]">
+                暂无内容
+              </div>
             </div>
           </div>
 
@@ -61,19 +101,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { getDocumentPage, getDocument, type DocumentVO } from '@/api/resource/document'
+import { formatDate } from '@/utils/formatTime'
+import { useDebounceFn } from '@vueuse/core'
+import MarkdownView from '@/components/MarkdownView/index.vue'
+import axios from 'axios'
 
 defineOptions({ name: 'HelpDoc' })
 
 const router = useRouter()
+const route = useRoute()
 
-interface HelpDoc {
-  id: number
-  title: string
-  updateTime: string
-  content: string
-}
+// 加载状态
+const loading = ref(false)
+const contentLoading = ref(false)
 
 // 搜索关键字
 const searchKeyword = ref('')
@@ -82,116 +125,142 @@ const searchKeyword = ref('')
 const selectedDocId = ref<number | null>(null)
 
 // 文档列表
-const docList = ref<HelpDoc[]>([
-  {
-    id: 1,
-    title: '这是一个选中样式',
-    updateTime: '2025-8-23 11:28',
-    content: `
-      <p style="margin-bottom: 20px;">产品的增长依赖于用户的群体扩大和深度使用，而用户的成长又依赖于产品功能的完善，设计者应建立系统设计思维，洞悉产品功能的价值，探索用户在不同场景下的需求，在价值和需求的理解，让产品价值被发现，帮助用户建立更有效，更高效的工作方式。</p>
-      <p>产品的增长依赖于用户的群体扩大和深度使用，而用户的成长又依赖于产品功能的完善，设计者应建立系统设计思维，洞悉产品功能的价值，探索用户在不同场景下的需求，在价值和需求的理解，让产品价值被发现，帮助用户建立更有效，更高效的工作方式。</p>
-    `
-  },
-  {
-    id: 2,
-    title: '这是一个悬浮样式',
-    updateTime: '2025-8-22 15:30',
-    content: `
-      <p style="margin-bottom: 20px;">这是一个悬浮样式的文档内容示例。产品设计需要考虑用户体验的各个方面，包括界面的美观性、交互的流畅性以及功能的实用性。</p>
-      <p>通过合理的设计，可以提升用户的满意度和产品的竞争力。</p>
-    `
-  },
-  {
-    id: 3,
-    title: '这是一个文档名称',
-    updateTime: '2025-8-21 09:15',
-    content: `
-      <p style="margin-bottom: 20px;">文档管理系统帮助团队更好地组织和分享知识。通过分类和搜索功能，用户可以快速找到需要的信息。</p>
-      <p>良好的文档管理可以提高团队协作效率，减少沟通成本。</p>
-    `
-  },
-  {
-    id: 4,
-    title: '这是一个文档名称',
-    updateTime: '2025-8-20 16:45',
-    content: `
-      <p style="margin-bottom: 20px;">在现代软件开发中，文档是不可或缺的一部分。清晰的文档可以帮助开发者理解系统架构和业务逻辑。</p>
-      <p>同时，文档也是新成员快速上手的重要资料。</p>
-    `
-  },
-  {
-    id: 5,
-    title: '这是一个文档名称',
-    updateTime: '2025-8-19 10:20',
-    content: `
-      <p style="margin-bottom: 20px;">用户手册是产品文档的重要组成部分。它应该包含产品的使用方法、常见问题解答以及故障排除指南。</p>
-      <p>一份好的用户手册可以大大减少用户支持的工作量。</p>
-    `
-  },
-  {
-    id: 6,
-    title: '这是一个文档名称',
-    updateTime: '2025-8-18 14:30',
-    content: `
-      <p style="margin-bottom: 20px;">API 文档是开发者文档的核心。它应该详细描述每个接口的功能、参数、返回值以及使用示例。</p>
-      <p>清晰的 API 文档可以帮助开发者快速集成和使用你的服务。</p>
-    `
-  },
-  {
-    id: 7,
-    title: '这是一个默认样式',
-    updateTime: '2025-8-17 11:00',
-    content: `
-      <p style="margin-bottom: 20px;">默认样式是设计系统的基础。通过定义一致的样式规范，可以确保产品界面的统一性和专业性。</p>
-      <p>设计系统还应该包含组件库、颜色规范、字体规范等内容。</p>
-    `
-  },
-  {
-    id: 8,
-    title: '这是一个文档名称',
-    updateTime: '2025-8-16 13:45',
-    content: `
-      <p style="margin-bottom: 20px;">版本管理是软件开发的重要环节。通过版本控制系统，团队可以协同工作，追踪代码变更历史。</p>
-      <p>Git 是目前最流行的版本控制系统，它提供了强大的分支管理和合并功能。</p>
-    `
-  },
-  {
-    id: 9,
-    title: '这是一个文档名称',
-    updateTime: '2025-8-15 09:30',
-    content: `
-      <p style="margin-bottom: 20px;">测试文档记录了测试计划、测试用例以及测试结果。完善的测试文档可以确保产品质量。</p>
-      <p>自动化测试可以提高测试效率，减少人为错误。</p>
-    `
-  }
-])
+const docList = ref<DocumentVO[]>([])
 
-// 过滤后的文档列表
-const filteredDocs = computed(() => {
-  if (!searchKeyword.value) {
-    return docList.value
-  }
-  return docList.value.filter((doc) =>
-    doc.title.toLowerCase().includes(searchKeyword.value.toLowerCase())
-  )
+// 分页状态
+const currentPage = ref(1)
+const pageSize = ref(20)
+const total = ref(0)
+const hasMore = computed(() => docList.value.length < total.value)
+
+// 列表容器引用
+const listContainerRef = ref<HTMLElement | null>(null)
+
+// 当前文档详情
+const currentDocDetail = ref<DocumentVO | null>(null)
+
+// Markdown 文件内容
+const markdownContent = ref('')
+
+// 计算文件类型
+const fileType = computed(() => {
+  const url = currentDocDetail.value?.url
+  if (!url) return 'html'
+
+  const ext = url.split('.').pop()?.toLowerCase()
+  if (ext === 'pdf') return 'pdf'
+  if (ext === 'md' || ext === 'markdown') return 'markdown'
+  return 'html'
 })
 
 // 当前选中的文档
 const currentDoc = computed(() => {
-  return docList.value.find((doc) => doc.id === selectedDocId.value) || null
+  return currentDocDetail.value
 })
 
-// 搜索处理
-const handleSearch = () => {
-  // 搜索后自动选中第一个结果
-  if (filteredDocs.value.length > 0 && !selectedDocId.value) {
-    selectedDocId.value = filteredDocs.value[0].id
+// 加载文档列表
+const loadDocList = async (append = false) => {
+  // 如果没有更多数据且是追加模式，直接返回
+  if (append && !hasMore.value) return
+
+  try {
+    loading.value = true
+    const { list, total: totalCount } = await getDocumentPage({
+      pageNo: currentPage.value,
+      pageSize: pageSize.value,
+      status: 1, // 只显示已发布的文档
+      title: searchKeyword.value || undefined
+    })
+
+    // 更新总数
+    total.value = totalCount
+
+    // 追加或替换数据
+    if (append) {
+      docList.value = [...docList.value, ...(list || [])]
+    } else {
+      docList.value = list || []
+    }
+  } catch (error) {
+    console.error('加载文档列表失败:', error)
+    if (!append) {
+      docList.value = []
+    }
+  } finally {
+    loading.value = false
   }
 }
 
+// 加载文档详情
+const loadDocDetail = async (id: number) => {
+  try {
+    currentDocDetail.value = await getDocument(id)
+
+    // 如果是 Markdown 文件，需要加载文件内容
+    if (currentDocDetail.value?.url) {
+      const ext = currentDocDetail.value.url.split('.').pop()?.toLowerCase()
+      if (ext === 'md' || ext === 'markdown') {
+        await loadMarkdownContent(currentDocDetail.value.url)
+      }
+    }
+  } catch (error) {
+    console.error('加载文档详情失败:', error)
+    currentDocDetail.value = null
+  }
+}
+
+// 加载 Markdown 文件内容
+const loadMarkdownContent = async (url: string) => {
+  try {
+    contentLoading.value = true
+    const response = await axios.get(url, { responseType: 'text' })
+    markdownContent.value = response.data
+  } catch (error) {
+    console.error('加载 Markdown 文件失败:', error)
+    markdownContent.value = '加载文件失败'
+  } finally {
+    contentLoading.value = false
+  }
+}
+
+// 搜索处理（防抖）
+const handleSearch = useDebounceFn(async () => {
+  // 重置分页
+  currentPage.value = 1
+  docList.value = []
+
+  // 重新加载列表
+  await loadDocList()
+
+  // 搜索后自动选中第一个结果
+  if (docList.value.length > 0 && docList.value[0].id) {
+    selectDoc(docList.value[0])
+  } else {
+    selectedDocId.value = null
+    currentDocDetail.value = null
+  }
+}, 300)
+
+// 滚动处理 - 加载更多
+const handleScroll = useDebounceFn((event: Event) => {
+  const target = event.target as HTMLElement
+  const scrollTop = target.scrollTop
+  const scrollHeight = target.scrollHeight
+  const clientHeight = target.clientHeight
+
+  // 距离底部 100px 时触发加载
+  if (scrollHeight - scrollTop - clientHeight < 100 && hasMore.value && !loading.value) {
+    currentPage.value++
+    loadDocList(true) // 追加模式
+  }
+}, 200)
+
 // 选择文档
-const selectDoc = (doc: HelpDoc) => {
-  selectedDocId.value = doc.id
+const selectDoc = (doc: DocumentVO) => {
+  if (doc.id) {
+    selectedDocId.value = doc.id
+    loadDocDetail(doc.id)
+  }
 }
 
 // 返回
@@ -200,10 +269,33 @@ const goBack = () => {
 }
 
 // 初始化
-onMounted(() => {
-  // 默认选中第一个文档
-  if (docList.value.length > 0) {
-    selectedDocId.value = docList.value[0].id
+onMounted(async () => {
+  // 加载文档列表
+  await loadDocList()
+
+  // 如果 URL 中有 id 参数，则选中对应的文档
+  const urlDocId = route.query.id
+  if (urlDocId && docList.value.length > 0) {
+    const targetDoc = docList.value.find(doc => doc.id === Number(urlDocId))
+    if (targetDoc) {
+      selectDoc(targetDoc)
+      return
+    }
+  }
+
+  // 否则默认选中第一个文档
+  if (docList.value.length > 0 && docList.value[0].id) {
+    selectDoc(docList.value[0])
+  }
+})
+
+// 监听路由参数变化
+watch(() => route.query.id, (newId) => {
+  if (newId && docList.value.length > 0) {
+    const targetDoc = docList.value.find(doc => doc.id === Number(newId))
+    if (targetDoc) {
+      selectDoc(targetDoc)
+    }
   }
 })
 </script>
