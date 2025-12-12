@@ -476,6 +476,19 @@ const remainingRouter: AppRouteRecordRaw[] = [
           canTo: true,
           showBack: true
         }
+      },
+      {
+        path: 'my-collected-resources',
+        component: () => import('@/views/resources/my-collected/index.vue'),
+        name: 'MyCollectedResources',
+        meta: {
+          hidden: true,
+          noTagsView: false,
+          icon: 'ep:collection',
+          title: '我收藏的资源',
+          canTo: true,
+          showBack: true
+        }
       }
     ]
   },

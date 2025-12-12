@@ -44,7 +44,7 @@ export const getCollectRecordPage = (params: CollectRecordPageReqVO) => {
 
 // 获取我的收藏统计
 export const getMyCollectStatistics = () => {
-  return request.get<MyCollectStatisticsVO>({ url: '/resource/collect/my-statistics' })
+  return request.get<MyCollectStatisticsVO>({ url: '/resource/collect/count-by-type' })
 }
 
 // 添加收藏

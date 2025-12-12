@@ -57,7 +57,7 @@ const statisticsData = ref<WorkbenchStatisticsRespVO>({})
 // 角色统计配置
 const ROLE_STATISTICS_MAP: Record<string, (data: WorkbenchStatisticsRespVO) => Statistic[]> = {
   resource_admin: (data) => [
-    { label: '上架资源次数', value: data.publishCount || 0, icon: resourceStatsIcon },
+    { label: '已上架资源总数', value: data.publishCount || 0, icon: resourceStatsIcon },
     { label: '资源被申请次数', value: data.applyCount || 0, icon: resourceStatsIcon },
     { label: '待处理反馈', value: data.pendingFeedbackCount || 0, icon: pendingFeedbackIcon },
     { label: '待审批的资源', value: data.pendingApprovalCount || 0, icon: pendingResourcesIcon }

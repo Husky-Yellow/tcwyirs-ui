@@ -10,7 +10,7 @@
             <span class="text-16px text-[#303133] font-500">我申请的资源</span>
             <span class="text-14px text-[#909399]">{{ totalApplicationCount }}</span>
           </div>
-          <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]">全部</span>
+          <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]" @click="navigateToMyApply">全部</span>
         </div>
 
         <!-- 统计卡片 -->
@@ -21,7 +21,7 @@
         </div>
 
         <!-- 资源列表 -->
-        <ul class="space-y-8px">
+        <ul v-if="applicationResources.length > 0" class="space-y-8px">
           <li
             v-for="(item, index) in applicationResources"
             :key="index"
@@ -36,6 +36,7 @@
             </div>
           </li>
         </ul>
+        <el-empty v-else description="暂无申请的资源" :image-size="100" />
       </div>
 
       <!-- 分隔线 -->
@@ -47,7 +48,7 @@
           <div class="flex items-center gap-8px">
             <span class="text-16px text-[#303133] font-500">我收藏的资源</span>
           </div>
-          <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]">全部</span>
+          <span class="cursor-pointer text-14px text-[#606266] hover:text-[#409eff]" @click="navigateToMyCollected">全部</span>
         </div>
 
         <!-- 统计卡片 -->
@@ -63,6 +64,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { AppCard } from '@/components/AppCard'
 import StatCard from '../StatCard.vue'
 import {
@@ -75,6 +77,8 @@ import {
 import { ApplyStatus } from '@/api/resource/types'
 
 defineOptions({ name: 'BrowsedResourcesWidget' })
+
+const router = useRouter()
 
 // 申请的资源列表原始数据
 const applicationResourcesData = ref<ResourceApplyVO[]>([])
@@ -226,4 +230,14 @@ onMounted(() => {
   loadApplicationResources()
   loadCollectStats()
 })
+
+// 导航到我申请的资源页面
+const navigateToMyApply = () => {
+  router.push({ name: 'MyApplyResources' })
+}
+
+// 导航到我收藏的资源页面
+const navigateToMyCollected = () => {
+  router.push({ name: 'MyCollectedResources' })
+}
 </script>

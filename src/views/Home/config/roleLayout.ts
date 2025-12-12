@@ -2,42 +2,6 @@ import type { RoleLayoutConfigMap, HomeLayoutConfig } from '../types/layout'
 import { HomeComponentType } from '../types/layout'
 
 /**
- * 项目成员、项目经理
- */
-const adminLayout: HomeLayoutConfig = {
-  left: {
-    span: { xl: 16, lg: 16, md: 24, sm: 24, xs: 24 },
-    components: [
-      {
-        type: HomeComponentType.BROWSED_RESOURCES, // 我申请的资源+我收藏的资源
-        order: 1
-      },
-      {
-        type: HomeComponentType.Feedback, // 反馈意见+我发起的审批
-        order: 2
-      }
-    ]
-  },
-  right: {
-    span: { xl: 8, lg: 8, md: 24, sm: 24, xs: 24 },
-    components: [
-      {
-        type: HomeComponentType.RESOURCE_USAGE, // 资源使用看板
-        order: 1
-      },
-      {
-        type: HomeComponentType.MESSAGES, // 消息
-        order: 2
-      },
-      {
-        type: HomeComponentType.HELP_DOCS, // 帮助文档
-        order: 3
-      }
-    ]
-  }
-}
-
-/**
  * 普通用户角色配置
  */
 const userLayout: HomeLayoutConfig = {
@@ -65,34 +29,6 @@ const userLayout: HomeLayoutConfig = {
         type: HomeComponentType.MESSAGES,
         title: '消息',
         showViewAll: true,
-        order: 1
-      }
-    ]
-  }
-}
-
-/**
- * 访客角色配置
- */
-const guestLayout: HomeLayoutConfig = {
-  left: {
-    span: { xl: 16, lg: 16, md: 24, sm: 24, xs: 24 },
-    components: [
-      {
-        type: HomeComponentType.HELP_DOCS,
-        title: '帮助文档',
-        showViewAll: true,
-        order: 1
-      }
-    ]
-  },
-  right: {
-    span: { xl: 8, lg: 8, md: 24, sm: 24, xs: 24 },
-    components: [
-      {
-        type: HomeComponentType.MESSAGES,
-        title: '公告',
-        showViewAll: false,
         order: 1
       }
     ]
@@ -198,20 +134,86 @@ const operationAdminLayout: HomeLayoutConfig = {
     ]
   }
 }
+/**
+ * 项目经理角色配置
+ */
+const projectManagerLayout: HomeLayoutConfig = {
+  left: {
+    span: { xl: 16, lg: 16, md: 24, sm: 24, xs: 24 },
+    components: [
+      {
+        type: HomeComponentType.BROWSED_RESOURCES, // 我申请的 + 我收藏的
+        order: 1
+      },
+      {
+        type: HomeComponentType.APPROVAL_WIDGET, // 反馈意见 + 我发起的审批
+        order: 2
+      }
+    ]
+  },
+  right: {
+    span: { xl: 8, lg: 8, md: 24, sm: 24, xs: 24 },
+    components: [
+      {
+        type: HomeComponentType.RESOURCE_USAGE, // 资源使用看板
+        order: 1
+      },
+      {
+        type: HomeComponentType.MESSAGES, // 消息
+        order: 2
+      },
+      {
+        type: HomeComponentType.HELP_DOCS, // 帮助文档
+        order: 3
+      }
+    ]
+  }
+}
+/**
+ * 项目成员角色配置
+ */
+const projectMemberLayout: HomeLayoutConfig = {
+  left: {
+    span: { xl: 16, lg: 16, md: 24, sm: 24, xs: 24 },
+    components: [
+      {
+        type: HomeComponentType.BROWSED_RESOURCES, // 我申请的 + 我收藏的
+        order: 1
+      },
+      {
+        type: HomeComponentType.APPROVAL_WIDGET, // 反馈意见 + 我发起的审批
+        order: 2
+      }
+    ]
+  },
+  right: {
+    span: { xl: 8, lg: 8, md: 24, sm: 24, xs: 24 },
+    components: [
+      {
+        type: HomeComponentType.RESOURCE_USAGE, // 资源使用看板
+        order: 1
+      },
+      {
+        type: HomeComponentType.MESSAGES, // 消息
+        order: 2
+      },
+      {
+        type: HomeComponentType.HELP_DOCS, // 帮助文档
+        order: 3
+      }
+    ]
+  }
+}
 
 /**
  * 角色布局配置映射
  */
 export const ROLE_LAYOUT_CONFIG: RoleLayoutConfigMap = {
-  admin: adminLayout, // 项目成员、项目经理
   user: userLayout, // 普通用户
-  guest: guestLayout, // 访客
-  dataAdmin: dataAdminLayout, // 数据管理员
-
   resource_admin: resourceAdminLayout, // 资源管理员
-
   operationAdmin: operationAdminLayout, // 运营管理员
-  super_admin: adminLayout // 超级管理员
+  project_manager: projectManagerLayout, // 项目经理
+  project_member: projectMemberLayout, // 项目成员
 }
 
 /**
@@ -220,5 +222,7 @@ export const ROLE_LAYOUT_CONFIG: RoleLayoutConfigMap = {
  * @returns 布局配置
  */
 export const getRoleLayoutConfig = (role: string): HomeLayoutConfig => {
+  console.log('role', role);
+
   return ROLE_LAYOUT_CONFIG[role] || ROLE_LAYOUT_CONFIG.user
 }

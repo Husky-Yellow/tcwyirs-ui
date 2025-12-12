@@ -6,6 +6,8 @@
 export enum HomeComponentType {
   // 项目成员：我申请的资源+我收藏的资源
   BROWSED_RESOURCES = 'BrowsedResources',
+  // 我发起的审批
+  APPROVAL_WIDGET = 'ApprovalWidget',
   // 帮助文档
   HELP_DOCS = 'HelpDocs',
   // 反馈意见
@@ -14,8 +16,6 @@ export enum HomeComponentType {
   RESOURCE_USAGE = 'ResourceUsage',
   // 消息列表
   MESSAGES = 'Messages',
-  // 我发起的审批
-  MY_APPROVALS = 'MyApprovals',
   // 我上架的资源（含待我审批的资源）
   MY_UPLOADED_RESOURCES = 'MyUploadedResources',
   // 资源上架审批

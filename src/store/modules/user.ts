@@ -70,9 +70,23 @@ export const useUserStore = defineStore('admin-user', {
       } else {
         // 特殊：在有缓存的情况下，进行加载。但是即使加载失败，也不影响后续的操作，保证可以进入系统
         try {
-          userInfo = await getInfo()
-        } catch (error) {}
+          const freshUserInfo = await getInfo()
+          if (freshUserInfo) {
+            userInfo = freshUserInfo
+          }
+        } catch (error) {
+          // 使用缓存的 userInfo
+          console.warn('刷新用户信息失败，使用缓存数据', error)
+        }
       }
+
+      // 添加空值检查
+      if (!userInfo) {
+        console.error('获取用户信息失败')
+        this.resetState()
+        return null
+      }
+
       this.permissions = new Set(userInfo.permissions)
       this.roles = userInfo.roles
       this.roleList = userInfo.roleList || [] // 存储角色列表
