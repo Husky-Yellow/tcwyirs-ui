@@ -155,19 +155,29 @@ export function calcDashboard(): DashboardDataVO {
 
   // usages
   for (let i = 0; i < 10; i++) {
+    const status = i % 2 // 0 stopped 1 active
     db.usages.push({
       id: nextId('usage'),
       resourceId: db.resourceInfos[i].id!,
       resourceName: db.resourceInfos[i].name,
+      resourceType: db.resourceInfos[i].type,
+      resourceDescription: db.resourceInfos[i].description,
       userId: i + 1,
       userName: i % 2 === 0 ? 'Admin' : 'Test',
       projectId: db.projects[0].id!,
       projectName: db.projects[0].name,
-      status: i % 2, // 0 stopped 1 active
-      startTime: new Date() as any,
-      endTime: undefined,
-      expireTime: undefined,
-      createTime: new Date() as any
+      projectManager: db.projects[0].leaderName,
+      status, // 0 stopped 1 active
+      startTime: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) as any, // 30天前
+      endTime: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) as any, // 30天后
+      expireTime: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000) as any, // 60天后
+      publishTime: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000) as any, // 40天前上架
+      approver: 'Admin',
+      createTime: new Date() as any,
+      // 为已停用的记录添加停用信息
+      stopReason: status === 0 ? ['资源更新', '项目结束', '资源过期'][i % 3] : undefined,
+      stopTime: status === 0 ? new Date(Date.now() - Math.floor(Math.random() * 10) * 24 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ') : undefined,
+      stopDescription: status === 0 ? `停用原因描述 ${i + 1}` : undefined
     })
   }
 

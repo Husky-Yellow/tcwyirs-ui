@@ -36,6 +36,12 @@ export interface ResourceUsageVO {
   publishTime?: Date
   /** 审批人 */
   approver?: string
+  /** 停用原因 */
+  stopReason?: string
+  /** 停用时间 */
+  stopTime?: string
+  /** 停用描述 */
+  stopDescription?: string
 }
 
 /** 资源使用分页查询参数 */
@@ -50,6 +56,18 @@ export interface ResourceUsagePageReqVO extends PageParam {
   useStatus?: number
 }
 
+/** 停用资源请求参数 */
+export interface StopResourceUsageReqVO {
+  /** 资源使用记录ID */
+  id: number
+  /** 停用原因 */
+  reason: string
+  /** 停用时间 */
+  stopTime: string
+  /** 原因描述 */
+  description?: string
+}
+
 // 获取资源使用列表
 export const getResourceUsagePage = (params: ResourceUsagePageReqVO) => {
   return request.get<PageResult<ResourceUsageVO[]>>({ url: '/resource/info/usage-page', params })
@@ -62,12 +80,12 @@ export const getResourceUsage = (id: number) => {
 
 // 更新资源使用状态
 export const updateResourceUsageStatus = (id: number, useStatus: number) => {
-  return request.post<void>({ url: '/resource/info/usage-status', data: { id, useStatus } })
+  return request.put<void>({ url: '/resource/info/usage-status', params: { id, useStatus } })
 }
 
-// 停用资源（useStatus=3）
-export const stopResourceUsage = (id: number) => {
-  return updateResourceUsageStatus(id, 3)
+// 停用资源
+export const stopResourceUsage = (data: StopResourceUsageReqVO) => {
+  return request.post<void>({ url: '/resource/usage/stop', data })
 }
 
 // 启用资源（useStatus=2）

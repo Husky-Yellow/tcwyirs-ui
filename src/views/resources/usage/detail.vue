@@ -2,82 +2,76 @@
   <div>
     <!-- 顶部导航 -->
     <BackHeader :title="pageTitle">
-        <template #right>
-          <div class="ml-auto">
-            <el-button
-              v-if="detail?.status === UsageStatus.ACTIVE"
-              type="warning"
-              @click="handleStopCurrent"
-            >
-              停用
-            </el-button>
-            <el-button
-              v-else
-              type="success"
-              @click="handleEnableCurrent"
-            >
-              启用
-            </el-button>
-          </div>
-
-        </template>
-      </BackHeader>
-
-      <div class="grid grid-cols-4 gap-16px">
-          <div class="flex items-center">
-            <span class="mr-8px whitespace-nowrap text-[#909399]">资源名称：</span>
-            <span class="text-[#303133] font-500">{{ detail?.resourceName || '-' }}</span>
-          </div>
-          <div class="flex items-center">
-            <span class="mr-8px whitespace-nowrap text-[#909399]">资源类型：</span>
-            <span class="text-[#303133] font-500">{{ getResourceTypeName(detail?.resourceType) }}</span>
-          </div>
-          <div class="flex items-center">
-            <span class="mr-8px whitespace-nowrap text-[#909399]">上架时间：</span>
-            <span class="text-[#303133] font-500">{{ formatDateTime(detail?.publishTime) }}</span>
-          </div>
+      <template #right>
+        <div class="ml-auto">
+          <el-button
+            v-if="detail?.status === UsageStatus.ACTIVE"
+            type="warning"
+            @click="handleStopCurrent"
+          >
+            停用
+          </el-button>
+          <el-button v-else type="success" @click="handleEnableCurrent"> 启用 </el-button>
         </div>
+      </template>
+    </BackHeader>
 
+    <div class="grid grid-cols-4 gap-16px">
+      <div class="flex items-center">
+        <span class="mr-8px whitespace-nowrap text-[#909399]">资源名称：</span>
+        <span class="text-[#303133] font-500">{{ detail?.resourceName || '-' }}</span>
+      </div>
+      <div class="flex items-center">
+        <span class="mr-8px whitespace-nowrap text-[#909399]">资源类型：</span>
+        <span class="text-[#303133] font-500">{{ getResourceTypeName(detail?.resourceType) }}</span>
+      </div>
+      <div class="flex items-center">
+        <span class="mr-8px whitespace-nowrap text-[#909399]">上架时间：</span>
+        <span class="text-[#303133] font-500">{{ formatDateTime(detail?.publishTime) }}</span>
+      </div>
+    </div>
 
     <ContentWrap>
       <div class="grid grid-cols-2 gap-x-40px gap-y-16px">
-          <div class="flex items-center">
-            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">使用项目：</span>
-            <span class="flex-1 text-[#303133]">{{ detail?.projectName || '-' }}</span>
-          </div>
-          <div class="flex items-center">
-            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">项目经理：</span>
-            <span class="flex-1 text-[#303133]">{{ detail?.projectManager || '-' }}</span>
-          </div>
-          <div class="flex items-center">
-            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">申请人：</span>
-            <span class="flex-1 text-[#303133]">{{ detail?.userName || '-' }}</span>
-          </div>
-          <div class="flex items-center">
-            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">使用状态：</span>
-            <el-tag :type="getStatusTagType(detail?.status)" size="small">
-              <span
-                class="mr-6px inline-block h-6px w-6px rd-50%"
-                :class="detail?.status === UsageStatus.ACTIVE ? 'bg-[#67c23a]' : 'bg-[#909399]'"
-              ></span>
-              {{ getUsageStatusName(detail?.status) }}
-            </el-tag>
-          </div>
-          <div class="col-span-2 flex items-center">
-            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">资源使用期限：</span>
-            <span class="flex-1 text-[#303133]">
-              {{ formatDateTime(detail?.startTime) }} ~ {{ formatDateTime(detail?.endTime) }}
-              <span v-if="detail?.startTime && detail?.endTime" class="ml-8px text-[#909399]">
-                ({{ calculateDuration(detail.startTime, detail.endTime) }})
-              </span>
-            </span>
-          </div>
+        <div class="flex items-center">
+          <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">使用项目：</span>
+          <span class="flex-1 text-[#303133]">{{ detail?.projectName || '-' }}</span>
         </div>
+        <div class="flex items-center">
+          <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">项目经理：</span>
+          <span class="flex-1 text-[#303133]">{{ detail?.projectManager || '-' }}</span>
+        </div>
+        <div class="flex items-center">
+          <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">申请人：</span>
+          <span class="flex-1 text-[#303133]">{{ detail?.userName || '-' }}</span>
+        </div>
+        <div class="flex items-center">
+          <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">使用状态：</span>
+          <el-tag :type="getStatusTagType(detail?.status)" size="small">
+            <span
+              class="mr-6px inline-block h-6px w-6px rd-50%"
+              :class="detail?.status === UsageStatus.ACTIVE ? 'bg-[#67c23a]' : 'bg-[#909399]'"
+            ></span>
+            {{ getUsageStatusName(detail?.status) }}
+          </el-tag>
+        </div>
+        <div class="col-span-2 flex items-center">
+          <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">资源使用期限：</span>
+          <span class="flex-1 text-[#303133]">
+            {{ formatDateTime(detail?.startTime) }} ~ {{ formatDateTime(detail?.endTime) }}
+            <span v-if="detail?.startTime && detail?.endTime" class="ml-8px text-[#909399]">
+              ({{ calculateDuration(detail.startTime, detail.endTime) }})
+            </span>
+          </span>
+        </div>
+      </div>
     </ContentWrap>
 
     <ContentWrap v-loading="loading">
       <!-- 其他使用项目 -->
-      <div class="mb-16px mt-24px flex items-center justify-between text-16px text-[#303133] font-500">
+      <div
+        class="mb-16px mt-24px flex items-center justify-between text-16px text-[#303133] font-500"
+      >
         其他使用项目
         <el-input
           v-model="searchKeyword"
@@ -99,9 +93,24 @@
               {{ getResourceTypeName(row.resourceType) }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="资源名称" prop="resourceName" show-overflow-tooltip />
-          <el-table-column align="center" label="使用项目" prop="projectName" show-overflow-tooltip />
-          <el-table-column align="center" label="描述" prop="resourceDescription" show-overflow-tooltip />
+          <el-table-column
+            align="center"
+            label="资源名称"
+            prop="resourceName"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="使用项目"
+            prop="projectName"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="描述"
+            prop="resourceDescription"
+            show-overflow-tooltip
+          />
           <el-table-column align="center" label="使用状态" prop="status" width="120">
             <template #default="{ row }">
               <el-tag :type="getStatusTagType(row.status)" size="small">
@@ -130,14 +139,7 @@
               >
                 停用
               </el-button>
-              <el-button
-                v-else
-                link
-                type="success"
-                @click="handleEnable(row)"
-              >
-                启用
-              </el-button>
+              <el-button v-else link type="success" @click="handleEnable(row)"> 启用 </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -156,6 +158,59 @@
         />
       </el-card>
     </ContentWrap>
+
+    <!-- 停用弹窗 -->
+    <el-dialog
+      v-model="stopDialogVisible"
+      title="停用"
+      width="480px"
+      :close-on-click-modal="false"
+      @close="resetStopForm"
+    >
+      <el-form
+        ref="stopFormRef"
+        :model="stopForm"
+        :rules="stopFormRules"
+        label-width="100px"
+        label-position="left"
+      >
+        <el-form-item label="停用原因" prop="reason" required>
+          <el-select v-model="stopForm.reason" placeholder="请选择停用原因" class="w-full">
+            <el-option label="资源更新" value="资源更新" />
+            <el-option label="项目结束" value="项目结束" />
+            <el-option label="资源过期" value="资源过期" />
+            <el-option label="其他原因" value="其他原因" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="停用时间" prop="stopTime" required>
+          <el-date-picker
+            v-model="stopForm.stopTime"
+            type="datetime"
+            placeholder="请选择停用时间"
+            class="w-full"
+            :disabled-date="disabledDate"
+            format="YYYY-MM-DD HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
+          />
+        </el-form-item>
+        <el-form-item label="原因描述" prop="description">
+          <el-input
+            v-model="stopForm.description"
+            type="textarea"
+            :rows="4"
+            placeholder="请输入原因描述"
+            maxlength="200"
+            show-word-limit
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="stopDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="confirmStop">确定</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -164,7 +219,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ContentWrap } from '@/components/ContentWrap'
 import { BackHeader } from '@/layout/components/PageHeader'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { formatDate } from '@/utils/formatTime'
 import {
   getResourceUsage,
@@ -201,6 +256,37 @@ const pagination = reactive({
   pageSize: 10,
   total: 0
 })
+
+// 停用弹窗
+const stopDialogVisible = ref(false)
+const stopFormRef = ref<FormInstance>()
+const currentStopRow = ref<ResourceUsageVO | null>(null) // 当前要停用的记录
+const stopForm = reactive({
+  reason: '',
+  stopTime: '',
+  description: ''
+})
+
+// 停用表单验证规则
+const stopFormRules: FormRules = {
+  reason: [{ required: true, message: '请选择停用原因', trigger: 'change' }],
+  stopTime: [{ required: true, message: '请选择停用时间', trigger: 'change' }]
+}
+
+// 重置停用表单
+const resetStopForm = () => {
+  stopForm.reason = ''
+  stopForm.stopTime = ''
+  stopForm.description = ''
+  stopFormRef.value?.clearValidate()
+  currentStopRow.value = null
+}
+
+// 禁用过去的日期
+const disabledDate = (time: Date) => {
+  return time.getTime() < Date.now() - 24 * 60 * 60 * 1000 // 禁用昨天之前的日期
+}
+
 
 // 资源类型映射
 const getResourceTypeName = (type?: number) => {
@@ -242,7 +328,10 @@ const formatDateTime = (dateTime: Date | string | undefined) => {
 }
 
 // 格式化日期范围
-const formatDateRange = (startTime: Date | string | undefined, endTime: Date | string | undefined) => {
+const formatDateRange = (
+  startTime: Date | string | undefined,
+  endTime: Date | string | undefined
+) => {
   const start = startTime ? formatDate(new Date(startTime), 'YYYY-MM-DD') : '-'
   const end = endTime ? formatDate(new Date(endTime), 'YYYY-MM-DD') : '-'
   return `${start}~${end}`
@@ -301,7 +390,7 @@ const loadOtherProjects = async () => {
     })
 
     // 过滤掉当前详情记录
-    otherProjects.value = res.list.filter(item => item.id !== detail.value?.id)
+    otherProjects.value = res.list.filter((item) => item.id !== detail.value?.id)
     pagination.total = res.total > 0 ? res.total - 1 : 0 // 减去当前记录
   } catch (error) {
     console.error('加载其他使用项目失败:', error)
@@ -323,26 +412,10 @@ const handleUse = () => {
 }
 
 // 停用当前资源
-const handleStopCurrent = async () => {
+const handleStopCurrent = () => {
   if (!detail.value) return
-
-  try {
-    await ElMessageBox.confirm(`确定要停用"${detail.value.projectName}"的资源使用吗？`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
-
-    await stopResourceUsage(detail.value.id!)
-    ElMessage.success('停用成功')
-    await loadDetail()
-    await loadOtherProjects()
-  } catch (error) {
-    if (error !== 'cancel') {
-      console.error('停用失败:', error)
-      ElMessage.error('停用失败')
-    }
-  }
+  currentStopRow.value = detail.value
+  stopDialogVisible.value = true
 }
 
 // 启用当前资源
@@ -376,28 +449,46 @@ const handleSearch = () => {
 
 // 查看详情
 const handleViewDetail = (row: ResourceUsageVO) => {
-  // 跳转到该记录的详情页（使用 query 参数）
-  router.push(`/resources/usage/detail?id=${row.id}&_hb=1`)
-  // 重新加载数据
-  loadDetail()
-  loadOtherProjects()
+  // 跳转到资源的市场详情页
+  router.push(`/marketplace/detail/${row.resourceId}`)
 }
 
 // 停用
-const handleStop = async (row: ResourceUsageVO) => {
-  try {
-    await ElMessageBox.confirm(`确定要停用"${row.projectName}"的资源使用吗？`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
+const handleStop = (row: ResourceUsageVO) => {
+  currentStopRow.value = row
+  stopDialogVisible.value = true
+}
 
-    await stopResourceUsage(row.id!)
+// 确认停用
+const confirmStop = async () => {
+  if (!stopFormRef.value || !currentStopRow.value) return
+
+  try {
+    await stopFormRef.value.validate()
+
+    // 调用停用接口，传递表单数据
+    await stopResourceUsage({
+      id: currentStopRow.value.id!,
+      reason: stopForm.reason,
+      stopTime: stopForm.stopTime,
+      description: stopForm.description
+    })
     ElMessage.success('停用成功')
+
+    // 关闭弹窗并重置表单
+    stopDialogVisible.value = false
+    resetStopForm()
+
+    // 刷新数据
+    if (currentStopRow.value.id === detail.value?.id) {
+      // 如果停用的是当前详情记录，重新加载详情
+      await loadDetail()
+    }
     await loadOtherProjects()
   } catch (error) {
-    if (error !== 'cancel') {
+    if (error !== 'cancel' && error !== false) {
       console.error('停用失败:', error)
+      ElMessage.error('停用失败')
     }
   }
 }

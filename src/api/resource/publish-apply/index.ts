@@ -38,7 +38,7 @@ export interface ResourceOfflineReqVO {
  * @param data 申请参数
  */
 export const createPublishApply = (data: PublishApplyCreateReqVO) => {
-  return request.post({ url: `/resource/publish-apply/publish`, data })
+  return request.post({ url: `/resource/publish-apply/publish?resourceId=${data.resourceId}`, data })
 }
 
 /**

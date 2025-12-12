@@ -48,7 +48,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ResourceType } from '@/api/resource/types'
-import { createResourceInfo, unpublishResourceInfo } from '@/api/resource/info'
+import { createResourceInfo, updateResourceInfo, unpublishResourceInfo } from '@/api/resource/info'
 import { createPublishApply, offlineResource } from '@/api/resource/publish-apply'
 import { useResourceManagement } from '../composables/useResourceManagement'
 import ResourceStatistics from '../components/ResourceStatistics.vue'
@@ -120,10 +120,18 @@ const handleFormSave = async (data: any, publish: boolean) => {
     }
 
     console.log('调用接口参数:', saveData)
-    const resourceId = await createResourceInfo(saveData)
-    console.log('保存成功，资源ID:', resourceId)
 
-    ElMessage.success(publish ? '新增并上架成功' : '保存成功')
+    if (isEdit.value && saveData.id) {
+      // 编辑模式：使用更新接口
+      await updateResourceInfo(saveData)
+      ElMessage.success(publish ? '更新并上架成功' : '更新成功')
+    } else {
+      // 新增模式：使用创建接口
+      const resourceId = await createResourceInfo(saveData)
+      console.log('保存成功，资源ID:', resourceId)
+      ElMessage.success(publish ? '新增并上架成功' : '保存成功')
+    }
+
     formVisible.value = false
     await init()
   } catch (error) {

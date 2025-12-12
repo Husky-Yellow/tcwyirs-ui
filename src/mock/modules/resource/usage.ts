@@ -1,5 +1,5 @@
 ﻿import type { MockConfig, ApiResponse, PageResponse } from '../../types'
-import type { ResourceUsageVO, ResourceUsagePageReqVO } from '@/api/resource/usage'
+import type { ResourceUsageVO, ResourceUsagePageReqVO, StopResourceUsageReqVO } from '@/api/resource/usage'
 import { db, paginate } from './_data'
 
 const mockConfigs: MockConfig[] = [
@@ -30,9 +30,15 @@ const mockConfigs: MockConfig[] = [
     url: '/admin-api/resource/usage/stop',
     type: 'post',
     response: ({ body }): ApiResponse<void> => {
-      const id = Number(body.id)
+      const { id, reason, stopTime, description } = body as StopResourceUsageReqVO
       const item = db.usages.find((u) => u.id === id)
-      if (item) item.status = 0
+      if (item) {
+        item.status = 0
+        // 保存停用信息
+        item.stopReason = reason
+        item.stopTime = stopTime
+        item.stopDescription = description
+      }
       return { code: 0, data: undefined as any, msg: '' }
     }
   },
@@ -42,7 +48,13 @@ const mockConfigs: MockConfig[] = [
     response: ({ body }): ApiResponse<void> => {
       const id = Number(body.id)
       const item = db.usages.find((u) => u.id === id)
-      if (item) item.status = 1
+      if (item) {
+        item.status = 1
+        // 清空停用信息
+        item.stopReason = undefined
+        item.stopTime = undefined
+        item.stopDescription = undefined
+      }
       return { code: 0, data: undefined as any, msg: '' }
     }
   }

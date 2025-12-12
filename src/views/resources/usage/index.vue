@@ -203,7 +203,13 @@ const handleStop = async (row: ResourceUsageVO) => {
       type: 'warning'
     })
 
-    await stopResourceUsage(row.id!)
+    // 传递停用表单数据
+    await stopResourceUsage({
+      id: row.id!,
+      reason: '其他原因',
+      stopTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      description: '手动停用'
+    })
     ElMessage.success('停用成功')
     await loadData()
   } catch (error) {

@@ -88,6 +88,14 @@
       @pagination="getList"
     />
   </ContentWrap>
+
+  <!-- 反馈弹窗 -->
+  <FeedbackForm
+    v-model="feedbackVisible"
+    :resource-id="currentFeedbackRow?.resourceId"
+    :resource-name="currentFeedbackRow?.resourceName"
+    @success="handleFeedbackSuccess"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -95,6 +103,7 @@ import { useRouter } from 'vue-router'
 import { getPublishApplyPage } from '@/api/resource/publish-apply'
 import type { ResourcePublishApplyRespVO } from '@/api/resource/info'
 import { formatDate } from '@/utils/formatTime'
+import { FeedbackForm } from '@/components/FeedbackForm'
 
 defineOptions({ name: 'ApprovalInitiated' })
 
@@ -112,6 +121,10 @@ const queryParams = reactive({
   status: undefined
 })
 const queryFormRef = ref()
+
+// 反馈弹窗相关
+const feedbackVisible = ref(false)
+const currentFeedbackRow = ref<ResourcePublishApplyRespVO | null>(null)
 
 /** 资源类型映射 */
 const resourceTypeMap = {
@@ -185,7 +198,14 @@ const handleDetail = (row: ResourcePublishApplyRespVO) => {
 
 /** 反馈操作 */
 const handleFeedback = (row: ResourcePublishApplyRespVO) => {
-  message.info(`反馈: ${row.resourceName}`)
+  currentFeedbackRow.value = row
+  feedbackVisible.value = true
+}
+
+/** 反馈提交成功 */
+const handleFeedbackSuccess = () => {
+  message.success('反馈提交成功')
+  currentFeedbackRow.value = null
 }
 
 /** 初始化 */
