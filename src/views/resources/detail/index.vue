@@ -1,24 +1,17 @@
 <template>
   <div class="min-h-screen">
-    <div class="flex items-center">
-      <div
-        class="inline-flex cursor-pointer items-center pb-24px pt-12px text-black/85 transition-colors hover:text-[var(--el-color-primary)]"
-        @click="handleBack"
-      >
-        <el-icon :size="18"><Back /></el-icon>
-        <span class="ml-16px text-[20px] font-medium leading-[28px] font-['PingFang_SC']">{{
-          pageTitle
-        }}</span>
-      </div>
-      <div class="ml-auto flex items-center gap-12px">
-        <el-button @click="handleEdit">编辑</el-button>
-        <el-button type="danger" @click="handleDelete">删除</el-button>
-        <el-button type="primary" @click="handleToggleStatus">
-          {{ resourceData?.baseInfo.publishStatus === 2 ? '下架' : '上架' }}
-        </el-button>
-        <el-button type="primary" @click="handleConsult">咨询资源介绍</el-button>
-      </div>
-    </div>
+    <BackHeader :title="pageTitle">
+      <template #right>
+        <div class="ml-auto flex items-center gap-12px">
+          <el-button @click="handleEdit">编辑</el-button>
+          <el-button type="danger" @click="handleDelete">删除</el-button>
+          <el-button type="primary" @click="handleToggleStatus">
+            {{ resourceData?.baseInfo.publishStatus === 2 ? '下架' : '上架' }}
+          </el-button>
+          <el-button type="primary" @click="handleConsult">咨询资源介绍</el-button>
+        </div>
+      </template>
+    </BackHeader>
 
     <!-- 详情内容 -->
     <div v-loading="loading" class="min-h-500px">
@@ -65,7 +58,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Back } from '@element-plus/icons-vue'
+import { BackHeader } from '@/layout/components/PageHeader'
 import {
   getResourceDetail,
   deleteResourceInfo,

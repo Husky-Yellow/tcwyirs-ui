@@ -611,7 +611,7 @@
               </div>
               <div class="demo-info-item">
                 <span class="label">位置:</span>
-                <span class="code">src/components/FeedbackDetail/</span>
+                <span class="code">src/views/other/feedback/components/FeedbackDetail/</span>
               </div>
             </div>
           </div>
@@ -771,7 +771,7 @@ import { DynamicDataTable, DynamicTreeTable } from '@/components/DynamicDataTabl
 import type { TableColumn, TableRow, TreeTableColumn, TreeTableRow } from '@/components/DynamicDataTable'
 import { ExtensionApplicationForm } from '@/components/ExtensionApplicationForm'
 import type { ExtensionFormData } from '@/components/ExtensionApplicationForm'
-import { FeedbackDetail, FeedbackStatus } from '@/components/FeedbackDetail'
+import { FeedbackDetail, FeedbackStatus } from '@/views/other/feedback/components/FeedbackDetail'
 import { FeedbackForm } from '@/components/FeedbackForm'
 
 defineOptions({ name: 'DemoPage' })

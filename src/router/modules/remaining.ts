@@ -501,7 +501,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         }
       },
       {
-        path: 'usage/detail/:id',
+        path: 'usage/detail',
         component: () => import('@/views/resources/usage/detail.vue'),
         name: 'ResourceUsageDetail',
         meta: {

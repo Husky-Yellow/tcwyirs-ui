@@ -179,7 +179,7 @@ const formatDateTime = (dateTime: Date | string | undefined) => {
 
 // 查看详情
 const handleDetail = (row: ResourceUsageVO) => {
-  router.push(`/resources/usage/detail/${row.id}`)
+  router.push(`/resources/usage/detail?id=${row.id}&_hb=1`)
 }
 
 // 打开反馈表单

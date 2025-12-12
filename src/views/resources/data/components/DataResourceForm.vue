@@ -210,6 +210,22 @@ const {
   initialOptions: props.tagList
 })
 
+// 监听父组件传入的标签列表变化，同步更新 tagOptions
+watch(
+  () => props.tagList,
+  (newTagList) => {
+    if (newTagList && newTagList.length > 0) {
+      // 将 ResourceTagVO[] 转换为 DynamicSelectOption[]
+      tagOptions.value = newTagList.map((tag) => ({
+        label: tag.name,
+        value: tag.id || 0,
+        fixed: tag.type === 0 // 系统标签固定不可删除
+      }))
+    }
+  },
+  { immediate: true, deep: true }
+)
+
 // 表单引用
 const formRef = ref()
 

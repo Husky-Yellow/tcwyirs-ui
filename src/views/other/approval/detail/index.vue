@@ -284,8 +284,7 @@ const getStatusColor = (status?: ApplyStatus) => {
 
 // 加载申请详情
 const loadData = async () => {
-  // const id = route.query.id as string
-  const id = '8'
+  const id = route.query.id as string
   if (!id) {
     ElMessage.error('缺少申请ID')
     handleBack()

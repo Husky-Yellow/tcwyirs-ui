@@ -1,83 +1,87 @@
 <template>
-  <div class="usage-detail-page">
+  <div>
     <!-- 顶部导航 -->
-    <div class="page-header">
-      <div class="header-left">
-        <el-button link @click="handleBack">
-          <Icon icon="ep:arrow-left" />
-          返回
-        </el-button>
-        <span class="page-title">{{ pageTitle }}</span>
-      </div>
-      <div class="header-right">
-        <el-button type="primary" @click="handleUse">使用</el-button>
-      </div>
-    </div>
+    <BackHeader :title="pageTitle">
+        <template #right>
+          <div class="ml-auto">
+            <el-button
+              v-if="detail?.status === UsageStatus.ACTIVE"
+              type="warning"
+              @click="handleStopCurrent"
+            >
+              停用
+            </el-button>
+            <el-button
+              v-else
+              type="success"
+              @click="handleEnableCurrent"
+            >
+              启用
+            </el-button>
+          </div>
 
-    <ContentWrap v-loading="loading">
-      <!-- 资源信息卡片 -->
-      <el-card class="info-card" shadow="never">
-        <div class="info-row">
-          <div class="info-item">
-            <span class="label">资源名称：</span>
-            <span class="value">{{ detail?.resourceName || '-' }}</span>
+        </template>
+      </BackHeader>
+
+      <div class="grid grid-cols-4 gap-16px">
+          <div class="flex items-center">
+            <span class="mr-8px whitespace-nowrap text-[#909399]">资源名称：</span>
+            <span class="text-[#303133] font-500">{{ detail?.resourceName || '-' }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">资源类型：</span>
-            <span class="value">{{ getResourceTypeName(detail?.resourceType) }}</span>
+          <div class="flex items-center">
+            <span class="mr-8px whitespace-nowrap text-[#909399]">资源类型：</span>
+            <span class="text-[#303133] font-500">{{ getResourceTypeName(detail?.resourceType) }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">资源状态：</span>
-            <span class="value">{{ getResourceStatusName(detail?.status) }}</span>
-          </div>
-          <div class="info-item">
-            <span class="label">上架时间：</span>
-            <span class="value">{{ formatDateTime(detail?.publishTime) }}</span>
+          <div class="flex items-center">
+            <span class="mr-8px whitespace-nowrap text-[#909399]">上架时间：</span>
+            <span class="text-[#303133] font-500">{{ formatDateTime(detail?.publishTime) }}</span>
           </div>
         </div>
-      </el-card>
 
-      <!-- 基本信息 -->
-      <div class="section-title">基本信息</div>
-      <el-card class="basic-info-card" shadow="never">
-        <div class="basic-info-grid">
-          <div class="info-item">
-            <span class="label">使用项目：</span>
-            <span class="value">{{ detail?.projectName || '-' }}</span>
+
+    <ContentWrap>
+      <div class="grid grid-cols-2 gap-x-40px gap-y-16px">
+          <div class="flex items-center">
+            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">使用项目：</span>
+            <span class="flex-1 text-[#303133]">{{ detail?.projectName || '-' }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">项目经理：</span>
-            <span class="value">{{ detail?.projectManager || '-' }}</span>
+          <div class="flex items-center">
+            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">项目经理：</span>
+            <span class="flex-1 text-[#303133]">{{ detail?.projectManager || '-' }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">申请人：</span>
-            <span class="value">{{ detail?.userName || '-' }}</span>
+          <div class="flex items-center">
+            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">申请人：</span>
+            <span class="flex-1 text-[#303133]">{{ detail?.userName || '-' }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">使用状态：</span>
+          <div class="flex items-center">
+            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">使用状态：</span>
             <el-tag :type="getStatusTagType(detail?.status)" size="small">
-              <span class="status-dot" :class="getStatusDotClass(detail?.status)"></span>
+              <span
+                class="mr-6px inline-block h-6px w-6px rd-50%"
+                :class="detail?.status === UsageStatus.ACTIVE ? 'bg-[#67c23a]' : 'bg-[#909399]'"
+              ></span>
               {{ getUsageStatusName(detail?.status) }}
             </el-tag>
           </div>
-          <div class="info-item full-width">
-            <span class="label">资源使用期限：</span>
-            <span class="value">
+          <div class="col-span-2 flex items-center">
+            <span class="mr-8px min-w-80px whitespace-nowrap text-[#909399]">资源使用期限：</span>
+            <span class="flex-1 text-[#303133]">
               {{ formatDateTime(detail?.startTime) }} ~ {{ formatDateTime(detail?.endTime) }}
-              <span v-if="detail?.startTime && detail?.endTime" class="duration">
+              <span v-if="detail?.startTime && detail?.endTime" class="ml-8px text-[#909399]">
                 ({{ calculateDuration(detail.startTime, detail.endTime) }})
               </span>
             </span>
           </div>
         </div>
-      </el-card>
+    </ContentWrap>
 
+    <ContentWrap v-loading="loading">
       <!-- 其他使用项目 -->
-      <div class="section-title">
+      <div class="mb-16px mt-24px flex items-center justify-between text-16px text-[#303133] font-500">
         其他使用项目
         <el-input
           v-model="searchKeyword"
-          class="search-input"
+          class="w-240px text-14px! font-400!"
           placeholder="请输入关键字"
           clearable
           @clear="handleSearch"
@@ -101,7 +105,10 @@
           <el-table-column align="center" label="使用状态" prop="status" width="120">
             <template #default="{ row }">
               <el-tag :type="getStatusTagType(row.status)" size="small">
-                <span class="status-dot" :class="getStatusDotClass(row.status)"></span>
+                <span
+                  class="mr-6px inline-block h-6px w-6px rd-50%"
+                  :class="row.status === UsageStatus.ACTIVE ? 'bg-[#67c23a]' : 'bg-[#909399]'"
+                ></span>
                 {{ getUsageStatusName(row.status) }}
               </el-tag>
             </template>
@@ -156,7 +163,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ContentWrap } from '@/components/ContentWrap'
-import { Icon } from '@/components/Icon'
+import { BackHeader } from '@/layout/components/PageHeader'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { formatDate } from '@/utils/formatTime'
 import {
@@ -228,11 +235,6 @@ const getStatusTagType = (status?: number) => {
   return status === UsageStatus.ACTIVE ? 'success' : 'info'
 }
 
-// 状态点样式类
-const getStatusDotClass = (status?: number) => {
-  return status === UsageStatus.ACTIVE ? 'active' : 'inactive'
-}
-
 // 格式化日期时间
 const formatDateTime = (dateTime: Date | string | undefined) => {
   if (!dateTime) return '-'
@@ -266,7 +268,8 @@ const calculateDuration = (startTime: Date | string, endTime: Date | string) => 
 
 // 加载详情
 const loadDetail = async () => {
-  const id = Number(route.params.id)
+  // 从 query 参数获取 ID（支持 ?id=xxx 格式）
+  const id = Number(route.query.id)
   if (!id) {
     ElMessage.error('缺少资源ID')
     handleBack()
@@ -319,6 +322,52 @@ const handleUse = () => {
   ElMessage.info('使用功能开发中...')
 }
 
+// 停用当前资源
+const handleStopCurrent = async () => {
+  if (!detail.value) return
+
+  try {
+    await ElMessageBox.confirm(`确定要停用"${detail.value.projectName}"的资源使用吗？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+
+    await stopResourceUsage(detail.value.id!)
+    ElMessage.success('停用成功')
+    await loadDetail()
+    await loadOtherProjects()
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error('停用失败:', error)
+      ElMessage.error('停用失败')
+    }
+  }
+}
+
+// 启用当前资源
+const handleEnableCurrent = async () => {
+  if (!detail.value) return
+
+  try {
+    await ElMessageBox.confirm(`确定要启用"${detail.value.projectName}"的资源使用吗？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'info'
+    })
+
+    await enableResourceUsage(detail.value.id!)
+    ElMessage.success('启用成功')
+    await loadDetail()
+    await loadOtherProjects()
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error('启用失败:', error)
+      ElMessage.error('启用失败')
+    }
+  }
+}
+
 // 搜索
 const handleSearch = () => {
   pagination.page = 1
@@ -327,8 +376,8 @@ const handleSearch = () => {
 
 // 查看详情
 const handleViewDetail = (row: ResourceUsageVO) => {
-  // 跳转到该记录的详情页
-  router.push(`/resources/usage/detail/${row.id}`)
+  // 跳转到该记录的详情页（使用 query 参数）
+  router.push(`/resources/usage/detail?id=${row.id}&_hb=1`)
   // 重新加载数据
   loadDetail()
   loadOtherProjects()
@@ -389,123 +438,3 @@ onMounted(async () => {
   await loadOtherProjects()
 })
 </script>
-
-<style lang="scss" scoped>
-.usage-detail-page {
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px;
-    background: #fff;
-    border-radius: 4px;
-    margin-bottom: 16px;
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      .page-title {
-        font-size: 18px;
-        font-weight: 500;
-        color: #303133;
-      }
-    }
-  }
-
-  .info-card {
-    margin-bottom: 20px;
-
-    .info-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-
-      .info-item {
-        display: flex;
-        align-items: center;
-
-        .label {
-          color: #909399;
-          margin-right: 8px;
-          white-space: nowrap;
-        }
-
-        .value {
-          color: #303133;
-          font-weight: 500;
-        }
-      }
-    }
-  }
-
-  .section-title {
-    font-size: 16px;
-    font-weight: 500;
-    color: #303133;
-    margin: 24px 0 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .search-input {
-      width: 240px;
-      font-size: 14px;
-      font-weight: normal;
-    }
-  }
-
-  .basic-info-card {
-    margin-bottom: 20px;
-
-    .basic-info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px 40px;
-
-      .info-item {
-        display: flex;
-        align-items: center;
-
-        .label {
-          color: #909399;
-          margin-right: 8px;
-          white-space: nowrap;
-          min-width: 80px;
-        }
-
-        .value {
-          color: #303133;
-          flex: 1;
-
-          .duration {
-            color: #909399;
-            margin-left: 8px;
-          }
-        }
-
-        &.full-width {
-          grid-column: 1 / -1;
-        }
-      }
-    }
-  }
-
-  .status-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-right: 6px;
-
-    &.active {
-      background-color: #67c23a;
-    }
-
-    &.inactive {
-      background-color: #909399;
-    }
-  }
-}
-</style>
