@@ -11,7 +11,11 @@
         <el-input v-model="formData.name" placeholder="请输入角色名称" />
       </el-form-item>
       <el-form-item label="角色标识" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入角色标识" />
+        <el-input
+          v-model="formData.code"
+          placeholder="请输入角色标识"
+          :disabled="formType === 'update'"
+        />
       </el-form-item>
       <el-form-item label="显示顺序" prop="sort">
         <el-input v-model="formData.sort" placeholder="请输入显示顺序" />

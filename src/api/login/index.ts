@@ -88,6 +88,16 @@ export const smsResetPassword = (data: SmsResetPasswordVO): Promise<void> => {
   return request.post<void>({ url: '/system/auth/reset-password', data })
 }
 
+// 获取用户可切换的角色列表
+export const listRoles = (): Promise<string[]> => {
+  return request.get<string[]>({ url: '/system/auth/list-roles' })
+}
+
+// 切换角色
+export const switchRole = (roleId: number): Promise<void> => {
+  return request.post<void>({ url: '/system/auth/switch-role', data: { roleId } })
+}
+
 export type {
   UserLoginVO,
   RegisterVO,

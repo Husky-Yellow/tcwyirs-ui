@@ -57,6 +57,12 @@ export default defineComponent({
       isUserLoggedIn.value ? userStore.user?.nickname || '用户' : '点击登录'
     )
 
+    const currentRole = computed(() => userStore.getCurrentRole)
+
+    const userRoles = computed(() => userStore.getRoles)
+
+    const roleList = computed(() => userStore.getRoleList)
+
     // 事件处理
     const handleLogoClick = () => {
       router.push('/public/homepage')
@@ -91,6 +97,18 @@ export default defineComponent({
       }
     }
 
+    async function handleSwitchRole(role: string) {
+      try {
+        await userStore.switchRoleAction(role)
+        ElMessage.success('角色切换成功')
+        // 刷新页面
+        window.location.reload()
+      } catch (error) {
+        console.error('切换角色失败:', error)
+        ElMessage.error('切换角色失败')
+      }
+    }
+
     return () => (
       <header
         class={[
@@ -117,9 +135,13 @@ export default defineComponent({
                   isLoggedIn={isUserLoggedIn.value}
                   userName={userName.value}
                   userAvatar={userAvatar.value}
+                  currentRole={currentRole.value}
+                  roles={userRoles.value}
+                  roleList={roleList.value}
                   onLogin={handleLogin}
                   onLogout={handleLogout}
                   onProfile={handleProfile}
+                  onSwitchRole={handleSwitchRole}
                 />
               </div>
             </div>

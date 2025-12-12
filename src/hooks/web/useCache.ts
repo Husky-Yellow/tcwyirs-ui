@@ -10,6 +10,7 @@ export const CACHE_KEY = {
   // 用户相关
   ROLE_ROUTERS: 'roleRouters',
   USER: 'user',
+  CURRENT_ROLE: 'currentRole', // 当前角色
   VisitTenantId: 'visitTenantId',
   // 系统设置
   IS_DARK: 'isDark',

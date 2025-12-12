@@ -62,6 +62,13 @@ export type MenuVO = {
   children: MenuVO[] | null
 }
 
+// 角色信息
+export type RoleVO = {
+  id: number
+  name: string
+  code: string
+}
+
 // 权限信息
 export type PermissionInfoVO = {
   user: {
@@ -73,6 +80,7 @@ export type PermissionInfoVO = {
     email: string
   }
   roles: string[]
+  roleList?: RoleVO[] // 角色列表
   permissions: string[]
   menus: MenuVO[]
 }
