@@ -29,6 +29,10 @@ export interface UserPageReqVO extends PageParam {
 export const getUserPage = (params: UserPageReqVO) => {
   return request.get<PageResult<UserVO[]>>({ url: '/system/user/page', params })
 }
+// 查询用户管理列表
+export const getUserSimplePage = () => {
+  return request.get<UserVO[]>({ url: '/system/user/simple-list' })
+}
 
 // 查询用户详情
 export const getUser = (id: number) => {

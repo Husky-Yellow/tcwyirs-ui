@@ -6,7 +6,7 @@
       :model="queryParams"
       ref="queryFormRef"
       :inline="true"
-      label-width="80px"
+      label-width="74px"
     >
       <el-form-item label="资源名称:" prop="resourceName">
         <el-input
@@ -14,11 +14,11 @@
           placeholder="请输入"
           clearable
           @keyup.enter="handleQuery"
-          class="!w-240px"
+          class="!w-220px"
         />
       </el-form-item>
       <el-form-item label="资源类型:" prop="resourceType">
-        <el-select v-model="queryParams.resourceType" placeholder="全部" clearable class="!w-240px">
+        <el-select v-model="queryParams.resourceType" placeholder="全部" clearable class="!w-220px">
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.RESOURCE_TYPE)"
             :key="dict.value"
@@ -28,7 +28,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="申请状态:" prop="status">
-        <el-select v-model="queryParams.status" placeholder="全部" clearable class="!w-240px">
+        <el-select v-model="queryParams.status" placeholder="全部" clearable class="!w-220px">
           <el-option label="申请中" :value="0" />
           <el-option label="申请成功" :value="1" />
           <el-option label="申请失败" :value="2" />
@@ -45,122 +45,125 @@
   <ContentWrap>
     <div class="mb-16px text-16px font-600">资源列表</div>
     <el-table v-loading="loading" :data="list" stripe>
-      <!-- 资源类型 -->
-      <el-table-column
-        v-if="columnConfig.resourceType.show"
-        :label="columnConfig.resourceType.label"
-        align="center"
-        prop="resourceType"
-        :width="columnConfig.resourceType.width"
-      >
-        <template #default="scope">
-          {{ getResourceTypeText(scope.row.resourceType) }}
-        </template>
-      </el-table-column>
+      <!-- 动态渲染排序后的列 -->
+      <template v-for="columnKey in sortedColumns" :key="columnKey">
+        <!-- 资源类型 -->
+        <el-table-column
+          v-if="columnKey === 'resourceType'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="resourceType"
+          :width="columnConfig[columnKey].width"
+        >
+          <template #default="scope">
+            {{ getResourceTypeText(scope.row.resourceType) }}
+          </template>
+        </el-table-column>
 
-      <!-- 资源名称 -->
-      <el-table-column
-        v-if="columnConfig.resourceName.show"
-        :label="columnConfig.resourceName.label"
-        align="center"
-        prop="resourceName"
-        :min-width="columnConfig.resourceName.minWidth"
-      >
-        <template #default="scope">
-          <el-link type="primary" :underline="false">{{ scope.row.resourceName }}</el-link>
-        </template>
-      </el-table-column>
+        <!-- 资源名称 -->
+        <el-table-column
+          v-else-if="columnKey === 'resourceName'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="resourceName"
+          :min-width="columnConfig[columnKey].minWidth"
+        >
+          <template #default="scope">
+            <el-link type="primary" :underline="false">{{ scope.row.resourceName }}</el-link>
+          </template>
+        </el-table-column>
 
-      <!-- 描述 -->
-      <el-table-column
-        v-if="columnConfig.description.show"
-        :label="columnConfig.description.label"
-        align="center"
-        prop="description"
-        :min-width="columnConfig.description.minWidth"
-      />
+        <!-- 描述 -->
+        <el-table-column
+          v-else-if="columnKey === 'description'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="description"
+          :min-width="columnConfig[columnKey].minWidth"
+        />
 
-      <!-- 关联项目 -->
-      <el-table-column
-        v-if="columnConfig.projectName.show"
-        :label="columnConfig.projectName.label"
-        align="center"
-        prop="projectName"
-        :width="columnConfig.projectName.width"
-      />
+        <!-- 关联项目 -->
+        <el-table-column
+          v-else-if="columnKey === 'projectName'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="projectName"
+          :width="columnConfig[columnKey].width"
+        />
 
-      <!-- 申请状态 -->
-      <el-table-column
-        v-if="columnConfig.status.show"
-        :label="columnConfig.status.label"
-        align="center"
-        prop="status"
-        :width="columnConfig.status.width"
-      >
-        <template #default="scope">
-          <div class="flex items-center justify-center">
-            <span
-              class="inline-block h-8px w-8px rounded-full"
-              :class="`bg-${getStatusConfig(scope.row.status).color}`"
-            ></span>
-            <span class="ml-8px">{{ getStatusConfig(scope.row.status).text }}</span>
-          </div>
-        </template>
-      </el-table-column>
+        <!-- 申请状态 -->
+        <el-table-column
+          v-else-if="columnKey === 'status'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="status"
+          :width="columnConfig[columnKey].width"
+        >
+          <template #default="scope">
+            <div class="flex items-center justify-center">
+              <span
+                class="inline-block h-8px w-8px rounded-full"
+                :class="`bg-${getStatusConfig(scope.row.status).color}`"
+              ></span>
+              <span class="ml-8px">{{ getStatusConfig(scope.row.status).text }}</span>
+            </div>
+          </template>
+        </el-table-column>
 
-      <!-- 申请人 -->
-      <el-table-column
-        v-if="columnConfig.applicant.show"
-        :label="columnConfig.applicant.label"
-        align="center"
-        prop="applicant"
-        :width="columnConfig.applicant.width"
-      />
+        <!-- 申请人 -->
+        <el-table-column
+          v-else-if="columnKey === 'applicant'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="applicant"
+          :width="columnConfig[columnKey].width"
+        />
 
-      <!-- 上架人 -->
-      <el-table-column
-        v-if="columnConfig.publishUserName.show"
-        :label="columnConfig.publishUserName.label"
-        align="center"
-        prop="publishUserName"
-        :width="columnConfig.publishUserName.width"
-      />
+        <!-- 上架人 -->
+        <el-table-column
+          v-else-if="columnKey === 'publishUserName'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="publishUserName"
+          :width="columnConfig[columnKey].width"
+        />
 
-      <!-- 审批人 -->
-      <el-table-column
-        v-if="columnConfig.approver.show"
-        :label="columnConfig.approver.label"
-        align="center"
-        prop="approver"
-        :width="columnConfig.approver.width"
-      />
+        <!-- 审批人 -->
+        <el-table-column
+          v-else-if="columnKey === 'approver'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="approver"
+          :width="columnConfig[columnKey].width"
+        />
 
-      <!-- 申请周期 -->
-      <el-table-column
-        v-if="columnConfig.duration.show"
-        :label="columnConfig.duration.label"
-        align="center"
-        prop="duration"
-        :width="columnConfig.duration.width"
-      >
-        <template #default="scope">
-          {{ scope.row.duration ? `${scope.row.duration}天` : '-' }}
-        </template>
-      </el-table-column>
+        <!-- 申请周期 -->
+        <el-table-column
+          v-else-if="columnKey === 'duration'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="duration"
+          :width="columnConfig[columnKey].width"
+        >
+          <template #default="scope">
+            {{ scope.row.duration ? `${scope.row.duration}天` : '-' }}
+          </template>
+        </el-table-column>
 
-      <!-- 申请时间 -->
-      <el-table-column
-        v-if="columnConfig.applyTime.show"
-        :label="columnConfig.applyTime.label"
-        align="center"
-        prop="applyTime"
-        :width="columnConfig.applyTime.width"
-        sortable
-      >
-        <template #default="scope">
-          {{ formatDate(scope.row.applyTime || scope.row.createTime) }}
-        </template>
-      </el-table-column>
+        <!-- 申请时间 -->
+        <el-table-column
+          v-else-if="columnKey === 'applyTime'"
+          :label="columnConfig[columnKey].label"
+          align="center"
+          prop="applyTime"
+          :width="columnConfig[columnKey].width"
+          sortable
+        >
+          <template #default="scope">
+            {{ formatDate(scope.row.applyTime || scope.row.createTime) }}
+          </template>
+        </el-table-column>
+      </template>
 
       <el-table-column label="操作" align="center" width="150" fixed="right">
         <template #default="scope">
@@ -237,55 +240,68 @@ interface ColumnConfig {
   prop?: string
   width?: string
   minWidth?: string
+  order?: number // 显示顺序
 }
 
 const columnConfig = computed(() => {
+  console.log('isResourceAdmin.value', isResourceAdmin.value);
+
   if (isResourceAdmin.value) {
     // 资源管理员：资源名称，资源类型，描述，申请状态，申请人，申请时间
     return {
-      resourceName: { show: true, label: '资源名称', minWidth: '150' },
-      resourceType: { show: true, label: '资源类型', width: '120' },
-      description: { show: true, label: '描述', minWidth: '200' },
-      status: { show: true, label: '申请状态', width: '120' },
-      applicant: { show: true, label: '申请人', width: '100' },
-      applyTime: { show: true, label: '申请时间', width: '200' },
+      resourceName: { show: true, label: '资源名称', minWidth: '150', order: 1 },
+      resourceType: { show: true, label: '资源类型', width: '120', order: 2 },
+      description: { show: true, label: '描述', minWidth: '200', order: 3 },
+      status: { show: true, label: '申请状态', width: '120', order: 4 },
+      applicant: { show: true, label: '申请人', width: '100', order: 5 },
+      applyTime: { show: true, label: '申请时间', width: '200', order: 6 },
       // 不展示的列
-      publishUserName: { show: false },
-      projectName: { show: false },
-      approver: { show: false },
-      duration: { show: false }
+      publishUserName: { show: false, order: 99 },
+      projectName: { show: false, order: 99 },
+      approver: { show: false, order: 99 },
+      duration: { show: false, order: 99 }
     }
   } else if (isOperationAdmin.value) {
     // 运营管理员：资源名称，资源类型，上架人，审批状态，描述，申请时间
     return {
-      resourceName: { show: true, label: '资源名称', minWidth: '150' },
-      resourceType: { show: true, label: '资源类型', width: '120' },
-      publishUserName: { show: true, label: '上架人', width: '100' },
-      status: { show: true, label: '审批状态', width: '120' },
-      description: { show: true, label: '描述', minWidth: '200' },
-      applyTime: { show: true, label: '申请时间', width: '200' },
+      resourceName: { show: true, label: '资源名称', minWidth: '150', order: 1 },
+      resourceType: { show: true, label: '资源类型', width: '120', order: 2 },
+      publishUserName: { show: true, label: '上架人', width: '100', order: 3 },
+      status: { show: true, label: '审批状态', width: '120', order: 4 },
+      description: { show: true, label: '描述', minWidth: '200', order: 5 },
+      applyTime: { show: true, label: '申请时间', width: '200', order: 6 },
       // 不展示的列
-      applicant: { show: false },
-      projectName: { show: false },
-      approver: { show: false },
-      duration: { show: false }
+      applicant: { show: false, order: 99 },
+      projectName: { show: false, order: 99 },
+      approver: { show: false, order: 99 },
+      duration: { show: false, order: 99 }
     }
   } else {
     // 项目成员及项目经理：资源类型、资源名称、关联项目、申请状态、审批人、申请周期
     return {
-      resourceType: { show: true, label: '资源类型', width: '120' },
-      resourceName: { show: true, label: '资源名称', minWidth: '150' },
-      projectName: { show: true, label: '关联项目', width: '150' },
-      status: { show: true, label: '申请状态', width: '120' },
-      approver: { show: true, label: '审批人', width: '100' },
-      duration: { show: true, label: '申请周期', width: '120' },
+      resourceType: { show: true, label: '资源类型', width: '120', order: 1 },
+      resourceName: { show: true, label: '资源名称', minWidth: '150', order: 2 },
+      projectName: { show: true, label: '关联项目', width: '150', order: 3 },
+      status: { show: true, label: '申请状态', width: '120', order: 4 },
+      approver: { show: true, label: '审批人', width: '100', order: 5 },
+      duration: { show: true, label: '申请周期', width: '120', order: 6 },
       // 不展示的列
-      description: { show: false },
-      applicant: { show: false },
-      publishUserName: { show: false },
-      applyTime: { show: false }
+      description: { show: false, order: 99 },
+      applicant: { show: false, order: 99 },
+      publishUserName: { show: false, order: 99 },
+      applyTime: { show: false, order: 99 }
     }
   }
+})
+
+/** 按 order 排序的列配置 */
+const sortedColumns = computed(() => {
+  const config = columnConfig.value
+  // 将配置对象转换为数组，并按 order 排序
+  return Object.entries(config)
+    .filter(([_, value]) => value.show)
+    .sort((a, b) => (a[1].order || 999) - (b[1].order || 999))
+    .map(([key]) => key)
 })
 
 /** 资源类型映射 */

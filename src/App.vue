@@ -45,8 +45,8 @@ body {
   padding: 0 !important;
   margin: 0;
   overflow: hidden;
-
   #app {
+    font-family: PingFang SC;
     @extend .size;
   }
 }

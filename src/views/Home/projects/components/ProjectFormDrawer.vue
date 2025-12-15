@@ -115,7 +115,7 @@ import { ElMessage } from 'element-plus'
 import { Drawer } from '@/components/Drawer'
 import type { ProjectVO } from '@/api/resource/project'
 import { createProject, updateProject } from '@/api/resource/project'
-import { getUserPage } from '@/api/system/user'
+import { getUserSimplePage } from '@/api/system/user'
 import type { UserVO } from '@/api/system/user'
 
 interface ProjectFormData {
@@ -186,8 +186,8 @@ const availableUsers = computed(() => {
 // 加载用户列表
 const loadUsers = async () => {
   try {
-    const res = await getUserPage({ pageNo: 1, pageSize: 100 })
-    userList.value = res.list
+    const res = await getUserSimplePage()
+    userList.value = res
   } catch (error) {
     console.error('加载用户列表失败:', error)
   }

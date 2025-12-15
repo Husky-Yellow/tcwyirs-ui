@@ -1,12 +1,12 @@
 <template>
-  <ContentWrap class="mb-16px" :bodyStyle="{ padding: '20px 24px 2px' }">
-    <el-form :model="modelValue" :inline="true" label-width="80px">
+  <ContentWrap :bodyStyle="{ padding: '20px 0 2px 24px' }">
+    <el-form :model="modelValue" :inline="true" label-width="68px">
       <el-form-item label="资源名称">
         <el-input
           :model-value="modelValue.name"
           placeholder="请输入"
           clearable
-          class="!w-240px"
+          class="!w-220px"
           @update:model-value="handleUpdate('name', $event)"
         />
       </el-form-item>
@@ -15,7 +15,7 @@
           :model-value="modelValue.tagId"
           placeholder="全部"
           clearable
-          class="!w-240px"
+          class="!w-220px"
           @update:model-value="handleUpdate('tagId', $event)"
         >
           <el-option v-for="tag in tagList" :key="tag.id" :label="tag.name" :value="tag.id" />
@@ -26,7 +26,7 @@
           :model-value="modelValue.status"
           placeholder="全部"
           clearable
-          class="!w-240px"
+          class="!w-220px"
           @update:model-value="handleUpdate('status', $event)"
         >
           <el-option
@@ -39,7 +39,7 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="handleReset">
-          <Icon icon="ep:refresh" class="mr-6px" />
+          <Icon icon="ep:refresh" />
           重置
         </el-button>
         <el-button type="primary" @click="handleSearch">

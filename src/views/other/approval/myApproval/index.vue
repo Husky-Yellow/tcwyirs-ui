@@ -176,7 +176,7 @@ const searchSchema = computed<FormSchema[]>(() => [
     componentProps: {
       placeholder: '请输入',
       clearable: true,
-      style: { width: '240px' }
+      style: { width: '220px' }
     }
   },
   {
@@ -186,7 +186,7 @@ const searchSchema = computed<FormSchema[]>(() => [
     componentProps: {
       placeholder: '全部',
       clearable: true,
-      style: { width: '240px' },
+      style: { width: '220px' },
       options: [
         { label: '数据资源', value: 1 },
         { label: '应用资源', value: 2 },
@@ -201,7 +201,7 @@ const searchSchema = computed<FormSchema[]>(() => [
     componentProps: {
       placeholder: '请输入',
       clearable: true,
-      style: { width: '240px' }
+      style: { width: '220px' }
     }
   },
   {
@@ -211,7 +211,7 @@ const searchSchema = computed<FormSchema[]>(() => [
     componentProps: {
       placeholder: '全部',
       clearable: true,
-      style: { width: '240px' },
+      style: { width: '220px' },
       options: projectList.value.map(p => ({ label: p.name, value: p.name }))
     }
   }
