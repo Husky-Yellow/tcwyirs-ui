@@ -48,7 +48,9 @@ export const createPublishApply = (data: PublishApplyCreateReqVO) => {
 export const offlineResource = (data: ResourceOfflineReqVO) => {
   return request.put({ url: `/resource/publish-apply/offline`, data })
 }
-
+// 运营管理员：/resource/publish-apply/todo-page
+// 资源管理员 /resource/apply/todo-page
+// 项目：/resource/apply/my-page
 // ========== 查询发布申请列表 ==========
 
 /**
@@ -57,6 +59,14 @@ export const offlineResource = (data: ResourceOfflineReqVO) => {
  */
 export const getPublishApplyPage = (params: any) => {
   return request.get({ url: '/resource/publish-apply/page', params })
+}
+
+/**
+ * 获取运营管理员待办发布申请列表
+ * @param params 查询参数
+ */
+export const getTodoPublishApplyPage = (params: any) => {
+  return request.get({ url: '/resource/publish-apply/todo-page', params })
 }
 
 // ========== 审批发布申请 ==========
