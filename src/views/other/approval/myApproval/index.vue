@@ -29,12 +29,10 @@
       </el-table-column>
       <el-table-column label="资源类型" align="center" prop="resourceType" width="120">
         <template #default="scope">
-          {{ getResourceTypeText(scope.row.resourceType) }}
+          <dict-tag :type="DICT_TYPE.RESOURCE_TYPE" :value="scope.row.resourceType" />
         </template>
       </el-table-column>
-      <el-table-column label="申请项目" align="center" prop="projectName" width="150" />
-      <el-table-column label="申请说明" align="center" prop="reason" min-width="150" show-overflow-tooltip />
-      <el-table-column label="申请人" align="center" prop="applicant" width="100" />
+      <el-table-column label="上架人" align="center" prop="publishUserName" width="100" />
       <el-table-column label="审批状态" align="center" prop="status" width="120">
         <template #default="scope">
           <div class="flex items-center justify-center">
@@ -48,14 +46,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="申请周期" align="center" prop="createTime" width="200">
+      <el-table-column label="描述" align="center" prop="description" min-width="200" show-overflow-tooltip />
+      <el-table-column label="申请时间" align="center" prop="applyTime" width="180">
         <template #default="scope">
-          {{ formatDateRange(scope.row.createTime, scope.row.duration) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="申请期限" align="center" prop="duration" width="100">
-        <template #default="scope">
-          {{ scope.row.duration ? `${scope.row.duration}天` : '-' }}
+          {{ scope.row.applyTime || scope.row.createTime || '-' }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" fixed="right">
@@ -116,6 +110,7 @@ import { getTodoApplyPage } from '@/api/resource/apply'
 import { approveResourceApply, rejectResourceApply } from '@/api/resource/approval'
 import type { ResourceApplyVO, ResourceApplyPageReqVO } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
+import { DICT_TYPE } from '@/utils/dict'
 import { Search } from '@/components/Search'
 import type { FormSchema } from '@/types/data'
 import { useUserStore } from '@/store/modules/user'
@@ -226,32 +221,6 @@ const approvalForm = reactive({
   comment: ''
 })
 const submitting = ref(false)
-
-/** 获取资源类型文本 */
-const getResourceTypeText = (type: number) => {
-  const typeMap = {
-    1: '数据资源',
-    2: '应用资源',
-    3: '组件资源'
-  }
-  return typeMap[type] || '-'
-}
-
-/** 格式化日期范围 */
-const formatDateRange = (startDate: Date | string, duration?: number) => {
-  if (!startDate) return '-'
-
-  const start = new Date(startDate)
-  const startStr = start.toISOString().split('T')[0]
-
-  if (!duration) return startStr
-
-  const end = new Date(start)
-  end.setDate(end.getDate() + duration)
-  const endStr = end.toISOString().split('T')[0]
-
-  return `${startStr}~${endStr}`
-}
 
 /** 查询列表 */
 const getList = async () => {
