@@ -20,14 +20,28 @@
       :table-data="tableData"
       :pagination="pagination"
       :tag-list="tagList"
-      create-button-text="新增数据资源"
       @create="handleCreate"
       @detail="handleDetail"
       @edit="handleEdit"
       @delete="handleDelete"
       @toggle-status="handleToggleStatus"
       @update:pagination="handlePageChange"
-    />
+    >
+      <!-- 根据角色显示不同的操作按钮 -->
+      <template #actions>
+        <!-- 项目成员/项目经理：显示"我申请的资源" -->
+        <el-button v-if="isOperationMember || isOperationManager" type="primary" @click="handleMyApplications">
+          <Icon icon="ep:document" class="mr-6px" />
+          我申请的资源
+        </el-button>
+        <!-- 资源管理员：显示"新增数据资源" -->
+        <el-button v-else-if="isResourceAdmin" type="primary" @click="handleCreate">
+          <Icon icon="ep:plus" class="mr-6px" />
+          新增数据资源
+        </el-button>
+        <!-- 运营管理员：不显示按钮 -->
+      </template>
+    </ResourceTable>
 
     <!-- 新建/编辑表单 -->
     <DataResourceForm
@@ -44,13 +58,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ResourceType } from '@/api/resource/types'
-import { createResourceInfo, updateResourceInfo, unpublishResourceInfo } from '@/api/resource/info'
+import { createResourceInfo, updateResourceInfo } from '@/api/resource/info'
 import { createPublishApply, offlineResource } from '@/api/resource/publish-apply'
 import { useResourceManagement } from '../composables/useResourceManagement'
+import { useUserStore } from '@/store/modules/user'
 import ResourceStatistics from '../components/ResourceStatistics.vue'
 import ResourceSearchForm from '../components/ResourceSearchForm.vue'
 import ResourceTable from '../components/ResourceTable.vue'
@@ -60,6 +75,15 @@ import UnpublishDialog from '../components/UnpublishDialog.vue'
 defineOptions({ name: 'DataResource' })
 
 const router = useRouter()
+const userStore = useUserStore()
+
+/** 获取当前角色 */
+const currentRole = computed(() => userStore.getCurrentRole)
+
+/** 判断角色类型 */
+const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
+const isOperationMember = computed(() => currentRole.value === 'project_member')
+const isOperationManager = computed(() => currentRole.value === 'project_manager')
 
 // 使用资源管理 composable
 const {
@@ -92,6 +116,13 @@ const handleCreate = () => {
   isEdit.value = false
   currentFormData.value = null
   formVisible.value = true
+}
+
+// 我申请的资源
+const handleMyApplications = () => {
+  router.push({
+    path: '/workbench/my-apply-resources'
+  })
 }
 
 // 详情

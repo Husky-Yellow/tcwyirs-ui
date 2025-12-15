@@ -194,7 +194,7 @@
 import { useRouter } from 'vue-router'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { getTodoPublishApplyPage } from '@/api/resource/publish-apply'
-import { getTodoApplyPage, getMyResourceApplyPage } from '@/api/resource/apply'
+import { getMyResourcePublishApplyPage, getMyResourceApplyPage } from '@/api/resource/apply'
 import type { ResourcePublishApplyRespVO } from '@/api/resource/info'
 import { formatDate } from '@/utils/formatTime'
 import { FeedbackForm } from '@/components/FeedbackForm'
@@ -304,7 +304,6 @@ const statusMap = {
 
 /** 查询列表 */
 const getList = async () => {
-  console.log(isOperationAdmin.value)
   loading.value = true
   try {
     const params = {
@@ -318,7 +317,7 @@ const getList = async () => {
     let res
     if (isResourceAdmin.value) {
       // 资源管理员：调用我的资源申请接口
-      res = await getMyResourceApplyPage(params)
+      res = await getMyResourcePublishApplyPage(params)
     } else if (isOperationAdmin.value) {
       // 运营管理员：调用待办发布申请接口
       res = await getTodoPublishApplyPage(params)

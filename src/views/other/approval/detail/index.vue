@@ -35,7 +35,7 @@
             <div>
               <span class="text-14px text-[var(--el-text-color-secondary)]">资源类型：</span>
               <span class="text-14px text-[var(--el-text-color-primary)]">
-                {{ getResourceTypeText(applyData.resourceType) }}
+                <dict-tag :type="DICT_TYPE.PRODUCT_LISTING_STATUS" :value="applyData.resourceType" />
               </span>
             </div>
             <div>
@@ -140,7 +140,7 @@ import { ContentWrap } from '@/components/ContentWrap'
 import { useAppStore } from '@/store/modules/app'
 import { getResourceApply, type ResourceApplyVO } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
-
+import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 defineOptions({ name: 'ApprovalDetail' })
 
 const router = useRouter()

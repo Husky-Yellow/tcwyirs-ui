@@ -1,289 +1,32 @@
 <template>
-  <div class="p-24px">
-    <!-- 头部标题 -->
-    <div class="mb-24px">
-      <h2 class="text-20px text-[#303133] font-600">我申请的资源</h2>
-      <p class="mt-8px text-14px text-[#909399]">查看我的资源申请记录</p>
-    </div>
+  <div>
+    <!-- 根据角色显示不同的视图 -->
+    <!-- 资源管理员：显示资源申请视图 -->
+    <ResourceApplyView v-if="isResourceAdmin" />
 
-    <!-- 统计卡片 -->
-    <div class="mb-24px grid grid-cols-4 gap-16px">
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">全部申请</div>
-            <div class="mt-8px text-24px text-[#303133] font-600">{{ statistics.total }}</div>
-          </div>
-          <Icon icon="ep:folder" :size="40" class="text-[#409eff]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">待审批</div>
-            <div class="mt-8px text-24px text-[#e6a23c] font-600">{{ statistics.pending }}</div>
-          </div>
-          <Icon icon="ep:clock" :size="40" class="text-[#e6a23c]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">已通过</div>
-            <div class="mt-8px text-24px text-[#67c23a] font-600">{{ statistics.approved }}</div>
-          </div>
-          <Icon icon="ep:circle-check" :size="40" class="text-[#67c23a]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">已驳回</div>
-            <div class="mt-8px text-24px text-[#f56c6c] font-600">{{ statistics.rejected }}</div>
-          </div>
-          <Icon icon="ep:circle-close" :size="40" class="text-[#f56c6c]/20" />
-        </div>
-      </el-card>
-    </div>
+    <!-- 项目成员/项目经理：显示项目申请视图 -->
+    <ProjectApplyView v-else-if="isProjectMember || isProjectManager" />
 
-    <!-- 搜索表单 -->
-    <ContentWrap shadow="always" class="mb-16px">
-      <el-form :model="queryParams" :inline="true" label-width="80px">
-        <el-form-item label="资源名称">
-          <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" clearable />
-        </el-form-item>
-        <el-form-item label="申请状态">
-          <el-select v-model="queryParams.status" placeholder="全部" clearable>
-            <el-option label="待审批" :value="0" />
-            <el-option label="已通过" :value="1" />
-            <el-option label="已驳回" :value="2" />
-            <el-option label="已撤销" :value="3" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleQuery">
-            <Icon icon="ep:search" class="mr-6px" />
-            搜索
-          </el-button>
-          <el-button @click="handleReset">
-            <Icon icon="ep:refresh" class="mr-6px" />
-            重置
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </ContentWrap>
-
-    <!-- 申请列表 -->
-    <ContentWrap shadow="always">
-      <el-table v-loading="loading" :data="applyList" border stripe>
-        <el-table-column prop="resourceName" label="资源名称" min-width="180" />
-        <el-table-column prop="projectName" label="所属项目" width="150" />
-        <el-table-column prop="reason" label="申请原因" min-width="200" show-overflow-tooltip />
-        <el-table-column prop="duration" label="使用期限" width="100">
-          <template #default="{ row }">
-            {{ row.duration }} 天
-          </template>
-        </el-table-column>
-        <el-table-column prop="status" label="申请状态" width="100">
-          <template #default="{ row }">
-            <el-tag :type="getStatusTagType(row.status)">
-              {{ getStatusName(row.status) }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="approver" label="审批人" width="120" />
-        <el-table-column prop="createTime" label="申请时间" width="180">
-          <template #default="{ row }">
-            {{ formatDate(row.createTime) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="200" fixed="right">
-          <template #default="{ row }">
-            <el-button link type="primary" @click="handleView(row)">
-              <Icon icon="ep:view" class="mr-4px" />
-              查看
-            </el-button>
-            <el-button
-              v-if="row.status === 0"
-              link
-              type="warning"
-              @click="handleCancel(row)"
-            >
-              <Icon icon="ep:close" class="mr-4px" />
-              撤销
-            </el-button>
-            <el-button
-              v-if="row.status === 2"
-              link
-              type="primary"
-              @click="handleReapply(row)"
-            >
-              <Icon icon="ep:refresh" class="mr-4px" />
-              重新申请
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <!-- 分页 -->
-      <div class="mt-16px flex justify-end">
-        <el-pagination
-          v-model:current-page="queryParams.pageNo"
-          v-model:page-size="queryParams.pageSize"
-          :total="total"
-          :page-sizes="[10, 20, 50, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleQuery"
-          @current-change="handleQuery"
-        />
-      </div>
-    </ContentWrap>
+    <!-- 其他角色：默认显示项目申请视图 -->
+    <ProjectApplyView v-else />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { ContentWrap } from '@/components/ContentWrap'
-import {
-  getMyResourceApplyPage,
-  cancelResourceApply,
-  reapplyResource,
-  type ResourceApplyVO,
-  type ResourceApplyPageReqVO
-} from '@/api/resource/apply'
-import { formatDate } from '@/utils/formatTime'
+import { computed } from 'vue'
+import { useUserStore } from '@/store/modules/user'
+import ResourceApplyView from './components/resource.vue'
+import ProjectApplyView from './components/project.vue'
 
 defineOptions({ name: 'MyApplyResources' })
 
-// 加载状态
-const loading = ref(false)
+const userStore = useUserStore()
 
-// 统计数据
-const statistics = ref({
-  total: 0,
-  pending: 0,
-  approved: 0,
-  rejected: 0
-})
+/** 获取当前角色 */
+const currentRole = computed(() => userStore.getCurrentRole)
 
-// 查询参数
-const queryParams = ref<ResourceApplyPageReqVO>({
-  pageNo: 1,
-  pageSize: 10,
-  resourceName: '',
-  status: undefined
-})
-
-// 申请列表
-const applyList = ref<ResourceApplyVO[]>([])
-const total = ref(0)
-
-// 获取状态名称
-const getStatusName = (status: number) => {
-  const statusMap = { 0: '待审批', 1: '已通过', 2: '已驳回', 3: '已撤销' }
-  return statusMap[status] || '未知'
-}
-
-// 获取状态标签类型
-const getStatusTagType = (status: number) => {
-  const typeMap = { 0: 'warning', 1: 'success', 2: 'danger', 3: 'info' }
-  return typeMap[status] || ''
-}
-
-// 加载申请列表
-const loadData = async () => {
-  try {
-    loading.value = true
-    const res = await getMyResourceApplyPage(queryParams.value)
-    applyList.value = res.list
-    total.value = res.total
-
-    // 计算统计数据
-    statistics.value = {
-      total: res.total,
-      pending: res.list.filter((item) => item.status === 0).length,
-      approved: res.list.filter((item) => item.status === 1).length,
-      rejected: res.list.filter((item) => item.status === 2).length
-    }
-  } catch (error) {
-    console.error('加载数据失败:', error)
-    ElMessage.error('加载数据失败')
-  } finally {
-    loading.value = false
-  }
-}
-
-// 搜索
-const handleQuery = () => {
-  queryParams.value.pageNo = 1
-  loadData()
-}
-
-// 重置
-const handleReset = () => {
-  queryParams.value = {
-    pageNo: 1,
-    pageSize: 10,
-    resourceName: '',
-    status: undefined
-  }
-  loadData()
-}
-
-// 查看申请
-const handleView = (row: ResourceApplyVO) => {
-  ElMessage.info(`查看申请：${row.resourceName}`)
-  // TODO: 打开申请详情弹窗或跳转到详情页
-}
-
-// 撤销申请
-const handleCancel = async (row: ResourceApplyVO) => {
-  try {
-    await ElMessageBox.confirm(`确定要撤销对 "${row.resourceName}" 的申请吗?`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
-
-    await cancelResourceApply(row.id!)
-    ElMessage.success('撤销成功!')
-    await loadData()
-  } catch (error: any) {
-    if (error !== 'cancel') {
-      console.error('撤销失败:', error)
-      ElMessage.error('撤销失败')
-    }
-  }
-}
-
-// 重新申请
-const handleReapply = async (row: ResourceApplyVO) => {
-  try {
-    await ElMessageBox.confirm(`确定要重新申请 "${row.resourceName}" 吗?`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'info'
-    })
-
-    await reapplyResource({
-      resourceId: row.resourceId,
-      reason: row.reason,
-      projectId: row.projectId,
-      duration: row.duration
-    })
-    ElMessage.success('重新申请成功!')
-    await loadData()
-  } catch (error: any) {
-    if (error !== 'cancel') {
-      console.error('重新申请失败:', error)
-      ElMessage.error('重新申请失败')
-    }
-  }
-}
-
-// 页面加载时获取数据
-onMounted(() => {
-  loadData()
-})
+/** 判断角色类型 */
+const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
+const isProjectMember = computed(() => currentRole.value === 'project_member')
+const isProjectManager = computed(() => currentRole.value === 'project_manager')
 </script>

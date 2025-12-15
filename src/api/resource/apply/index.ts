@@ -67,6 +67,10 @@ export const reapplyResource = (data: ResourceApplyVO) => {
 export const getMyResourceApplyPage = (params: ResourceApplyPageReqVO) => {
   return request.get<PageResult<ResourceApplyVO[]>>({ url: '/resource/apply/my-page', params })
 }
+// 获取我申请的列表
+export const getMyResourcePublishApplyPage = (params: ResourceApplyPageReqVO) => {
+  return request.get<PageResult<ResourceApplyVO[]>>({ url: '/resource/publish-apply/my-page', params })
+}
 
 // 获取待审批列表（我的待办）
 export const getTodoApplyPage = (params: ResourceApplyPageReqVO) => {

@@ -16,7 +16,7 @@
   <ContentWrap>
     <!-- 标签页 -->
     <el-tabs v-model="activeTab" @tab-change="handleTabChange">
-      <el-tab-pane :label="`待审批的 ${pendingCount}`" name="pending"></el-tab-pane>
+      <el-tab-pane label="待审批的" name="pending"></el-tab-pane>
       <el-tab-pane label="已审批的" name="done"></el-tab-pane>
     </el-tabs>
 

@@ -222,7 +222,5 @@ export const ROLE_LAYOUT_CONFIG: RoleLayoutConfigMap = {
  * @returns 布局配置
  */
 export const getRoleLayoutConfig = (role: string): HomeLayoutConfig => {
-  console.log('role', role);
-
   return ROLE_LAYOUT_CONFIG[role] || ROLE_LAYOUT_CONFIG.user
 }

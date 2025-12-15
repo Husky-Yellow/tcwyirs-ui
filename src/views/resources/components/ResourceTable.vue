@@ -2,10 +2,14 @@
   <ContentWrap>
     <div class="mb-16px flex items-center justify-between">
       <div class="text-16px text-[#303133] font-600">资源列表</div>
-      <el-button type="primary" @click="handleCreate">
-        <Icon icon="ep:plus" class="mr-6px" />
-        {{ createButtonText }}
-      </el-button>
+      <!-- 操作按钮插槽 -->
+      <slot name="actions">
+        <!-- 默认按钮 -->
+        <el-button type="primary" @click="handleCreate">
+          <Icon icon="ep:plus" class="mr-6px" />
+          {{ createButtonText }}
+        </el-button>
+      </slot>
     </div>
 
     <el-table v-loading="loading" :data="tableData">

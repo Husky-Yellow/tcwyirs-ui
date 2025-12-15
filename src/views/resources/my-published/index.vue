@@ -7,10 +7,18 @@
           <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" clearable />
         </el-form-item>
         <el-form-item label="资源类型">
-          <el-select v-model="queryParams.resourceType" placeholder="全部" clearable class="!w-240px">
-            <el-option label="数据资源" :value="1" />
-            <el-option label="应用资源" :value="2" />
-            <el-option label="组件资源" :value="3" />
+          <el-select
+            v-model="queryParams.resourceType"
+            placeholder="全部"
+            clearable
+            class="!w-240px"
+          >
+            <el-option
+              v-for="dict in getIntDictOptions(DICT_TYPE.RESOURCE_TYPE)"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="资源状态">
@@ -23,7 +31,6 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-
           <el-button @click="handleReset">
             <Icon icon="ep:refresh" class="mr-6px" />
             重置
@@ -46,12 +53,10 @@
 
     <!-- 资源列表 -->
     <ContentWrap shadow="always">
-      <el-table v-loading="loading" :data="resourceList"   stripe border >
+      <el-table v-loading="loading" :data="resourceList" stripe border>
         <el-table-column prop="type" label="资源类型" width="120">
           <template #default="{ row }">
-            <el-tag :type="getTypeTagType(row.type)">
-              {{ getTypeName(row.type) }}
-            </el-tag>
+            <dict-tag :type="DICT_TYPE.PRODUCT_LISTING_STATUS" :value="row.type" />
           </template>
         </el-table-column>
         <el-table-column prop="name" label="资源名称" min-width="180" />
@@ -116,6 +121,7 @@ import {
   type ResourcePublishApplyRespVO
 } from '@/api/resource/info'
 import { formatDate } from '@/utils/formatTime'
+import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { useUserStore } from '@/store/modules/user'
 
 defineOptions({ name: 'MyPublishedResources' })

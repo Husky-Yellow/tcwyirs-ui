@@ -54,9 +54,12 @@
         </el-form-item>
         <el-form-item label="资源类型">
           <el-select v-model="queryParams.resourceType" placeholder="全部" clearable class="!w-240px">
-            <el-option label="数据资源" :value="1" />
-            <el-option label="应用资源" :value="2" />
-            <el-option label="组件资源" :value="3" />
+        <el-option
+            v-for="dict in getIntDictOptions(DICT_TYPE.RESOURCE_TYPE)"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -130,6 +133,7 @@ import {
   type CollectRecordVO,
   type CollectRecordPageReqVO
 } from '@/api/resource/collect'
+import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 
 defineOptions({ name: 'MyCollectedResources' })
