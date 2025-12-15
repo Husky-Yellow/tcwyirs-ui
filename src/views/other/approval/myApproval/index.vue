@@ -112,8 +112,8 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { getTodoApplyPage } from '@/api/resource/apply'
-import { getDoneApprovalPage, approveResourceApply, rejectResourceApply } from '@/api/resource/approval'
+import { getTodoPublishApplyPage } from '@/api/resource/publish-apply'
+import { approveResourceApply, rejectResourceApply } from '@/api/resource/approval'
 import type { ResourceApplyVO, ResourceApplyPageReqVO } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
 import { useStatusStyle } from '@/views/Home/composables/useStatusStyle'
@@ -248,14 +248,20 @@ const formatDateRange = (startDate: Date | string, duration?: number) => {
 const getList = async () => {
   loading.value = true
   try {
-    const api = activeTab.value === 'pending' ? getTodoApplyPage : getDoneApprovalPage
-    const { data } = await api(queryParams)
-    list.value = data.list || []
-    total.value = data.total || 0
+    // taskType: 0或不传-全部 1-待审批 2-已审批
+    const taskType = activeTab.value === 'pending' ? 1 : 2
+    const params = {
+      ...queryParams,
+      taskType
+    }
+
+    const { data } = await getTodoPublishApplyPage(params)
+    list.value = data?.list || []
+    total.value = data?.total || 0
 
     // 更新待审批数量
     if (activeTab.value === 'pending') {
-      pendingCount.value = data.total || 0
+      pendingCount.value = data?.total || 0
     }
   } finally {
     loading.value = false
@@ -265,8 +271,9 @@ const getList = async () => {
 /** 获取待审批数量 */
 const getPendingCount = async () => {
   try {
-    const { data } = await getTodoApplyPage({ pageNo: 1, pageSize: 1 })
-    pendingCount.value = data.total || 0
+    // taskType: 1-待审批
+    const { data } = await getTodoPublishApplyPage({ pageNo: 1, pageSize: 1, taskType: 1 })
+    pendingCount.value = data?.total || 0
   } catch (error) {
     console.error('获取待审批数量失败:', error)
   }

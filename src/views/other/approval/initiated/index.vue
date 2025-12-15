@@ -300,6 +300,7 @@ const statusMap = {
 
 /** 查询列表 */
 const getList = async () => {
+  console.log(isOperationAdmin.value)
   loading.value = true
   try {
     const params = {

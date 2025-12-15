@@ -27,51 +27,61 @@
 
       <!-- 消息列表 -->
       <div class="min-h-500px p-24px">
-        <div v-if="filteredMessages.length > 0">
+        <div v-if="filteredMessages.length > 0" v-loading="loading">
           <div
-            v-for="message in paginatedMessages"
-            :key="message.id"
+            v-for="msg in filteredMessages"
+            :key="msg.id"
             class="flex items-center border-0 border-b-1 border-[#0000000f] border-solid py-16px"
           >
             <!-- 消息状态标签 -->
             <div class="mr-16px flex">
-              <el-tag v-if="message.isRead" type="info" size="small">已读</el-tag>
+              <el-tag v-if="msg.isRead" type="info" size="small">已读</el-tag>
               <el-tag v-else type="primary" size="small">未读</el-tag>
             </div>
 
             <!-- 消息内容 -->
-            <div class="flex-1 text-14px text-[#606266] [&_span]:font-500" v-html="message.content"></div>
+            <div class="flex-1 text-14px text-[#606266] [&_span]:font-500" v-html="msg.content"></div>
 
             <!-- 时间和操作 -->
             <div class="flex flex-shrink-0 items-center gap-24px">
-              <span class="whitespace-nowrap text-14px text-[#909399]">{{ message.createTime }}</span>
+              <span class="whitespace-nowrap text-14px text-[#909399]">{{ msg.createTime }}</span>
               <div class="flex gap-8px">
-                <el-button v-if="message.isRead" link type="primary" @click="viewDetail(message)">
-                  详情
-                </el-button>
-                <el-button link type="primary" @click="deleteMessage(message)">删除</el-button>
+                <el-button link type="primary" @click="viewDetail(msg)">详情</el-button>
+                <el-button link type="primary" @click="deleteMessage(msg)">删除</el-button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- 空状态 -->
-        <div v-else class="flex items-center justify-center py-100px">
+        <div v-else-if="!loading" class="flex items-center justify-center py-100px">
           <el-empty description="暂无消息" />
+        </div>
+
+        <!-- 加载中 -->
+        <div v-if="loading && filteredMessages.length === 0" class="flex items-center justify-center py-100px">
+          <el-icon class="is-loading" :size="40">
+            <Loading />
+          </el-icon>
         </div>
       </div>
 
       <!-- 分页 -->
-      <div v-if="filteredMessages.length > 0" class="flex justify-end px-24px pb-24px">
+      <div v-if="!searchKeyword && total > 0" class="flex justify-end px-24px pb-24px">
         <el-pagination
           v-model:current-page="currentPage"
           v-model:page-size="pageSize"
-          :total="filteredMessages.length"
+          :total="total"
           :page-sizes="[10, 20, 50, 100]"
           layout="total, prev, pager, next, sizes"
           @current-change="handlePageChange"
           @size-change="handleSizeChange"
         />
+      </div>
+
+      <!-- 搜索时显示过滤结果数量 -->
+      <div v-else-if="searchKeyword && filteredMessages.length > 0" class="flex justify-end px-24px pb-24px">
+        <span class="text-14px text-[#909399]">共 {{ filteredMessages.length }} 条搜索结果</span>
       </div>
     </div>
   </ContentWrap>
@@ -81,15 +91,22 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import {
+  getMyNotifyMessagePage,
+  updateNotifyMessageRead,
+  updateAllNotifyMessageRead,
+  deleteNotifyMessage,
+  type NotifyMessageVO
+} from '@/api/mq/notify-message'
+import { formatDate } from '@/utils/formatTime'
 
 defineOptions({ name: 'MessageCenter' })
 
 const router = useRouter()
+const message = useMessage()
 
-interface Message {
-  id: number
+interface Message extends NotifyMessageVO {
   content: string
-  createTime: string
   isRead: boolean
 }
 
@@ -105,88 +122,92 @@ const currentPage = ref(1)
 // 每页条数
 const pageSize = ref(10)
 
-// 消息列表
-const messageList = ref<Message[]>([
-  {
-    id: 1,
-    content: '你已经被客服邀成功添加至【天宫项目】，成为项目组的一员。',
-    createTime: '2025-09-22 15:15',
-    isRead: false
-  },
-  {
-    id: 2,
-    content: '你已被从【天宫项目】项目中移除',
-    createTime: '2025-09-22 15:15',
-    isRead: false
-  },
-  {
-    id: 3,
-    content:
-      '你所使用的数据资源【<span style="color: #409eff;">停车缴费记录</span>】已经到期，如果您需要继续使用该资源，需要点击左侧资源名称进入详情点击"重新申请"。',
-    createTime: '2025-09-22 15:15',
-    isRead: false
-  },
-  {
-    id: 4,
-    content:
-      '你所使用的数据资源【<span style="color: #409eff;">停车缴费记录</span>】剩余30天即将到期，如果您需要继续使用该资源，需要点击左侧资源名称进入详情点击"延期申请"。',
-    createTime: '2025-09-22 15:15',
-    isRead: false
-  },
-  {
-    id: 5,
-    content: '你所使用的数据资源【停车缴费记录】已经被下架，下架原因是"资源更新"。',
-    createTime: '2025-09-22 15:15',
-    isRead: false
-  },
-  {
-    id: 6,
-    content: '你所使用的数据资源【停车缴费记录】已经被停用，停用原因是"这是一条被停用的原因"。',
-    createTime: '2025-09-22 15:15',
-    isRead: false
-  },
-  {
-    id: 7,
-    content:
-      '你申请的数据资源【<span style="color: #67c23a;">停车缴费记录</span>】已发起申请，审批人利行缘，预计1~3个工作日审批成功。',
-    createTime: '2025-09-22 15:15',
-    isRead: true
-  },
-  {
-    id: 8,
-    content:
-      '你申请的数据资源【停车缴费记录】<span style="color: #67c23a;">审批已通过</span>，审批人利行缘，你可以开始使用资源了～',
-    createTime: '2025-09-22 15:15',
-    isRead: true
-  },
-  {
-    id: 9,
-    content:
-      '你申请的数据资源【停车缴费记录】<span style="color: #f56c6c;">审批未通过</span>，审批人利行缘，未通过原因是："这是一条未通过的原因"。',
-    createTime: '2025-09-22 15:15',
-    isRead: true
-  },
-  {
-    id: 10,
-    content:
-      '你申请的数据资源【停车缴费记录】审批未通过，审批人利行缘，未通过原因是："这是一条未通过的超长原因，这是一条未通过的超长原因。"。',
-    createTime: '2025-09-22 15:15',
-    isRead: true
-  }
-])
+// 总数
+const total = ref(0)
 
-// 过滤后的消息列表
+// 加载状态
+const loading = ref(false)
+
+// 是否已经调用过全部已读
+const hasCalledMarkAllRead = ref(false)
+
+// 消息列表
+const messageList = ref<Message[]>([])
+
+/** 查询消息列表 */
+const getList = async () => {
+  loading.value = true
+  try {
+    const params: any = {
+      pageNo: currentPage.value,
+      pageSize: pageSize.value
+    }
+
+    // 根据标签页筛选已读状态
+    if (activeTab.value === 'unread') {
+      params.readStatus = false
+    } else if (activeTab.value === 'read') {
+      params.readStatus = true
+    }
+
+    const { data } = await getMyNotifyMessagePage(params)
+
+    // 转换数据格式
+    messageList.value = (data?.list || []).map((item: NotifyMessageVO) => ({
+      ...item,
+      content: item.templateContent || '',
+      isRead: item.readStatus || false,
+      createTime: formatDate(item.createTime)
+    }))
+
+    total.value = data?.total || 0
+
+    // 首次进入页面且有数据时，自动调用全部已读（只调用一次）
+    if (!hasCalledMarkAllRead.value && data?.list && data.list.length > 0) {
+      hasCalledMarkAllRead.value = true
+      await handleMarkAllRead()
+    }
+  } catch (error) {
+    console.error('获取消息列表失败:', error)
+    message.error('获取消息列表失败')
+  } finally {
+    loading.value = false
+  }
+}
+
+/** 标记全部已读 */
+const handleMarkAllRead = async () => {
+  try {
+    await updateAllNotifyMessageRead()
+    // 静默更新消息状态，不刷新列表
+    messageList.value.forEach((msg) => {
+      msg.isRead = true
+      msg.readStatus = true
+    })
+  } catch (error) {
+    console.error('标记全部已读失败:', error)
+  }
+}
+
+/** 标记单条已读 */
+const markAsRead = async (msg: Message) => {
+  if (msg.isRead) return
+
+  try {
+    await updateNotifyMessageRead(msg.id)
+    msg.isRead = true
+    msg.readStatus = true
+  } catch (error) {
+    console.error('标记已读失败:', error)
+    message.error('标记已读失败')
+  }
+}
+
+// 过滤后的消息列表（搜索）
 const filteredMessages = computed(() => {
   let list = messageList.value
 
-  // 按标签页筛选
-  if (activeTab.value === 'unread') {
-    list = list.filter((msg) => !msg.isRead)
-  } else if (activeTab.value === 'read') {
-    list = list.filter((msg) => msg.isRead)
-  }
-
-  // 按关键字搜索
+  // 按关键字搜索（前端过滤）
   if (searchKeyword.value) {
     const keyword = searchKeyword.value.toLowerCase()
     list = list.filter((msg) => {
@@ -198,53 +219,55 @@ const filteredMessages = computed(() => {
   return list
 })
 
-// 分页后的消息列表
-const paginatedMessages = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
-  return filteredMessages.value.slice(start, end)
-})
-
 // 标签页切换
 const handleTabChange = () => {
   currentPage.value = 1
+  getList()
 }
 
-// 搜索
+// 搜索（不需要重新加载，使用前端过滤）
 const handleSearch = () => {
-  currentPage.value = 1
+  // 搜索使用计算属性 filteredMessages 自动过滤
 }
 
 // 页码变化
 const handlePageChange = () => {
-  // 页码已经通过 v-model 自动更新
+  getList()
 }
 
 // 每页条数变化
 const handleSizeChange = () => {
   currentPage.value = 1
+  getList()
 }
 
 // 查看详情
-const viewDetail = (message: Message) => {
-  ElMessageBox.alert(message.content, '消息详情', {
+const viewDetail = async (msg: Message) => {
+  // 标记为已读
+  await markAsRead(msg)
+
+  ElMessageBox.alert(msg.content, '消息详情', {
     dangerouslyUseHTMLString: true,
     confirmButtonText: '确定'
   })
 }
 
 // 删除消息
-const deleteMessage = (message: Message) => {
+const deleteMessage = (msg: Message) => {
   ElMessageBox.confirm('确定删除这条消息吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   })
-    .then(() => {
-      const index = messageList.value.findIndex((msg) => msg.id === message.id)
-      if (index !== -1) {
-        messageList.value.splice(index, 1)
-        ElMessage.success('删除成功')
+    .then(async () => {
+      try {
+        await deleteNotifyMessage(msg.id)
+        message.success('删除成功')
+        // 刷新列表
+        await getList()
+      } catch (error) {
+        console.error('删除失败:', error)
+        message.error('删除失败')
       }
     })
     .catch(() => {
@@ -252,10 +275,10 @@ const deleteMessage = (message: Message) => {
     })
 }
 
-// 返回
-const goBack = () => {
-  router.back()
-}
+// 初始化
+onMounted(() => {
+  getList()
+})
 </script>
 
 <style>

@@ -289,7 +289,7 @@ import { BpmModelFormType } from '@/utils/constants'
 import { checkPermi } from '@/utils/permission'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { useAppStore } from '@/store/modules/app'
-import { cloneDeep, isEqual } from 'lodash-es'
+import { cloneDeep, isEqual } from 'es-toolkit'
 import { useDebounceFn } from '@vueuse/core'
 import { subString } from '@/utils/index'
 
