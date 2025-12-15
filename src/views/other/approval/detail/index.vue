@@ -326,14 +326,14 @@ const submitting = ref(false)
 // 驳回对话框
 const rejectDialogVisible = ref(false)
 const rejectForm = ref<ApprovalActionVO>({
-  id: 0,
+  id: route.query.id,
   rejectReason: ''
 })
 
 // 转交对话框
 const transferDialogVisible = ref(false)
 const transferForm = ref<ApprovalTransferVO>({
-  id: 0,
+  id: route.query.id,
   userId: 0,
   comment: ''
 })
@@ -341,7 +341,7 @@ const transferForm = ref<ApprovalTransferVO>({
 // 通过对话框
 const approveDialogVisible = ref(false)
 const approveForm = ref<ApprovalActionVO>({
-  id: 0,
+  id: route.query.id,
   comment: ''
 })
 
@@ -651,32 +651,7 @@ const confirmTransfer = async () => {
   }
 }
 
-// 通过操作（直接调用接口）
-const handleApproveDirectly = async () => {
-  if (!applyData.value?.id) return
-
-  try {
-    await ElMessageBox.confirm('确定要通过该申请吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'success'
-    })
-
-    submitting.value = true
-    await approveResourceApply({ id: applyData.value.id })
-    ElMessage.success('审批通过')
-    await loadData()
-  } catch (error: any) {
-    if (error !== 'cancel') {
-      console.error('审批失败:', error)
-      ElMessage.error('审批失败')
-    }
-  } finally {
-    submitting.value = false
-  }
-}
-
-// 通过操作（打开对话框）
+// 通过操作
 const handleApprove = () => {
   if (!applyData.value?.id) return
   approveForm.value = {

@@ -317,7 +317,8 @@ const confirmApproval = async () => {
     const api = approvalType.value === 'approve' ? approveResourceApply : rejectResourceApply
     await api({
       id: approvalForm.id,
-      comment: approvalForm.comment
+      type: approvalForm.type,
+      rejectReason: approvalForm.comment
     })
 
     message.success(approvalType.value === 'approve' ? '审批通过' : '已驳回')

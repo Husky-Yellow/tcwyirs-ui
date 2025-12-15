@@ -108,6 +108,10 @@ export interface ResourcePublishApplyRespVO {
    */
   applyTime?: string;
   /**
+   * 审批类型：1-资源申请，2-上架申请
+   */
+  type: number;
+  /**
    * 审批流详情
    */
   approvalDetail?: BpmApprovalDetailRespDTO;

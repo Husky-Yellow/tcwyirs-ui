@@ -5,8 +5,10 @@ import type { ResourceApplyVO, ResourceApplyPageReqVO } from '../apply'
 export interface ApprovalActionVO {
   /** 申请ID */
   id: number
+  /** 审批类型：1-资源申请，2-上架申请 */
+  type: number
   /** 审批意见 */
-  comment?: string
+  rejectReason?: string
 }
 
 /** 转交审批参数 */
@@ -36,8 +38,8 @@ export const approveResourceApply = (data: ApprovalActionVO) => {
 }
 
 // 审批驳回
-export const rejectResourceApply = (data: ApprovalActionVO) => {
-  return request.post<void>({ url: '/resource/approval/reject', data })
+export const rejectResourceApply = (params: ApprovalActionVO) => {
+  return request.put<void>({ url: '/resource/approval/reject', params })
 }
 
 // 取消申请（审批流程中）
