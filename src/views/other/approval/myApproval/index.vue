@@ -267,10 +267,6 @@ const getList = async () => {
     // 根据角色调用不同的接口
     const api = isResourceAdmin.value ? getTodoApplyPage : getTodoPublishApplyPage
     const res = await api(params)
-    console.log(res);
-
-    const {data} = res
-    console.log('data', data);
 
     list.value = res?.list || []
     total.value = res?.total || 0
