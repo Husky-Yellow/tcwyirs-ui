@@ -167,24 +167,37 @@
         'w-full': isMobile
       }"
     >
-      <div class="flex items-center justify-between">
+
+      <!-- 资源管理员：只显示返回 -->
+      <div v-if="isResourceAdmin" class="text-right">
         <el-button @click="handleBack">返回</el-button>
-        <div v-if="applyData?.status === 0" class="space-x-12px">
+      </div>
+
+      <!-- 运营管理员：显示返回 + 审批操作按钮 -->
+      <div v-else-if="isOperationAdmin" class="flex items-center justify-between">
+        <el-button @click="handleBack">返回</el-button>
+        <div class="space-x-12px">
           <el-button @click="handleCancel">取消</el-button>
           <el-button type="danger" @click="handleReject">驳回</el-button>
           <el-button type="warning" @click="handleTransfer">转交</el-button>
           <el-button type="success" @click="handleApprove">通过</el-button>
         </div>
       </div>
+
+      <!-- 项目成员、项目经理：显示返回 + 撤回按钮 -->
+      <div v-else class="flex items-center justify-between">
+        <el-button @click="handleBack">返回</el-button>
+        <el-button v-if="applyData?.status === 0" type="warning" @click="handleWithdraw">撤回</el-button>
+      </div>
     </div>
   </div>
 
   <!-- 驳回对话框 -->
   <el-dialog v-model="rejectDialogVisible" title="驳回申请" width="500px">
-    <el-form :model="rejectForm" label-width="80px">
-      <el-form-item label="驳回原因:" required>
+    <el-form :model="rejectForm" label-width="100px">
+      <el-form-item label="驳回原因:" required prop="rejectReason">
         <el-input
-          v-model="rejectForm.comment"
+          v-model="rejectForm.rejectReason"
           type="textarea"
           :rows="4"
           placeholder="请输入驳回原因"
@@ -250,7 +263,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ContentWrap } from '@/components/ContentWrap'
 import { useAppStore } from '@/store/modules/app'
-import { getResourcePublishApply } from '@/api/resource/apply'
+import { getResourcePublishApply, cancelResourceApply } from '@/api/resource/apply'
 import {
   approveResourceApply,
   rejectResourceApply,
@@ -260,6 +273,7 @@ import {
   type ApprovalTransferVO
 } from '@/api/resource/approval'
 import { getSimpleUserList, type UserVO } from '@/api/system/user'
+import { useUserStore } from '@/store/modules/user'
 import { ApplyStatus } from '@/api/resource/types'
 import { DICT_TYPE } from '@/utils/dict'
 import type { ResourcePublishApplyRespVO } from '@/api/resource/info'
@@ -285,10 +299,20 @@ const statusMap: Record<number, string> = {
 const router = useRouter()
 const route = useRoute()
 const appStore = useAppStore()
+const userStore = useUserStore()
 
 // 获取菜单收起状态和移动端状态
 const isCollapsed = computed(() => appStore.getCollapse)
 const isMobile = computed(() => appStore.getMobile)
+
+/** 获取当前角色 */
+const currentRole = computed(() => userStore.getCurrentRole)
+
+/** 判断角色类型 */
+const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
+const isOperationAdmin = computed(() => currentRole.value === 'operation_admin')
+// 项目成员和项目经理（非资源管理员、非运营管理员）
+const isProjectMember = computed(() => currentRole.value === 'project_member' || currentRole.value === 'project_manager')
 
 // 加载状态
 const loading = ref(false)
@@ -303,7 +327,7 @@ const submitting = ref(false)
 const rejectDialogVisible = ref(false)
 const rejectForm = ref<ApprovalActionVO>({
   id: 0,
-  comment: ''
+  rejectReason: ''
 })
 
 // 转交对话框
@@ -519,7 +543,7 @@ const loadApproverList = async () => {
   }
 }
 
-// 取消申请
+// 取消申请（运营管理员用）
 const handleCancel = async () => {
   if (!applyData.value?.id) return
 
@@ -541,24 +565,47 @@ const handleCancel = async () => {
   }
 }
 
+// 撤回申请（项目成员、项目经理用）
+const handleWithdraw = async () => {
+  if (!applyData.value?.id) return
+
+  try {
+    await ElMessageBox.confirm('确定要撤回该申请吗？撤回后需要重新申请。', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+
+    await cancelResourceApply(applyData.value.id)
+    ElMessage.success('撤回成功')
+    await loadData()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      console.error('撤回申请失败:', error)
+      ElMessage.error('撤回申请失败')
+    }
+  }
+}
+
 // 驳回操作
 const handleReject = () => {
   if (!applyData.value?.id) return
   rejectForm.value = {
     id: applyData.value.id,
-    comment: ''
+    rejectReason: ''
   }
   rejectDialogVisible.value = true
 }
 
 // 确认驳回
 const confirmReject = async () => {
-  if (!rejectForm.value.comment?.trim()) {
+  if (!rejectForm.value.rejectReason?.trim()) {
     ElMessage.warning('请输入驳回原因')
     return
   }
 
   submitting.value = true
+  rejectForm.value.type = applyData.value.type
   try {
     await rejectResourceApply(rejectForm.value)
     ElMessage.success('已驳回')
