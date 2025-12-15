@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-80px">
+  <div class="pb-40px">
     <ContentWrap>
     <!-- 返回按钮 -->
     <div class="mb-16px">
@@ -27,15 +27,28 @@
           <div class="mb-24px text-16px font-600">申请信息</div>
           <div class="grid grid-cols-2 gap-x-80px gap-y-20px">
             <div>
-              <span class="text-14px text-[var(--el-text-color-secondary)]">申请资源项目：</span>
-              <el-link type="primary" :underline="false" class="text-14px">
+              <span class="text-14px text-[var(--el-text-color-secondary)]">申请资源详情：</span>
+              <el-link type="primary" :underline="false" class="text-14px" @click="handleResourceDetail">
                 {{ applyData.resourceName }}
               </el-link>
             </div>
             <div>
-              <span class="text-14px text-[var(--el-text-color-secondary)]">资源类型：</span>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">资源类别：</span>
               <span class="text-14px text-[var(--el-text-color-primary)]">
-                <dict-tag :type="DICT_TYPE.PRODUCT_LISTING_STATUS" :value="applyData.resourceType" />
+                <dict-tag v-if="applyData.resourceType" :type="DICT_TYPE.RESOURCE_TYPE" :value="applyData.resourceType" />
+                <span v-else>-</span>
+              </span>
+            </div>
+            <div v-if="applyData.resourceTag">
+              <span class="text-14px text-[var(--el-text-color-secondary)]">资源标签：</span>
+              <span class="text-14px text-[var(--el-text-color-primary)]">
+                {{ applyData.resourceTag }}
+              </span>
+            </div>
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">上架人：</span>
+              <span class="text-14px text-[var(--el-text-color-primary)]">
+                {{ applyData.publishUserName || '-' }}
               </span>
             </div>
             <div>
@@ -45,18 +58,18 @@
               </span>
             </div>
             <div>
-              <span class="text-14px text-[var(--el-text-color-secondary)]">申请时间：</span>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">申请日期：</span>
               <span class="text-14px text-[var(--el-text-color-primary)]">
-                {{ applyData.createTime ? new Date(applyData.createTime).toLocaleString('zh-CN') : '-' }}
+                {{ applyData.applyTime || applyData.createTime || '-' }}
               </span>
             </div>
             <div>
-              <span class="text-14px text-[var(--el-text-color-secondary)]">申请人：</span>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">审批类型：</span>
               <span class="text-14px text-[var(--el-text-color-primary)]">
-                {{ applyData.applicant || '-' }}
+                {{ applyData.approvalDetail?.processDefinition?.name || '资源上架审批' }}
               </span>
             </div>
-            <div>
+                        <div>
               <span class="text-14px text-[var(--el-text-color-secondary)]">审批状态：</span>
               <span class="text-14px" :style="{ color: getStatusColor(applyData.status) }">
                 <span
@@ -66,45 +79,78 @@
                 {{ getStatusText(applyData.status) }}
               </span>
             </div>
-            <div>
+                      <div>
               <span class="text-14px text-[var(--el-text-color-secondary)]">申请周期：</span>
               <span class="text-14px text-[var(--el-text-color-primary)]">
-                {{ formatDateRange(applyData.createTime, applyData.duration) }}
+                {{ applyData.duration ? `${applyData.duration}天` : '-' }}
               </span>
             </div>
+            <div>
+              <span class="text-14px text-[var(--el-text-color-secondary)]">申请说明：</span>
+              <span class="text-14px text-[var(--el-text-color-primary)]">
+                {{ applyData.reason || '-' }}
+              </span>
+            </div>
+
           </div>
-          <div class="mt-20px">
+          <div v-if="applyData.rejectReason" class="mt-20px">
+            <span class="text-14px text-[var(--el-text-color-secondary)]">驳回原因：</span>
+            <span class="text-14px text-[var(--el-text-color-primary)]">
+              {{ applyData.rejectReason }}
+            </span>
+          </div>
+          <div v-if="applyData.reason" class="mt-20px">
             <span class="text-14px text-[var(--el-text-color-secondary)]">申请说明：</span>
             <span class="text-14px text-[var(--el-text-color-primary)]">
-              {{ applyData.reason || '-' }}
+              {{ applyData.reason }}
             </span>
           </div>
         </div>
 
         <!-- 审批流程 Timeline -->
-        <div class="mb-32px rounded-8px bg-white p-24px">
-          <div class="mb-24px text-16px font-600">审批流程</div>
+        <div v-if="applyData.approvalDetail?.activityNodes" class="mb-32px rounded-8px bg-white p-24px">
+          <div class="mb-24px text-16px font-600">审批流程详情</div>
           <el-timeline>
             <el-timeline-item
-              v-for="(item, index) in approvalTimeline"
-              :key="index"
-              :color="getStatusColor(item.status)"
+              v-for="(node, index) in applyData.approvalDetail.activityNodes"
+              :key="node.id || index"
+              :color="getStatusColor(node.status)"
             >
-              <!-- 上面是状态 -->
-              <div class="text-14px font-500" :style="{ color: getStatusColor(item.status) }">
-                {{ item.statusText }}
+              <div class="text-14px font-600 mb-8px">
+                {{ node.name || (node.nodeType !== undefined ? nodeTypeMap[node.nodeType] : undefined) || '未知节点' }}
               </div>
-              <!-- 下面是人 -->
-              <div class="mt-8px text-13px text-[var(--el-text-color-secondary)]">
-                {{ item.person }}
-                <span v-if="item.time" class="ml-8px">{{ item.time }}</span>
+              <div v-if="node.tasks && node.tasks.length > 0" class="bg-#f5f7fa rounded-4px p-16px">
+                <div
+                  v-for="(task, taskIndex) in node.tasks"
+                  :key="task.id || taskIndex"
+                  class="mb-12px last:mb-0"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="text-13px text-[var(--el-text-color-secondary)]">
+                      <span class="font-500">审批人：</span>
+                      {{ task.assigneeUserName || '待分配' }}
+                    </div>
+                    <div class="text-13px" :style="{ color: getStatusColor(task.status) }">
+                      {{ (task.status !== undefined ? statusMap[task.status] : undefined) || '未知状态' }}
+                    </div>
+                  </div>
+                  <div v-if="node.endTime || node.startTime" class="mt-4px text-12px text-[var(--el-text-color-placeholder)]">
+                    {{ node.endTime || node.startTime }}
+                  </div>
+                  <div
+                    v-if="task.reason"
+                    class="mt-8px text-13px text-[var(--el-text-color-regular)]"
+                  >
+                    <span class="font-500">审批意见：</span>{{ task.reason }}
+                  </div>
+                </div>
               </div>
-              <!-- 审批意见 -->
-              <div
-                v-if="item.remark"
-                class="mt-8px text-13px text-[var(--el-text-color-regular)]"
-              >
-                审批意见：{{ item.remark }}
+              <div v-else-if="node.candidateUsers && node.candidateUsers.length > 0" class="text-13px text-[var(--el-text-color-secondary)]">
+                <span class="font-500">候选人：</span>
+                {{ node.candidateUsers.map(u => u.nickname).join('、') }}
+              </div>
+              <div v-else class="text-13px text-[var(--el-text-color-placeholder)]">
+                待分配审批人
               </div>
             </el-timeline-item>
           </el-timeline>
@@ -138,10 +184,28 @@ import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ContentWrap } from '@/components/ContentWrap'
 import { useAppStore } from '@/store/modules/app'
-import { getResourcePublishApply, type ResourceApplyVO } from '@/api/resource/apply'
+import { getResourcePublishApply } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
-import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { DICT_TYPE } from '@/utils/dict'
+import type { ResourcePublishApplyRespVO } from '@/api/resource/info'
+
 defineOptions({ name: 'ApprovalDetail' })
+
+// 节点类型映射
+const nodeTypeMap: Record<number, string> = {
+  10: '发起人节点',
+  1: '结束节点',
+  11: '审批节点'
+}
+
+// 状态映射
+const statusMap: Record<number, string> = {
+  0: '草稿',
+  1: '审批中',
+  2: '审批通过',
+  3: '审批驳回',
+  4: '已取消'
+}
 
 const router = useRouter()
 const route = useRoute()
@@ -155,7 +219,7 @@ const isMobile = computed(() => appStore.getMobile)
 const loading = ref(false)
 
 // 申请数据
-const applyData = ref<ResourceApplyVO | null>(null)
+const applyData = ref<ResourcePublishApplyRespVO | null>(null)
 
 // 状态配置
 const statusConfig = {
@@ -165,46 +229,24 @@ const statusConfig = {
   [ApplyStatus.CANCELLED]: { label: '已撤销', color: '#909399' }
 }
 
-// 审批流程数据 - 根据 API 数据构建
-const approvalTimeline = computed(() => {
-  if (!applyData.value) return []
-
-  const timeline = [
-    {
-      status: ApplyStatus.APPROVED,
-      statusText: '提交申请',
-      person: applyData.value.applicant || '-',
-      time: applyData.value.createTime ? new Date(applyData.value.createTime).toLocaleString('zh-CN') : '-',
-      remark: ''
-    }
-  ]
-
-  // 如果有审批人和审批时间，添加审批节点
-  if (applyData.value.approver && applyData.value.approvalTime) {
-    timeline.push({
-      status: applyData.value.status || ApplyStatus.PENDING,
-      statusText: getStatusText(applyData.value.status),
-      person: applyData.value.approver,
-      time: new Date(applyData.value.approvalTime).toLocaleString('zh-CN'),
-      remark: applyData.value.approvalComment || ''
-    })
-  } else if (applyData.value.status === ApplyStatus.PENDING) {
-    // 待审批状态
-    timeline.push({
-      status: ApplyStatus.PENDING,
-      statusText: '待审批',
-      person: applyData.value.approver || '待分配',
-      time: '',
-      remark: ''
-    })
-  }
-
-  return timeline
-})
-
-// 当前步骤
+// 当前步骤 - 基于 activityNodes 计算
 const currentStep = computed(() => {
   if (!applyData.value) return 0
+
+  const activityNodes = applyData.value.approvalDetail?.activityNodes
+
+  if (activityNodes && activityNodes.length > 0) {
+    // 计算已完成的节点数量
+    const completedCount = activityNodes.filter((node) => {
+      // 节点状态：2-已完成
+      return node.status === 2 || (node.endTime && node.endTime !== '')
+    }).length
+
+    // 步骤索引从 0 开始，如果有节点完成则至少是步骤 1
+    return Math.min(completedCount, 2)
+  }
+
+  // 兼容旧数据格式
   const status = applyData.value.status
   if (status === ApplyStatus.PENDING) return 1
   if (status === ApplyStatus.APPROVED || status === ApplyStatus.REJECTED) return 2
@@ -214,13 +256,33 @@ const currentStep = computed(() => {
 // 步骤状态
 const processStatus = computed(() => {
   if (!applyData.value) return 'process'
+
+  const activityNodes = applyData.value.approvalDetail?.activityNodes
+
+  if (activityNodes && activityNodes.length > 0) {
+    // 检查是否有驳回的节点
+    const hasRejected = activityNodes.some((node) => {
+      return node.tasks?.some((task) => task.status === 3) // 3-已驳回
+    })
+    if (hasRejected) return 'error'
+
+    // 检查是否全部完成
+    const allCompleted = activityNodes.every((node) => {
+      return node.status === 2 || (node.endTime && node.endTime !== '')
+    })
+    if (allCompleted) return 'success'
+
+    return 'process'
+  }
+
+  // 兼容旧数据格式
   const status = applyData.value.status
   if (status === ApplyStatus.APPROVED) return 'success'
   if (status === ApplyStatus.REJECTED) return 'error'
   return 'process'
 })
 
-// 步骤描述
+// 步骤描述 - 基于 activityNodes 或 processInstance
 const stepDescriptions = computed(() => {
   if (!applyData.value) {
     return {
@@ -230,55 +292,87 @@ const stepDescriptions = computed(() => {
     }
   }
 
-  const status = applyData.value.status
-  const createTime = applyData.value.createTime ? new Date(applyData.value.createTime).toLocaleString('zh-CN') : ''
-  const approvalTime = applyData.value.approvalTime ? new Date(applyData.value.approvalTime).toLocaleString('zh-CN') : ''
+  const processInstance = applyData.value.approvalDetail?.processInstance
+  const activityNodes = applyData.value.approvalDetail?.activityNodes
+
+  // 获取开始时间
+  const startTime = processInstance?.startTime || applyData.value.createTime || ''
+
+  // 获取审批中的时间（第一个审批节点的开始时间）
+  let reviewTime = startTime
+  if (activityNodes && activityNodes.length > 0) {
+    const firstApprovalNode = activityNodes.find((node) => node.startTime)
+    reviewTime = firstApprovalNode?.startTime || startTime
+  }
+
+  // 获取结束时间和状态
+  let endTime = processInstance?.endTime || ''
+  let resultTitle = '申请结果'
+
+  if (activityNodes && activityNodes.length > 0) {
+    // 检查最后一个节点的状态
+    const lastNode = activityNodes[activityNodes.length - 1]
+    endTime = lastNode.endTime || endTime
+
+    // 判断结果
+    const hasRejected = activityNodes.some((node) =>
+      node.tasks?.some((task) => task.status === 3)
+    )
+    const allCompleted = activityNodes.every((node) => node.status === 2)
+
+    if (hasRejected) {
+      resultTitle = '审批驳回'
+    } else if (allCompleted) {
+      resultTitle = '审批通过'
+    }
+  } else {
+    // 兼容旧数据格式
+    const status = applyData.value.status
+    endTime = applyData.value.approvalTime || ''
+    resultTitle =
+      status === ApplyStatus.APPROVED
+        ? '审批通过'
+        : status === ApplyStatus.REJECTED
+          ? '审批失败'
+          : '申请结果'
+  }
 
   return {
-    submit: createTime,
-    review: createTime,
+    submit: startTime,
+    review: reviewTime,
     result: {
-      title: status === ApplyStatus.APPROVED ? '审批通过' : status === ApplyStatus.REJECTED ? '审批失败' : '申请结果',
-      time: status === ApplyStatus.APPROVED || status === ApplyStatus.REJECTED ? approvalTime : ''
+      title: resultTitle,
+      time: endTime
     }
   }
 })
 
-// 获取资源类型文本
-const getResourceTypeText = (type?: number) => {
-  const typeMap = {
-    1: '数据资源',
-    2: '应用资源',
-    3: '组件资源'
-  }
-  return typeMap[type || 1] || '未知'
-}
-
-// 格式化日期范围
-const formatDateRange = (startDate?: Date | string, duration?: number) => {
-  if (!startDate) return '-'
-
-  const start = new Date(startDate)
-  const startStr = start.toLocaleDateString('zh-CN')
-
-  if (!duration) return startStr
-
-  const end = new Date(start)
-  end.setDate(end.getDate() + duration)
-  const endStr = end.toLocaleDateString('zh-CN')
-
-  return `${startStr} ~ ${endStr} (${duration}天)`
-}
-
 // 获取状态文本
-const getStatusText = (status?: ApplyStatus) => {
+const getStatusText = (status?: number) => {
   if (status === undefined) return '未知'
-  return statusConfig[status]?.label || '未知'
+  return statusConfig[status]?.label || statusMap[status] || '未知'
 }
 
-// 获取状态颜色
-const getStatusColor = (status?: ApplyStatus) => {
+// 获取状态颜色 - 支持节点状态和申请状态
+const getStatusColor = (status?: number) => {
   if (status === undefined) return '#909399'
+
+  // BpmTaskStatusEnum 节点状态映射
+  const nodeStatusColors: Record<number, string> = {
+    0: '#909399', // 未开始/草稿
+    1: '#409EFF', // 进行中/审批中
+    2: '#67C23A', // 已完成/审批通过
+    3: '#F56C6C', // 已驳回
+    4: '#E6A23C', // 已取消
+    5: '#909399'  // 已终止
+  }
+
+  // 优先使用节点状态颜色
+  if (nodeStatusColors[status]) {
+    return nodeStatusColors[status]
+  }
+
+  // 兼容旧的申请状态
   return statusConfig[status]?.color || '#909399'
 }
 
@@ -305,6 +399,18 @@ const loadData = async () => {
 // 返回
 const handleBack = () => {
   router.back()
+}
+
+// 跳转到资源详情
+const handleResourceDetail = () => {
+  if (applyData.value?.resourceId) {
+    router.push({
+      path: '/resources/detail',
+      query: {
+        id: applyData.value.resourceId
+      }
+    })
+  }
 }
 
 // 初始化

@@ -1,45 +1,5 @@
 <template>
   <div class="p-24px">
-    <!-- 统计卡片 -->
-    <div class="mb-24px grid grid-cols-4 gap-16px">
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">全部申请</div>
-            <div class="mt-8px text-24px text-[#303133] font-600">{{ statistics.total }}</div>
-          </div>
-          <Icon icon="ep:folder" :size="40" class="text-[#409eff]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">待审批</div>
-            <div class="mt-8px text-24px text-[#e6a23c] font-600">{{ statistics.pending }}</div>
-          </div>
-          <Icon icon="ep:clock" :size="40" class="text-[#e6a23c]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">已通过</div>
-            <div class="mt-8px text-24px text-[#67c23a] font-600">{{ statistics.approved }}</div>
-          </div>
-          <Icon icon="ep:circle-check" :size="40" class="text-[#67c23a]/20" />
-        </div>
-      </el-card>
-      <el-card shadow="hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-14px text-[#909399]">已驳回</div>
-            <div class="mt-8px text-24px text-[#f56c6c] font-600">{{ statistics.rejected }}</div>
-          </div>
-          <Icon icon="ep:circle-close" :size="40" class="text-[#f56c6c]/20" />
-        </div>
-      </el-card>
-    </div>
-
     <!-- 搜索表单 -->
     <ContentWrap shadow="always" class="mb-16px">
       <el-form :model="queryParams" :inline="true" label-width="80px">
@@ -47,7 +7,7 @@
           <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" clearable />
         </el-form-item>
         <el-form-item label="申请状态">
-          <el-select v-model="queryParams.status" placeholder="全部" clearable>
+          <el-select v-model="queryParams.status" placeholder="全部" clearable class="!w-220px">
             <el-option label="待审批" :value="0" />
             <el-option label="已通过" :value="1" />
             <el-option label="已驳回" :value="2" />

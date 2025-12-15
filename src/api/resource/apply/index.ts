@@ -1,5 +1,6 @@
 import request from '@/config/axios'
 import type { ApplyStatus } from '../types'
+import type { ResourcePublishApplyRespVO } from '../info'
 
 /** 资源申请 VO */
 export interface ResourceApplyVO {
@@ -63,13 +64,14 @@ export const reapplyResource = (data: ResourceApplyVO) => {
   return request.post<number>({ url: '/resource/apply/reapply', data })
 }
 
-// 获取我申请的列表
+// 获取我申请的列表（资源申请）
 export const getMyResourceApplyPage = (params: ResourceApplyPageReqVO) => {
   return request.get<PageResult<ResourceApplyVO[]>>({ url: '/resource/apply/my-page', params })
 }
-// 获取我申请的列表
+
+// 获取我发起的上架申请列表
 export const getMyResourcePublishApplyPage = (params: ResourceApplyPageReqVO) => {
-  return request.get<PageResult<ResourceApplyVO[]>>({ url: '/resource/publish-apply/my-page', params })
+  return request.get<PageResult<ResourcePublishApplyRespVO[]>>({ url: '/resource/publish-apply/my-page', params })
 }
 
 // 获取待审批列表（我的待办）
@@ -77,13 +79,19 @@ export const getTodoApplyPage = (params: ResourceApplyPageReqVO) => {
   return request.get<PageResult<ResourceApplyVO[]>>({ url: '/resource/apply/todo-page', params })
 }
 
-// 我发起的详情
-export const getResourcePublishApply = (id: number) => {
-  return request.get<ResourceApplyVO>({ url: '/resource/publish-apply/get?id=' + id })
+// 获取待审批的上架申请列表（我的待办）
+export const getTodoPublishApplyPage = (params: ResourceApplyPageReqVO) => {
+  return request.get<PageResult<ResourcePublishApplyRespVO[]>>({ url: '/resource/publish-apply/todo-page', params })
 }
-// 我审批的详情
+
+// 获取上架申请详情
+export const getResourcePublishApply = (id: number) => {
+  return request.get<ResourcePublishApplyRespVO>({ url: '/resource/publish-apply/get?id=' + id })
+}
+
+// 获取资源申请详情
 export const getResourceApply = (id: number) => {
-  return request.get<ResourceApplyVO>({ url: '/resource/publish-apply/get?id=' + id })
+  return request.get<ResourceApplyVO>({ url: '/resource/apply/get?id=' + id })
 }
 
 /** 资源类型统计 VO */
