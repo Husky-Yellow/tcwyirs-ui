@@ -1,5 +1,4 @@
 <template>
-  我审批的
   <!-- todo 根据角色调不同的列表 通过 roles 判断 -->
   <!-- 搜索表单 -->
   <ContentWrap>
@@ -113,17 +112,26 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { getTodoPublishApplyPage } from '@/api/resource/publish-apply'
+import { getTodoApplyPage } from '@/api/resource/apply'
 import { approveResourceApply, rejectResourceApply } from '@/api/resource/approval'
 import type { ResourceApplyVO, ResourceApplyPageReqVO } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
 import { useStatusStyle } from '@/views/Home/composables/useStatusStyle'
 import { Search } from '@/components/Search'
 import type { FormSchema } from '@/types/data'
+import { useUserStore } from '@/store/modules/user'
 
 defineOptions({ name: 'MyApproval' })
 
 const message = useMessage()
 const router = useRouter()
+const userStore = useUserStore()
+
+/** 获取当前角色 */
+const currentRole = computed(() => userStore.getCurrentRole)
+
+/** 判断是否为资源管理员 */
+const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
 
 // 状态样式
 const { getStatusStyle: getApplyStatusStyle } = useStatusStyle({
@@ -255,7 +263,9 @@ const getList = async () => {
       taskType
     }
 
-    const { data } = await getTodoPublishApplyPage(params)
+    // 根据角色调用不同的接口
+    const api = isResourceAdmin.value ? getTodoApplyPage : getTodoPublishApplyPage
+    const { data } = await api(params)
     list.value = data?.list || []
     total.value = data?.total || 0
 
@@ -272,7 +282,9 @@ const getList = async () => {
 const getPendingCount = async () => {
   try {
     // taskType: 1-待审批
-    const { data } = await getTodoPublishApplyPage({ pageNo: 1, pageSize: 1, taskType: 1 })
+    // 根据角色调用不同的接口
+    const api = isResourceAdmin.value ? getTodoApplyPage : getTodoPublishApplyPage
+    const { data } = await api({ pageNo: 1, pageSize: 1, taskType: 1 })
     pendingCount.value = data?.total || 0
   } catch (error) {
     console.error('获取待审批数量失败:', error)
@@ -340,16 +352,21 @@ const confirmApproval = async () => {
 
     // 刷新列表
     await getList()
-    // 更新待审批数量
-    await getPendingCount()
+    // 如果当前 tab 不是 pending，需要额外更新待审批数量
+    if (activeTab.value !== 'pending') {
+      await getPendingCount()
+    }
   } finally {
     submitting.value = false
   }
 }
 
 /** 初始化 */
-onMounted(() => {
-  getList()
-  getPendingCount()
+onMounted(async () => {
+  await getList()
+  // 如果初始 tab 不是 pending，需要额外获取待审批数量
+  if (activeTab.value !== 'pending') {
+    await getPendingCount()
+  }
 })
 </script>

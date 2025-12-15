@@ -19,9 +19,12 @@
       </el-form-item>
       <el-form-item label="资源类型:" prop="resourceType">
         <el-select v-model="queryParams.resourceType" placeholder="全部" clearable class="!w-240px">
-          <el-option label="数据资源" :value="1" />
-          <el-option label="应用资源" :value="2" />
-          <el-option label="组件资源" :value="3" />
+          <el-option
+            v-for="dict in getIntDictOptions(DICT_TYPE.RESOURCE_TYPE)"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="申请状态:" prop="status">
@@ -189,6 +192,7 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
+import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { getTodoPublishApplyPage } from '@/api/resource/publish-apply'
 import { getTodoApplyPage, getMyResourceApplyPage } from '@/api/resource/apply'
 import type { ResourcePublishApplyRespVO } from '@/api/resource/info'
@@ -313,8 +317,8 @@ const getList = async () => {
 
     let res
     if (isResourceAdmin.value) {
-      // 资源管理员：调用待办资源申请接口
-      res = await getTodoApplyPage(params)
+      // 资源管理员：调用我的资源申请接口
+      res = await getMyResourceApplyPage(params)
     } else if (isOperationAdmin.value) {
       // 运营管理员：调用待办发布申请接口
       res = await getTodoPublishApplyPage(params)

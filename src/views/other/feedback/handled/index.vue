@@ -8,8 +8,10 @@
   <ContentWrap>
     <div class="mb-10px text-16px font-bold">反馈列表</div>
     <el-table v-loading="loading" :data="list">
+      <el-table-column label="问题类型" prop="resourceName" min-width="120" />
       <el-table-column label="资源名称" prop="resourceName" min-width="120" />
       <el-table-column label="问题描述" prop="content" min-width="150" show-overflow-tooltip />
+      <el-table-column label="反馈人" prop="content" min-width="150" show-overflow-tooltip />
       <el-table-column label="反馈状态" prop="status" width="120">
         <template #default="scope">
           <div class="flex items-center">

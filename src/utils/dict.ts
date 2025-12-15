@@ -158,5 +158,10 @@ export enum DICT_TYPE {
   ERP_STOCK_RECORD_BIZ_TYPE = 'erp_stock_record_biz_type', // 库存明细的业务类型
 
   // ========== RESOURCE - 资源模块  ==========
-  PRODUCT_LISTING_STATUS = 'product_listing_status' // 产品上架状态
+  PRODUCT_LISTING_STATUS = 'product_listing_status', // 产品上架状态
+  RESOURCE_TYPE = 'resource_type', // 资源类型
+  RESOURCE_STATUS = 'resource_status', // 资源状态
+  PROJECT_STATUS = 'project_status', // 项目状态
+  ISSUE_TYPE = 'issue_type', // 问题类型
+  SCORE_WEIGHT = 'score_weight', // 评分权重
 }

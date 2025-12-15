@@ -79,7 +79,7 @@ export default defineComponent({
       const itemClasses = [
         'flex items-center cursor-pointer transition-all duration-200 ease rd-6px',
         props.isActive
-          ? (props.level === 2 ? 'bg-white text-#409eff' : 'bg-#979797/80 text-#000/45 rd-8px')
+          ? (props.level === 2 ? 'bg-white text-#409eff' : 'bg-#000000/6 text-#000/45 rd-8px')
           : (props.level === 2 ? 'text-#606266 hover:bg-#ecf5ff' : 'text-#606266 hover:bg-#f5f7fa')
       ]
 

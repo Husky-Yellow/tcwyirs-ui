@@ -49,7 +49,10 @@ export const offlineResource = (data: ResourceOfflineReqVO) => {
   return request.put({ url: `/resource/publish-apply/offline`, data })
 }
 // 运营管理员：/resource/publish-apply/todo-page
-// 资源管理员 /resource/apply/todo-page
+// 资源管理员（我发起的） /resource/apply/my-page
+// 资源管理员（待我审批） /resource/apply/todo-page
+// 资源管理员（我反馈的） /resource/feedback/my-feedback-page queryType
+// 资源管理员（我处理的） /resource/feedback/my-feedback-page。queryType
 // 项目：/resource/apply/my-page
 // ========== 查询发布申请列表 ==========
 
