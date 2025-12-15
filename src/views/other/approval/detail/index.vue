@@ -180,7 +180,7 @@
           <el-button @click="handleCancel">取消</el-button>
           <el-button type="danger" @click="handleReject">驳回</el-button>
           <el-button type="warning" @click="handleTransfer">转交</el-button>
-          <el-button type="success" @click="handleApprove">通过</el-button>
+          <el-button type="success" @click="handleApproveDirectly" :loading="submitting">通过</el-button>
         </div>
       </div>
 
@@ -651,7 +651,32 @@ const confirmTransfer = async () => {
   }
 }
 
-// 通过操作
+// 通过操作（直接调用接口）
+const handleApproveDirectly = async () => {
+  if (!applyData.value?.id) return
+
+  try {
+    await ElMessageBox.confirm('确定要通过该申请吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'success'
+    })
+
+    submitting.value = true
+    await approveResourceApply({ id: applyData.value.id })
+    ElMessage.success('审批通过')
+    await loadData()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      console.error('审批失败:', error)
+      ElMessage.error('审批失败')
+    }
+  } finally {
+    submitting.value = false
+  }
+}
+
+// 通过操作（打开对话框）
 const handleApprove = () => {
   if (!applyData.value?.id) return
   approveForm.value = {
