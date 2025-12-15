@@ -77,9 +77,13 @@ export const getTodoApplyPage = (params: ResourceApplyPageReqVO) => {
   return request.get<PageResult<ResourceApplyVO[]>>({ url: '/resource/apply/todo-page', params })
 }
 
-// 获取申请详情
+// 我发起的详情
+export const getResourcePublishApply = (id: number) => {
+  return request.get<ResourceApplyVO>({ url: '/resource/publish-apply/get?id=' + id })
+}
+// 我审批的详情
 export const getResourceApply = (id: number) => {
-  return request.get<ResourceApplyVO>({ url: '/resource/apply/get?id=' + id })
+  return request.get<ResourceApplyVO>({ url: '/resource/publish-apply/get?id=' + id })
 }
 
 /** 资源类型统计 VO */

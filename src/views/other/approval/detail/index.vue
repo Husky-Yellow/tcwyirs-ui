@@ -138,7 +138,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ContentWrap } from '@/components/ContentWrap'
 import { useAppStore } from '@/store/modules/app'
-import { getResourceApply, type ResourceApplyVO } from '@/api/resource/apply'
+import { getResourcePublishApply, type ResourceApplyVO } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 defineOptions({ name: 'ApprovalDetail' })
@@ -293,7 +293,7 @@ const loadData = async () => {
 
   loading.value = true
   try {
-    applyData.value = await getResourceApply(Number(id))
+    applyData.value = await getResourcePublishApply(Number(id))
   } catch (error) {
     console.error('加载申请详情失败:', error)
     ElMessage.error('加载申请详情失败')
