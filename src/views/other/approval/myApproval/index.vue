@@ -284,10 +284,12 @@ const handleReset = (values: any) => {
 
 /** 详情操作 */
 const handleDetail = (row: ResourceApplyVO) => {
+  console.log('row', row);
+
   router.push({
     name: 'ApprovalDetail',
     query: {
-      id: row.id
+      id: row.resourceId
     }
   })
 }
@@ -295,7 +297,7 @@ const handleDetail = (row: ResourceApplyVO) => {
 /** 通过操作 */
 const handleApprove = (row: ResourceApplyVO) => {
   approvalType.value = 'approve'
-  approvalForm.id = row.id!
+  approvalForm.id = row.resourceId!
   approvalForm.comment = ''
   approvalDialogVisible.value = true
 }
@@ -303,7 +305,7 @@ const handleApprove = (row: ResourceApplyVO) => {
 /** 驳回操作 */
 const handleReject = (row: ResourceApplyVO) => {
   approvalType.value = 'reject'
-  approvalForm.id = row.id!
+  approvalForm.id = row.resourceId!
   approvalForm.comment = ''
   approvalDialogVisible.value = true
 }

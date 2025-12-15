@@ -25,17 +25,27 @@ export const getDoneApprovalPage = (params: ResourceApplyPageReqVO) => {
   return request.get<PageResult<ResourceApplyVO[]>>({ url: '/resource/approval/done-page', params })
 }
 
-// 通过申请
+// 提交审批
+export const submitApproval = (data: ApprovalActionVO) => {
+  return request.post<void>({ url: '/resource/approval/submit', data })
+}
+
+// 审批通过
 export const approveResourceApply = (data: ApprovalActionVO) => {
   return request.post<void>({ url: '/resource/approval/approve', data })
 }
 
-// 驳回申请
+// 审批驳回
 export const rejectResourceApply = (data: ApprovalActionVO) => {
   return request.post<void>({ url: '/resource/approval/reject', data })
 }
 
-// 转交申请
+// 取消申请（审批流程中）
+export const cancelApproval = (data: ApprovalActionVO) => {
+  return request.post<void>({ url: '/resource/approval/cancel', data })
+}
+
+// 转交审批
 export const transferResourceApply = (data: ApprovalTransferVO) => {
   return request.post<void>({ url: '/resource/approval/transfer', data })
 }

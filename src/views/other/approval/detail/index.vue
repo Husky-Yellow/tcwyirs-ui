@@ -250,11 +250,12 @@ import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ContentWrap } from '@/components/ContentWrap'
 import { useAppStore } from '@/store/modules/app'
-import { getResourcePublishApply, cancelResourceApply } from '@/api/resource/apply'
+import { getResourcePublishApply } from '@/api/resource/apply'
 import {
   approveResourceApply,
   rejectResourceApply,
   transferResourceApply,
+  cancelApproval,
   type ApprovalActionVO,
   type ApprovalTransferVO
 } from '@/api/resource/approval'
@@ -529,7 +530,7 @@ const handleCancel = async () => {
       type: 'warning'
     })
 
-    await cancelResourceApply(applyData.value.id)
+    await cancelApproval({ id: applyData.value.id })
     ElMessage.success('取消成功')
     await loadData()
   } catch (error: any) {
