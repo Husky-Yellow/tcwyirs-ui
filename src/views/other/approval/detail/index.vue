@@ -158,7 +158,7 @@
 
     </ContentWrap>
 
-    <!-- 底部悬浮返回按钮 -->
+    <!-- 底部悬浮操作按钮 -->
     <div
       class="fixed bottom-0 right-0 z-1 bg-white px-24px py-16px shadow-[0_-2px_8px_rgba(0,0,0,0.1)] transition-all duration-300"
       :class="{
@@ -167,20 +167,98 @@
         'w-full': isMobile
       }"
     >
-      <div class="text-right">
+      <div class="flex items-center justify-between">
         <el-button @click="handleBack">返回</el-button>
+        <div v-if="applyData?.status === 0" class="space-x-12px">
+          <el-button @click="handleCancel">取消</el-button>
+          <el-button type="danger" @click="handleReject">驳回</el-button>
+          <el-button type="warning" @click="handleTransfer">转交</el-button>
+          <el-button type="success" @click="handleApprove">通过</el-button>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- 驳回对话框 -->
+  <el-dialog v-model="rejectDialogVisible" title="驳回申请" width="500px">
+    <el-form :model="rejectForm" label-width="80px">
+      <el-form-item label="驳回原因:" required>
+        <el-input
+          v-model="rejectForm.comment"
+          type="textarea"
+          :rows="4"
+          placeholder="请输入驳回原因"
+        />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="rejectDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="confirmReject" :loading="submitting">确 定</el-button>
+    </template>
+  </el-dialog>
+
+  <!-- 转交对话框 -->
+  <el-dialog v-model="transferDialogVisible" title="转交申请" width="500px">
+    <el-form :model="transferForm" label-width="80px">
+      <el-form-item label="转交给:" required>
+        <el-select v-model="transferForm.userId" placeholder="请选择审批人" class="w-full">
+          <el-option
+            v-for="user in approverList"
+            :key="user.id"
+            :label="user.nickname"
+            :value="user.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="转交说明:">
+        <el-input
+          v-model="transferForm.comment"
+          type="textarea"
+          :rows="3"
+          placeholder="请输入转交说明（可选）"
+        />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="transferDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="confirmTransfer" :loading="submitting">确 定</el-button>
+    </template>
+  </el-dialog>
+
+  <!-- 通过对话框 -->
+  <el-dialog v-model="approveDialogVisible" title="通过申请" width="500px">
+    <el-form :model="approveForm" label-width="80px">
+      <el-form-item label="审批意见:">
+        <el-input
+          v-model="approveForm.comment"
+          type="textarea"
+          :rows="4"
+          placeholder="请输入审批意见（可选）"
+        />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="approveDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="confirmApprove" :loading="submitting">确 定</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { ContentWrap } from '@/components/ContentWrap'
 import { useAppStore } from '@/store/modules/app'
-import { getResourcePublishApply } from '@/api/resource/apply'
+import { getResourcePublishApply, cancelResourceApply } from '@/api/resource/apply'
+import {
+  approveResourceApply,
+  rejectResourceApply,
+  transferResourceApply,
+  type ApprovalActionVO,
+  type ApprovalTransferVO
+} from '@/api/resource/approval'
+import { getSimpleUserList, type UserVO } from '@/api/system/user'
 import { ApplyStatus } from '@/api/resource/types'
 import { DICT_TYPE } from '@/utils/dict'
 import type { ResourcePublishApplyRespVO } from '@/api/resource/info'
@@ -216,6 +294,34 @@ const loading = ref(false)
 
 // 申请数据
 const applyData = ref<ResourcePublishApplyRespVO | null>(null)
+
+// 操作相关状态
+const submitting = ref(false)
+
+// 驳回对话框
+const rejectDialogVisible = ref(false)
+const rejectForm = ref<ApprovalActionVO>({
+  id: 0,
+  comment: ''
+})
+
+// 转交对话框
+const transferDialogVisible = ref(false)
+const transferForm = ref<ApprovalTransferVO>({
+  id: 0,
+  userId: 0,
+  comment: ''
+})
+
+// 通过对话框
+const approveDialogVisible = ref(false)
+const approveForm = ref<ApprovalActionVO>({
+  id: 0,
+  comment: ''
+})
+
+// 审批人列表（转交时使用）
+const approverList = ref<UserVO[]>([])
 
 // 状态配置
 const statusConfig = {
@@ -343,12 +449,6 @@ const stepDescriptions = computed(() => {
   }
 })
 
-// 获取状态文本
-const getStatusText = (status?: number) => {
-  if (status === undefined) return '未知'
-  return statusConfig[status]?.label || statusMap[status] || '未知'
-}
-
 // 获取状态颜色 - 支持节点状态和申请状态
 const getStatusColor = (status?: number) => {
   if (status === undefined) return '#909399'
@@ -409,9 +509,130 @@ const handleResourceDetail = () => {
   }
 }
 
+// 加载审批人列表
+const loadApproverList = async () => {
+  try {
+    approverList.value = await getSimpleUserList()
+  } catch (error) {
+    console.error('加载审批人列表失败:', error)
+  }
+}
+
+// 取消申请
+const handleCancel = async () => {
+  if (!applyData.value?.id) return
+
+  try {
+    await ElMessageBox.confirm('确定要取消该申请吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+
+    await cancelResourceApply(applyData.value.id)
+    ElMessage.success('取消成功')
+    await loadData()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      console.error('取消申请失败:', error)
+      ElMessage.error('取消申请失败')
+    }
+  }
+}
+
+// 驳回操作
+const handleReject = () => {
+  if (!applyData.value?.id) return
+  rejectForm.value = {
+    id: applyData.value.id,
+    comment: ''
+  }
+  rejectDialogVisible.value = true
+}
+
+// 确认驳回
+const confirmReject = async () => {
+  if (!rejectForm.value.comment?.trim()) {
+    ElMessage.warning('请输入驳回原因')
+    return
+  }
+
+  submitting.value = true
+  try {
+    await rejectResourceApply(rejectForm.value)
+    ElMessage.success('已驳回')
+    rejectDialogVisible.value = false
+    await loadData()
+  } catch (error) {
+    console.error('驳回失败:', error)
+    ElMessage.error('驳回失败')
+  } finally {
+    submitting.value = false
+  }
+}
+
+// 转交操作
+const handleTransfer = () => {
+  if (!applyData.value?.id) return
+  transferForm.value = {
+    id: applyData.value.id,
+    userId: 0,
+    comment: ''
+  }
+  transferDialogVisible.value = true
+}
+
+// 确认转交
+const confirmTransfer = async () => {
+  if (!transferForm.value.userId) {
+    ElMessage.warning('请选择转交对象')
+    return
+  }
+
+  submitting.value = true
+  try {
+    await transferResourceApply(transferForm.value)
+    ElMessage.success('转交成功')
+    transferDialogVisible.value = false
+    await loadData()
+  } catch (error) {
+    console.error('转交失败:', error)
+    ElMessage.error('转交失败')
+  } finally {
+    submitting.value = false
+  }
+}
+
+// 通过操作
+const handleApprove = () => {
+  if (!applyData.value?.id) return
+  approveForm.value = {
+    id: applyData.value.id,
+    comment: ''
+  }
+  approveDialogVisible.value = true
+}
+
+// 确认通过
+const confirmApprove = async () => {
+  submitting.value = true
+  try {
+    await approveResourceApply(approveForm.value)
+    ElMessage.success('审批通过')
+    approveDialogVisible.value = false
+    await loadData()
+  } catch (error) {
+    console.error('审批失败:', error)
+    ElMessage.error('审批失败')
+  } finally {
+    submitting.value = false
+  }
+}
+
 // 初始化
 onMounted(() => {
   loadData()
+  loadApproverList()
 })
 </script>
 
