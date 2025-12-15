@@ -69,7 +69,9 @@
           :min-width="columnConfig[columnKey].minWidth"
         >
           <template #default="scope">
-            <el-link type="primary" :underline="false">{{ scope.row.resourceName }}</el-link>
+            <el-link type="primary" :underline="false" @click="handleResourceDetail(scope.row)">
+              {{ scope.row.resourceName }}
+            </el-link>
           </template>
         </el-table-column>
 
@@ -231,21 +233,8 @@ const currentRole = computed(() => userStore.getCurrentRole)
 /** 判断角色类型 */
 const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
 const isOperationAdmin = computed(() => currentRole.value === 'project_manager')
-const isProjectMember = computed(() => ['admin', 'super_admin'].includes(currentRole.value))
-
-/** 表格列配置 */
-interface ColumnConfig {
-  show: boolean
-  label?: string
-  prop?: string
-  width?: string
-  minWidth?: string
-  order?: number // 显示顺序
-}
 
 const columnConfig = computed(() => {
-  console.log('isResourceAdmin.value', isResourceAdmin.value);
-
   if (isResourceAdmin.value) {
     // 资源管理员：资源名称，资源类型，描述，申请状态，申请人，申请时间
     return {
@@ -372,6 +361,16 @@ const getResourceTypeText = (type: number) => {
 /** 获取状态配置 */
 const getStatusConfig = (status: number) => {
   return statusMap[status] || { text: '未知', color: 'gray-500', value: 'unknown' }
+}
+
+/** 资源名称点击跳转到资源详情 */
+const handleResourceDetail = (row: ResourcePublishApplyRespVO) => {
+  router.push({
+    path: '/resources/detail',
+    query: {
+      id: row.resourceId
+    }
+  })
 }
 
 /** 详情操作 */
