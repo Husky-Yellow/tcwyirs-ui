@@ -72,11 +72,7 @@
                         <div>
               <span class="text-14px text-[var(--el-text-color-secondary)]">审批状态：</span>
               <span class="text-14px" :style="{ color: getStatusColor(applyData.status) }">
-                <span
-                  class="mr-8px inline-block h-8px w-8px rounded-full"
-                  :style="{ backgroundColor: getStatusColor(applyData.status) }"
-                ></span>
-                {{ getStatusText(applyData.status) }}
+                <dict-tag :type="DICT_TYPE.BPM_TASK_STATUS" :value="`${applyData?.status}`" />
               </span>
             </div>
                       <div>

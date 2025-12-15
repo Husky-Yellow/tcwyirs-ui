@@ -116,7 +116,6 @@ import { getTodoApplyPage } from '@/api/resource/apply'
 import { approveResourceApply, rejectResourceApply } from '@/api/resource/approval'
 import type { ResourceApplyVO, ResourceApplyPageReqVO } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
-import { useStatusStyle } from '@/views/Home/composables/useStatusStyle'
 import { Search } from '@/components/Search'
 import type { FormSchema } from '@/types/data'
 import { useUserStore } from '@/store/modules/user'
@@ -133,15 +132,17 @@ const currentRole = computed(() => userStore.getCurrentRole)
 /** 判断是否为资源管理员 */
 const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
 
-// 状态样式
-const { getStatusStyle: getApplyStatusStyle } = useStatusStyle({
+// 状态样式配置
+const statusStyleMap = {
   [ApplyStatus.PENDING]: { label: '待审批', dotColor: '#faad14', textColor: '#faad14' },
   [ApplyStatus.APPROVED]: { label: '已通过', dotColor: '#52c41a', textColor: '#52c41a' },
   [ApplyStatus.REJECTED]: { label: '已驳回', dotColor: '#ff4d4f', textColor: '#ff4d4f' },
   [ApplyStatus.CANCELLED]: { label: '已撤销', dotColor: '#d9d9d9', textColor: '#999999' }
-})
+}
 
-const getStatusStyle = (status: ApplyStatus) => getApplyStatusStyle(status)
+const getStatusStyle = (status: ApplyStatus) => {
+  return statusStyleMap[status] || { label: '未知', dotColor: '#d9d9d9', textColor: '#999999' }
+}
 
 // 标签页
 const activeTab = ref<'pending' | 'done'>('pending')
@@ -265,13 +266,18 @@ const getList = async () => {
 
     // 根据角色调用不同的接口
     const api = isResourceAdmin.value ? getTodoApplyPage : getTodoPublishApplyPage
-    const { data } = await api(params)
-    list.value = data?.list || []
-    total.value = data?.total || 0
+    const res = await api(params)
+    console.log(res);
+
+    const {data} = res
+    console.log('data', data);
+
+    list.value = res?.list || []
+    total.value = res?.total || 0
 
     // 更新待审批数量
     if (activeTab.value === 'pending') {
-      pendingCount.value = data?.total || 0
+      pendingCount.value = res?.total || 0
     }
   } finally {
     loading.value = false
