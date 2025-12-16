@@ -33,8 +33,8 @@ export const submitApproval = (data: ApprovalActionVO) => {
 }
 
 // 审批通过
-export const approveResourceApply = (data: ApprovalActionVO) => {
-  return request.post<void>({ url: '/resource/approval/approve', data })
+export const approveResourceApply = (params: ApprovalActionVO) => {
+  return request.put<void>({ url: '/resource/approval/approve', params })
 }
 
 // 审批驳回
