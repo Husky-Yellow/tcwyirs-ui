@@ -239,6 +239,7 @@ import type { DynamicSelectOption } from '@/components/DynamicSelect'
 import type { ResourceInfoSaveReqVO, ResourceAppExtVO, IntroScene } from '@/api/resource/info'
 import type { ResourceTagVO } from '@/api/resource/tag'
 import { createResourceInfo, updateResourceInfo } from '@/api/resource/info'
+import { createPublishApply } from '@/api/resource/publish-apply'
 
 defineOptions({ name: 'ApplicationForm' })
 
@@ -460,17 +461,29 @@ const handleSave = async () => {
 const handleSaveAndPublish = async () => {
   try {
     await formRef.value?.validate()
-    const submitData: ResourceInfoSaveReqVO = {
-      ...formData.value,
-      publishDirectly: true
+
+    let resourceId: number
+
+    if (props.isEdit && formData.value.id) {
+      // 编辑模式：使用更新接口
+      await updateResourceInfo(formData.value)
+      resourceId = formData.value.id
+      ElMessage.success('更新成功，正在提交上架申请...')
+    } else {
+      // 新增模式：使用创建接口
+      resourceId = await createResourceInfo(formData.value)
+      ElMessage.success('创建成功，正在提交上架申请...')
     }
 
-    if (props.isEdit && submitData.id) {
-      await updateResourceInfo(submitData)
-      ElMessage.success('更新并上架成功!')
-    } else {
-      await createResourceInfo(submitData)
-      ElMessage.success('创建并上架成功!')
+    // 调用上架申请接口
+    if (resourceId) {
+      try {
+        await createPublishApply({ resourceId })
+        ElMessage.success('上架申请已提交，等待审批')
+      } catch (error) {
+        console.error('提交上架申请失败:', error)
+        ElMessage.error('资源保存成功，但上架申请提交失败')
+      }
     }
 
     visible.value = false
