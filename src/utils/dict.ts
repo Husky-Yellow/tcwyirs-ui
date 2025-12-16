@@ -164,4 +164,5 @@ export enum DICT_TYPE {
   PROJECT_STATUS = 'project_status', // 项目状态
   ISSUE_TYPE = 'issue_type', // 问题类型
   SCORE_WEIGHT = 'score_weight', // 评分权重
+  APPROVAL_STATUS = 'approval_status', // 审批状态
 }
