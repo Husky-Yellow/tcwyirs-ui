@@ -15,7 +15,15 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column label="问题描述" prop="description" min-width="200" show-overflow-tooltip />
+     
+      <el-table-column label="资源名称" prop="resourceName" min-width="150" >
+        <template #default="scope">
+          <span class="text-[#409EFF]">
+            {{ scope.row.resourceName }}
+           </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="问题描述" prop="content" min-width="200" show-overflow-tooltip />
       <el-table-column label="反馈状态" prop="status" width="120">
         <template #default="scope">
           <div class="flex items-center">

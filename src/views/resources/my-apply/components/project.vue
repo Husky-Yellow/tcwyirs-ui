@@ -6,12 +6,24 @@
         <el-form-item label="资源名称">
           <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" clearable />
         </el-form-item>
-        <el-form-item label="申请状态">
+        <el-form-item label="资源类型">
+          <el-select v-model="queryParams.resourceType" placeholder="全部" clearable class="!w-240px">
+            <el-option
+                v-for="dict in getIntDictOptions(DICT_TYPE.RESOURCE_TYPE)"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="资源状态">
           <el-select v-model="queryParams.status" placeholder="全部" clearable class="!w-220px">
-            <el-option label="待审批" :value="0" />
-            <el-option label="已通过" :value="1" />
-            <el-option label="已驳回" :value="2" />
-            <el-option label="已撤销" :value="3" />
+            <el-option
+                v-for="dict in getIntDictOptions(DICT_TYPE.RESOURCE_STATUS)"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -19,6 +31,7 @@
             <Icon icon="ep:search" class="mr-6px" />
             搜索
           </el-button>
+          
           <el-button @click="handleReset">
             <Icon icon="ep:refresh" class="mr-6px" />
             重置
@@ -30,27 +43,33 @@
     <!-- 申请列表 -->
     <ContentWrap shadow="always">
       <el-table v-loading="loading" :data="applyList" border stripe>
-        <el-table-column prop="resourceName" label="资源名称" min-width="180" />
-        <el-table-column prop="projectName" label="所属项目" width="150" />
-        <el-table-column prop="reason" label="申请原因" min-width="200" show-overflow-tooltip />
-        <el-table-column prop="duration" label="使用期限" width="100">
+        <el-table-column prop="resourceName" label="资源名称" min-width="120" />
+        <el-table-column prop="resourceTagName" label="资源标签" width="120">
           <template #default="{ row }">
-            {{ row.duration }} 天
+            <el-tag v-if="row.resourceTagName">{{ row.resourceTagName }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="申请状态" width="100">
+        <el-table-column prop="projectName" label="关联项目" width="150" />
+        <el-table-column prop="status" label="资源状态" width="100">
           <template #default="{ row }">
             <el-tag :type="getStatusTagType(row.status)">
               {{ getStatusName(row.status) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="approver" label="审批人" width="120" />
-        <el-table-column prop="createTime" label="申请时间" width="180">
+        <!-- <el-table-column prop="reason" label="申请原因" min-width="200" show-overflow-tooltip /> -->
+        <el-table-column prop="duration" label="资源周期" width="100">
+          <template #default="{ row }">
+            {{ row.duration }} 天
+          </template>
+        </el-table-column>
+        
+        <!-- <el-table-column prop="approver" label="审批人" width="120" /> -->
+        <!-- <el-table-column prop="createTime" label="申请时间" width="180">
           <template #default="{ row }">
             {{ formatDate(row.createTime) }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
             <el-button link type="primary" @click="handleView(row)">
@@ -107,7 +126,7 @@ import {
   type ResourceApplyPageReqVO
 } from '@/api/resource/apply'
 import { formatDate } from '@/utils/formatTime'
-
+import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 defineOptions({ name: 'ProjectApplyView' })
 
 // 加载状态
@@ -135,8 +154,10 @@ const total = ref(0)
 
 // 获取状态名称
 const getStatusName = (status: number) => {
-  const statusMap = { 0: '待审批', 1: '已通过', 2: '已驳回', 3: '已撤销' }
-  return statusMap[status] || '未知'
+  // const statusMap = { 0: '待审批', 1: '已通过', 2: '已驳回', 3: '已撤销' }
+  const statusMap = getIntDictOptions(DICT_TYPE.RESOURCE_STATUS)
+  const dict = statusMap?.find(t => t.value === Number(status))
+  return dict?.label || ''
 }
 
 // 获取状态标签类型
@@ -235,6 +256,12 @@ const handleReapply = async (row: ResourceApplyVO) => {
     }
   }
 }
+// 根据标签ID获取标签名称
+// const getTagName = (tagId: number | string | undefined) => {
+//   if (!tagId) return ''
+//   const tag = props.tagList?.find(t => t.id === Number(tagId))
+//   return tag?.name || ''
+// }
 
 // 页面加载时获取数据
 onMounted(() => {

@@ -39,7 +39,7 @@ export interface MyCollectStatisticsVO {
 
 // 获取我的收藏列表
 export const getCollectRecordPage = (params: CollectRecordPageReqVO) => {
-  return request.get<PageResult<CollectRecordVO[]>>({ url: '/resource/collect/page', params })
+  return request.get<PageResult<CollectRecordVO[]>>({ url: '/resource/collect/my-page', params })
 }
 
 // 获取我的收藏统计

@@ -7,7 +7,7 @@
     </div>
 
     <!-- 统计卡片 -->
-    <div class="mb-24px grid grid-cols-4 gap-16px">
+    <div v-if="false" class="mb-24px grid grid-cols-4 gap-16px">
       <el-card shadow="hover">
         <div class="flex items-center justify-between">
           <div>
