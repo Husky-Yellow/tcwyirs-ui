@@ -47,12 +47,12 @@
       <el-table-column label="操作" align="center" width="200" fixed="right">
         <template #default="scope">
           <el-link type="primary" :underline="false" @click="handleDetail(scope.row)">详情</el-link>
-          <template v-if="scope.row.status === 0">
+          <!-- <template v-if="scope.row.status === 0">
             <el-divider direction="vertical" />
-            <el-link type="success" :underline="false" @click="handleApprove(scope.row)">通过</el-link>
+            <el-link type="success" :underline="false" @click="handleApprove(scope.row)">通过1</el-link>
             <el-divider direction="vertical" />
             <el-link type="danger" :underline="false" @click="handleReject(scope.row)">驳回</el-link>
-          </template>
+          </template> -->
         </template>
       </el-table-column>
     </el-table>
@@ -98,7 +98,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { getTodoPublishApplyPage } from '@/api/resource/publish-apply'
-import { getTodoApplyPage } from '@/api/resource/apply'
+import { getTodoApplyPage, getResourcePublishApply } from '@/api/resource/apply'
 import { approveResourceApply, rejectResourceApply } from '@/api/resource/approval'
 import type { ResourceApplyVO, ResourceApplyPageReqVO } from '@/api/resource/apply'
 import { ApplyStatus } from '@/api/resource/types'
@@ -198,9 +198,36 @@ const approvalDialogVisible = ref(false)
 const approvalType = ref<'approve' | 'reject'>('approve')
 const approvalForm = reactive({
   id: 0,
+  type: 2, // 审批类型：1-资源申请，2-上架申请
+  taskId: '', // 任务ID
   comment: ''
 })
 const submitting = ref(false)
+
+/**
+ * 获取当前用户的待办任务ID
+ * 1. 找到当前待审批的节点（activityNodes 中 status=1 的节点）
+ * 2. 从该节点的 tasks 中找到 assigneeUserId 等于当前登录用户的任务
+ * 3. 取该任务的 id 字段作为 taskId
+ */
+const getCurrentUserTaskId = (approvalDetail: any): string | undefined => {
+  if (!approvalDetail?.activityNodes) {
+    return undefined
+  }
+
+  const currentUserId = userStore.user.id
+  const activityNodes = approvalDetail.activityNodes
+
+  // 找到当前待审批的节点（status=1 表示待处理）
+  const pendingNode = activityNodes.find((node: any) => node.status === 1)
+  if (!pendingNode?.tasks?.length) {
+    return undefined
+  }
+
+  // 从该节点的 tasks 中找到 assigneeUserId 等于当前登录用户的任务
+  const userTask = pendingNode.tasks.find((task: any) => task.assigneeUserId === currentUserId)
+  return userTask?.id
+}
 
 /** 查询列表 */
 const getList = async () => {
@@ -275,19 +302,57 @@ const handleDetail = (row: ResourceApplyVO) => {
 }
 
 /** 通过操作 */
-const handleApprove = (row: ResourceApplyVO) => {
-  approvalType.value = 'approve'
-  approvalForm.id = row.resourceId!
-  approvalForm.comment = ''
-  approvalDialogVisible.value = true
+const handleApprove = async (row: ResourceApplyVO) => {
+  try {
+    loading.value = true
+    // 获取申请详情以提取 taskId
+    const detail = await getResourcePublishApply(row.id!)
+    const taskId = getCurrentUserTaskId(detail?.approvalDetail)
+
+    if (!taskId) {
+      message.error('无法获取当前任务ID，请刷新页面重试')
+      return
+    }
+
+    approvalType.value = 'approve'
+    approvalForm.id = row.id!
+    approvalForm.type = detail?.type || 2
+    approvalForm.taskId = taskId
+    approvalForm.comment = ''
+    approvalDialogVisible.value = true
+  } catch (error) {
+    console.error('获取申请详情失败:', error)
+    message.error('获取申请详情失败')
+  } finally {
+    loading.value = false
+  }
 }
 
 /** 驳回操作 */
-const handleReject = (row: ResourceApplyVO) => {
-  approvalType.value = 'reject'
-  approvalForm.id = row.resourceId!
-  approvalForm.comment = ''
-  approvalDialogVisible.value = true
+const handleReject = async (row: ResourceApplyVO) => {
+  try {
+    loading.value = true
+    // 获取申请详情以提取 taskId
+    const detail = await getResourcePublishApply(row.id!)
+    const taskId = getCurrentUserTaskId(detail?.approvalDetail)
+
+    if (!taskId) {
+      message.error('无法获取当前任务ID，请刷新页面重试')
+      return
+    }
+
+    approvalType.value = 'reject'
+    approvalForm.id = row.id!
+    approvalForm.type = detail?.type || 2
+    approvalForm.taskId = taskId
+    approvalForm.comment = ''
+    approvalDialogVisible.value = true
+  } catch (error) {
+    console.error('获取申请详情失败:', error)
+    message.error('获取申请详情失败')
+  } finally {
+    loading.value = false
+  }
 }
 
 /** 确认审批 */
@@ -298,9 +363,11 @@ const confirmApproval = async () => {
     await api({
       id: approvalForm.id,
       type: approvalForm.type,
+      taskId: approvalForm.taskId,
       rejectReason: approvalForm.comment
     })
 
+    debugger
     message.success(approvalType.value === 'approve' ? '审批通过' : '已驳回')
     approvalDialogVisible.value = false
 

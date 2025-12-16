@@ -36,6 +36,8 @@ import type { UserVO } from '@/api/system/user'
 const props = defineProps<{
   modelValue: boolean
   applyId?: number | string
+  applyType?: number
+  taskId?: string
   userList?: UserVO[]
 }>()
 
@@ -85,8 +87,12 @@ const handleConfirm = () => {
     return
   }
 
-  // 提交时确保类型正确
-  emit('confirm', formData.value as ApprovalTransferVO)
+  // 提交时确保类型正确，添加 type 和 taskId
+  emit('confirm', {
+    ...formData.value,
+    type: props.applyType,
+    taskId: props.taskId
+  } as ApprovalTransferVO)
 }
 
 defineExpose({

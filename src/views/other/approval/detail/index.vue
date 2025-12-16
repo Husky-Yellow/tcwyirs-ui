@@ -156,6 +156,7 @@
     <ActionBar
       :submitting="submitting"
       :can-withdraw="applyData?.status === 0"
+      :approval-status="applyData?.approvalDetail?.status"
       @back="handleBack"
       @cancel="handleCancel"
       @reject="handleReject"
@@ -170,6 +171,7 @@
       v-model="rejectDialogVisible"
       :apply-id="applyData?.id"
       :apply-type="applyData?.type"
+      :task-id="getCurrentUserTaskId()"
       @confirm="confirmReject"
     />
 
@@ -178,6 +180,8 @@
       ref="transferDialogRef"
       v-model="transferDialogVisible"
       :apply-id="applyData?.id"
+      :apply-type="applyData?.type"
+      :task-id="getCurrentUserTaskId()"
       :user-list="approverList"
       @confirm="confirmTransfer"
     />
@@ -199,6 +203,7 @@ import {
   type ApprovalTransferVO
 } from '@/api/resource/approval'
 import { getSimpleUserList, type UserVO } from '@/api/system/user'
+import { useUserStore } from '@/store/modules/user'
 import { DICT_TYPE } from '@/utils/dict'
 import type { ResourcePublishApplyRespVO } from '@/api/resource/info'
 import { BpmNodeTypeMap, BpmTaskStatusMap } from '@/utils/constants'
@@ -216,11 +221,37 @@ defineOptions({ name: 'ApprovalDetail' })
 
 const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
 
 // 数据状态
 const loading = ref(false)
 const applyData = ref<ResourcePublishApplyRespVO | null>(null)
 const submitting = ref(false)
+
+/**
+ * 获取当前用户的待办任务ID
+ * 1. 找到当前待审批的节点（activityNodes 中 status=1 的节点）
+ * 2. 从该节点的 tasks 中找到 assigneeUserId 等于当前登录用户的任务
+ * 3. 取该任务的 id 字段作为 taskId
+ */
+const getCurrentUserTaskId = (): string | undefined => {
+  if (!applyData.value?.approvalDetail?.activityNodes) {
+    return undefined
+  }
+
+  const currentUserId = userStore.user.id
+  const activityNodes = applyData.value.approvalDetail.activityNodes
+
+  // 找到当前待审批的节点（status=1 表示待处理）
+  const pendingNode = activityNodes.find(node => node.status === 1)
+  if (!pendingNode?.tasks?.length) {
+    return undefined
+  }
+
+  // 从该节点的 tasks 中找到 assigneeUserId 等于当前登录用户的任务
+  const userTask = pendingNode.tasks.find(task => task.assigneeUserId === currentUserId)
+  return userTask?.id
+}
 
 // 对话框状态
 const rejectDialogVisible = ref(false)
@@ -282,6 +313,12 @@ const handleResourceDetail = () => {
 const handleCancel = async () => {
   if (!applyData.value?.id) return
 
+  const taskId = getCurrentUserTaskId()
+  if (!taskId) {
+    ElMessage.error('无法获取当前任务ID，请刷新页面重试')
+    return
+  }
+
   try {
     await ElMessageBox.confirm('确定要取消该申请吗？', '提示', {
       confirmButtonText: '确定',
@@ -289,7 +326,7 @@ const handleCancel = async () => {
       type: 'warning'
     })
 
-    await cancelApproval({ id: applyData.value.id })
+    await cancelApproval({ id: applyData.value.id, type: applyData.value.type, taskId })
     ElMessage.success('取消成功')
     await loadData()
   } catch (error: any) {
@@ -366,6 +403,12 @@ const confirmTransfer = async (data: ApprovalTransferVO) => {
 const handleApprove = async () => {
   if (!applyData.value?.id) return
 
+  const taskId = getCurrentUserTaskId()
+  if (!taskId) {
+    ElMessage.error('无法获取当前任务ID，请刷新页面重试')
+    return
+  }
+
   try {
     await ElMessageBox.confirm('确定要通过该申请吗？', '提示', {
       confirmButtonText: '确定',
@@ -376,7 +419,8 @@ const handleApprove = async () => {
     submitting.value = true
     await approveResourceApply({
       id: applyData.value.id,
-      type: applyData.value.type
+      type: applyData.value.type,
+      taskId
     })
     ElMessage.success('审批通过')
     await loadData()

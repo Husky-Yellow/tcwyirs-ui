@@ -26,6 +26,7 @@ const props = defineProps<{
   modelValue: boolean
   applyId?: number | string
   applyType?: number
+  taskId?: string
 }>()
 
 const emit = defineEmits<{
@@ -66,6 +67,7 @@ const handleConfirm = () => {
   }
 
   formData.value.type = props.applyType
+  formData.value.taskId = props.taskId
   emit('confirm', formData.value)
 }
 

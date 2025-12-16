@@ -7,6 +7,8 @@ export interface ApprovalActionVO {
   id: number
   /** 审批类型：1-资源申请，2-上架申请 */
   type: number
+  /** 任务ID（从审批流程中当前用户的待办任务获取） */
+  taskId?: string
   /** 审批意见 */
   rejectReason?: string
 }
