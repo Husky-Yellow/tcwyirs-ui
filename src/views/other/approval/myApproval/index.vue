@@ -33,19 +33,11 @@
         </template>
       </el-table-column>
       <el-table-column label="上架人" align="center" prop="publishUserName" width="100" />
-      <el-table-column label="审批状态" align="center" prop="status" width="120">
-        <template #default="scope">
-          <div class="flex items-center justify-center">
-            <span
-              class="mr-8px inline-block h-8px w-8px rounded-full"
-              :style="{ backgroundColor: getStatusStyle(scope.row.status).dotColor }"
-            ></span>
-            <span :style="{ color: getStatusStyle(scope.row.status).textColor }">
-              {{ getStatusStyle(scope.row.status).label }}
-            </span>
-          </div>
-        </template>
-      </el-table-column>
+      <el-table-column prop="status" label="审批状态" width="120">
+          <template #default="{ row }">
+            <dict-tag :type="DICT_TYPE.APPROVAL_STATUS" :value="row.status" />
+          </template>
+        </el-table-column>
       <el-table-column label="描述" align="center" prop="description" min-width="200" show-overflow-tooltip />
       <el-table-column label="申请时间" align="center" prop="applyTime" width="180">
         <template #default="scope">
@@ -126,18 +118,6 @@ const currentRole = computed(() => userStore.getCurrentRole)
 
 /** 判断是否为资源管理员 */
 const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
-
-// 状态样式配置
-const statusStyleMap = {
-  [ApplyStatus.PENDING]: { label: '待审批', dotColor: '#faad14', textColor: '#faad14' },
-  [ApplyStatus.APPROVED]: { label: '已通过', dotColor: '#52c41a', textColor: '#52c41a' },
-  [ApplyStatus.REJECTED]: { label: '已驳回', dotColor: '#ff4d4f', textColor: '#ff4d4f' },
-  [ApplyStatus.CANCELLED]: { label: '已撤销', dotColor: '#d9d9d9', textColor: '#999999' }
-}
-
-const getStatusStyle = (status: ApplyStatus) => {
-  return statusStyleMap[status] || { label: '未知', dotColor: '#d9d9d9', textColor: '#999999' }
-}
 
 // 标签页
 const activeTab = ref<'pending' | 'done'>('pending')
