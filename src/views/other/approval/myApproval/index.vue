@@ -290,13 +290,13 @@ const handleReset = (values: any) => {
 }
 
 /** 详情操作 */
-const handleDetail = (row: ResourceApplyVO) => {
-  console.log('row', row);
-
+const handleDetail = (row: any) => {
+  // 使用 publishApplyId（上架申请ID）而不是 resourceId
+  const applyId = row.publishApplyId || row.id
   router.push({
     name: 'ApprovalDetail',
     query: {
-      id: row.resourceId
+      id: applyId
     }
   })
 }
@@ -364,7 +364,7 @@ const confirmApproval = async () => {
       id: approvalForm.id,
       type: approvalForm.type,
       taskId: approvalForm.taskId,
-      rejectReason: approvalForm.comment
+      reason: approvalForm.comment
     })
 
     debugger

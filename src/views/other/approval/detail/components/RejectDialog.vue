@@ -3,7 +3,7 @@
     <el-form :model="formData" label-width="100px">
       <el-form-item label="驳回原因:" required>
         <el-input
-          v-model="formData.rejectReason"
+          v-model="formData.reason"
           type="textarea"
           :rows="4"
           placeholder="请输入驳回原因"
@@ -36,9 +36,8 @@ const emit = defineEmits<{
 
 const visible = ref(false)
 const loading = ref(false)
-const formData = ref<ApprovalActionVO>({
-  id: props.applyId,
-  rejectReason: ''
+const formData = ref({
+  reason: ''
 })
 
 watch(() => props.modelValue, (val) => {
@@ -46,8 +45,7 @@ watch(() => props.modelValue, (val) => {
   if (val) {
     // 重置表单
     formData.value = {
-      id: props.applyId,
-      rejectReason: ''
+      reason: ''
     }
   }
 })
@@ -61,14 +59,18 @@ const handleClose = () => {
 }
 
 const handleConfirm = () => {
-  if (!formData.value.rejectReason?.trim()) {
+  if (!formData.value.reason?.trim()) {
     ElMessage.warning('请输入驳回原因')
     return
   }
 
-  formData.value.type = props.applyType
-  formData.value.taskId = props.taskId
-  emit('confirm', formData.value)
+  // 提交驳回参数：id, type, taskId, reason
+  emit('confirm', {
+    id: Number(props.applyId),
+    type: props.applyType!,
+    taskId: props.taskId,
+    reason: formData.value.reason
+  })
 }
 
 defineExpose({

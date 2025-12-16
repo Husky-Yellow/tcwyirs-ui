@@ -2,7 +2,7 @@
   <el-dialog v-model="visible" title="转交申请" width="500px" @close="handleClose">
     <el-form :model="formData" label-width="80px">
       <el-form-item label="转交给:" required>
-        <el-select v-model="formData.userId" placeholder="请选择审批人" class="w-full">
+        <el-select v-model="formData.assigneeUserId" placeholder="请选择审批人" class="w-full">
           <el-option
             v-for="user in userList"
             :key="user.id"
@@ -11,12 +11,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="转交说明:">
+      <el-form-item label="转交原因:">
         <el-input
-          v-model="formData.comment"
+          v-model="formData.reason"
           type="textarea"
           :rows="3"
-          placeholder="请输入转交说明（可选）"
+          placeholder="请输入转交原因（可选）"
         />
       </el-form-item>
     </el-form>
@@ -35,8 +35,6 @@ import type { UserVO } from '@/api/system/user'
 
 const props = defineProps<{
   modelValue: boolean
-  applyId?: number | string
-  applyType?: number
   taskId?: string
   userList?: UserVO[]
 }>()
@@ -46,19 +44,17 @@ const emit = defineEmits<{
   confirm: [data: ApprovalTransferVO]
 }>()
 
-// 表单数据类型，userId 可选
+// 表单数据类型
 interface TransferFormData {
-  id?: number | string
-  userId?: number
-  comment?: string
+  assigneeUserId?: number
+  reason?: string
 }
 
 const visible = ref(false)
 const loading = ref(false)
 const formData = ref<TransferFormData>({
-  id: props.applyId,
-  userId: undefined,
-  comment: ''
+  assigneeUserId: undefined,
+  reason: ''
 })
 
 watch(() => props.modelValue, (val) => {
@@ -66,9 +62,8 @@ watch(() => props.modelValue, (val) => {
   if (val) {
     // 重置表单
     formData.value = {
-      id: props.applyId,
-      userId: undefined,
-      comment: ''
+      assigneeUserId: undefined,
+      reason: ''
     }
   }
 })
@@ -82,16 +77,21 @@ const handleClose = () => {
 }
 
 const handleConfirm = () => {
-  if (!formData.value.userId) {
+  if (!formData.value.assigneeUserId) {
     ElMessage.warning('请选择转交对象')
     return
   }
 
-  // 提交时确保类型正确，添加 type 和 taskId
+  if (!props.taskId) {
+    ElMessage.warning('缺少任务ID')
+    return
+  }
+
+  // 提交转交参数：taskId, assigneeUserId, reason
   emit('confirm', {
-    ...formData.value,
-    type: props.applyType,
-    taskId: props.taskId
+    taskId: props.taskId,
+    assigneeUserId: formData.value.assigneeUserId,
+    reason: formData.value.reason
   } as ApprovalTransferVO)
 }
 

@@ -179,8 +179,6 @@
     <TransferDialog
       ref="transferDialogRef"
       v-model="transferDialogVisible"
-      :apply-id="applyData?.id"
-      :apply-type="applyData?.type"
       :task-id="getCurrentUserTaskId()"
       :user-list="approverList"
       @confirm="confirmTransfer"

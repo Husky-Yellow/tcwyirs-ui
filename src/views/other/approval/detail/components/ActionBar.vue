@@ -63,9 +63,10 @@ const currentRole = computed(() => userStore.getCurrentRole)
 const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
 const isOperationAdmin = computed(() => currentRole.value === 'operation_admin')
 
-// 审批是否已结束（通过或已取消才视为结束，不显示操作按钮）
+// 审批是否已结束（通过、驳回或已取消视为结束，不显示操作按钮）
 const isApprovalFinished = computed(() =>
   props.approvalStatus === BpmProcessInstanceStatus.APPROVE ||
+  props.approvalStatus === BpmProcessInstanceStatus.REJECT ||
   props.approvalStatus === BpmProcessInstanceStatus.CANCEL
 )
 

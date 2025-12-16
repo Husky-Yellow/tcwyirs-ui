@@ -9,14 +9,18 @@ export interface ApprovalActionVO {
   type: number
   /** 任务ID（从审批流程中当前用户的待办任务获取） */
   taskId?: string
-  /** 审批意见 */
-  rejectReason?: string
+  /** 驳回原因 */
+  reason?: string
 }
 
 /** 转交审批参数 */
-export interface ApprovalTransferVO extends ApprovalActionVO {
+export interface ApprovalTransferVO {
+  /** 任务ID */
+  taskId: string
   /** 转交给的用户ID */
-  userId: number
+  assigneeUserId: number
+  /** 转交原因 */
+  reason?: string
 }
 
 // 获取待审批列表
