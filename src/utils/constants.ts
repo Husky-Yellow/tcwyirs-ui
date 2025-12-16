@@ -253,6 +253,48 @@ export const BpmAutoApproveType = {
   APPROVE_SEQUENT: 2 // 仅针对连续审批的节点自动通过
 }
 
+/**
+ * 审批节点类型映射
+ */
+export const BpmNodeTypeMap: Record<number, string> = {
+  10: '发起人节点',
+  1: '结束节点',
+  11: '审批节点'
+}
+
+/**
+ * 审批任务状态映射
+ */
+export const BpmTaskStatusMap: Record<number, string> = {
+  0: '草稿',
+  1: '审批中',
+  2: '审批通过',
+  3: '审批驳回',
+  4: '已取消'
+}
+
+/**
+ * 审批节点状态颜色映射
+ */
+export const BpmNodeStatusColors: Record<number, string> = {
+  0: '#909399', // 未开始/草稿
+  1: '#409EFF', // 进行中/审批中
+  2: '#67C23A', // 已完成/审批通过
+  3: '#F56C6C', // 已驳回
+  4: '#E6A23C', // 已取消
+  5: '#909399' // 已终止
+}
+
+/**
+ * 申请状态配置
+ */
+export const BpmApplyStatusConfig: Record<number, { label: string; color: string }> = {
+  0: { label: '待审批', color: '#409EFF' },
+  1: { label: '已通过', color: '#67C23A' },
+  2: { label: '已驳回', color: '#F56C6C' },
+  3: { label: '已撤销', color: '#909399' }
+}
+
 // ========== 通用操作标题 ==========
 /**
  * 表单操作类型标题映射
