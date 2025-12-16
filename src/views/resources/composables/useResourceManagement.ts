@@ -89,9 +89,12 @@ export const useResourceManagement = (options: UseResourceManagementOptions) => 
 
       tableData.value = res.list.map((item: any) => ({
         ...item,
-        tags: item.tags?.join(', ') || '',
-        visitCount: item.visitCount || Math.floor(Math.random() * 1000),
-        applyCount: item.applyCount || Math.floor(Math.random() * 100),
+        // 资源标签：API 返回 resourceTagName
+        tags: item.resourceTagName || '',
+        // 访问量：API 返回 visitNum
+        visitCount: item.visitNum ?? 0,
+        // 申请量：API 返回 applyNum
+        applyCount: item.applyNum ?? 0,
         creator: item.creator || '系统'
       }))
 

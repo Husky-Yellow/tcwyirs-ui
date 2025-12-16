@@ -16,7 +16,7 @@
       <el-table-column prop="name" label="资源名称" min-width="180" show-overflow-tooltip />
       <el-table-column prop="tags" label="资源标签" width="120">
         <template #default="{ row }">
-          <el-tag v-if="row.tags">{{ getTagName(row.tags) }}</el-tag>
+          <el-tag v-if="row.tags">{{ row.tags }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="visitCount" label="访问量" width="100" align="center" />

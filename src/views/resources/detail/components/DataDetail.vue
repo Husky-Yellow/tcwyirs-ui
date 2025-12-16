@@ -62,15 +62,15 @@
       <div class="info-grid">
         <div class="info-item">
           <span class="label">申请量：</span>
-          <span class="value">{{ dataInfo?.applyCount || 0 }}</span>
+          <span class="value">{{ dataInfo?.applyNum ?? 0 }}</span>
         </div>
         <div class="info-item">
           <span class="label">访问量：</span>
-          <span class="value">{{ dataInfo?.visitCount || 0 }}</span>
+          <span class="value">{{ dataInfo?.visitNum ?? 0 }}</span>
         </div>
         <div class="info-item">
           <span class="label">归集数量：</span>
-          <span class="value">{{ dataInfo?.dataRow || 0 }}</span>
+          <span class="value">{{ dataInfo?.dataRow ?? 0 }}</span>
         </div>
       </div>
     </el-card>
@@ -106,8 +106,8 @@ const baseInfo = computed(() => props.data.baseInfo)
 // 数据信息
 const dataInfo = computed(() => props.data.dataInfo)
 
-// 字段信息
-const fieldsJson = computed(() => props.data.fieldsJson || [])
+// 字段信息（在 otherInfo 中）
+const fieldsJson = computed(() => props.data.otherInfo?.fieldsJson || [])
 
 // 获取资源类型名称
 const getTypeName = (type: number | undefined) => {
