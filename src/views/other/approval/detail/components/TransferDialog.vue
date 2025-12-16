@@ -44,11 +44,18 @@ const emit = defineEmits<{
   confirm: [data: ApprovalTransferVO]
 }>()
 
+// 表单数据类型，userId 可选
+interface TransferFormData {
+  id?: number | string
+  userId?: number
+  comment?: string
+}
+
 const visible = ref(false)
 const loading = ref(false)
-const formData = ref<ApprovalTransferVO>({
+const formData = ref<TransferFormData>({
   id: props.applyId,
-  userId: 0,
+  userId: undefined,
   comment: ''
 })
 
@@ -58,7 +65,7 @@ watch(() => props.modelValue, (val) => {
     // 重置表单
     formData.value = {
       id: props.applyId,
-      userId: 0,
+      userId: undefined,
       comment: ''
     }
   }
@@ -78,7 +85,8 @@ const handleConfirm = () => {
     return
   }
 
-  emit('confirm', formData.value)
+  // 提交时确保类型正确
+  emit('confirm', formData.value as ApprovalTransferVO)
 }
 
 defineExpose({
