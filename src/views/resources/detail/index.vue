@@ -3,9 +3,12 @@
     <BackHeader :title="pageTitle">
       <template #right>
         <div class="ml-auto flex items-center gap-12px">
-          <el-button @click="handleEdit">编辑</el-button>
-          <el-button type="danger" @click="handleDelete">删除</el-button>
-          <el-button type="primary" @click="handleToggleStatus">
+          <!-- 资源管理员可以编辑 -->
+          <el-button v-if="isResourceAdmin" @click="handleEdit">编辑</el-button>
+          <!-- 资源管理员和运营管理员可以删除 -->
+          <el-button v-if="isResourceAdmin || isOperationAdmin" type="danger" @click="handleDelete">删除</el-button>
+          <!-- 只有资源管理员可以上下架 -->
+          <el-button v-if="isResourceAdmin" type="primary" @click="handleToggleStatus">
             {{ resourceData?.baseInfo.publishStatus === 2 ? '下架' : '上架' }}
           </el-button>
           <el-button type="primary" @click="handleConsult">咨询资源介绍</el-button>
@@ -59,6 +62,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { BackHeader } from '@/layout/components/PageHeader'
+import { useUserStore } from '@/store/modules/user'
 import {
   getResourceDetail,
   deleteResourceInfo,
@@ -79,6 +83,12 @@ defineOptions({ name: 'ResourceDetail' })
 
 const route = useRoute()
 const router = useRouter()
+const userStore = useUserStore()
+
+// 角色判断
+const currentRole = computed(() => userStore.getCurrentRole)
+const isResourceAdmin = computed(() => currentRole.value === 'resource_admin')
+const isOperationAdmin = computed(() => currentRole.value === 'operation_admin')
 
 // 资源数据
 const loading = ref(false)
