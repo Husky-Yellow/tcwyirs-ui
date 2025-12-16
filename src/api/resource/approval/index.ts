@@ -43,11 +43,11 @@ export const rejectResourceApply = (params: ApprovalActionVO) => {
 }
 
 // 取消申请（审批流程中）
-export const cancelApproval = (data: ApprovalActionVO) => {
-  return request.post<void>({ url: '/resource/approval/cancel', data })
+export const cancelApproval = (params: ApprovalActionVO) => {
+  return request.put<void>({ url: '/resource/approval/cancel', params })
 }
 
 // 转交审批
-export const transferResourceApply = (data: ApprovalTransferVO) => {
-  return request.post<void>({ url: '/resource/approval/transfer', data })
+export const transferResourceApply = (params: ApprovalTransferVO) => {
+  return request.put<void>({ url: '/resource/approval/transfer', params })
 }
