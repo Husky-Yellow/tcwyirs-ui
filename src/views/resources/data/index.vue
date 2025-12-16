@@ -152,15 +152,29 @@ const handleFormSave = async (data: any, publish: boolean) => {
 
     console.log('调用接口参数:', saveData)
 
+    let resourceId: number
+
     if (isEdit.value && saveData.id) {
       // 编辑模式：使用更新接口
       await updateResourceInfo(saveData)
-      ElMessage.success(publish ? '更新并上架成功' : '更新成功')
+      resourceId = saveData.id
+      ElMessage.success(publish ? '更新成功，正在提交上架申请...' : '更新成功')
     } else {
       // 新增模式：使用创建接口
-      const resourceId = await createResourceInfo(saveData)
+      resourceId = await createResourceInfo(saveData)
       console.log('保存成功，资源ID:', resourceId)
-      ElMessage.success(publish ? '新增并上架成功' : '保存成功')
+      ElMessage.success(publish ? '新增成功，正在提交上架申请...' : '保存成功')
+    }
+
+    // 如果需要直接上架，调用上架申请接口
+    if (publish && resourceId) {
+      try {
+        await createPublishApply({ resourceId })
+        ElMessage.success('上架申请已提交，等待审批')
+      } catch (error) {
+        console.error('提交上架申请失败:', error)
+        ElMessage.error('资源保存成功，但上架申请提交失败')
+      }
     }
 
     formVisible.value = false
