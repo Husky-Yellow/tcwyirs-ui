@@ -3,12 +3,13 @@
     <BackHeader :title="pageTitle">
       <template #right>
         <div class="ml-auto flex items-center gap-12px">
-          <el-button @click="handleEdit">编辑</el-button>
-          <el-button type="danger" @click="handleDelete">删除</el-button>
-          <el-button type="primary" @click="handleToggleStatus">
+          <el-button v-hasPermi="['resource:info:create']" @click.stop="handleEdit">编辑</el-button>
+          <el-button type="danger" v-hasPermi="['resource:info:delete']" @click.stop="handleDelete">删除</el-button>
+          <el-button type="danger" v-hasPermi="['resource:info:usage-status']" @click.stop="handleUpateStatus">停用</el-button>
+          <el-button type="primary" v-hasPermi="['resource:publish-apply:publish']" @click.stop="handleToggleStatus">
             {{ resourceData?.baseInfo.publishStatus === 2 ? '下架' : '上架' }}
           </el-button>
-          <el-button type="primary" @click="handleConsult">咨询资源介绍</el-button>
+          <el-button type="primary" @click.stop="handleConsult">咨询资源介绍</el-button>
         </div>
       </template>
     </BackHeader>
@@ -64,6 +65,9 @@ import {
   deleteResourceInfo,
   createResourceInfo
 } from '@/api/resource/info'
+import {
+  updateResourceUsageStatus
+} from '@/api/resource/usage'
 import type { ResourceDetailRespVO } from '@/api/resource/info'
 import { ResourceType } from '@/api/resource/types'
 import { createPublishApply, offlineResource } from '@/api/resource/publish-apply'
@@ -194,6 +198,32 @@ const handleDelete = async () => {
   }
 }
 
+//停用
+const handleUpateStatus = async () => {
+  if (!resourceData.value) return
+
+  try {
+    await ElMessageBox.confirm(
+      `确定要停用 "${resourceData.value.baseInfo.name}" 吗?`,
+      '提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    )
+
+    await updateResourceUsageStatus (resourceData.value.baseInfo.id,3)
+    ElMessage.success('停用成功!')
+    router.back()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      console.error('停用失败:', error)
+      ElMessage.error('停用失败')
+    }
+  }
+}
+
 // 上架/下架
 const handleToggleStatus = async () => {
   if (!resourceData.value) return
@@ -251,7 +281,10 @@ const handleUnpublishConfirm = async (formData: any) => {
 
 // 咨询资源介绍
 const handleConsult = () => {
-  ElMessage.info('打开咨询对话框')
+  // ElMessage.info('打开咨询对话框')
+  router.push(`/marketplace/detail/${resourceData.value?.baseInfo.id}`).catch(err => {
+    console.log('跳转失败：', err) // 查看错误原因
+  })
   // TODO: 实现咨询功能
 }
 
