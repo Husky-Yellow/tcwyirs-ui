@@ -57,6 +57,7 @@
           class="w-full"
           clearable
           filterable
+          :disabled="isProjectManager"
         >
           <el-option
             v-for="user in userList"
@@ -117,6 +118,7 @@ import type { ProjectVO } from '@/api/resource/project'
 import { createProject, updateProject } from '@/api/resource/project'
 import { getUserSimplePage } from '@/api/system/user'
 import type { UserVO } from '@/api/system/user'
+import { useUserStore } from '@/store/modules/user'
 
 interface ProjectFormData {
   name: string
@@ -137,6 +139,12 @@ const emit = defineEmits<{
   success: []
   close: []
 }>()
+
+// 获取用户 store
+const userStore = useUserStore()
+
+// 判断是否为项目经理角色
+const isProjectManager = computed(() => userStore.currentRole === 'project_manager')
 
 // 项目类型选项
 const projectTypes = ref([
@@ -211,6 +219,11 @@ const open = (projectData?: ProjectVO) => {
     formData.leaderId = projectData.leaderId
     formData.description = projectData.description || ''
     // TODO: 加载项目成员
+  } else {
+    // 新增模式：如果是项目经理角色，自动设置项目经理为当前用户
+    if (isProjectManager.value) {
+      formData.leaderId = userStore.user.id
+    }
   }
 
   loadUsers()
