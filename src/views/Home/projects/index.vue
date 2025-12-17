@@ -117,7 +117,7 @@ const searchSchema = computed<FormSchema[]>(() => [
     componentProps: {
       placeholder: '全部',
       clearable: true,
-      class: 'w-240px!',
+      class: 'w-220px!',
       options: [
         { label: '全部', value: undefined },
         { label: '进行中', value: 1 },

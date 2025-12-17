@@ -33,7 +33,7 @@
           value-format="YYYY-MM-DD"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          class="w-full"
+          class="!w-220px"
         />
       </el-form-item>
 
